@@ -11,4 +11,14 @@ public class BlockWoodenLiquidTank extends BlockUpgC {
         this.setHardness(2.5f);
         this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 0.875f, 0.9375f); //chest block bounds
     }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
 }

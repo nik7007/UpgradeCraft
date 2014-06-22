@@ -15,15 +15,5 @@ public class BlockUpgC extends Block {
         this.setCreativeTab(CreativeTab.UPGC_TAB);
     }
 
-    @Override
-    public boolean renderAsNormalBlock() {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube() {
-        return false;
-    }
-
 
 }
