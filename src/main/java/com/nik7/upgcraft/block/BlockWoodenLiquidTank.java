@@ -2,6 +2,7 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.reference.Names;
 import net.minecraft.block.material.Material;
+import net.minecraft.world.World;
 
 public class BlockWoodenLiquidTank extends BlockUpgC {
 
@@ -14,11 +15,23 @@ public class BlockWoodenLiquidTank extends BlockUpgC {
 
     @Override
     public boolean renderAsNormalBlock() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isOpaqueCube() {
         return false;
+    }
+
+    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
+
+        if (world.getBlock(x, y - 1, z) == this)
+            if (world.getBlock(x, y - 2, z) == this)
+                return false;
+        if (world.getBlock(x, y + 1, z) == this)
+            if (world.getBlock(x, y + 2, z) == this)
+                return false;
+
+        return true;
     }
 }
