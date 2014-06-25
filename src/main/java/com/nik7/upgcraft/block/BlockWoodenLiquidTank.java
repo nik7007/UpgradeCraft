@@ -24,6 +24,7 @@ public class BlockWoodenLiquidTank extends BlockUpgC implements IFluidTank, ITil
         this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 0.875f, 0.9375f); //chest block bounds
         this.setStepSound(soundTypeWood);
 
+        tile = new WoodenLiquidTankEntity(this);
         this.setCapacity(Capacity.SMALL_WOODEN_TANK);
 
     }
@@ -175,8 +176,6 @@ public class BlockWoodenLiquidTank extends BlockUpgC implements IFluidTank, ITil
 
     @Override
     public TileEntity createNewTileEntity(World var1, int var2) {
-
-        tile = new WoodenLiquidTankEntity();
 
         return tile;
     }

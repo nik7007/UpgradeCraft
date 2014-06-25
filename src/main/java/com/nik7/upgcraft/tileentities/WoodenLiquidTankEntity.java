@@ -11,7 +11,12 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class WoodenLiquidTankEntity extends TileEntity implements IFluidHandler {
 
-    protected BlockWoodenLiquidTank tank = new BlockWoodenLiquidTank();
+    protected BlockWoodenLiquidTank tank;
+
+    public WoodenLiquidTankEntity(BlockWoodenLiquidTank tank) {
+        super();
+        this.tank = tank;
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
