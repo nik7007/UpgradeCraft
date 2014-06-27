@@ -16,7 +16,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.*;
 
-//toDo: tileEntity
 public class BlockWoodenLiquidTank extends BlockUpgC implements IFluidTank, ITileEntityProvider {
 
     protected FluidStack fluid;
@@ -106,7 +105,7 @@ public class BlockWoodenLiquidTank extends BlockUpgC implements IFluidTank, ITil
         return new FluidTankInfo(this);
     }
 
-    @Override //toDo: tileEntity
+    @Override
     public int fill(FluidStack resource, boolean doFill) {
 
         int canFill = Math.min(resource.amount, this.capacity);
