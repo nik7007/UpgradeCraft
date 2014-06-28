@@ -27,8 +27,7 @@ public class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider {
 
     @Override
     public TileEntity createNewTileEntity(World var1, int var2) {
-
-        return new UpgCtileentityTank(capacity);
+        return new UpgCtileentityTank(new UpgCTank(capacity));
     }
 
     @Override
