@@ -1,6 +1,5 @@
 package com.nik7.upgcraft.CreativeTab;
 
-import com.nik7.upgcraft.block.BlockWoodenLiquidTank;
 import com.nik7.upgcraft.block.InitBlocks;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.relauncher.Side;
