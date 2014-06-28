@@ -12,6 +12,10 @@ public class Names {
 
     }
 
+    public class TileEntity {
+        public final static String UPGC_TILE_ENTITY_TANK = Reference.MOD_ID + ":" + "LiquidTankEntity";
+    }
+
 
 }
 
