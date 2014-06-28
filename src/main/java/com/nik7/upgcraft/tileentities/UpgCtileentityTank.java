@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.TileFluidHandler;
 public class UpgCtileentityTank extends TileFluidHandler {
 
     public UpgCtileentityTank(FluidTank tank) {
+
         setTank(tank);
     }
 
