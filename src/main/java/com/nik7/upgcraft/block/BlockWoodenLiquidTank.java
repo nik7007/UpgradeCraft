@@ -2,7 +2,10 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
+import com.nik7.upgcraft.tileentities.UpgCtileentityTankSmall;
 import net.minecraft.block.material.Material;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class BlockWoodenLiquidTank extends BlockUpgCTank {
@@ -41,7 +44,10 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
 
     }
 
-
+    @Override
+    public TileEntity createNewTileEntity(World world, int meta) {
+        return new UpgCtileentityTankSmall();
+    }
 
 
 }

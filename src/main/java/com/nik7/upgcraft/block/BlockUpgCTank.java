@@ -14,7 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
-public class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider {
+public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider {
 
     protected int capacity;
 
@@ -22,12 +22,6 @@ public class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider {
     public BlockUpgCTank(Material material) {
         super(material);
 
-    }
-
-
-    @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
-        return new UpgCtileentityTank(new UpgCTank(capacity));
     }
 
     @Override
