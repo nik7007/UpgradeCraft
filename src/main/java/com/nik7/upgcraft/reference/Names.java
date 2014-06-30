@@ -4,8 +4,8 @@ public class Names {
 
     public class Blocks {
 
-        public final static String WOODENLIQUIDTANK = "Wooden Tank";
-
+        public final static String WOODEN_LIQUID_TANK = "WoodenTank";
+        public final static String SLIMY_LOG = "SlimyLog";
     }
 
     public class Items {
