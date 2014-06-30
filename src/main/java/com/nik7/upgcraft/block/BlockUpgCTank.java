@@ -68,18 +68,27 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         FluidStack oneBucketOfFluid = new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME);
         ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(oneBucketOfFluid, FluidContainerRegistry.EMPTY_BUCKET);
 
-        if (filledBucket != null && entity.drain(null, oneBucketOfFluid, true).amount == FluidContainerRegistry.BUCKET_VOLUME) {
-            // add filled bucket to player inventory or drop it to the ground if the inventory is full
-            if (!player.inventory.addItemStackToInventory(filledBucket)) {
-                world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 1.5D, z + 0.5D, filledBucket));
-            } else if (player instanceof EntityPlayerMP) {
-                ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+        if (filledBucket != null && entity.drain(null, oneBucketOfFluid, false).amount == FluidContainerRegistry.BUCKET_VOLUME) {
+
+            entity.drain(null, oneBucketOfFluid, true);
+
+            if (!player.capabilities.isCreativeMode) {
+                if (equippedItemStack.stackSize == 1) {
+                    player.inventory.setInventorySlotContents(player.inventory.currentItem, filledBucket);
+                    return;
+                }
+
+                if (!player.inventory.addItemStackToInventory(filledBucket)) {
+                    equippedItemStack.stackSize--;
+                    world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 1.5D, z + 0.5D, filledBucket));
+                } else if (player instanceof EntityPlayerMP) {
+                    equippedItemStack.stackSize--;
+                    ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+                }
             }
+
         }
 
-        if (--equippedItemStack.stackSize <= 0) {
-            player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack) null);
-        }
     }
 
     private void drainBucketIntoTank(EntityPlayer player, UpgCtileentityTank entity, ItemStack equippedItemStack) {
