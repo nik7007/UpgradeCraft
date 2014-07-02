@@ -1,0 +1,21 @@
+[
+{
+  "modid": "upgcraft",
+  "name": "UpgradeCraft",
+  "description": "I try to make a mod! XP",
+  "version": "alpha",
+  "mcversion": "1.7.10",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [
+    "Nik7"
+  ],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [
+  ],
+  "parent":"",
+  "dependencies": [
+  ]
+}
+]

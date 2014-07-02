@@ -1,7 +1,7 @@
 package com.nik7.upgcraft;
 
 import com.nik7.upgcraft.block.InitBlocks;
-import com.nik7.upgcraft.configuration.ConfigurationHandler;
+import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.item.InitItems;
 import com.nik7.upgcraft.proxy.IProxy;
 import com.nik7.upgcraft.reference.Reference;
@@ -11,7 +11,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION)
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, guiFactory = Reference.GUI_FACTORY_CLASS)
 public class UpgradeCraft {
 
     @Mod.Instance(Reference.MOD_ID)
