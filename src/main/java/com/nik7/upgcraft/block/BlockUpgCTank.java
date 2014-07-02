@@ -2,25 +2,33 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.util.LogHelper;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFire;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Random;
+
 public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider {
 
     protected int capacity;
-
+    protected boolean canBurn = false;
+    protected int flammability = 0;
+    protected int fireSpreadSpeed = 0;
+    private int oldFlammability = 0;
 
     public BlockUpgCTank(Material material) {
         super(material);
+        this.setTickRandomly(true);
 
     }
 
@@ -118,4 +126,41 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         }
 
     }
+
+    @Override
+    public void updateTick(World world, int x, int y, int z, Random rand) {
+
+        UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
+        UpgCTank tank = entity.getTank();
+        boolean toHot = tank.isToHot();
+
+        if (toHot && canBurn) {
+            LogHelper.info("Liquid is to HOT!!!");
+            if (oldFlammability == 0)
+                oldFlammability = flammability;
+            flammability = 75;
+
+            if (world.isAirBlock(x, y + 1, z)) {
+                world.setBlock(x, y + 1, z, Blocks.fire);
+            } else if (world.isAirBlock(x, y - 1, z))
+                world.setBlock(x, y - 1, z, Blocks.fire);
+            else if (world.isAirBlock(x, y, z + 1))
+                world.setBlock(x, y, z + 1, Blocks.fire);
+            else if (world.isAirBlock(x, y, z - 1))
+                world.setBlock(x, y, z - 1, Blocks.fire);
+            else if (world.isAirBlock(x + 1, y, z))
+                world.setBlock(x + 1, y, z, Blocks.fire);
+            else if (world.isAirBlock(x - 1, y, z))
+                world.setBlock(x - 1, y, z, Blocks.fire);
+        }
+
+        if ((!toHot || !canBurn) && oldFlammability > 0)
+            flammability = oldFlammability;
+
+        LogHelper.info((new Integer(flammability)).toString());
+
+    }
+
+    //toDo: public boolean hasComparatorInputOverride()
+    //toDo: public int getComparatorInputOverride(World p_149736_1_, int p_149736_2_, int p_149736_3_, int p_149736_4_, int p_149736_5_)
 }
