@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -199,6 +200,22 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         return false;
     }
 
-    //toDo: public boolean hasComparatorInputOverride()
-    //toDo: public int getComparatorInputOverride(World p_149736_1_, int p_149736_2_, int p_149736_3_, int p_149736_4_, int p_149736_5_)
+
+    @Override
+    public boolean hasComparatorInputOverride() {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(World world, int x, int y, int z, int meta) {
+        UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
+        float maxCapacity = entity.getTank().getCapacity();
+        float fluidAmount;
+
+        if (entity.getTank().getFluid() != null)
+            fluidAmount = entity.getTank().getFluid().amount;
+        else fluidAmount = 0;
+
+        return (int) Math.ceil((fluidAmount / maxCapacity) * 15.0f);
+    }
 }
