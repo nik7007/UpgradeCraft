@@ -27,7 +27,7 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
         this.setHardness(2.5f);
         this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 0.875f, 0.9375f); //chest block bounds
         this.setStepSound(soundTypeWood);
-        this.canBurn = true;
+        this.setTickRandomly(true);
         this.flammability = 5;
         this.fireSpreadSpeed = 10;
         this.setBlockTextureName(Texture.WOODEN_LIQUID_TANK);
@@ -88,13 +88,13 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
     }
 
     @Override
-    public void onBlockAdded(World par1World, int par2, int par3, int par4) {
-        par1World.scheduleBlockUpdate(par2, par3, par4, this, this.tickRate(par1World));
+    public void onBlockAdded(World world, int x, int y, int z) {
+        world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
     }
 
     @Override
     public int tickRate(World world) {
-        return 2;
+        return 1;
     }
 
     @Override
