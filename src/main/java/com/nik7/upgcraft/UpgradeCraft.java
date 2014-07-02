@@ -1,6 +1,7 @@
 package com.nik7.upgcraft;
 
 import com.nik7.upgcraft.block.InitBlocks;
+import com.nik7.upgcraft.configuration.ConfigurationHandler;
 import com.nik7.upgcraft.item.InitItems;
 import com.nik7.upgcraft.proxy.IProxy;
 import com.nik7.upgcraft.reference.Reference;
@@ -21,7 +22,10 @@ public class UpgradeCraft {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+
         //config
+        ConfigurationHandler.init(event.getSuggestedConfigurationFile());
+
         //item, block
         InitBlocks.init();
         InitItems.init();
