@@ -26,21 +26,32 @@ public class UpgCtileentityTank extends TileFluidHandler {
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         int result = super.fill(from, resource, doFill);
-        updateModBlock();
+
+        if (result > 0)
+            updateModBlock();
+
         return result;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        FluidStack origin = getTank().getFluid();
         FluidStack result = super.drain(from, resource, doDrain);
-        updateModBlock();
+
+        if (origin != result)
+            updateModBlock();
+
         return result;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        FluidStack origin = getTank().getFluid();
         FluidStack result = super.drain(from, maxDrain, doDrain);
-        updateModBlock();
+
+        if (origin != result)
+            updateModBlock();
+
         return result;
     }
 
