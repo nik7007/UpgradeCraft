@@ -17,22 +17,23 @@ public class ConfigurationHandler {
 // Create the configuration object from the given configuration file
         if (configuration == null) {
             configuration = new Configuration(configFile);
+            loadConfiguration();
         }
 
+    }
+
+    private static void loadConfiguration() {
+        basic_Wooden_Block_Flammability = configuration.getBoolean("Flammability", "basic_Wooden_Block_Flammability", true, "Set to false to make fireproof Wooden Liquid Tank, and Slimy Log.");
+
+        if (configuration.hasChanged()) {
+            configuration.save();
+        }
     }
 
     @SubscribeEvent
     public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
         if (event.modID.equalsIgnoreCase(Reference.MOD_ID)) {
             loadConfiguration();
-        }
-    }
-
-    public void loadConfiguration() {
-        basic_Wooden_Block_Flammability = configuration.getBoolean("Flammability", "basic_Wooden_Block_Flammability", true, "Set to false to make fireproof Wooden Liquid Tank, and Slimy Log.");
-
-        if (configuration.hasChanged()) {
-            configuration.save();
         }
     }
 }
