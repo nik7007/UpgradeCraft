@@ -9,6 +9,16 @@ import net.minecraftforge.fluids.TileFluidHandler;
 
 public class UpgCtileentityTank extends TileFluidHandler {
 
+    protected int capacity;
+
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
 
     public UpgCTank getTank() {
         return (UpgCTank) tank;
@@ -18,7 +28,7 @@ public class UpgCtileentityTank extends TileFluidHandler {
         this.tank = tank;
     }
 
-    private void updateModBlock() {
+    protected void updateModBlock() {
         Block block = this.worldObj.getBlock(xCoord, yCoord, zCoord);
         this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, block);
     }

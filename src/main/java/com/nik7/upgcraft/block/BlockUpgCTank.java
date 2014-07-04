@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
+import com.nik7.upgcraft.tileentities.UpgCtileentityTankSmall;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -115,7 +116,8 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
             }
 
 
-            if (entity.fill(null, fluidFromBucket, true) == FluidContainerRegistry.BUCKET_VOLUME) {
+            if (entity.fill(null, fluidFromBucket, false) == FluidContainerRegistry.BUCKET_VOLUME) {
+                entity.fill(null, fluidFromBucket, true);
                 // don't consume the filled bucket in creative mode
                 if (!player.capabilities.isCreativeMode) {
                     player.inventory.setInventorySlotContents(player.inventory.currentItem, new ItemStack(Items.bucket));
@@ -209,12 +211,26 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     @Override
     public int getComparatorInputOverride(World world, int x, int y, int z, int meta) {
         UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
-        float maxCapacity = entity.getTank().getCapacity();
-        float fluidAmount;
+        float maxCapacity = entity.getCapacity();
+        float fluidAmount = 0;
+
+        if (entity instanceof UpgCtileentityTankSmall) {
+            if (((UpgCtileentityTankSmall) entity).adjacentTank) {
+                UpgCtileentityTankSmall entityPos = ((UpgCtileentityTankSmall) entity).adjacentTankYPos;
+                UpgCtileentityTankSmall entityNeg = ((UpgCtileentityTankSmall) entity).adjacentTankYNeg;
+
+                if (entityPos != null)
+                    if (entityPos.getTank().getFluid() != null)
+                        fluidAmount += entityPos.getTank().getFluid().amount;
+
+                if (entityNeg != null)
+                    if (entityNeg.getTank().getFluid() != null)
+                        fluidAmount += entityNeg.getTank().getFluid().amount;
+            }
+        }
 
         if (entity.getTank().getFluid() != null)
-            fluidAmount = entity.getTank().getFluid().amount;
-        else fluidAmount = 0;
+            fluidAmount += entity.getTank().getFluid().amount;
 
         return (int) Math.ceil((fluidAmount / maxCapacity) * 15.0f);
     }
