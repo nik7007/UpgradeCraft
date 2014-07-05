@@ -34,7 +34,6 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
         this.setBlockTextureName(Texture.WOODEN_LIQUID_TANK);
 
         capacity = Capacity.SMALL_WOODEN_TANK;
-
     }
 
     @Override
