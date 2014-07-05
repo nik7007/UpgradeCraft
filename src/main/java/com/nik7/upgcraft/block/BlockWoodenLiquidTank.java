@@ -31,7 +31,6 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
         this.setTickRandomly(true);
         this.flammability = 5;
         this.fireSpreadSpeed = 10;
-        this.setBlockTextureName(Texture.WOODEN_LIQUID_TANK);
 
         capacity = Capacity.SMALL_WOODEN_TANK;
     }
