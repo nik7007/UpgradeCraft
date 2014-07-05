@@ -1,6 +1,6 @@
 package com.nik7.upgcraft.tileentities;
 
-import com.nik7.upgcraft.block.UpgCTank;
+import com.nik7.upgcraft.inventory.UpgCTank;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;

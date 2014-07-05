@@ -1,4 +1,4 @@
-package com.nik7.upgcraft.block;
+package com.nik7.upgcraft.inventory;
 
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.nbt.NBTTagCompound;
