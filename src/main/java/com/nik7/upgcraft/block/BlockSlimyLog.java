@@ -18,7 +18,7 @@ public class BlockSlimyLog extends BlockUpgC {
         this.setStepSound(soundTypeWood);
         this.slipperiness = 1.05F; //0.98F ice
         this.setBlockName(Names.Blocks.SLIMY_LOG);
-        this.setBlockTextureName(Texture.SLIMY_LOG);
+        this.setBlockTextureName(Texture.Blocks.SLIMY_LOG);
     }
 
     @Override

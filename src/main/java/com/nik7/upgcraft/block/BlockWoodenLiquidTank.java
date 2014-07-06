@@ -49,8 +49,8 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.iconSide = iconRegister.registerIcon(Texture.WOODEN_LIQUID_TANK);
-        this.iconTop = iconRegister.registerIcon(Texture.WOODEN_LIQUID_TANK + "_top");
+        this.iconSide = iconRegister.registerIcon(Texture.Blocks.WOODEN_LIQUID_TANK);
+        this.iconTop = iconRegister.registerIcon(Texture.Blocks.WOODEN_LIQUID_TANK + "_top");
     }
 
     @Override
