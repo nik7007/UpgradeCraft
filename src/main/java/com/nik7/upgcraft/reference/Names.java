@@ -2,6 +2,8 @@ package com.nik7.upgcraft.reference;
 
 public class Names {
 
+    public final static String RESOURCE_PREFIX = Reference.MOD_ID.toLowerCase() + ":";
+
     public class Blocks {
 
         public final static String WOODEN_LIQUID_TANK = "WoodenTank";
