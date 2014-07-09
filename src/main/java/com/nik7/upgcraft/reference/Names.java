@@ -12,6 +12,9 @@ public class Names {
 
     public class Items {
 
+        public final static String DRAGON_SWORD = "DragonSword";
+        public final static String CONCENTRATED_ENDER_PEARL = "ConcentratedEnderPearl";
+
     }
 
     public class TileEntity {

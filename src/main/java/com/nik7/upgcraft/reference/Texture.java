@@ -9,6 +9,9 @@ public class Texture {
 
     public class Items {
 
+        public final static String DRAGON_SWORD = Reference.MOD_ID + ":" + "dragonsword";
+        public final static String CONCENTRATED_ENDER_PEARL = Reference.MOD_ID + ":" + "concentratedenderpearl";
+
     }
 
 }
