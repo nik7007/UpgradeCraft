@@ -21,7 +21,7 @@ public class BlockUpgC extends Block {
 
     @Override
     public String getUnlocalizedName() {
-        return String.format("item.%s%s", Names.RESOURCE_PREFIX, StringHelper.getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
+        return String.format("tile.%s%s", Names.RESOURCE_PREFIX, StringHelper.getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
     }
 
 
