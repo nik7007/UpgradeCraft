@@ -55,5 +55,16 @@ public class UpgCtileentityTank extends TileFluidHandler {
         return result;
     }
 
+    public float getCapacity() {
+        return this.tank.getCapacity();
+    }
+
+    public FluidStack getFluid() {
+        return this.getTank().getFluid();
+    }
+
+    public boolean isEmpty() {
+        return getFluid() == null;
+    }
 
 }

@@ -63,7 +63,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     private void fillBucketFromTank(World world, int x, int y, int z, EntityPlayer player, UpgCtileentityTank entity, ItemStack equippedItemStack) {
 
-        FluidStack fluid = entity.getTank().getFluid();
+        FluidStack fluid = entity.getFluid();
 
         if (fluid == null)
             return;
@@ -99,15 +99,15 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     private void drainBucketIntoTank(EntityPlayer player, UpgCtileentityTank entity, ItemStack equippedItemStack) {
 
+        if (entity == null) {
+            LogHelper.fatal("tile is null");
+            return;
+        }
+
         UpgCTank tank = entity.getTank();
 
         if ((tank.getFluidAmount() == 0 || tank.getFluid().isFluidEqual(equippedItemStack)) && tank.getCapacity() - tank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME) {
             FluidStack fluidFromBucket = FluidContainerRegistry.getFluidForFilledItem(equippedItemStack);
-
-            if (entity == null) {
-                LogHelper.fatal("tile is null");
-                return;
-            }
 
             if (fluidFromBucket == null) {
                 LogHelper.fatal("fluidFromBucket is null");
@@ -209,11 +209,11 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     @Override
     public int getComparatorInputOverride(World world, int x, int y, int z, int meta) {
         UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
-        float maxCapacity = entity.getTank().getCapacity();
+        float maxCapacity = entity.getCapacity();
         float fluidAmount;
 
-        if (entity.getTank().getFluid() != null) {
-            fluidAmount = entity.getTank().getFluid().amount;
+        if (!entity.isEmpty()) {
+            fluidAmount = entity.getFluid().amount;
         } else {
             fluidAmount = 0;
         }
