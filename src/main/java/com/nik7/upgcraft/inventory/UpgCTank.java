@@ -1,6 +1,5 @@
 package com.nik7.upgcraft.inventory;
 
-import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
