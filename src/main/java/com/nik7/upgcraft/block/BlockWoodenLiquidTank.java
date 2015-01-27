@@ -58,8 +58,7 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
     }
 
     @Override
-    public int getRenderType()
-    {
+    public int getRenderType() {
         return -1;
     }
 
