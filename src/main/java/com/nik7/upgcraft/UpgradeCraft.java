@@ -38,6 +38,7 @@ public class UpgradeCraft {
     public void Init(FMLInitializationEvent event) {
 
         proxy.registerTileEntities();
+        proxy.initRenderingAndTextures();
 
     }
 

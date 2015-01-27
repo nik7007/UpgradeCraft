@@ -22,7 +22,7 @@ group = "com.nik7.upgcraft" // http://maven.apache.org/guides/mini/guide-naming-
 archivesBaseName = "UpgradeCraft"
 
 minecraft {
-    version = "1.7.10-10.13.2.1240"
+    version = "1.7.10-10.13.2.1291"
     assetDir = "run/assets"
 }
 

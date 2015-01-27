@@ -18,9 +18,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class BlockWoodenLiquidTank extends BlockUpgCTank {
 
     @SideOnly(Side.CLIENT)
-    private IIcon iconTop;
-    @SideOnly(Side.CLIENT)
-    private IIcon iconSide;
+    private IIcon icon;
 
     public BlockWoodenLiquidTank() {
         super(Material.wood);
@@ -49,18 +47,20 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.iconSide = iconRegister.registerIcon(Texture.Blocks.WOODEN_LIQUID_TANK);
-        this.iconTop = iconRegister.registerIcon(Texture.Blocks.WOODEN_LIQUID_TANK + "_top");
+        this.icon = iconRegister.registerIcon(Texture.Blocks.WOODEN_LIQUID_TANK);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
 
-        if (side == 0 || side == 1)
-            return iconTop;
+        return icon;
+    }
 
-        return iconSide;
+    @Override
+    public int getRenderType()
+    {
+        return -1;
     }
 
     @Override

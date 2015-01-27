@@ -1,5 +1,14 @@
 package com.nik7.upgcraft.proxy;
 
+import com.nik7.upgcraft.block.InitBlocks;
+import com.nik7.upgcraft.client.render.item.ItemRendererWoodenTank;
+import com.nik7.upgcraft.client.render.tileentity.TileEntityRendererWoodenTank;
+import com.nik7.upgcraft.tileentities.UpgCtileentityTankSmall;
+import cpw.mods.fml.client.registry.ClientRegistry;
+import net.minecraft.client.Minecraft;
+import net.minecraft.item.Item;
+import net.minecraftforge.client.MinecraftForgeClient;
+
 import java.io.File;
 
 public class ClientProxy extends CommonProxy {
@@ -10,6 +19,9 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void initRenderingAndTextures() {
+
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(InitBlocks.blockWoodenLiquidTank),new ItemRendererWoodenTank());
+        ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityTankSmall.class, new TileEntityRendererWoodenTank());
 
     }
 

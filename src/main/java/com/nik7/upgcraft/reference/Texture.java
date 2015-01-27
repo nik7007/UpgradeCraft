@@ -4,6 +4,7 @@ public class Texture {
 
     public class Blocks {
         public final static String WOODEN_LIQUID_TANK = Reference.MOD_ID + ":" + "BlockWoodenLiquidTank";
+        public final static String MODEL_WOODEN_TANK = Reference.MOD_ID + ":" + "textures/blocks/Tank.png";
         public final static String SLIMY_LOG = Reference.MOD_ID + ":" + "slime_planks";
     }
 
