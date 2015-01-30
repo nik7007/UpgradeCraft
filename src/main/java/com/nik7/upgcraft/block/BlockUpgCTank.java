@@ -2,7 +2,9 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.inventory.UpgCTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
+import com.nik7.upgcraft.tileentities.UpgCtileentityTankSmall;
 import com.nik7.upgcraft.util.LogHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
@@ -199,6 +201,16 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         return false;
     }
 
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        super.onNeighborBlockChange(world, x, y, z, block);
+        UpgCtileentityTankSmall tileEntity = (UpgCtileentityTankSmall) world.getTileEntity(x, y, z);
+
+        if (tileEntity != null) {
+            tileEntity.updateContainingBlockInfo();
+        }
+    }
+
 
     @Override
     public boolean hasComparatorInputOverride() {
@@ -209,14 +221,35 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     public int getComparatorInputOverride(World world, int x, int y, int z, int meta) {
         UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
         float maxCapacity = entity.getCapacity();
-        float fluidAmount;
 
-        if (!entity.isEmpty()) {
-            fluidAmount = entity.getFluid().amount;
-        } else {
-            fluidAmount = 0;
+        float fluidAmount;
+        fluidAmount = !entity.isEmpty() ? entity.getFluid().amount : 0;
+
+        if (entity.isCanBeDouble()) {
+
+            if (entity.hasAdjacentTank()) {
+                maxCapacity *= 2;
+
+                UpgCtileentityTank neighbor;
+
+                if ((neighbor = entity.adjacentTankYNeg) == null) {
+                    neighbor = entity.adjacentTankYPos;
+                }
+
+                if (neighbor != null)
+                    fluidAmount += !neighbor.isEmpty() ? neighbor.getFluid().amount : 0;
+                else LogHelper.error("Tank in x= " + x + ", y= " + y + ", z= " + z + " has neighbor null!!");
+
+            }
         }
 
-        return (int) Math.ceil((fluidAmount / maxCapacity) * 15.0f);
+        int result = (int) Math.ceil((fluidAmount / maxCapacity) * 15.0f);
+
+        //In this way it returns the maximum redstone strength (15) only if it's completely full
+        if (result == 15 && fluidAmount < maxCapacity) {
+            result--;
+        }
+
+        return result;
     }
 }

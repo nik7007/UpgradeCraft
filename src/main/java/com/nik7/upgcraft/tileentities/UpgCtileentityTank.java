@@ -39,7 +39,12 @@ public class UpgCtileentityTank extends TileFluidHandler {
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        int result = super.fill(from, resource, doFill);
+        int result;
+        if (!doubleBehave())
+            result = super.fill(from, resource, doFill);
+        else {
+            result = 0;
+        }
 
         if (result > 0)
             updateModBlock();
@@ -58,6 +63,7 @@ public class UpgCtileentityTank extends TileFluidHandler {
         return result;
     }
 
+
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         FluidStack origin = getTank().getFluid();
@@ -71,6 +77,28 @@ public class UpgCtileentityTank extends TileFluidHandler {
 
     public void updateEntity() {
 
+        if (canBeDouble) {
+            findAdjacentTank();
+
+        }
+
+    }
+
+    /**
+     * Check if the tank should operate as double
+     *
+     * @return true: operate as double - false: otherwise
+     */
+    private boolean doubleBehave() {
+        return canBeDouble && isDouble && (adjacentTankYNeg != null || adjacentTankYPos != null);
+    }
+
+    private boolean isTopTank() {
+        return doubleBehave() && adjacentTankYPos == null && adjacentTankYNeg != null;
+    }
+
+    private void findAdjacentTank() {
+
         this.adjacentTankYNeg = null;
         this.adjacentTankYPos = null;
 
@@ -82,11 +110,14 @@ public class UpgCtileentityTank extends TileFluidHandler {
 
             if (tileEntity != null && tileEntity instanceof UpgCtileentityTank) {
                 adjacentTankYPos = (UpgCtileentityTank) tileEntity;
+                adjacentTankYPos.updateModBlock();
             } else {
                 tileEntity = world.getTileEntity(xCoord, yCoord - 1, zCoord);
                 if (tileEntity != null && tileEntity instanceof UpgCtileentityTank) {
                     adjacentTankYNeg = (UpgCtileentityTank) tileEntity;
-                }
+                    adjacentTankYNeg.updateModBlock();
+                } else
+                    this.updateModBlock();
             }
 
 
