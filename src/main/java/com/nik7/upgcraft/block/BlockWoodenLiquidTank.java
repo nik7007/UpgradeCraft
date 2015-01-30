@@ -6,6 +6,7 @@ import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTankSmall;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
@@ -88,6 +89,18 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
     @Override
     public void onBlockAdded(World world, int x, int y, int z) {
         world.scheduleBlockUpdate(x, y, z, this, this.tickRate(world));
+
+
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+        super.onNeighborBlockChange(world, x, y, z, block);
+        UpgCtileentityTankSmall tileEntity = (UpgCtileentityTankSmall) world.getTileEntity(x, y, z);
+
+        if (tileEntity != null) {
+            tileEntity.updateContainingBlockInfo();
+        }
     }
 
     @Override

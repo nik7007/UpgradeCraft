@@ -2,6 +2,8 @@ package com.nik7.upgcraft.tileentities;
 
 import com.nik7.upgcraft.inventory.UpgCTank;
 import net.minecraft.block.Block;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
@@ -9,12 +11,24 @@ import net.minecraftforge.fluids.TileFluidHandler;
 
 public class UpgCtileentityTank extends TileFluidHandler {
 
+    public UpgCtileentityTank adjacentTankYPos = null;
+    public UpgCtileentityTank adjacentTankYNeg = null;
+    private boolean canBeDouble = false;
+    private boolean isDouble = false;
+
+    public boolean isCanBeDouble() {
+        return canBeDouble;
+    }
+
+    public void setCanBeDouble(boolean canBeDouble) {
+        this.canBeDouble = canBeDouble;
+    }
 
     public UpgCTank getTank() {
         return (UpgCTank) tank;
     }
 
-    public void setTank(FluidTank tank) {
+    void setTank(FluidTank tank) {
         this.tank = tank;
     }
 
@@ -53,6 +67,44 @@ public class UpgCtileentityTank extends TileFluidHandler {
             updateModBlock();
 
         return result;
+    }
+
+    public void updateEntity() {
+
+        this.adjacentTankYNeg = null;
+        this.adjacentTankYPos = null;
+
+        if (isCanBeDouble()) {
+
+            World world = this.getWorldObj();
+
+            TileEntity tileEntity = world.getTileEntity(xCoord, yCoord + 1, zCoord);
+
+            if (tileEntity != null && tileEntity instanceof UpgCtileentityTank) {
+                adjacentTankYPos = (UpgCtileentityTank) tileEntity;
+            } else {
+                tileEntity = world.getTileEntity(xCoord, yCoord - 1, zCoord);
+                if (tileEntity != null && tileEntity instanceof UpgCtileentityTank) {
+                    adjacentTankYNeg = (UpgCtileentityTank) tileEntity;
+                }
+            }
+
+
+        }
+        isDouble = !(adjacentTankYNeg == null && adjacentTankYPos == null);
+
+    }
+
+    public void updateContainingBlockInfo() {
+        super.updateContainingBlockInfo();
+
+        if (canBeDouble)
+            isDouble = false;
+
+    }
+
+    public boolean hasAdjacentTank() {
+        return isDouble;
     }
 
     public float getCapacity() {

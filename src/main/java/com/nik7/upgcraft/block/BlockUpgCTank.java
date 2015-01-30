@@ -129,8 +129,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     public void updateTick(World world, int x, int y, int z, Random rand) {
         boolean canBurn = flammability > 0;
         UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
-        UpgCTank tank = entity.getTank();
-        boolean toHot = tank.isToHot();
+        boolean toHot = entity.getTank().isToHot();
 
         if (toHot && canBurn) {
             //LogHelper.info("Liquid is to HOT!!!");

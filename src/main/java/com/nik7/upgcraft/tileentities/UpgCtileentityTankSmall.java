@@ -8,6 +8,7 @@ public class UpgCtileentityTankSmall extends UpgCtileentityTank {
     public UpgCtileentityTankSmall() {
         super();
         setTank(new UpgCTank(Capacity.SMALL_WOODEN_TANK));
+        setCanBeDouble(true);
 
     }
 

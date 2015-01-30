@@ -28,7 +28,7 @@ public class ItemRendererWoodenTank implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Texture.Blocks.MODEL_WOODEN_TANK));
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Texture.Blocks.MODEL_SMALL_WOODEN_TANK));
 
         GL11.glPushMatrix(); //start
         GL11.glTranslatef(0.9375f - 0.0625f, 1.70f, 0.9375f - 0.0625f); //size
