@@ -10,7 +10,6 @@ public class ItemUpgC extends Item {
 
     public ItemUpgC() {
         super();
-        this.maxStackSize = 1;
         this.setNoRepair();
         this.setCreativeTab(CreativeTab.UPGC_TAB);
     }

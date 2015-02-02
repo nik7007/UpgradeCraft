@@ -23,6 +23,7 @@ public class ItemConcentratedEnderPearl extends ItemUpgC {
 
     public ItemConcentratedEnderPearl() {
         super();
+        this.maxStackSize = 1;
         this.setUnlocalizedName(Names.Items.CONCENTRATED_ENDER_PEARL);
         this.setTextureName(Texture.Items.CONCENTRATED_ENDER_PEARL);
 
