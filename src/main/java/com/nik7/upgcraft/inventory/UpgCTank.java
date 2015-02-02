@@ -47,6 +47,7 @@ public class UpgCTank extends FluidTank {
         FluidTank result = super.readFromNBT(nbt);
 
         toHot = nbt.getBoolean("toHot");
+        capacity = nbt.getInteger("capacity");
 
         return result;
     }
@@ -57,9 +58,24 @@ public class UpgCTank extends FluidTank {
         nbt = super.writeToNBT(nbt);
 
         nbt.setBoolean("toHot", toHot);
+        nbt.setInteger("capacity", capacity);
 
         return nbt;
     }
 
+    @Override
+    public boolean equals(Object tank) {
+        if (tank == null) {
+            return false;
+        }
+        if (!(tank instanceof UpgCTank)) {
+            return false;
+        }
+
+        UpgCTank upgCTank = (UpgCTank) tank;
+
+        return this.getFluid() == null && upgCTank.getFluid() == null || !(this.getFluid() == null || upgCTank.getFluid() == null) && this.getFluid().isFluidStackIdentical(upgCTank.getFluid());
+
+    }
 
 }

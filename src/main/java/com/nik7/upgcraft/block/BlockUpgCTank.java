@@ -76,25 +76,28 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         FluidStack oneBucketOfFluid = new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME);
         ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(oneBucketOfFluid, FluidContainerRegistry.EMPTY_BUCKET);
 
-        if (filledBucket != null && entity.drain(null, oneBucketOfFluid, false).amount == FluidContainerRegistry.BUCKET_VOLUME) {
+        if (filledBucket != null && entity.drain(null, oneBucketOfFluid, false) != null) {
 
-            entity.drain(null, oneBucketOfFluid, true);
+            if (entity.drain(null, oneBucketOfFluid, false).amount == FluidContainerRegistry.BUCKET_VOLUME) {
 
-            if (!player.capabilities.isCreativeMode) {
-                if (equippedItemStack.stackSize == 1) {
-                    player.inventory.setInventorySlotContents(player.inventory.currentItem, filledBucket);
-                    return;
+                entity.drain(null, oneBucketOfFluid, true);
+
+                if (!player.capabilities.isCreativeMode) {
+                    if (equippedItemStack.stackSize == 1) {
+                        player.inventory.setInventorySlotContents(player.inventory.currentItem, filledBucket);
+                        return;
+                    }
+
+                    if (!player.inventory.addItemStackToInventory(filledBucket)) {
+                        equippedItemStack.stackSize--;
+                        world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 1.5D, z + 0.5D, filledBucket));
+                    } else if (player instanceof EntityPlayerMP) {
+                        equippedItemStack.stackSize--;
+                        ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
+                    }
                 }
 
-                if (!player.inventory.addItemStackToInventory(filledBucket)) {
-                    equippedItemStack.stackSize--;
-                    world.spawnEntityInWorld(new EntityItem(world, x + 0.5D, y + 1.5D, z + 0.5D, filledBucket));
-                } else if (player instanceof EntityPlayerMP) {
-                    equippedItemStack.stackSize--;
-                    ((EntityPlayerMP) player).sendContainerToPlayer(player.inventoryContainer);
-                }
             }
-
         }
 
     }
@@ -134,7 +137,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         boolean toHot = entity.getTank().isToHot();
 
         if (toHot && canBurn) {
-            //LogHelper.info("Liquid is to HOT!!!");
+
             if (oldFlammability == 0)
                 oldFlammability = flammability;
             flammability = 75;
@@ -146,8 +149,6 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
         if ((!toHot || !canBurn) && oldFlammability > 0)
             flammability = oldFlammability;
-
-        //LogHelper.info((new Integer(flammability)).toString());
 
     }
 
@@ -225,24 +226,6 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         float fluidAmount;
         fluidAmount = !entity.isEmpty() ? entity.getFluid().amount : 0;
 
-        if (entity.isCanBeDouble()) {
-
-            if (entity.hasAdjacentTank()) {
-                maxCapacity *= 2;
-
-                UpgCtileentityTank neighbor;
-
-                if ((neighbor = entity.adjacentTankYNeg) == null) {
-                    neighbor = entity.adjacentTankYPos;
-                }
-
-                if (neighbor != null)
-                    fluidAmount += !neighbor.isEmpty() ? neighbor.getFluid().amount : 0;
-                else LogHelper.error("Tank in x= " + x + ", y= " + y + ", z= " + z + " has neighbor null!!");
-
-            }
-        }
-
         int result = (int) Math.ceil((fluidAmount / maxCapacity) * 15.0f);
 
         //In this way it returns the maximum redstone strength (15) only if it's completely full
@@ -251,5 +234,9 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         }
 
         return result;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }
