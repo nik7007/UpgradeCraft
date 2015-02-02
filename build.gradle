@@ -21,6 +21,13 @@ version = "1.7-alpha"
 group = "com.nik7.upgcraft" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "UpgradeCraft"
 
+sourceSets {
+    main {
+        java { srcDirs = ["$projectDir/src/java"] }
+        resources { srcDirs = ["$projectDir/src/resources"] }
+    }
+}
+
 minecraft {
     version = "1.7.10-10.13.2.1291"
     runDir = "run/assets"
