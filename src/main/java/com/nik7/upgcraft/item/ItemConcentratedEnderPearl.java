@@ -82,6 +82,7 @@ public class ItemConcentratedEnderPearl extends ItemUpgC {
 
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
+        list.add("[WIP]");
         list.add(EnumChatFormatting.GREEN + "Ender Power: " + getEnderPower(itemStack) + "/" + getMaxEnderPower());
     }
 

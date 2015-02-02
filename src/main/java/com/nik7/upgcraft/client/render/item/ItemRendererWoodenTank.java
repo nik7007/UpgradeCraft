@@ -31,7 +31,8 @@ public class ItemRendererWoodenTank implements IItemRenderer {
         FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Texture.Blocks.MODEL_SMALL_WOODEN_TANK));
 
         GL11.glPushMatrix(); //start
-        GL11.glTranslatef(0.9375f - 0.0625f, 1.70f, 0.9375f - 0.0625f); //size
+
+        GL11.glTranslated(0f, 1f, 0f);
 
         GL11.glRotatef(180, 1, 0, 0);
         GL11.glRotatef(-90, 0, 1, 0);
