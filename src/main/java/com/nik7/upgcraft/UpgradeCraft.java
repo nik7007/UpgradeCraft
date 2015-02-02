@@ -1,8 +1,9 @@
 package com.nik7.upgcraft;
 
-import com.nik7.upgcraft.block.InitBlocks;
+import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
-import com.nik7.upgcraft.item.InitItems;
+import com.nik7.upgcraft.init.ModItems;
+import com.nik7.upgcraft.init.Recipes;
 import com.nik7.upgcraft.proxy.IProxy;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -29,8 +30,8 @@ public class UpgradeCraft {
         FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
 
         //item, block
-        InitBlocks.init();
-        InitItems.init();
+        ModBlocks.init();
+        ModItems.init();
 
     }
 
@@ -39,6 +40,7 @@ public class UpgradeCraft {
 
         proxy.registerTileEntities();
         proxy.initRenderingAndTextures();
+        Recipes.init();
 
     }
 

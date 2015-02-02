@@ -1,12 +1,15 @@
-package com.nik7.upgcraft.block;
+package com.nik7.upgcraft.init;
 
 
+import com.nik7.upgcraft.block.BlockSlimyLog;
+import com.nik7.upgcraft.block.BlockUpgC;
+import com.nik7.upgcraft.block.BlockWoodenLiquidTank;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @GameRegistry.ObjectHolder(Reference.MOD_ID)
-public class InitBlocks {
+public class ModBlocks {
 
     public static final BlockUpgC blockWoodenLiquidTank = new BlockWoodenLiquidTank();
     public static final BlockUpgC blockSlimyLog = new BlockSlimyLog();

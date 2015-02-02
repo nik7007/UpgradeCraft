@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.item;
 
 import com.google.common.collect.Multimap;
+import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Texture;
 import net.minecraft.block.Block;
@@ -55,7 +56,7 @@ public class ItemDragonSword extends ItemConcentratedEnderPearl {
         for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
             stack = player.inventory.getStackInSlot(i);
             if (stack != null) {
-                if (stack.getItem() == InitItems.itemConcentratedEnderPearl) {
+                if (stack.getItem() == ModItems.itemConcentratedEnderPearl) {
                     if (getEnderPower(stack) > 0) {
                         return ((ItemConcentratedEnderPearl) stack.getItem()).reduceEnderPower(amount, stack, player);
                     }

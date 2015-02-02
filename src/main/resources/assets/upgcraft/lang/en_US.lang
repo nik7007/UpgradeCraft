@@ -1,0 +1,10 @@
+# Creative Tabs
+itemGroup.UpgradeCraft=UpgradeCraft
+
+#Items
+item.upgcraft:ConcentratedEnderPearl.name=Concentrated Ender Pearl
+item.upgcraft:DragonSword.name=Dragon Sword
+
+#Bloks
+tile.upgcraft:WoodenTank.name=Wooden Tank
+tile.upgcraft:SlimyLog.name=Slimy Log

@@ -1,11 +1,14 @@
-package com.nik7.upgcraft.item;
+package com.nik7.upgcraft.init;
 
+import com.nik7.upgcraft.item.ItemConcentratedEnderPearl;
+import com.nik7.upgcraft.item.ItemDragonSword;
+import com.nik7.upgcraft.item.ItemUpgC;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @GameRegistry.ObjectHolder(Reference.MOD_ID)
-public class InitItems {
+public class ModItems {
 
     public static ItemUpgC itemDragonSword = new ItemDragonSword();
     public static ItemUpgC itemConcentratedEnderPearl = new ItemConcentratedEnderPearl();

@@ -1,6 +1,5 @@
 package com.nik7.upgcraft.handler;
 
-import com.nik7.upgcraft.block.InitBlocks;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.client.event.ConfigChangedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

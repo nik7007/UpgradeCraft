@@ -1,6 +1,6 @@
 package com.nik7.upgcraft.CreativeTab;
 
-import com.nik7.upgcraft.block.InitBlocks;
+import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,7 +14,7 @@ public class CreativeTab {
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            return Item.getItemFromBlock(InitBlocks.blockWoodenLiquidTank);
+            return Item.getItemFromBlock(ModBlocks.blockWoodenLiquidTank);
         }
 
 
