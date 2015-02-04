@@ -92,7 +92,7 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
 
     @Override
     public int tickRate(World world) {
-        return 1;
+        return 8;
     }
 
     @Override

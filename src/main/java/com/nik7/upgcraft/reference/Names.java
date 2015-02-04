@@ -8,6 +8,7 @@ public class Names {
 
         public final static String WOODEN_LIQUID_TANK = "WoodenTank";
         public final static String SLIMY_LOG = "SlimyLog";
+        public final static String FLUID_HOPPER = "FluidHopper";
     }
 
     public class Items {
@@ -19,6 +20,7 @@ public class Names {
 
     public class TileEntity {
         public final static String UPGC_TILE_ENTITY_TANK = Reference.MOD_ID + ":" + "LiquidTankEntity";
+        public final static String UPGC_TILE_ENTITY_FLUID_HOPPER = Reference.MOD_ID + ":" + "FluidHopperEntity";
     }
 
 

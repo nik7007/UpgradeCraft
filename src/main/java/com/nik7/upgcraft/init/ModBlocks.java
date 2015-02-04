@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.init;
 
 
+import com.nik7.upgcraft.block.BlockFluidHopper;
 import com.nik7.upgcraft.block.BlockSlimyLog;
 import com.nik7.upgcraft.block.BlockUpgC;
 import com.nik7.upgcraft.block.BlockWoodenLiquidTank;
@@ -13,11 +14,13 @@ public class ModBlocks {
 
     public static final BlockUpgC blockWoodenLiquidTank = new BlockWoodenLiquidTank();
     public static final BlockUpgC blockSlimyLog = new BlockSlimyLog();
+    public static final BlockUpgC blockFluidHopper = new BlockFluidHopper();
 
     public static void init() {
 
         GameRegistry.registerBlock(blockWoodenLiquidTank, Reference.MOD_ID + "Block" + Names.Blocks.WOODEN_LIQUID_TANK);
         GameRegistry.registerBlock(blockSlimyLog, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_LOG);
+        GameRegistry.registerBlock(blockFluidHopper, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_HOPPER);
 
     }
 }

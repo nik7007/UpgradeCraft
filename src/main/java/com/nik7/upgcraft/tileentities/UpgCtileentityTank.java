@@ -11,7 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.TileFluidHandler;
 
-public class UpgCtileentityTank extends TileFluidHandler {
+public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     public UpgCtileentityTank adjacentTankYPos = null;
     public UpgCtileentityTank adjacentTankYNeg = null;
@@ -111,6 +111,8 @@ public class UpgCtileentityTank extends TileFluidHandler {
 
     }
 
+    protected abstract boolean tileEntityInstanceOf(TileEntity tileEntity);
+
     private void findAdjacentTank() {
 
         boolean shouldBeDouble = true;
@@ -123,7 +125,7 @@ public class UpgCtileentityTank extends TileFluidHandler {
 
             TileEntity tileEntity = world.getTileEntity(xCoord, yCoord + 1, zCoord);
 
-            if (tileEntity != null && tileEntity instanceof UpgCtileentityTank) {
+            if (tileEntity != null && tileEntityInstanceOf(tileEntity)) {
 
                 adjacentTankYPos = (UpgCtileentityTank) tileEntity;
                 if (adjacentTankYPos.getFluid() != null) {
@@ -140,7 +142,7 @@ public class UpgCtileentityTank extends TileFluidHandler {
 
             } else {
                 tileEntity = world.getTileEntity(xCoord, yCoord - 1, zCoord);
-                if (tileEntity != null && tileEntity instanceof UpgCtileentityTank) {
+                if (tileEntity != null && tileEntityInstanceOf(tileEntity)) {
 
                     adjacentTankYNeg = (UpgCtileentityTank) tileEntity;
 

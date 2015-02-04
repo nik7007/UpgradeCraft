@@ -2,6 +2,7 @@ package com.nik7.upgcraft.tileentities;
 
 import com.nik7.upgcraft.inventory.UpgCTank;
 import com.nik7.upgcraft.reference.Capacity;
+import net.minecraft.tileentity.TileEntity;
 
 public class UpgCtileentityTankSmall extends UpgCtileentityTank {
 
@@ -12,4 +13,8 @@ public class UpgCtileentityTankSmall extends UpgCtileentityTank {
 
     }
 
+    @Override
+    protected boolean tileEntityInstanceOf(TileEntity tileEntity) {
+        return tileEntity instanceof UpgCtileentityTankSmall;
+    }
 }

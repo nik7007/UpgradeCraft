@@ -205,7 +205,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
         super.onNeighborBlockChange(world, x, y, z, block);
-        UpgCtileentityTankSmall tileEntity = (UpgCtileentityTankSmall) world.getTileEntity(x, y, z);
+        UpgCtileentityTank tileEntity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
 
         if (tileEntity != null) {
             tileEntity.updateContainingBlockInfo();
@@ -224,7 +224,9 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         float maxCapacity = entity.getCapacity();
 
         float fluidAmount;
-        fluidAmount = !entity.isEmpty() ? entity.getFluid().amount : 0;
+        if (!entity.isEmpty()) {
+            fluidAmount = entity.getFluid().amount;
+        } else fluidAmount = 0;
 
         int result = (int) Math.ceil((fluidAmount / maxCapacity) * 15.0f);
 
