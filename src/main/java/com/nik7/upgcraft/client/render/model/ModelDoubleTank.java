@@ -30,6 +30,8 @@ public class ModelDoubleTank extends ModelBase {
     private ModelRenderer bB;
     private ModelRenderer bC;
     private ModelRenderer bD;
+    private ModelRenderer top;
+    private ModelRenderer bottom;
 
     public ModelDoubleTank() {
         textureWidth = 64;
@@ -161,6 +163,19 @@ public class ModelDoubleTank extends ModelBase {
         bD.setTextureSize(64, 64);
         bD.mirror = true;
         setRotation(bD, 1.570796F, 1.570796F, 0F);
+        top = new ModelRenderer(this, 0, 0);
+        top.addBox(0F, 0.2F, 0F, 14, 0, 14);
+        top.setRotationPoint(-7F, -8F, -7F);
+        top.setTextureSize(64, 64);
+        top.mirror = true;
+        setRotation(top, 0F, 0F, 0F);
+        bottom = new ModelRenderer(this, 0, 0);
+        bottom.addBox(0F, -0.8F, 0F, 14, 0, 14);
+        bottom.setRotationPoint(-7F, 24F, -7F);
+        bottom.setTextureSize(64, 64);
+        bottom.mirror = true;
+        setRotation(bottom, 0F, 0F, 0F);
+
     }
 
     @Override
@@ -188,6 +203,8 @@ public class ModelDoubleTank extends ModelBase {
         bB.render(f5);
         bC.render(f5);
         bD.render(f5);
+        top.render(f5);
+        bottom.render(f5);
     }
 
 
