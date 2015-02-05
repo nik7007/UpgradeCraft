@@ -14,13 +14,13 @@ public class ModBlocks {
 
     public static final BlockUpgC blockWoodenLiquidTank = new BlockWoodenLiquidTank();
     public static final BlockUpgC blockSlimyLog = new BlockSlimyLog();
-    public static final BlockUpgC blockFluidHopper = new BlockBasicFluidHopper();
+    public static final BlockUpgC blockFluidBasicHopper = new BlockBasicFluidHopper();
 
     public static void init() {
 
         GameRegistry.registerBlock(blockWoodenLiquidTank, Reference.MOD_ID + "Block" + Names.Blocks.WOODEN_LIQUID_TANK);
         GameRegistry.registerBlock(blockSlimyLog, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_LOG);
-        GameRegistry.registerBlock(blockFluidHopper, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_HOPPER);
+        GameRegistry.registerBlock(blockFluidBasicHopper, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_HOPPER);
 
     }
 }

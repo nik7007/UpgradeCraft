@@ -11,6 +11,7 @@ public class Recipes {
 
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockSlimyLog), "sss", "sps", "sss", 's', "slimeball", 'p',"plankWood"));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockWoodenLiquidTank),"sss","s s","sss",'s',new ItemStack(ModBlocks.blockSlimyLog));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockFluidBasicHopper),"i i","iti"," i ", 'i',"ingotIron",'t', new ItemStack(ModBlocks.blockWoodenLiquidTank)));
 
     }
 }
