@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.init;
 
 
-import com.nik7.upgcraft.block.BlockFluidHopper;
+import com.nik7.upgcraft.block.BlockBasicFluidHopper;
 import com.nik7.upgcraft.block.BlockSlimyLog;
 import com.nik7.upgcraft.block.BlockUpgC;
 import com.nik7.upgcraft.block.BlockWoodenLiquidTank;
@@ -14,7 +14,7 @@ public class ModBlocks {
 
     public static final BlockUpgC blockWoodenLiquidTank = new BlockWoodenLiquidTank();
     public static final BlockUpgC blockSlimyLog = new BlockSlimyLog();
-    public static final BlockUpgC blockFluidHopper = new BlockFluidHopper();
+    public static final BlockUpgC blockFluidHopper = new BlockBasicFluidHopper();
 
     public static void init() {
 

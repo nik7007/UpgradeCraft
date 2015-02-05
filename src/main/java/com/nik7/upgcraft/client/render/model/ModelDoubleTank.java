@@ -9,27 +9,27 @@ import net.minecraft.entity.Entity;
 @SideOnly(Side.CLIENT)
 public class ModelDoubleTank extends ModelBase {
     //fields
-    ModelRenderer center;
-    ModelRenderer clA;
-    ModelRenderer clB;
-    ModelRenderer clC;
-    ModelRenderer clD;
-    ModelRenderer Shape2B;
-    ModelRenderer Shape4B;
-    ModelRenderer Shape1B;
-    ModelRenderer Shape3B;
-    ModelRenderer Shape4;
-    ModelRenderer Shape1;
-    ModelRenderer Shape2;
-    ModelRenderer Shape3;
-    ModelRenderer tD;
-    ModelRenderer tC;
-    ModelRenderer tA;
-    ModelRenderer tB;
-    ModelRenderer bA;
-    ModelRenderer bB;
-    ModelRenderer bC;
-    ModelRenderer bD;
+    private ModelRenderer center;
+    private ModelRenderer clA;
+    private ModelRenderer clB;
+    private ModelRenderer clC;
+    private ModelRenderer clD;
+    private ModelRenderer Shape2B;
+    private ModelRenderer Shape4B;
+    private ModelRenderer Shape1B;
+    private ModelRenderer Shape3B;
+    private ModelRenderer Shape4;
+    private ModelRenderer Shape1;
+    private ModelRenderer Shape2;
+    private ModelRenderer Shape3;
+    private ModelRenderer tD;
+    private ModelRenderer tC;
+    private ModelRenderer tA;
+    private ModelRenderer tB;
+    private ModelRenderer bA;
+    private ModelRenderer bB;
+    private ModelRenderer bC;
+    private ModelRenderer bD;
 
     public ModelDoubleTank() {
         textureWidth = 64;

@@ -2,7 +2,6 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.inventory.UpgCTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
-import com.nik7.upgcraft.tileentities.UpgCtileentityTankSmall;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;

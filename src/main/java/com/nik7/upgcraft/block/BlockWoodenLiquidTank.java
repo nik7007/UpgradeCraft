@@ -2,6 +2,7 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.reference.RenderIds;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTankSmall;
 import cpw.mods.fml.relauncher.Side;
@@ -59,7 +60,7 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
 
     @Override
     public int getRenderType() {
-        return -1;
+        return RenderIds.WOODEN_FLUID_TANK;
     }
 
     @Override

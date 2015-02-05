@@ -2,17 +2,27 @@ package com.nik7.upgcraft.block;
 
 
 import com.nik7.upgcraft.reference.Names;
-import com.nik7.upgcraft.tileentities.UpgCraftFluidHopper;
+import com.nik7.upgcraft.reference.RenderIds;
+import com.nik7.upgcraft.reference.Texture;
+import com.nik7.upgcraft.tileentities.UpgCrafttilientityFluidHopper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockFluidHopper extends BlockUpgCTank {
+public class BlockBasicFluidHopper extends BlockUpgCTank {
+
+    @SideOnly(Side.CLIENT)
+    private IIcon icon;
 
 
-    public BlockFluidHopper() {
+    public BlockBasicFluidHopper() {
         super(Material.iron);
         setBlockName("Basic" + Names.Blocks.FLUID_HOPPER);
     }
@@ -33,6 +43,11 @@ public class BlockFluidHopper extends BlockUpgCTank {
             newMeta = 0;
         }
 
+        boolean isNotGettingPower = !world.isBlockIndirectlyGettingPowered(x, y, z);
+        newMeta = newMeta | (isNotGettingPower ? 0 : 8);
+
+
+
         return newMeta;
     }
 
@@ -48,6 +63,29 @@ public class BlockFluidHopper extends BlockUpgCTank {
         }
     }
 
+
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side) {
+        return true;
+    }
+
+    public int getRenderType() {
+        return RenderIds.BASIC_FLUID_HOPPER;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        this.icon = iconRegister.registerIcon(Texture.Blocks.FLUID_BASIC_HOPPER);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+
+        return icon;
+    }
+
+
     @Override
     public boolean renderAsNormalBlock() {
         return false;
@@ -60,6 +98,6 @@ public class BlockFluidHopper extends BlockUpgCTank {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new UpgCraftFluidHopper();
+        return new UpgCrafttilientityFluidHopper();
     }
 }

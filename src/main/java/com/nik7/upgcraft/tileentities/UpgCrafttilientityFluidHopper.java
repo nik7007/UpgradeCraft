@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.tileentities;
 
 
-import com.nik7.upgcraft.block.BlockFluidHopper;
+import com.nik7.upgcraft.block.BlockBasicFluidHopper;
 import com.nik7.upgcraft.inventory.UpgCTank;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.util.LogHelper;
@@ -10,11 +10,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class UpgCraftFluidHopper extends UpgCtileentityTank {
+public class UpgCrafttilientityFluidHopper extends UpgCtileentityTank {
 
-    private int speed = 50;
+    protected int speed = Capacity.Speed.BASIC_FLUID_HOPPER_SPEED;
 
-    public UpgCraftFluidHopper() {
+    public UpgCrafttilientityFluidHopper() {
         super();
         this.setTank(new UpgCTank(Capacity.FLUID_HOPPER_TANK));
 
@@ -23,9 +23,9 @@ public class UpgCraftFluidHopper extends UpgCtileentityTank {
     @Override
     public void updateEntity() {
         int meta = this.getBlockMetadata();
-        if (worldObj != null && !this.worldObj.isRemote && BlockFluidHopper.isNotPowered(meta)) {
+        if (worldObj != null && !this.worldObj.isRemote && BlockBasicFluidHopper.isNotPowered(meta)) {
             fillFromUp();
-            int dir = BlockFluidHopper.getDirectionFromMetadata(meta);
+            int dir = BlockBasicFluidHopper.getDirectionFromMetadata(meta);
             ForgeDirection forgeDirection = ForgeDirection.getOrientation(dir);
             autoDrain(forgeDirection);
         }
