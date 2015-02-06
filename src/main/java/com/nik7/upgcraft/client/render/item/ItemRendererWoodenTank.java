@@ -16,7 +16,6 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 
-//todo:separate item render from item block
 @SideOnly(Side.CLIENT)
 public class ItemRendererWoodenTank implements IItemRenderer {
 
