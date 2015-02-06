@@ -1,22 +1,28 @@
 package com.nik7.upgcraft.block;
 
+import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.inventory.UpgCTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.util.LogHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.List;
 import java.util.Random;
 
 public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider {
@@ -235,6 +241,32 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         }
 
         return result;
+    }
+
+    @Override
+    public int damageDropped(int metadata) {
+
+        return metadata;
+    }
+
+    /*@Override
+    public Item getItemDropped(int metadata, Random p_149650_2_, int fortune) {
+        return (new ItemStack(ModBlocks.blockWoodenLiquidTank, 1, metadata)).getItem();
+    }*/
+
+    @Override
+    public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
+
+        return meta;
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void getSubBlocks(Item item, CreativeTabs tab, List subItems) {
+
+        subItems.add(new ItemStack(this, 1, 0));
+        subItems.add(new ItemStack(this, 1, 1));
+
     }
 
     public int getCapacity() {

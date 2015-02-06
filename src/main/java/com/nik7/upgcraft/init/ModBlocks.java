@@ -5,6 +5,7 @@ import com.nik7.upgcraft.block.BlockBasicFluidHopper;
 import com.nik7.upgcraft.block.BlockSlimyLog;
 import com.nik7.upgcraft.block.BlockUpgC;
 import com.nik7.upgcraft.block.BlockWoodenLiquidTank;
+import com.nik7.upgcraft.item.ItemBlockWoodenTank;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -18,7 +19,7 @@ public class ModBlocks {
 
     public static void init() {
 
-        GameRegistry.registerBlock(blockWoodenLiquidTank, Reference.MOD_ID + "Block" + Names.Blocks.WOODEN_LIQUID_TANK);
+        GameRegistry.registerBlock(blockWoodenLiquidTank, ItemBlockWoodenTank.class, Reference.MOD_ID + "Block" + Names.Blocks.WOODEN_LIQUID_TANK);
         GameRegistry.registerBlock(blockSlimyLog, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_LOG);
         GameRegistry.registerBlock(blockFluidBasicHopper, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_HOPPER);
 

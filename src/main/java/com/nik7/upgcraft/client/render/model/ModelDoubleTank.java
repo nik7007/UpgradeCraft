@@ -9,40 +9,37 @@ import net.minecraft.entity.Entity;
 @SideOnly(Side.CLIENT)
 public class ModelDoubleTank extends ModelBase {
     //fields
-    private ModelRenderer center;
-    private ModelRenderer clA;
-    private ModelRenderer clB;
-    private ModelRenderer clC;
-    private ModelRenderer clD;
-    private ModelRenderer Shape2B;
-    private ModelRenderer Shape4B;
-    private ModelRenderer Shape1B;
-    private ModelRenderer Shape3B;
-    private ModelRenderer Shape4;
-    private ModelRenderer Shape1;
-    private ModelRenderer Shape2;
-    private ModelRenderer Shape3;
-    private ModelRenderer tD;
-    private ModelRenderer tC;
-    private ModelRenderer tA;
-    private ModelRenderer tB;
-    private ModelRenderer bA;
-    private ModelRenderer bB;
-    private ModelRenderer bC;
-    private ModelRenderer bD;
-    private ModelRenderer top;
-    private ModelRenderer bottom;
+    public ModelRenderer clA;
+    public ModelRenderer clB;
+    public ModelRenderer clC;
+    public ModelRenderer clD;
+    public ModelRenderer Shape2B;
+    public ModelRenderer Shape4B;
+    public ModelRenderer Shape1B;
+    public ModelRenderer Shape3B;
+    public ModelRenderer Shape4;
+    public ModelRenderer Shape1;
+    public ModelRenderer Shape2;
+    public ModelRenderer Shape3;
+    public ModelRenderer top;
+    public ModelRenderer bottom;
+    public ModelRenderer tD;
+    public ModelRenderer tC;
+    public ModelRenderer tA;
+    public ModelRenderer tB;
+    public ModelRenderer bA;
+    public ModelRenderer bB;
+    public ModelRenderer bC;
+    public ModelRenderer bD;
+    public ModelRenderer front;
+    public ModelRenderer back;
+    public ModelRenderer r;
+    public ModelRenderer l;
 
     public ModelDoubleTank() {
         textureWidth = 64;
         textureHeight = 64;
 
-        center = new ModelRenderer(this, 0, 0);
-        center.addBox(0F, 0F, 0F, 14, 32, 14);
-        center.setRotationPoint(-7F, -8F, -7F);
-        center.setTextureSize(64, 64);
-        center.mirror = true;
-        setRotation(center, 0F, 0F, 0F);
         clA = new ModelRenderer(this, 56, 14);
         clA.addBox(0F, 0F, 0F, 2, 32, 2);
         clA.setRotationPoint(5.3F, -8F, 5.3F);
@@ -115,6 +112,18 @@ public class ModelDoubleTank extends ModelBase {
         Shape3.setTextureSize(64, 64);
         Shape3.mirror = true;
         setRotation(Shape3, 0F, 0F, 0F);
+        top = new ModelRenderer(this, 0, 0);
+        top.addBox(0F, 0.1F, 0F, 14, 0, 14);
+        top.setRotationPoint(-7F, -8F, -7F);
+        top.setTextureSize(64, 64);
+        top.mirror = true;
+        setRotation(top, 0F, 0F, 0F);
+        bottom = new ModelRenderer(this, 0, 0);
+        bottom.addBox(0F, -0.8F, 0F, 14, 0, 14);
+        bottom.setRotationPoint(-7F, 24F, -7F);
+        bottom.setTextureSize(64, 64);
+        bottom.mirror = true;
+        setRotation(bottom, 0F, 0F, 0F);
         tD = new ModelRenderer(this, 0, 48);
         tD.addBox(0F, 0F, 0F, 2, 14, 2);
         tD.setRotationPoint(-7F, -6.3F, -5.3F);
@@ -163,26 +172,35 @@ public class ModelDoubleTank extends ModelBase {
         bD.setTextureSize(64, 64);
         bD.mirror = true;
         setRotation(bD, 1.570796F, 1.570796F, 0F);
-        top = new ModelRenderer(this, 0, 0);
-        top.addBox(0F, 0.2F, 0F, 14, 0, 14);
-        top.setRotationPoint(-7F, -8F, -7F);
-        top.setTextureSize(64, 64);
-        top.mirror = true;
-        setRotation(top, 0F, 0F, 0F);
-        bottom = new ModelRenderer(this, 0, 0);
-        bottom.addBox(0F, -0.8F, 0F, 14, 0, 14);
-        bottom.setRotationPoint(-7F, 24F, -7F);
-        bottom.setTextureSize(64, 64);
-        bottom.mirror = true;
-        setRotation(bottom, 0F, 0F, 0F);
-
+        front = new ModelRenderer(this, 14, 14);
+        front.addBox(0F, 0F, 0F, 14, 32, 0);
+        front.setRotationPoint(-7F, -8F, -7F);
+        front.setTextureSize(64, 64);
+        front.mirror = true;
+        setRotation(front, 0F, 0F, 0F);
+        back = new ModelRenderer(this, 14, 14);
+        back.addBox(0F, 0F, 0F, 14, 32, 0);
+        back.setRotationPoint(-7F, -8F, 7F);
+        back.setTextureSize(64, 64);
+        back.mirror = true;
+        setRotation(back, 0F, 0F, 0F);
+        r = new ModelRenderer(this, 14, 0);
+        r.addBox(0F, 0F, 0F, 0, 31, 14);
+        r.setRotationPoint(-7F, -8F, -7F);
+        r.setTextureSize(64, 64);
+        r.mirror = true;
+        setRotation(r, 0F, 0F, 0F);
+        l = new ModelRenderer(this, 14, 0);
+        l.addBox(0F, 0F, 0F, 0, 31, 14);
+        l.setRotationPoint(7F, -8F, -7F);
+        l.setTextureSize(64, 64);
+        l.mirror = true;
+        setRotation(l, 0F, 0F, 0F);
     }
 
-    @Override
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
         super.render(entity, f, f1, f2, f3, f4, f5);
         setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-        center.render(f5);
         clA.render(f5);
         clB.render(f5);
         clC.render(f5);
@@ -195,6 +213,8 @@ public class ModelDoubleTank extends ModelBase {
         Shape1.render(f5);
         Shape2.render(f5);
         Shape3.render(f5);
+        top.render(f5);
+        bottom.render(f5);
         tD.render(f5);
         tC.render(f5);
         tA.render(f5);
@@ -203,10 +223,11 @@ public class ModelDoubleTank extends ModelBase {
         bB.render(f5);
         bC.render(f5);
         bD.render(f5);
-        top.render(f5);
-        bottom.render(f5);
+        front.render(f5);
+        back.render(f5);
+        r.render(f5);
+        l.render(f5);
     }
-
 
     private void setRotation(ModelRenderer model, float x, float y, float z) {
         model.rotateAngleX = x;
@@ -214,7 +235,6 @@ public class ModelDoubleTank extends ModelBase {
         model.rotateAngleZ = z;
     }
 
-    @Override
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity entity) {
         super.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
     }

@@ -294,7 +294,9 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     }
 
     public FluidStack getFluid() {
-        return this.getTank().getFluid();
+        if (getTank() != null)
+            return this.getTank().getFluid();
+        else return null;
     }
 
     public boolean isEmpty() {
@@ -303,6 +305,16 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     public boolean isFull() {
         return !(getTank() == null || getFluid() == null) && getTank().getCapacity() == getFluid().amount;
+    }
+
+    public float getFillPercentage() {
+        int amount = 0;
+
+        if (this.getTank() != null && this.getFluid() != null) {
+            amount = this.getFluid().amount;
+        }
+
+        return (amount / this.getCapacity());
     }
 
 }

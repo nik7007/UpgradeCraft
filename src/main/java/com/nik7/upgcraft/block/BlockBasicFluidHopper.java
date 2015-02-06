@@ -25,6 +25,7 @@ public class BlockBasicFluidHopper extends BlockUpgCTank {
     public BlockBasicFluidHopper() {
         super(Material.iron);
         setBlockName("Basic" + Names.Blocks.FLUID_HOPPER);
+        this.setHardness(3f);
     }
 
     public static int getDirectionFromMetadata(int meta) {
