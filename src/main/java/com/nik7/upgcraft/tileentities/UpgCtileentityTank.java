@@ -4,9 +4,14 @@ import com.nik7.upgcraft.block.BlockUpgCTank;
 import com.nik7.upgcraft.inventory.UpgCTank;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.TileFluidHandler;
@@ -36,79 +41,115 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     }
 
     private void updateModBlock() {
+        worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         Block block = this.worldObj.getBlock(xCoord, yCoord, zCoord);
         this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, block);
     }
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        int result;
 
-        result = super.fill(from, resource, doFill);
+        if (!worldObj.isRemote) {
+            int result;
 
-        if (result > 0)
-            updateModBlock();
+            result = super.fill(from, resource, doFill);
 
-        return result;
+            if (result > 0) {
+                updateModBlock();
+                markDirty();
+            }
+
+            return result;
+        }
+        return 0;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        FluidStack origin = getTank().getFluid();
-        FluidStack result;
+        if (!worldObj.isRemote) {
+            FluidStack origin = getTank().getFluid();
+            FluidStack result;
 
-        if (canBeDouble && isDouble && isTop) {
+            if (canBeDouble && isDouble && isTop) {
 
-            int capacity = ((BlockUpgCTank) worldObj.getBlock(xCoord, yCoord, zCoord)).getCapacity();
+                int capacity = ((BlockUpgCTank) worldObj.getBlock(xCoord, yCoord, zCoord)).getCapacity();
 
-            int canDrain = getFluid().amount - capacity - resource.amount;
+                int canDrain = getFluid().amount - capacity - resource.amount;
 
-            if (canDrain < 0) {
-                return null;
+                if (canDrain < 0) {
+                    return null;
+                }
+
+
+            }
+            result = super.drain(from, resource, doDrain);
+
+            if (origin != result) {
+                updateModBlock();
+                markDirty();
             }
 
-
+            return result;
         }
-        result = super.drain(from, resource, doDrain);
-
-        if (origin != result)
-            updateModBlock();
-
-        return result;
+        return null;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-        FluidStack origin = getTank().getFluid();
+        if (!worldObj.isRemote) {
 
-        if (canBeDouble && isDouble && isTop) {
+            FluidStack origin = getTank().getFluid();
 
-            int capacity = ((BlockUpgCTank) worldObj.getBlock(xCoord, yCoord, zCoord)).getCapacity();
+            if (canBeDouble && isDouble && isTop) {
 
-            int canDrain = getFluid().amount - capacity - maxDrain;
+                int capacity = ((BlockUpgCTank) worldObj.getBlock(xCoord, yCoord, zCoord)).getCapacity();
 
-            if (canDrain < 0) {
-                return null;
+                int canDrain = getFluid().amount - capacity - maxDrain;
+
+                if (canDrain < 0) {
+                    return null;
+                }
+
             }
 
+            FluidStack result = super.drain(from, maxDrain, doDrain);
+
+            if (origin != result) {
+                updateModBlock();
+                markDirty();
+            }
+
+            return result;
         }
-
-        FluidStack result = super.drain(from, maxDrain, doDrain);
-
-        if (origin != result)
-            updateModBlock();
-
-        return result;
+        return null;
     }
 
     public void updateEntity() {
 
         if (canBeDouble) {
             findAdjacentTank();
+            markDirty();
 
         }
 
+    }
+
+    @Override
+    public Packet getDescriptionPacket()
+    {
+        NBTTagCompound tag = new NBTTagCompound();
+        writeToNBT(tag);
+
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -1, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
+    {
+        readFromNBT(packet.func_148857_g());
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     protected abstract boolean tileEntityInstanceOf(TileEntity tileEntity);
@@ -184,7 +225,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
                 if (this.getTank().getCapacity() != (capacity * 2)) {
 
-                    LogHelper.error("Merge Tank: This case should be not possible!!");
+                    LogHelper.debug("Merge Tank: This case should be not possible!!");
 
                 }
             } else if (this.getTank().equals(other.getTank()) && this.getTank().getCapacity() == capacity * 2) {
@@ -308,13 +349,26 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     }
 
     public float getFillPercentage() {
-        int amount = 0;
 
-        if (this.getTank() != null && this.getFluid() != null) {
+        int amount;
+
+        if (!this.isEmpty()) {
             amount = this.getFluid().amount;
-        }
+        } else amount = 0;
 
         return (amount / this.getCapacity());
+
+
+    }
+
+    public int getFluidLightLevel() {
+        FluidStack stack = tank.getFluid();
+        if (stack != null) {
+            Fluid fluid = stack.getFluid();
+            if (fluid != null) return fluid.getLuminosity();
+        }
+
+        return 0;
     }
 
 }

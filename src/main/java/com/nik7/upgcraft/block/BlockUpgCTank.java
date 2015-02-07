@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.block;
 
-import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.inventory.UpgCTank;
+import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.util.LogHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -17,6 +17,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -46,11 +48,14 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         if (equippedItemStack != null) {
             if (FluidContainerRegistry.isContainer(equippedItemStack))    // react to registered fluid containers
             {
-                handleContainerClick(world, x, y, z, player, entity, equippedItemStack);
+                if (!world.isRemote) {
+                    handleContainerClick(world, x, y, z, player, entity, equippedItemStack);
+                }
 
                 return true;
             }
         }
+
 
         return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
     }
@@ -249,19 +254,14 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         return metadata;
     }
 
-    /*@Override
-    public Item getItemDropped(int metadata, Random p_149650_2_, int fortune) {
-        return (new ItemStack(ModBlocks.blockWoodenLiquidTank, 1, metadata)).getItem();
-    }*/
-
     @Override
     public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta) {
 
         return meta;
     }
 
-    @SideOnly(Side.CLIENT)
     @Override
+    @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List subItems) {
 
         subItems.add(new ItemStack(this, 1, 0));
@@ -269,7 +269,17 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     }
 
+    @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z) {
+        int meta = world.getBlockMetadata(x, y, z);
+        if (meta == 1) {
+            return ((UpgCtileentityTank) world.getTileEntity(x, y, z)).getFluidLightLevel();
+        } else
+            return 0;
+    }
+
     public int getCapacity() {
         return capacity;
     }
+
 }
