@@ -10,11 +10,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class BlockBasicFluidHopper extends BlockUpgCTank {
 
@@ -46,7 +51,6 @@ public class BlockBasicFluidHopper extends BlockUpgCTank {
 
         boolean isNotGettingPower = !world.isBlockIndirectlyGettingPowered(x, y, z);
         newMeta = newMeta | (isNotGettingPower ? 0 : 8);
-
 
 
         return newMeta;
@@ -97,8 +101,15 @@ public class BlockBasicFluidHopper extends BlockUpgCTank {
         return false;
     }
 
+
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        list.add(new ItemStack(item, 1, 0));
+    }
+
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         return new UpgCrafttilientityFluidHopper();
     }
+
 }
