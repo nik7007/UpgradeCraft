@@ -1,7 +1,6 @@
 package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.inventory.UpgCTank;
-import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.util.LogHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -17,7 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
