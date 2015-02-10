@@ -10,11 +10,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class UpgCrafttilientityFluidHopper extends UpgCtileentityTank {
+public class UpgCtilientityFluidHopper extends UpgCtileentityTank {
 
     protected int speed = Capacity.Speed.BASIC_FLUID_HOPPER_SPEED;
 
-    public UpgCrafttilientityFluidHopper() {
+    public UpgCtilientityFluidHopper() {
         super();
         this.setTank(new UpgCTank(Capacity.FLUID_HOPPER_TANK));
 

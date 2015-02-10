@@ -41,7 +41,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     }
 
     private void updateModBlock() {
-        worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+        //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         Block block = this.worldObj.getBlock(xCoord, yCoord, zCoord);
         this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, block);

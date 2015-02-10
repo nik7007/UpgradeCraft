@@ -31,6 +31,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     protected int flammability = 0;
     protected int fireSpreadSpeed = 0;
     private int oldFlammability = 0;
+    protected boolean haveSubBlocks = false;
 
     public BlockUpgCTank(Material material) {
         super(material);
@@ -38,7 +39,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9) {
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
 
         UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
         ItemStack equippedItemStack = player.getCurrentEquippedItem();
@@ -55,7 +56,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         }
 
 
-        return super.onBlockActivated(world, x, y, z, player, par6, par7, par8, par9);
+        return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
     }
 
     private void handleContainerClick(World world, int x, int y, int z, EntityPlayer player, UpgCtileentityTank entity, ItemStack equippedItemStack) {
@@ -262,8 +263,14 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List subItems) {
 
+        if(haveSubBlocks){
         subItems.add(new ItemStack(this, 1, 0));
-        subItems.add(new ItemStack(this, 1, 1));
+        subItems.add(new ItemStack(this, 1, 1));}
+
+        else
+        {
+            super.getSubBlocks(item, tab, subItems);
+        }
 
     }
 

@@ -31,7 +31,9 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
         this.flammability = 5;
         this.fireSpreadSpeed = 10;
 
-        capacity = Capacity.SMALL_WOODEN_TANK;
+        this.haveSubBlocks = true;
+
+        this.capacity = Capacity.SMALL_WOODEN_TANK;
     }
 
     @Override

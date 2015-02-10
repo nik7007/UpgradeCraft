@@ -4,22 +4,17 @@ package com.nik7.upgcraft.block;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.RenderIds;
 import com.nik7.upgcraft.reference.Texture;
-import com.nik7.upgcraft.tileentities.UpgCrafttilientityFluidHopper;
+import com.nik7.upgcraft.tileentities.UpgCtilientityFluidHopper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
-import java.util.List;
 
 public class BlockBasicFluidHopper extends BlockUpgCTank {
 
@@ -101,15 +96,9 @@ public class BlockBasicFluidHopper extends BlockUpgCTank {
         return false;
     }
 
-
-    @SideOnly(Side.CLIENT)
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        list.add(new ItemStack(item, 1, 0));
-    }
-
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new UpgCrafttilientityFluidHopper();
+        return new UpgCtilientityFluidHopper();
     }
 
 }
