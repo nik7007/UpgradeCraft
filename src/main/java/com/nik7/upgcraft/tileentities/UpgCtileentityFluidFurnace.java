@@ -15,8 +15,8 @@ import net.minecraftforge.fluids.Fluid;
 
 public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHandler {
 
-    private static final int INPUT = 0;
-    private static final int OUTPUT = 1;
+    public static final int INPUT = 0;
+    public static final int OUTPUT = 1;
 
     private static final int BURN_TIME = 200;
 
@@ -71,6 +71,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
             if (tank.getFluid().amount >= 1) {
 
                 ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.itemStacks[INPUT]);
+
                 if (itemstack == null) return false;
                 if (this.itemStacks[OUTPUT] == null) return true;
                 if (!this.itemStacks[OUTPUT].isItemEqual(itemstack)) return false;

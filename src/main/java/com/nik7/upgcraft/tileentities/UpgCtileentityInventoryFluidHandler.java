@@ -156,7 +156,11 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
             itemStacks[slot].stackSize = itemStack.stackSize - number;
 
-            return new ItemStack(itemStack.getItem(), number);
+            if (itemStacks[slot].stackSize <= 0) {
+                itemStacks[slot] = null;
+            }
+
+            return new ItemStack(itemStack.getItem(), number, itemStack.getItemDamage());
 
         }
     }

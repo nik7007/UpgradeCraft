@@ -10,19 +10,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockBasicFluidHopper extends BlockUpgCTank {
+public class BlockUpgCBasicFluidHopper extends BlockUpgCTank {
 
     @SideOnly(Side.CLIENT)
     private IIcon icon;
 
 
-    public BlockBasicFluidHopper() {
+    public BlockUpgCBasicFluidHopper() {
         super(Material.iron);
         setBlockName("Basic" + Names.Blocks.FLUID_HOPPER);
         this.setHardness(3f);
@@ -49,6 +50,11 @@ public class BlockBasicFluidHopper extends BlockUpgCTank {
 
 
         return newMeta;
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        return false;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.tileentities;
 
 
-import com.nik7.upgcraft.block.BlockBasicFluidHopper;
+import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.inventory.UpgCTank;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.util.LogHelper;
@@ -23,9 +23,9 @@ public class UpgCtilientityFluidHopper extends UpgCtileentityTank {
     @Override
     public void updateEntity() {
         int meta = this.getBlockMetadata();
-        if (worldObj != null && !this.worldObj.isRemote && BlockBasicFluidHopper.isNotPowered(meta)) {
+        if (worldObj != null && !this.worldObj.isRemote && BlockUpgCBasicFluidHopper.isNotPowered(meta)) {
             fillFromUp();
-            int dir = BlockBasicFluidHopper.getDirectionFromMetadata(meta);
+            int dir = BlockUpgCBasicFluidHopper.getDirectionFromMetadata(meta);
             ForgeDirection forgeDirection = ForgeDirection.getOrientation(dir);
             autoDrain(forgeDirection);
         }

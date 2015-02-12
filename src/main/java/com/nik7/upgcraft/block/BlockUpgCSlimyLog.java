@@ -7,12 +7,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
 
-public class BlockSlimyLog extends BlockUpgC {
+public class BlockUpgCSlimyLog extends BlockUpgC {
 
     private int flammability = 7;
     private int fireSpreadSpeed = 15;
 
-    public BlockSlimyLog() {
+    public BlockUpgCSlimyLog() {
         super(Material.wood);
         this.setHardness(2.0F);
         this.setStepSound(soundTypeWood);

@@ -1,6 +1,6 @@
 package com.nik7.upgcraft.client.render.tileentity;
 
-import com.nik7.upgcraft.block.BlockBasicFluidHopper;
+import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.client.render.model.ModelFluidHopper;
 import com.nik7.upgcraft.reference.Texture;
 import cpw.mods.fml.relauncher.Side;
@@ -21,7 +21,7 @@ public class TileEntityRenderBasicFluidHopper extends TileEntitySpecialRenderer 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float scale) {
 
-        ForgeDirection direction = ForgeDirection.getOrientation(BlockBasicFluidHopper.getDirectionFromMetadata(te.getBlockMetadata()));
+        ForgeDirection direction = ForgeDirection.getOrientation(BlockUpgCBasicFluidHopper.getDirectionFromMetadata(te.getBlockMetadata()));
 
         GL11.glPushMatrix();
 
