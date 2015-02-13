@@ -39,18 +39,18 @@ public class ContainerFluidFurnace extends ContainerUpgC {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < this.crafters.size(); ++i) {
-            ICrafting icrafting = (ICrafting) this.crafters.get(i);
+        for (Object crafter : this.crafters) {
+            ICrafting icrafting = (ICrafting) crafter;
 
             if (this.lastBurningTime != this.fluidFurnace.burningTime) {
                 icrafting.sendProgressBarUpdate(this, 0, this.fluidFurnace.burningTime);
 
-            }  if (this.lastProgress != this.fluidFurnace.progress) {
+            }
+            if (this.lastProgress != this.fluidFurnace.progress) {
                 icrafting.sendProgressBarUpdate(this, 1, this.fluidFurnace.progress);
             }
 
-            if(this.lastFluidLevel !=this.fluidFurnace.fluidLevel)
-            {
+            if (this.lastFluidLevel != this.fluidFurnace.fluidLevel) {
                 icrafting.sendProgressBarUpdate(this, 2, this.fluidFurnace.fluidLevel);
             }
 
