@@ -26,6 +26,10 @@ public class Names {
 
     }
 
+    public class Inventory {
+        public final static String UPGC_FLUID_FURNACE =  Reference.MOD_ID + ":" +"container.fluidfurnace";
+    }
+
 
 }
 

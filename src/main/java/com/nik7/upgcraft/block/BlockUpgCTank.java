@@ -1,6 +1,6 @@
 package com.nik7.upgcraft.block;
 
-import com.nik7.upgcraft.inventory.UpgCTank;
+import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.util.LogHelper;
 import cpw.mods.fml.relauncher.Side;

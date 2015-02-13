@@ -1,5 +1,6 @@
 package com.nik7.upgcraft;
 
+import com.nik7.upgcraft.handler.GuiHandler;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.init.ModItems;
@@ -12,6 +13,7 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, guiFactory = Reference.GUI_FACTORY_CLASS)
 public class UpgradeCraft {
@@ -37,6 +39,8 @@ public class UpgradeCraft {
 
     @Mod.EventHandler
     public void Init(FMLInitializationEvent event) {
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
         proxy.registerTileEntities();
         proxy.initRenderingAndTextures();

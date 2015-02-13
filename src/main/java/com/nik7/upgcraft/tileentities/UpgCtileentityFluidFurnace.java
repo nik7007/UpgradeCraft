@@ -1,8 +1,9 @@
 package com.nik7.upgcraft.tileentities;
 
 
-import com.nik7.upgcraft.inventory.UpgCTank;
 import com.nik7.upgcraft.reference.Capacity;
+import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.tank.UpgCTank;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -23,13 +24,19 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     private static final int[] input = {0};
     private static final int[] output = {1};
 
-    private int burningTime = 0;
-    private int progress = 0;
+    public int burningTime = 0;
+    public int progress = 0;
+    public int fluidLevel = 0;
 
     public UpgCtileentityFluidFurnace() {
         this.tank = new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1);
         this.itemStacks = new ItemStack[2];
 
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getFluidLevelScaled(int scaleFactor) {
+        return scaleFactor * this.tank.getFluidAmount() / this.tank.getCapacity();
     }
 
     @SideOnly(Side.CLIENT)
@@ -120,6 +127,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public void updateEntity() {
 
         boolean toUpdate = false;
+        fluidLevel = tank.getFluidAmount();
 
         if (canSmelt()) {
             burning();
@@ -141,6 +149,8 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
             }
 
 
+        } else if (itemStacks[INPUT] == null) {
+            progress = 0;
         }
 
 
@@ -197,7 +207,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         if (hasCustomInventoryName())
             return customName;
         else
-            return "container.fluidfurnace";
+            return Names.Inventory.UPGC_FLUID_FURNACE;
     }
 
     @Override

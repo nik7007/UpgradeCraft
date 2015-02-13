@@ -2,7 +2,7 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
-import com.nik7.upgcraft.inventory.UpgCTank;
+import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.tileentity.TileEntity;

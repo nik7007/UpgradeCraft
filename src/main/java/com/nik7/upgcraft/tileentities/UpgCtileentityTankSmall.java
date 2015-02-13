@@ -1,6 +1,6 @@
 package com.nik7.upgcraft.tileentities;
 
-import com.nik7.upgcraft.inventory.UpgCTank;
+import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.reference.Capacity;
 import net.minecraft.tileentity.TileEntity;
 

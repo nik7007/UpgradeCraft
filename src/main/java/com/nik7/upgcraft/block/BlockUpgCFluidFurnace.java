@@ -1,12 +1,16 @@
 package com.nik7.upgcraft.block;
 
 
+import com.nik7.upgcraft.UpgradeCraft;
+import com.nik7.upgcraft.handler.GuiHandler;
+import com.nik7.upgcraft.reference.GUIs;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -22,6 +26,15 @@ public class BlockUpgCFluidFurnace extends BlockUpgC implements ITileEntityProvi
         super(Material.iron);
         setBlockName(Names.Blocks.FLUID_FURNACE);
 
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if (!world.isRemote) {
+            player.openGui(UpgradeCraft.instance, GUIs.FLUID_FURNACE.ordinal(), world, x, y, z);
+
+        }
+        return true;
     }
 
     @Override

@@ -114,6 +114,11 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
     }
 
+    public FluidStack getFluid()
+    {
+        return this.tank.getFluid();
+    }
+
 
     //Inventory method
 

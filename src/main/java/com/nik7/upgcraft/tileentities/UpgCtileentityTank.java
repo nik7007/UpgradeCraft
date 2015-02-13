@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.tileentities;
 
 import com.nik7.upgcraft.block.BlockUpgCTank;
-import com.nik7.upgcraft.inventory.UpgCTank;
+import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;

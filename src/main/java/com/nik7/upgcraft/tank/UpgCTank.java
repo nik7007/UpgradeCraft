@@ -1,4 +1,4 @@
-package com.nik7.upgcraft.inventory;
+package com.nik7.upgcraft.tank;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;

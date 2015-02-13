@@ -12,3 +12,6 @@ tile.upgcraft:BasicFluidHopper.name=Basic Fluid Hopper
 
 #Tooltip
 tooltip.upgcraft:woodentank.hollow=Hollow
+
+#Inventory
+upgcraft:container.fluidfurnace=Fluid Furnace
