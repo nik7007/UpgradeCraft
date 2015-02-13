@@ -11,8 +11,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
 
@@ -58,11 +56,10 @@ public class GuiFluidFurnace extends GuiContainer {
 
             int level = this.fluidFurnace.getFluidLevelScaled(16);
 
-            //String name = this.fluidFurnace.getFluid().getLocalizedName();
 
             IIcon texture = FluidRegistry.getFluid("lava").getStillIcon();
 
-            this.drawTexturedModelRectFromIcon(k + 56, l+36 + 12 - level, texture, 16, level);
+            this.drawTexturedModelRectFromIcon(k + 56, l + 36 + 12 - level, texture, 16, level);
         }
 
     }
