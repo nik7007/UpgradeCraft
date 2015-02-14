@@ -13,6 +13,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 
 public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHandler {
 
@@ -27,16 +28,18 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public int burningTime = 0;
     public int progress = 0;
     public int fluidLevel = 0;
+    private int capacity;
 
     public UpgCtileentityFluidFurnace() {
         this.tank = new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1);
         this.itemStacks = new ItemStack[2];
+        this.capacity = Capacity.INTERNAL_FLUID_TANK_TR1;
 
     }
 
     @SideOnly(Side.CLIENT)
     public int getFluidLevelScaled(int scaleFactor) {
-        return scaleFactor * this.tank.getFluidAmount() / this.tank.getCapacity();
+        return scaleFactor * fluidLevel / capacity;
     }
 
     @SideOnly(Side.CLIENT)
@@ -50,9 +53,10 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         return this.burningTime * scaleFactor / 20;
     }
 
-    public boolean isBurning() {
+    //this may be useful in future
+    /*public boolean isBurning() {
         return this.progress > 0 && burningTime > 0;
-    }
+    }*/
 
 
     @Override
@@ -61,6 +65,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         super.readFromNBT(tag);
         this.burningTime = tag.getShort("burningTime");
         this.progress = tag.getShort("progress");
+        this.fluidLevel = tag.getInteger("fluidLevel");
 
     }
 
@@ -69,7 +74,41 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         super.writeToNBT(tag);
         tag.setShort("burningTime", (short) this.burningTime);
         tag.setShort("progress", (short) this.progress);
+        tag.setInteger("fluidLevel", fluidLevel);
 
+    }
+
+    @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        int result = super.fill(from, resource, doFill);
+
+        this.fluidLevel += result;
+
+        return result;
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+
+        FluidStack result = super.drain(from, resource, doDrain);
+
+        if (result != null) {
+            this.fluidLevel -= result.amount;
+        }
+
+        return result;
+
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        FluidStack result = super.drain(from, maxDrain, doDrain);
+
+        if (result != null) {
+            this.fluidLevel -= result.amount;
+        }
+
+        return result;
     }
 
     private boolean canSmelt() {
@@ -94,6 +133,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     private void burning() {
         if (burningTime <= 0) {
             this.tank.drain(1, true);
+            fluidLevel--;
             burningTime = 20;
         } else burningTime--;
     }
@@ -117,7 +157,6 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     }
 
     private void updateModBlock() {
-        //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         Block block = this.worldObj.getBlock(xCoord, yCoord, zCoord);
         this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, block);
@@ -127,7 +166,6 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public void updateEntity() {
 
         boolean toUpdate = false;
-        fluidLevel = tank.getFluidAmount();
 
         if (canSmelt()) {
             burning();

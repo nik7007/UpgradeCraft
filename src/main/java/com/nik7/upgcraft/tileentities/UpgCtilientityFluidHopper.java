@@ -2,9 +2,12 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
-import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.reference.Capacity;
+import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.util.LogHelper;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
@@ -18,6 +21,15 @@ public class UpgCtilientityFluidHopper extends UpgCtileentityTank {
         super();
         this.setTank(new UpgCTank(Capacity.FLUID_HOPPER_TANK));
 
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        return null;
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
     }
 
     @Override

@@ -7,10 +7,12 @@ import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
 
@@ -37,29 +39,40 @@ public class GuiFluidFurnace extends GuiContainer {
 
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(fluidFurnaceGuiTextures);
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+        int xOffset = (this.width - this.xSize) / 2;
+        int yOffset = (this.height - this.ySize) / 2;
+        this.drawTexturedModalRect(xOffset, yOffset, 0, 0, this.xSize, this.ySize);
 
-        int i1 = this.fluidFurnace.getBurnTimeRemainingScaled(13);
+        int inc = this.fluidFurnace.getBurnTimeRemainingScaled(14);
+        this.drawTexturedModalRect(xOffset + 56, yOffset + 36 + 13 - inc, 176, 13 - inc, 14, inc);
 
-        if (this.fluidFurnace.isBurning()) {
+        inc = this.fluidFurnace.getCookProgressScaled(24);
+        this.drawTexturedModalRect(xOffset + 79, yOffset + 34, 176, 14, inc + 1, 16);
 
-            this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 1);
-            i1 = this.fluidFurnace.getCookProgressScaled(24);
-            this.drawTexturedModalRect(k + 79, l + 34, 176, 14, i1 + 1, 16);
-        } else {
-            this.drawTexturedModalRect(k + 56, l + 36 + 12 - i1, 176, 12 - i1, 14, i1 + 1);
-        }
 
         if (this.fluidFurnace.fluidLevel > 0) {
 
             int level = this.fluidFurnace.getFluidLevelScaled(16);
 
+            Fluid fluid = FluidRegistry.getFluid("lava");
 
-            IIcon texture = FluidRegistry.getFluid("lava").getStillIcon();
+            IIcon icon = fluid.getStillIcon();
 
-            this.drawTexturedModelRectFromIcon(k + 56, l + 36 + 12 - level, texture, 16, level);
+            int color = fluid.getColor();
+
+            float r = (color >> 16 & 0xFF) / 255.0F;
+            float g = (color >> 8 & 0xFF) / 255.0F;
+            float b = (color & 0xFF) / 255.0F;
+
+            this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+            GL11.glColor4f(r, g, b, 1.0F);
+
+            float u = icon.getMinU();
+            float v = icon.getMinV();
+
+
+            this.drawTexturedModalRect(xOffset + 26, yOffset + 60 - level, (int) u, (int) v, 16, level);
+
         }
 
     }

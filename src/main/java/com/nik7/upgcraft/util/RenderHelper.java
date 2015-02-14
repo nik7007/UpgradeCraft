@@ -106,55 +106,6 @@ public class RenderHelper {
 
         }
 
-
-    }
-
-    public static void renderFluidinGUI(float fillPercentage, Fluid fluid, float xMin, float yMin, float z, float xMaz, float maxY) {
-
-
-        if (fillPercentage > 0 && maxY > 0) {
-
-            float height = (maxY - yMin) * fillPercentage + yMin;
-
-            IIcon texture = fluid.getStillIcon();
-            final int color;
-
-            if (texture != null) {
-                Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-                color = fluid.getColor();
-            } else {
-                Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-                texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite("missingno");
-                color = 0xFFFFFFFF;
-            }
-
-            final double uMin = texture.getMinU();
-            final double uMax = texture.getMaxU();
-            final double vMin = texture.getMinV();
-            final double vMax = texture.getMaxV();
-
-            final double vHeight = vMax - vMin;
-
-            final float r = (color >> 16 & 0xFF) / 255.0F;
-            final float g = (color >> 8 & 0xFF) / 255.0F;
-            final float b = (color & 0xFF) / 255.0F;
-
-
-            Tessellator t = Tessellator.instance;
-            t.startDrawingQuads();
-            t.setColorOpaque_F(r, g, b);
-
-            t.addVertexWithUV(xMaz, yMin, z, uMin, vMin);
-            t.addVertexWithUV(xMaz, height, z, uMin, vMin + (vHeight * height));
-            t.addVertexWithUV(xMaz, height, z, uMax, vMin + (vHeight * height));
-            t.addVertexWithUV(xMaz, yMin, z, uMax, vMin);
-
-            t.draw();
-
-
-        }
-
-
     }
 
 
