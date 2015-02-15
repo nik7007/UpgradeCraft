@@ -2,6 +2,7 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.util.LogHelper;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -66,6 +67,12 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
     }
 
+    protected void updateModBlock() {
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        Block block = this.worldObj.getBlock(xCoord, yCoord, zCoord);
+        this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, block);
+    }
+
     @Override
     public abstract void updateEntity();
 
@@ -74,6 +81,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         if (resource != null) {
             if (this.canFill(from, resource.getFluid())) {
+                updateModBlock();
                 return tank.fill(resource, doFill);
             }
         }
@@ -87,9 +95,11 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
             return null;
         }
 
-        if (canDrain(from, resource.getFluid()))
+        if (canDrain(from, resource.getFluid())) {
+            updateModBlock();
             return tank.drain(resource.amount, doDrain);
-        else return null;
+
+        } else return null;
 
     }
 
@@ -97,6 +107,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
         if (canDrain(from, null)) {
+            updateModBlock();
             return tank.drain(maxDrain, doDrain);
         } else return null;
 
@@ -114,8 +125,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
     }
 
-    public FluidStack getFluid()
-    {
+    public FluidStack getFluid() {
         return this.tank.getFluid();
     }
 

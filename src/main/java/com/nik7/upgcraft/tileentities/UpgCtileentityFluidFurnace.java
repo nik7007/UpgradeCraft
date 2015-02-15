@@ -6,7 +6,6 @@ import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tank.UpgCTank;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -82,7 +81,9 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
         int result = super.fill(from, resource, doFill);
 
-        this.fluidLevel += result;
+        if (!worldObj.isRemote) {
+            this.fluidLevel = this.tank.getFluidAmount();
+        }
 
         return result;
     }
@@ -92,8 +93,8 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
         FluidStack result = super.drain(from, resource, doDrain);
 
-        if (result != null) {
-            this.fluidLevel -= result.amount;
+        if (result != null && !worldObj.isRemote) {
+            this.fluidLevel = this.tank.getFluidAmount();
         }
 
         return result;
@@ -104,8 +105,8 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
         FluidStack result = super.drain(from, maxDrain, doDrain);
 
-        if (result != null) {
-            this.fluidLevel -= result.amount;
+        if (result != null && !worldObj.isRemote) {
+            this.fluidLevel = this.tank.getFluidAmount();
         }
 
         return result;
@@ -133,7 +134,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     private void burning() {
         if (burningTime <= 0) {
             this.tank.drain(1, true);
-            fluidLevel--;
+            this.fluidLevel = this.tank.getFluidAmount();
             burningTime = 20;
         } else burningTime--;
     }
@@ -156,20 +157,16 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
     }
 
-    private void updateModBlock() {
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-        Block block = this.worldObj.getBlock(xCoord, yCoord, zCoord);
-        this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, block);
-    }
 
     @Override
     public void updateEntity() {
 
         boolean toUpdate = false;
+        if (!worldObj.isRemote) {
 
-        if (canSmelt()) {
-            burning();
-            if (!worldObj.isRemote) {
+            if (canSmelt()) {
+
+                this.burning();
 
                 progress++;
 
@@ -184,11 +181,17 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
                     this.markDirty();
                 }
 
+
+            }
+            if (itemStacks[INPUT] == null) {
+                progress = 0;
+            }
+            if (this.tank.getFluid() == null) {
+                this.burningTime = 0;
+
             }
 
 
-        } else if (itemStacks[INPUT] == null) {
-            progress = 0;
         }
 
 

@@ -52,11 +52,11 @@ public class GuiFluidFurnace extends GuiContainer {
 
         if (this.fluidFurnace.fluidLevel > 0) {
 
-            int level = this.fluidFurnace.getFluidLevelScaled(16);
+            int level = this.fluidFurnace.getFluidLevelScaled(32);
 
             Fluid fluid = FluidRegistry.getFluid("lava");
 
-            IIcon icon = fluid.getStillIcon();
+            IIcon icon = fluid.getIcon();
 
             int color = fluid.getColor();
 
@@ -65,13 +65,10 @@ public class GuiFluidFurnace extends GuiContainer {
             float b = (color & 0xFF) / 255.0F;
 
             this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
+
             GL11.glColor4f(r, g, b, 1.0F);
 
-            float u = icon.getMinU();
-            float v = icon.getMinV();
-
-
-            this.drawTexturedModalRect(xOffset + 26, yOffset + 60 - level, (int) u, (int) v, 16, level);
+            this.drawTexturedModelRectFromIcon(xOffset + 26, yOffset + 60 - level, icon, 16, level);
 
         }
 
