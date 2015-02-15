@@ -6,12 +6,8 @@ import com.nik7.upgcraft.util.LogHelper;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
@@ -50,7 +46,7 @@ public class ItemRendererWoodenTank implements IItemRenderer {
 
         GL11.glPushMatrix(); //start
 
-        GL11.glTranslated(0f, 1f, 0f);
+        GL11.glTranslated(0.28f, 1.2f, 0.28f);
 
         GL11.glRotatef(180, 1, 0, 0);
         GL11.glRotatef(-90, 0, 1, 0);
