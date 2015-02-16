@@ -5,6 +5,8 @@ import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.init.Recipes;
+import com.nik7.upgcraft.network.DescriptionHandler;
+import com.nik7.upgcraft.network.NetworkHandler;
 import com.nik7.upgcraft.proxy.IProxy;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -30,6 +32,10 @@ public class UpgradeCraft {
         //config
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
         FMLCommonHandler.instance().bus().register(new ConfigurationHandler());
+
+        //Network
+        NetworkHandler.init();
+        DescriptionHandler.init();
 
         //item, block
         ModBlocks.init();

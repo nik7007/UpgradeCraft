@@ -1,15 +1,21 @@
 package com.nik7.upgcraft.tileentities;
 
 
+import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tank.UpgCTank;
+import cpw.mods.fml.common.network.ByteBufUtils;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.Packet;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,7 +33,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public int burningTime = 0;
     public int progress = 0;
     public int fluidLevel = 0;
-    private int capacity;
+    public int capacity;
 
     public UpgCtileentityFluidFurnace() {
         this.tank = new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1);
@@ -37,8 +43,8 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     }
 
     @SideOnly(Side.CLIENT)
-    public int getFluidLevelScaled(int scaleFactor) {
-        return scaleFactor * fluidLevel / capacity;
+    public float getFluidLevelScaled(int scaleFactor) {
+        return scaleFactor * (float) fluidLevel / capacity;
     }
 
     @SideOnly(Side.CLIENT)
@@ -75,6 +81,19 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         tag.setShort("progress", (short) this.progress);
         tag.setInteger("fluidLevel", fluidLevel);
 
+    }
+
+    @Override
+    public void writeToPacket(ByteBuf buf){
+
+            buf.writeInt(fluidLevel);
+    }
+
+    @Override
+    public void readFromPacket(ByteBuf buf){
+
+        this.fluidLevel = buf.readInt();
+        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
     }
 
     @Override

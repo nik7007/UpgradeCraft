@@ -1,5 +1,7 @@
 package com.nik7.upgcraft.proxy;
 
+import net.minecraft.entity.player.EntityPlayer;
+
 import java.io.File;
 
 public interface IProxy {
@@ -13,4 +15,6 @@ public interface IProxy {
     public abstract void registerEventHandlers();
 
     public abstract void registerKeybindings();
+
+    public abstract EntityPlayer getClientPlayer();
 }

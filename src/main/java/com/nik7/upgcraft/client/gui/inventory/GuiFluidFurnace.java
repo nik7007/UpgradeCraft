@@ -52,7 +52,7 @@ public class GuiFluidFurnace extends GuiContainer {
 
         if (this.fluidFurnace.fluidLevel > 0) {
 
-            int level = this.fluidFurnace.getFluidLevelScaled(32);
+            int level = (int)this.fluidFurnace.getFluidLevelScaled(32);
 
             Fluid fluid = FluidRegistry.getFluid("lava");
 

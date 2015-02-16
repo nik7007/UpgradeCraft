@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 
 @SideOnly(Side.CLIENT)
-public class ItemRendererWoodenTank implements IItemRenderer {
+public class ItemRenderWoodenTank implements IItemRenderer {
 
     private final ModelTank modelTank = new ModelTank();
 
@@ -46,7 +46,7 @@ public class ItemRendererWoodenTank implements IItemRenderer {
 
         GL11.glPushMatrix(); //start
 
-        GL11.glTranslated(0.28f, 1.2f, 0.28f);
+        GL11.glTranslated(0.28f, 1.24f, 0.28f);
 
         GL11.glRotatef(180, 1, 0, 0);
         GL11.glRotatef(-90, 0, 1, 0);

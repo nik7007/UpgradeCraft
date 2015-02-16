@@ -9,6 +9,7 @@ item.upgcraft:DragonSword.name=Dragon Sword
 tile.upgcraft:WoodenTank.name=Wooden Tank
 tile.upgcraft:SlimyLog.name=Slimy Log
 tile.upgcraft:BasicFluidHopper.name=Basic Fluid Hopper
+tile.upgcraft:FluidFurnace.name=Fluid Furnace
 
 #Tooltip
 tooltip.upgcraft:woodentank.hollow=Hollow

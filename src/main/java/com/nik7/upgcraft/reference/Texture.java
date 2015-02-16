@@ -14,6 +14,7 @@ public class Texture {
         public final static String MODEL_DOUBLE_HOLLOW_TOP_WOODEN_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockDoubleWoodenHollowTopTank.png";
         public final static String MODEL_DOUBLE_HOLLOW_DOWN_WOODEN_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockDoubleWoodenHollowDownTank.png";
         public final static String MODEL_FLUID_BASIC_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockFluidBasicHopper.png";
+        public final static String MODEL_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockFluidFurnace.png";
 
         public final static String SLIMY_LOG = Reference.MOD_ID + ":" + "slime_planks";
     }

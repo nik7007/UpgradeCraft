@@ -19,7 +19,6 @@ public class ContainerFluidFurnace extends ContainerUpgC {
     private final UpgCtileentityFluidFurnace fluidFurnace;
     private int lastBurningTime;
     private int lastProgress;
-    private int lastFluidLevel;
 
     public ContainerFluidFurnace(InventoryPlayer playerInventory, UpgCtileentityFluidFurnace fluidFurnace) {
         this.fluidFurnace = fluidFurnace;
@@ -34,7 +33,6 @@ public class ContainerFluidFurnace extends ContainerUpgC {
         super.addCraftingToCrafters(iCrafting);
         iCrafting.sendProgressBarUpdate(this, 0, this.fluidFurnace.burningTime);
         iCrafting.sendProgressBarUpdate(this, 1, this.fluidFurnace.progress);
-        iCrafting.sendProgressBarUpdate(this, 2, this.fluidFurnace.fluidLevel);
     }
 
     public void detectAndSendChanges() {
@@ -51,15 +49,10 @@ public class ContainerFluidFurnace extends ContainerUpgC {
                 icrafting.sendProgressBarUpdate(this, 1, this.fluidFurnace.progress);
             }
 
-            if (this.lastFluidLevel != this.fluidFurnace.fluidLevel) {
-                icrafting.sendProgressBarUpdate(this, 2, this.fluidFurnace.fluidLevel);
-            }
-
         }
 
         this.lastBurningTime = this.fluidFurnace.burningTime;
         this.lastProgress = this.fluidFurnace.progress;
-        this.lastFluidLevel = this.fluidFurnace.fluidLevel;
 
     }
 

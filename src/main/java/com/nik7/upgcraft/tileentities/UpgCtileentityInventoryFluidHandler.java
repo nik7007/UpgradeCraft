@@ -1,13 +1,18 @@
 package com.nik7.upgcraft.tileentities;
 
 
+import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.util.LogHelper;
+import cpw.mods.fml.common.network.internal.FMLProxyPacket;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
@@ -40,6 +45,24 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         if (tag.hasKey("CustomName")) {
             this.customName = tag.getString("CustomName");
         }
+    }
+
+    @Override
+    public Packet getDescriptionPacket() {
+        ByteBuf buf = Unpooled.buffer();
+        buf.writeInt(xCoord);
+        buf.writeInt(yCoord);
+        buf.writeInt(zCoord);
+        writeToPacket(buf);
+        return new FMLProxyPacket(buf, DescriptionHandler.CHANNEL);
+    }
+
+    public void writeToPacket(ByteBuf buf) {
+
+    }
+
+    public void readFromPacket(ByteBuf buf) {
+
     }
 
     @Override

@@ -2,18 +2,23 @@ package com.nik7.upgcraft.block;
 
 
 import com.nik7.upgcraft.UpgradeCraft;
-import com.nik7.upgcraft.handler.GuiHandler;
 import com.nik7.upgcraft.reference.GUIs;
 import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.reference.RenderIds;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import java.util.Random;
@@ -25,7 +30,24 @@ public class BlockUpgCFluidFurnace extends BlockUpgC implements ITileEntityProvi
     public BlockUpgCFluidFurnace() {
         super(Material.iron);
         setBlockName(Names.Blocks.FLUID_FURNACE);
+        this.setBlockTextureName("cobblestone");
+        setStepSound(soundTypePiston);
+        setHardness(5.0F);
 
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int x, int y, int z, int side) {
+        return true;
+    }
+
+    public int getRenderType() {
+        return RenderIds.FLUID_FURNACE;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
     }
 
     @Override
@@ -35,6 +57,30 @@ public class BlockUpgCFluidFurnace extends BlockUpgC implements ITileEntityProvi
 
         }
         return true;
+    }
+
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack item) {
+        byte meta = 0;
+        int l = MathHelper.floor_double((double) (player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+        switch (l) {
+            case 0:
+                meta = 2;
+                break;
+            case 1:
+                meta = 5;
+                break;
+            case 2:
+                meta = 3;
+                break;
+            case 3:
+                meta = 4;
+                break;
+        }
+
+        world.setBlockMetadataWithNotify(x, y, z, meta, 3);
+
     }
 
     @Override
