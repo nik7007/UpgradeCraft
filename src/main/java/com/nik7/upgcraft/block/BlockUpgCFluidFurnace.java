@@ -14,6 +14,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -169,6 +171,16 @@ public class BlockUpgCFluidFurnace extends BlockUpgC implements ITileEntityProvi
             return FluidRegistry.getFluid("lava").getLuminosity();
         } else
             return 0;
+    }
+
+    @Override
+    public boolean hasComparatorInputOverride() {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(World world, int x, int y, int z, int meta) {
+        return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
     }
 
 
