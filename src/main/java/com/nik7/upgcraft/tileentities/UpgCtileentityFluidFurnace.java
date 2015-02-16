@@ -1,21 +1,16 @@
 package com.nik7.upgcraft.tileentities;
 
 
-import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tank.UpgCTank;
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.Packet;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -58,12 +53,6 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         return this.burningTime * scaleFactor / 20;
     }
 
-    //this may be useful in future
-    /*public boolean isBurning() {
-        return this.progress > 0 && burningTime > 0;
-    }*/
-
-
     @Override
     public void readFromNBT(NBTTagCompound tag) {
 
@@ -84,13 +73,13 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     }
 
     @Override
-    public void writeToPacket(ByteBuf buf){
+    public void writeToPacket(ByteBuf buf) {
 
-            buf.writeInt(fluidLevel);
+        buf.writeInt(fluidLevel);
     }
 
     @Override
-    public void readFromPacket(ByteBuf buf){
+    public void readFromPacket(ByteBuf buf) {
 
         this.fluidLevel = buf.readInt();
         worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
@@ -205,11 +194,6 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
             if (itemStacks[INPUT] == null) {
                 progress = 0;
             }
-            if (this.tank.getFluid() == null) {
-                this.burningTime = 0;
-
-            }
-
 
         }
 
