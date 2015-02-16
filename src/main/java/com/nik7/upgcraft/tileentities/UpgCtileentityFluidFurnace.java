@@ -29,6 +29,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public int progress = 0;
     public int fluidLevel = 0;
     public int capacity;
+    public boolean isActive = false;
 
     public UpgCtileentityFluidFurnace() {
         this.tank = new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1);
@@ -60,6 +61,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         this.burningTime = tag.getShort("burningTime");
         this.progress = tag.getShort("progress");
         this.fluidLevel = tag.getInteger("fluidLevel");
+        this.isActive = tag.getBoolean("active");
 
     }
 
@@ -69,6 +71,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         tag.setShort("burningTime", (short) this.burningTime);
         tag.setShort("progress", (short) this.progress);
         tag.setInteger("fluidLevel", fluidLevel);
+        tag.setBoolean("active",isActive);
 
     }
 
@@ -76,12 +79,14 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public void writeToPacket(ByteBuf buf) {
 
         buf.writeInt(fluidLevel);
+        buf.writeBoolean(isActive);
     }
 
     @Override
     public void readFromPacket(ByteBuf buf) {
 
         this.fluidLevel = buf.readInt();
+        this.isActive = buf.readBoolean();
         worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
     }
 
@@ -171,9 +176,8 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
         boolean toUpdate = false;
         if (!worldObj.isRemote) {
-
             if (canSmelt()) {
-
+                this.isActive = true;
                 this.burning();
 
                 progress++;
@@ -190,6 +194,10 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
                 }
 
 
+            }
+            else
+            {
+                this.isActive = false;
             }
             if (itemStacks[INPUT] == null) {
                 progress = 0;

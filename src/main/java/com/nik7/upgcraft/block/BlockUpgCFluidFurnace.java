@@ -87,7 +87,7 @@ public class BlockUpgCFluidFurnace extends BlockUpgC implements ITileEntityProvi
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
         UpgCtileentityFluidFurnace te = (UpgCtileentityFluidFurnace) world.getTileEntity(x, y, z);
-        if (te.fluidLevel > 0) {
+        if (te.isActive) {
             int l = world.getBlockMetadata(x, y, z);
             float f = (float) x + 0.5F;
             float f1 = (float) y + 0.2F + random.nextFloat() * 6.0F / 16.0F;
