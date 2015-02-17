@@ -46,7 +46,7 @@ public class FluidInfuserRegister {
                     (INSTANCE.resultToAll.get(result)).add(recipe);
                 } else {
                     INSTANCE.resultToAll.put(result.getItem(), new HashSet<FluidInfuserRecipe>());
-                    (INSTANCE.resultToAll.get(result)).add(recipe);
+                    (INSTANCE.resultToAll.get(result.getItem())).add(recipe);
                 }
 
                 ItemOD toMeltOD = new ItemOD(toMelt);
