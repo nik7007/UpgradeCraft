@@ -71,7 +71,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         tag.setShort("burningTime", (short) this.burningTime);
         tag.setShort("progress", (short) this.progress);
         tag.setInteger("fluidLevel", fluidLevel);
-        tag.setBoolean("active",isActive);
+        tag.setBoolean("active", isActive);
 
     }
 
@@ -174,8 +174,10 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     @Override
     public void updateEntity() {
 
-        boolean toUpdate = false;
         if (!worldObj.isRemote) {
+
+            boolean toUpdate = false;
+
             if (canSmelt()) {
                 this.isActive = true;
                 this.burning();
@@ -194,13 +196,12 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
                 }
 
 
-            }
-            else
-            {
+            } else {
                 this.isActive = false;
             }
             if (itemStacks[INPUT] == null) {
                 progress = 0;
+                this.isActive = false;
             }
 
         }
