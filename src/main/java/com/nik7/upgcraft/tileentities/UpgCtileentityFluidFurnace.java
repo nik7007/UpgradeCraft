@@ -22,8 +22,8 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
     private static final int BURN_TIME = 200;
 
-    private static final int[] input = {0};
-    private static final int[] output = {1};
+    private static final int[] input = {INPUT};
+    private static final int[] output = {OUTPUT};
 
     public int burningTime = 0;
     public int progress = 0;
@@ -263,10 +263,6 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
             return Names.Inventory.UPGC_FLUID_FURNACE;
     }
 
-    @Override
-    public boolean hasCustomInventoryName() {
-        return this.customName != null && this.customName.length() > 0;
-    }
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {

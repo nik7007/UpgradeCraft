@@ -12,6 +12,8 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.HashMap;
 import java.util.HashSet;
 
+
+//TODO: add check for constraints
 public class FluidInfuserRegister {
 
     private static final FluidInfuserRegister INSTANCE = new FluidInfuserRegister();
@@ -76,8 +78,28 @@ public class FluidInfuserRegister {
     }
 
 
-    public static ItemStack getResult(InputItemStacks inputs) {
-        return INSTANCE.inputsToAll.get(inputs).getResult();
+    public static ItemStack getResult(ItemStack toMelt, ItemStack toInfuse) {
+        return INSTANCE.inputsToAll.get(new InputItemStacks(toMelt, toInfuse)).getResult();
+    }
+
+    public static FluidInfuserRecipe getFluidInfuserRecipe(ItemStack toMelt, ItemStack toInfuse) {
+        if (INSTANCE.canBeMelted(toMelt, toInfuse)) {
+            ItemOD toMeltOD = new ItemOD(toMelt);
+            ItemOD toInfuseOD = new ItemOD(toInfuse);
+
+            return INSTANCE.toMeltToAll.get(toMeltOD).get(toInfuseOD);
+        } else return null;
+    }
+
+    public static FluidStack getFluidStack(ItemStack toMelt, ItemStack toInfuse)
+    {
+        if (INSTANCE.canBeMelted(toMelt, toInfuse)) {
+
+            return getFluidInfuserRecipe(toMelt, toInfuse).getFluidStack();
+
+        }
+        else return null;
+
     }
 
     public static boolean isUsefulFluid(Fluid fluid) {

@@ -10,6 +10,7 @@ public class Names {
         public final static String SLIMY_LOG = "SlimyLog";
         public final static String FLUID_HOPPER = "FluidHopper";
         public final static String FLUID_FURNACE = "FluidFurnace";
+        public final static String FLUID_INFUSE = "FluidInfuser";
     }
 
     public class Items {
@@ -22,12 +23,14 @@ public class Names {
     public class TileEntity {
         public final static String UPGC_TILE_ENTITY_TANK = Reference.MOD_ID + ":" + "LiquidTankEntity";
         public final static String UPGC_TILE_ENTITY_FLUID_HOPPER = Reference.MOD_ID + ":" + "FluidHopperEntity";
-        public final static String UPGC_TILE_FLUID_FURNACE = Reference.MOD_ID + ":" + "FluidFurnaceEntity";
+        public final static String UPGC_TILE_ENTITY_FLUID_FURNACE = Reference.MOD_ID + ":" + "FluidFurnaceEntity";
+        public final static String UPG_TILE_ENTITY_FLUID_INFUSER = Reference.MOD_ID + ":" +"FluidInfuserEntity";
 
     }
 
     public class Inventory {
-        public final static String UPGC_FLUID_FURNACE =  Reference.MOD_ID + ":" +"container.fluidfurnace";
+        public final static String UPGC_FLUID_FURNACE = Reference.MOD_ID + ":" + "container.fluidfurnace";
+        public final static String UPGC_FLUID_INFUSER = Reference.MOD_ID + ":" + "container.fluidinfuser";
     }
 
 

@@ -229,7 +229,9 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     public abstract String getInventoryName();
 
     @Override
-    public abstract boolean hasCustomInventoryName();
+    public boolean hasCustomInventoryName() {
+        return this.customName != null && this.customName.length() > 0;
+    }
 
     @Override
     public int getInventoryStackLimit() {

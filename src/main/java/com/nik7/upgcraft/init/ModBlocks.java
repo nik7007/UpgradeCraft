@@ -15,6 +15,7 @@ public class ModBlocks {
     public static final Block blockSlimyLog = new BlockUpgCSlimyLog();
     public static final Block blockFluidBasicHopper = new BlockUpgCBasicFluidHopper();
     public static final Block blockFluidFurnace = new BlockUpgCFluidFurnace();
+    public static final Block blockFluidInfuse = new BlockUpgCFluidInfuser();
 
     public static void init() {
 
@@ -22,6 +23,7 @@ public class ModBlocks {
         GameRegistry.registerBlock(blockSlimyLog, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_LOG);
         GameRegistry.registerBlock(blockFluidBasicHopper, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_HOPPER);
         GameRegistry.registerBlock(blockFluidFurnace, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_FURNACE);
+        GameRegistry.registerBlock(blockFluidInfuse,Reference.MOD_ID + "Block" + Names.Blocks.FLUID_INFUSE);
 
     }
 }
