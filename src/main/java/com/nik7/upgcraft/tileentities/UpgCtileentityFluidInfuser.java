@@ -132,7 +132,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     private void melting() {
         if ((burning > 0)) {
-            burning--;
+            burning=0;
             tickMelting++;
 
             int a = tickMelting % this.properties[TICK_FOR_MELT];
