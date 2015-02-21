@@ -124,7 +124,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     private void infusing() {
         tickInfusing++;
-        if (tickInfusing % (this.properties[TICK_FOR_INFUSE]/this.properties[NUMBER_TO_INFUSE])== 0) {
+        if (tickInfusing % (this.properties[TICK_FOR_INFUSE] / this.properties[NUMBER_TO_INFUSE]) == 0) {
             this.moveItem(INFUSE, INFUSE_P);
             this.properties[NUMBER_TO_INFUSE]--;
         }
@@ -132,12 +132,10 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     private void melting() {
         if ((burning > 0)) {
-            burning=0;
+            burning = 0;
             tickMelting++;
 
-            int a = tickMelting % this.properties[TICK_FOR_MELT];
-
-            if ((tickMelting % (this.properties[TICK_FOR_MELT]/this.properties[NUMBER_TO_MELT])) == 0) {
+            if ((tickMelting % (this.properties[TICK_FOR_MELT] / this.properties[NUMBER_TO_MELT])) == 0) {
                 this.moveItem(MELT, MELT_P);
                 this.properties[NUMBER_TO_MELT]--;
                 burning = 0;
