@@ -3,11 +3,12 @@ package com.nik7.upgcraft.proxy;
 import com.nik7.upgcraft.client.render.item.ItemRenderWoodenTank;
 import com.nik7.upgcraft.client.render.item.itemRenderFluidFurnace;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderBasicFluidHopper;
-import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidFurnace;
+import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidMachine;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRendererWoodenTank;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.reference.RenderIds;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
+import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTankSmall;
 import com.nik7.upgcraft.tileentities.UpgCtilientityFluidHopper;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -30,14 +31,15 @@ public class ClientProxy extends CommonProxy {
 
         RenderIds.WOODEN_FLUID_TANK = RenderingRegistry.getNextAvailableRenderId();
         RenderIds.BASIC_FLUID_HOPPER = RenderingRegistry.getNextAvailableRenderId();
-        RenderIds.FLUID_FURNACE = RenderingRegistry.getNextAvailableRenderId();
+        RenderIds.FLUID_MACHINE = RenderingRegistry.getNextAvailableRenderId();
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockWoodenLiquidTank), new ItemRenderWoodenTank());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockFluidFurnace), new itemRenderFluidFurnace());
 
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityTankSmall.class, new TileEntityRendererWoodenTank());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityFluidHopper.class, new TileEntityRenderBasicFluidHopper());
-        ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityFluidFurnace.class, new TileEntityRenderFluidFurnace());
+        ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityFluidFurnace.class, new TileEntityRenderFluidMachine());
+        ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityFluidInfuser.class, new TileEntityRenderFluidMachine());
 
     }
 

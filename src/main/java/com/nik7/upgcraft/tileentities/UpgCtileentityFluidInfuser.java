@@ -7,6 +7,7 @@ import com.nik7.upgcraft.registry.FluidInfuser.FluidInfuserRecipe;
 import com.nik7.upgcraft.registry.FluidInfuserRegister;
 import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.util.LogHelper;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,13 +21,14 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
     private static final int[] input = {MELT, INFUSE};
     public static int OUTPUT = 4;
     private static final int[] output = {OUTPUT};
+    public static int INFUSE_P = 3;
     private static int MELT_P = 2;
-    private static int INFUSE_P = 3;
     private static short FLUID_AMOUNT = 0, FLUID_ID = 1, TICK_FOR_MELT = 2, NUMBER_TO_MELT = 3, TICK_FOR_INFUSE = 4, NUMBER_TO_INFUSE = 5;
     public int capacity;
+    public int fluidLevel = 0;
+    public boolean isActive = false;
     private boolean isOperating = false;
     private int[] properties = {0, -1, 0, 0, 0, 0};
-
     private int tickMelting = 0;
     private int tickInfusing = 0;
     private int burning = 0;
@@ -40,6 +42,38 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
     }
 
     @Override
+    public void writeToPacket(ByteBuf buf) {
+        FluidStack fluidStack = this.tank.getFluid();
+        int fluidAmount = -1;
+        int fluidID = -1;
+        if (fluidStack != null) {
+            fluidAmount = fluidStack.amount;
+            fluidID = fluidStack.fluidID;
+        }
+
+        buf.writeInt(fluidAmount);
+        buf.writeInt(fluidID);
+        buf.writeBoolean(isActive);
+
+    }
+
+    @Override
+    public void readFromPacket(ByteBuf buf) {
+
+        int fluidAmount = buf.readInt();
+        int fluidID = buf.readInt();
+        this.isActive = buf.readBoolean();
+
+        if (fluidAmount > 0) {
+
+            this.tank.setFluid(new FluidStack(fluidID, fluidAmount));
+            this.fluidLevel = fluidAmount;
+        }
+
+        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
 
         super.readFromNBT(tag);
@@ -48,6 +82,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
         this.tickMelting = tag.getInteger("tickMelting");
         this.tickInfusing = tag.getInteger("tickInfusing");
         this.burning = tag.getInteger("burning");
+
     }
 
     @Override
@@ -65,6 +100,9 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
     public void updateEntity() {
 
         if (!worldObj.isRemote) {
+           boolean oldIsActive = isActive;
+
+
             if (this.tank.getFluidAmount() > 0) {
 
                 if (isOperating) {
@@ -74,13 +112,22 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
                         burning = 0;
                     }
 
-
                 } else {
                     isOperating = canStart();
 
                 }
 
+               isActive = isOperating && (tickInfusing > 0 || tickMelting > 0);
+
             }
+
+
+
+            if(isActive != oldIsActive){
+                markDirty();
+                updateModBlock();
+            }
+
 
         }
 
@@ -335,4 +382,5 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
         return false;
     }
+
 }

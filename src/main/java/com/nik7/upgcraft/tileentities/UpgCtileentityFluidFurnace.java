@@ -13,6 +13,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHandler {
@@ -72,7 +73,6 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         tag.setShort("progress", (short) this.progress);
         tag.setInteger("fluidLevel", fluidLevel);
         tag.setBoolean("active", isActive);
-
     }
 
     @Override
@@ -88,6 +88,11 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         this.fluidLevel = buf.readInt();
         this.isActive = buf.readBoolean();
         worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+
+
+        if (this.fluidLevel > 0) {
+            this.tank.setFluid(new FluidStack(FluidRegistry.getFluid("lava"), fluidLevel));
+        } else this.tank.setFluid(null);
     }
 
     @Override

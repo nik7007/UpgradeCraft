@@ -71,7 +71,7 @@ public class FluidInfuserRegister {
 
 
             } else {
-                LogHelper.error("FluidInfuserRegister: duplicated inputs are not allowed!!");
+                LogHelper.error("FluidInfuserRegister: Recipe rejected - Duplicated inputs are not allowed!!");
             }
         }
 
@@ -83,7 +83,7 @@ public class FluidInfuserRegister {
     }
 
     public static FluidInfuserRecipe getFluidInfuserRecipe(ItemStack toMelt, ItemStack toInfuse) {
-        if (INSTANCE.canBeMelted(toMelt, toInfuse)) {
+        if (canBeMelted(toMelt, toInfuse)) {
             ItemOD toMeltOD = new ItemOD(toMelt);
             ItemOD toInfuseOD = new ItemOD(toInfuse);
 
@@ -93,7 +93,7 @@ public class FluidInfuserRegister {
 
     public static FluidStack getFluidStack(ItemStack toMelt, ItemStack toInfuse)
     {
-        if (INSTANCE.canBeMelted(toMelt, toInfuse)) {
+        if (canBeMelted(toMelt, toInfuse)) {
 
             return getFluidInfuserRecipe(toMelt, toInfuse).getFluidStack();
 
@@ -115,11 +115,7 @@ public class FluidInfuserRegister {
         ItemOD toMeltOD = new ItemOD(toMelt);
         ItemOD toInfuseOD = new ItemOD(toInfuse);
 
-        if (INSTANCE.toMeltToAll.containsKey(toMeltOD)) {
-            return INSTANCE.toMeltToAll.get(toMeltOD).containsKey(toInfuseOD);
-        } else {
-            return false;
-        }
+        return INSTANCE.toMeltToAll.containsKey(toMeltOD) && INSTANCE.toMeltToAll.get(toMeltOD).containsKey(toInfuseOD);
     }
 
     public static boolean canBeInfused(ItemStack item) {
@@ -131,11 +127,7 @@ public class FluidInfuserRegister {
         ItemOD toMeltOD = new ItemOD(toMelt);
         ItemOD toInfuseOD = new ItemOD(toInfuse);
 
-        if (INSTANCE.toInfuseToAll.containsKey(toInfuseOD)) {
-            return INSTANCE.toInfuseToAll.get(toInfuseOD).containsKey(toMeltOD);
-        } else {
-            return false;
-        }
+        return INSTANCE.toInfuseToAll.containsKey(toInfuseOD) && INSTANCE.toInfuseToAll.get(toInfuseOD).containsKey(toMeltOD);
     }
 
 }
