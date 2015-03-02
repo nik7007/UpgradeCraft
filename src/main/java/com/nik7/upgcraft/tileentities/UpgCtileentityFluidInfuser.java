@@ -24,8 +24,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
     public static int INFUSE_P = 3;
     private static int MELT_P = 2;
     private static short FLUID_AMOUNT = 0, FLUID_ID = 1, TICK_FOR_MELT = 2, NUMBER_TO_MELT = 3, TICK_FOR_INFUSE = 4, NUMBER_TO_INFUSE = 5;
-    public int capacity;
-    public int fluidLevel = 0;
+
     public boolean isActive = false;
     private boolean isOperating = false;
     private int[] properties = {0, -1, 0, 0, 0, 0};
@@ -154,7 +153,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     private void infuse() {
 
-        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT_P], itemStacks[INFUSE_P]);
+        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT_P], itemStacks[INFUSE_P],getFluid());
 
         itemStacks[MELT_P] = null;
         itemStacks[INFUSE_P] = null;
@@ -221,7 +220,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
             return false;
         }
 
-        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT], itemStacks[INFUSE]);
+        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT], itemStacks[INFUSE],getFluid());
 
         if (recipe != null) {
 

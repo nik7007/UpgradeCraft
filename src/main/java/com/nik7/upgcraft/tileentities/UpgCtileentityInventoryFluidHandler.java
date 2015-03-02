@@ -20,6 +20,8 @@ import net.minecraftforge.fluids.*;
 public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity implements IFluidHandler, ISidedInventory {
 
     protected FluidTank tank;
+    public int fluidLevel = 0;
+    public int capacity;
     //Inventory
     protected ItemStack[] itemStacks;
     protected String customName;

@@ -43,20 +43,12 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
             UpgCtileentityInventoryFluidHandler inventoryFluidHandler = (UpgCtileentityInventoryFluidHandler) tileEntity;
 
             ResourceLocation texture;
-            float level;
 
             if (inventoryFluidHandler instanceof UpgCtileentityFluidFurnace) {
                 texture = textureFurnace;
-                UpgCtileentityFluidFurnace furnace = (UpgCtileentityFluidFurnace) tileEntity;
-                level = (float) furnace.fluidLevel / (float) furnace.capacity;
-
-
 
             } else if (inventoryFluidHandler instanceof UpgCtileentityFluidInfuser) {
                 texture = textureInfuser;
-
-                UpgCtileentityFluidInfuser infuser = (UpgCtileentityFluidInfuser) tileEntity;
-                level = (float) infuser.fluidLevel / (float) infuser.capacity;
 
             } else {
                 LogHelper.error("This entity has not a skin! " + tileEntity.getClass());
@@ -117,6 +109,9 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
             FluidStack fluid = inventoryFluidHandler.getFluid();
 
             if (fluid != null) {
+
+                float level = (float) inventoryFluidHandler.fluidLevel / (float) inventoryFluidHandler.capacity;
+
                 RenderHelper.fluidRender(level, fluid.getFluid(), xMin, yMin, zMin, xMaz, yMaz, zMaz, false, false);
             }
 

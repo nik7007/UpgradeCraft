@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 
 //TODO: add check for constraints
@@ -21,8 +22,8 @@ public class FluidInfuserRegister {
     private HashMap<InputItemStacks, FluidInfuserRecipe> inputsToAll = new HashMap<InputItemStacks, FluidInfuserRecipe>();
 
     private HashMap<Item, HashSet<FluidInfuserRecipe>> resultToAll = new HashMap<Item, HashSet<FluidInfuserRecipe>>();
-    private HashMap<ItemOD, HashMap<ItemOD, FluidInfuserRecipe>> toMeltToAll = new HashMap<ItemOD, HashMap<ItemOD, FluidInfuserRecipe>>();
-    private HashMap<ItemOD, HashMap<ItemOD, FluidInfuserRecipe>> toInfuseToAll = new HashMap<ItemOD, HashMap<ItemOD, FluidInfuserRecipe>>();
+    private HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>> toMeltToAll = new HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>>();
+    private HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>> toInfuseToAll = new HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>>();
     private HashSet<Fluid> fluid = new HashSet<Fluid>();
 
     private FluidInfuserRegister() {
@@ -33,7 +34,7 @@ public class FluidInfuserRegister {
 
         if (fluidStack != null && result != null && toMelt != null && toInfuse != null && ticksToInfuse > 0 && ticksToMelt > 0) {
 
-            InputItemStacks inputs = new InputItemStacks(toMelt, toInfuse);
+            InputItemStacks inputs = new InputItemStacks(toMelt, toInfuse, fluidStack);
             FluidInfuserRecipe recipe = new FluidInfuserRecipe(inputs, fluidStack, result, ticksToInfuse, ticksToMelt);
 
             if (!INSTANCE.inputsToAll.containsKey(inputs)) {
@@ -55,18 +56,47 @@ public class FluidInfuserRegister {
                 ItemOD toInfuseOD = new ItemOD(toInfuse);
 
                 if (INSTANCE.toMeltToAll.containsKey(toMeltOD)) {
-                    INSTANCE.toMeltToAll.get(toMeltOD).put(toInfuseOD, recipe);
+
+                    HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>> a = INSTANCE.toMeltToAll.get(toMeltOD);
+
+                    if (a.containsKey(toInfuseOD)) {
+                        a.get(toInfuseOD).put(fluidStack.getFluid(), recipe);
+                    } else {
+                        a.put(toInfuseOD, new HashMap<Fluid, FluidInfuserRecipe>());
+                        a.get(toInfuseOD).put(fluidStack.getFluid(), recipe);
+                    }
+
+
                 } else {
-                    INSTANCE.toMeltToAll.put(toMeltOD, new HashMap<ItemOD, FluidInfuserRecipe>());
-                    INSTANCE.toMeltToAll.get(toMeltOD).put(toInfuseOD, recipe);
+
+                    HashMap<Fluid, FluidInfuserRecipe> map = new HashMap<Fluid, FluidInfuserRecipe>();
+                    map.put(fluidStack.getFluid(), recipe);
+
+
+                    INSTANCE.toMeltToAll.put(toMeltOD, new HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>());
+                    INSTANCE.toMeltToAll.get(toMeltOD).put(toInfuseOD, map);
                 }
 
 
                 if (INSTANCE.toInfuseToAll.containsKey(toInfuseOD)) {
-                    INSTANCE.toInfuseToAll.get(toInfuseOD).put(toMeltOD, recipe);
+
+                    HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>> a = INSTANCE.toInfuseToAll.get(toInfuseOD);
+
+                    if (a.containsKey(toMeltOD)) {
+                        a.get(toMeltOD).put(fluidStack.getFluid(), recipe);
+                    } else {
+                        a.put(toMeltOD, new HashMap<Fluid, FluidInfuserRecipe>());
+                        a.get(toMeltOD).put(fluidStack.getFluid(), recipe);
+                    }
+
+
                 } else {
-                    INSTANCE.toInfuseToAll.put(toInfuseOD, new HashMap<ItemOD, FluidInfuserRecipe>());
-                    INSTANCE.toInfuseToAll.get(toInfuseOD).put(toMeltOD, recipe);
+
+                    HashMap<Fluid, FluidInfuserRecipe> map = new HashMap<Fluid, FluidInfuserRecipe>();
+                    map.put(fluidStack.getFluid(), recipe);
+
+                    INSTANCE.toInfuseToAll.put(toInfuseOD, new HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>());
+                    INSTANCE.toInfuseToAll.get(toInfuseOD).put(toMeltOD, map);
                 }
 
 
@@ -78,28 +108,33 @@ public class FluidInfuserRegister {
     }
 
 
-    public static ItemStack getResult(ItemStack toMelt, ItemStack toInfuse) {
-        return INSTANCE.inputsToAll.get(new InputItemStacks(toMelt, toInfuse)).getResult();
+    public static ItemStack getResult(ItemStack toMelt, ItemStack toInfuse, FluidStack fluidStack) {
+
+        InputItemStacks inputItemStacks = new InputItemStacks(toMelt, toInfuse, fluidStack);
+        if (INSTANCE.inputsToAll.containsKey(inputItemStacks)) {
+            return INSTANCE.inputsToAll.get(inputItemStacks).getResult();
+        } else {
+            LogHelper.error("This recipe doesn't exist!");
+            return null;
+        }
     }
 
-    public static FluidInfuserRecipe getFluidInfuserRecipe(ItemStack toMelt, ItemStack toInfuse) {
+    public static FluidInfuserRecipe getFluidInfuserRecipe(ItemStack toMelt, ItemStack toInfuse, FluidStack fluidStack) {
         if (canBeMelted(toMelt, toInfuse)) {
             ItemOD toMeltOD = new ItemOD(toMelt);
             ItemOD toInfuseOD = new ItemOD(toInfuse);
 
-            return INSTANCE.toMeltToAll.get(toMeltOD).get(toInfuseOD);
+            return INSTANCE.toMeltToAll.get(toMeltOD).get(toInfuseOD).get(fluidStack.getFluid());
         } else return null;
     }
 
-    public static FluidStack getFluidStack(ItemStack toMelt, ItemStack toInfuse)
-    {
+    public static Set getFluidSetStack(ItemStack toMelt, ItemStack toInfuse) {
         if (canBeMelted(toMelt, toInfuse)) {
+            ItemOD toMeltOD = new ItemOD(toMelt);
+            ItemOD toInfuseOD = new ItemOD(toInfuse);
 
-            return getFluidInfuserRecipe(toMelt, toInfuse).getFluidStack();
-
-        }
-        else return null;
-
+            return INSTANCE.toMeltToAll.get(toMeltOD).get(toInfuseOD).keySet();
+        } else return null;
     }
 
     public static boolean isUsefulFluid(Fluid fluid) {

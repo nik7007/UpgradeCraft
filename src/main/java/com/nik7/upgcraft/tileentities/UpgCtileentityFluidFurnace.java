@@ -28,8 +28,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
     public int burningTime = 0;
     public int progress = 0;
-    public int fluidLevel = 0;
-    public int capacity;
+
     public boolean isActive = false;
 
     public UpgCtileentityFluidFurnace() {
