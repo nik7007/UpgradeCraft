@@ -12,7 +12,7 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class itemRenderFluidFurnace implements IItemRenderer {
+public class itemRenderFluidInfuser implements IItemRenderer {
 
     private final ModelFluidMachine model = new ModelFluidMachine();
 
@@ -29,7 +29,7 @@ public class itemRenderFluidFurnace implements IItemRenderer {
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 
-        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Texture.Blocks.MODEL_FLUID_FURNACE));
+        FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(Texture.Blocks.MODEL_FLUID_INFUSER));
 
         GL11.glPushMatrix();
 

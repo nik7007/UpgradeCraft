@@ -2,6 +2,7 @@ package com.nik7.upgcraft.proxy;
 
 import com.nik7.upgcraft.client.render.item.ItemRenderWoodenTank;
 import com.nik7.upgcraft.client.render.item.itemRenderFluidFurnace;
+import com.nik7.upgcraft.client.render.item.itemRenderFluidInfuser;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderBasicFluidHopper;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidMachine;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRendererWoodenTank;
@@ -35,6 +36,7 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockWoodenLiquidTank), new ItemRenderWoodenTank());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockFluidFurnace), new itemRenderFluidFurnace());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockFluidInfuse), new itemRenderFluidInfuser());
 
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityTankSmall.class, new TileEntityRendererWoodenTank());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityFluidHopper.class, new TileEntityRenderBasicFluidHopper());

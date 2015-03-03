@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.client.render.tileentity;
 
 
-import com.nik7.upgcraft.client.render.model.ModelFluidFurnace;
+import com.nik7.upgcraft.client.render.model.ModelFluidMachine;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
@@ -21,7 +21,7 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
 
-    private final ModelBase fluidFurnace = new ModelFluidFurnace();
+    private final ModelBase fluidFurnace = new ModelFluidMachine();
     private final ResourceLocation textureFurnace = new ResourceLocation(Texture.Blocks.MODEL_FLUID_FURNACE);
     private final ResourceLocation textureInfuser = new ResourceLocation(Texture.Blocks.MODEL_FLUID_INFUSER);
 

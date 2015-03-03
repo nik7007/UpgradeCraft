@@ -7,7 +7,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
 @SideOnly(Side.CLIENT)
-public class ModelFluidFurnace extends ModelBase {
+public class ModelFluidMachine extends ModelBase {
     //fields
     ModelRenderer top;
     ModelRenderer d;
@@ -21,7 +21,7 @@ public class ModelFluidFurnace extends ModelBase {
     ModelRenderer fd;
     ModelRenderer fT;
 
-    public ModelFluidFurnace() {
+    public ModelFluidMachine() {
         textureWidth = 128;
         textureHeight = 64;
 
