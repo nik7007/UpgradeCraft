@@ -14,7 +14,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-//TODO: add check for constraints
 public class FluidInfuserRegister {
 
     private static final FluidInfuserRegister INSTANCE = new FluidInfuserRegister();
@@ -34,74 +33,79 @@ public class FluidInfuserRegister {
 
         if (fluidStack != null && result != null && toMelt != null && toInfuse != null && ticksToInfuse > 0 && ticksToMelt > 0) {
 
-            InputItemStacks inputs = new InputItemStacks(toMelt, toInfuse, fluidStack);
-            FluidInfuserRecipe recipe = new FluidInfuserRecipe(inputs, fluidStack, result, ticksToInfuse, ticksToMelt);
+            if (checkConstraints(fluidStack, toMelt, ticksToMelt, toInfuse, ticksToInfuse)) {
 
-            if (!INSTANCE.inputsToAll.containsKey(inputs)) {
+                InputItemStacks inputs = new InputItemStacks(toMelt, toInfuse, fluidStack);
+                FluidInfuserRecipe recipe = new FluidInfuserRecipe(inputs, fluidStack, result, ticksToInfuse, ticksToMelt);
 
-                INSTANCE.inputsToAll.put(inputs, recipe);
+                if (!INSTANCE.inputsToAll.containsKey(inputs)) {
 
-                if (!INSTANCE.fluid.contains(fluidStack)) {
-                    INSTANCE.fluid.add(fluidStack.getFluid());
-                }
+                    INSTANCE.inputsToAll.put(inputs, recipe);
 
-                if (INSTANCE.resultToAll.containsKey(result)) {
-                    (INSTANCE.resultToAll.get(result)).add(recipe);
-                } else {
-                    INSTANCE.resultToAll.put(result.getItem(), new HashSet<FluidInfuserRecipe>());
-                    (INSTANCE.resultToAll.get(result.getItem())).add(recipe);
-                }
+                    if (!INSTANCE.fluid.contains(fluidStack)) {
+                        INSTANCE.fluid.add(fluidStack.getFluid());
+                    }
 
-                ItemOD toMeltOD = new ItemOD(toMelt);
-                ItemOD toInfuseOD = new ItemOD(toInfuse);
-
-                if (INSTANCE.toMeltToAll.containsKey(toMeltOD)) {
-
-                    HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>> a = INSTANCE.toMeltToAll.get(toMeltOD);
-
-                    if (a.containsKey(toInfuseOD)) {
-                        a.get(toInfuseOD).put(fluidStack.getFluid(), recipe);
+                    if (INSTANCE.resultToAll.containsKey(result)) {
+                        (INSTANCE.resultToAll.get(result)).add(recipe);
                     } else {
-                        a.put(toInfuseOD, new HashMap<Fluid, FluidInfuserRecipe>());
-                        a.get(toInfuseOD).put(fluidStack.getFluid(), recipe);
+                        INSTANCE.resultToAll.put(result.getItem(), new HashSet<FluidInfuserRecipe>());
+                        (INSTANCE.resultToAll.get(result.getItem())).add(recipe);
+                    }
+
+                    ItemOD toMeltOD = new ItemOD(toMelt);
+                    ItemOD toInfuseOD = new ItemOD(toInfuse);
+
+                    if (INSTANCE.toMeltToAll.containsKey(toMeltOD)) {
+
+                        HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>> a = INSTANCE.toMeltToAll.get(toMeltOD);
+
+                        if (a.containsKey(toInfuseOD)) {
+                            a.get(toInfuseOD).put(fluidStack.getFluid(), recipe);
+                        } else {
+                            a.put(toInfuseOD, new HashMap<Fluid, FluidInfuserRecipe>());
+                            a.get(toInfuseOD).put(fluidStack.getFluid(), recipe);
+                        }
+
+
+                    } else {
+
+                        HashMap<Fluid, FluidInfuserRecipe> map = new HashMap<Fluid, FluidInfuserRecipe>();
+                        map.put(fluidStack.getFluid(), recipe);
+
+
+                        INSTANCE.toMeltToAll.put(toMeltOD, new HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>());
+                        INSTANCE.toMeltToAll.get(toMeltOD).put(toInfuseOD, map);
+                    }
+
+
+                    if (INSTANCE.toInfuseToAll.containsKey(toInfuseOD)) {
+
+                        HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>> a = INSTANCE.toInfuseToAll.get(toInfuseOD);
+
+                        if (a.containsKey(toMeltOD)) {
+                            a.get(toMeltOD).put(fluidStack.getFluid(), recipe);
+                        } else {
+                            a.put(toMeltOD, new HashMap<Fluid, FluidInfuserRecipe>());
+                            a.get(toMeltOD).put(fluidStack.getFluid(), recipe);
+                        }
+
+
+                    } else {
+
+                        HashMap<Fluid, FluidInfuserRecipe> map = new HashMap<Fluid, FluidInfuserRecipe>();
+                        map.put(fluidStack.getFluid(), recipe);
+
+                        INSTANCE.toInfuseToAll.put(toInfuseOD, new HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>());
+                        INSTANCE.toInfuseToAll.get(toInfuseOD).put(toMeltOD, map);
                     }
 
 
                 } else {
-
-                    HashMap<Fluid, FluidInfuserRecipe> map = new HashMap<Fluid, FluidInfuserRecipe>();
-                    map.put(fluidStack.getFluid(), recipe);
-
-
-                    INSTANCE.toMeltToAll.put(toMeltOD, new HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>());
-                    INSTANCE.toMeltToAll.get(toMeltOD).put(toInfuseOD, map);
+                    LogHelper.error("FluidInfuserRegister: Recipe rejected - Duplicated inputs are not allowed!!");
                 }
-
-
-                if (INSTANCE.toInfuseToAll.containsKey(toInfuseOD)) {
-
-                    HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>> a = INSTANCE.toInfuseToAll.get(toInfuseOD);
-
-                    if (a.containsKey(toMeltOD)) {
-                        a.get(toMeltOD).put(fluidStack.getFluid(), recipe);
-                    } else {
-                        a.put(toMeltOD, new HashMap<Fluid, FluidInfuserRecipe>());
-                        a.get(toMeltOD).put(fluidStack.getFluid(), recipe);
-                    }
-
-
-                } else {
-
-                    HashMap<Fluid, FluidInfuserRecipe> map = new HashMap<Fluid, FluidInfuserRecipe>();
-                    map.put(fluidStack.getFluid(), recipe);
-
-                    INSTANCE.toInfuseToAll.put(toInfuseOD, new HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>());
-                    INSTANCE.toInfuseToAll.get(toInfuseOD).put(toMeltOD, map);
-                }
-
-
             } else {
-                LogHelper.error("FluidInfuserRegister: Recipe rejected - Duplicated inputs are not allowed!!");
+                LogHelper.error("FluidInfuserRegister: Impossible to insert this recipe - Violate integrity constraints!");
             }
         }
 
@@ -114,7 +118,7 @@ public class FluidInfuserRegister {
         if (INSTANCE.inputsToAll.containsKey(inputItemStacks)) {
             return INSTANCE.inputsToAll.get(inputItemStacks).getResult();
         } else {
-            LogHelper.error("This recipe doesn't exist!");
+            LogHelper.error("FluidInfuserRegister: This recipe doesn't exist!");
             return null;
         }
     }
@@ -163,6 +167,11 @@ public class FluidInfuserRegister {
         ItemOD toInfuseOD = new ItemOD(toInfuse);
 
         return INSTANCE.toInfuseToAll.containsKey(toInfuseOD) && INSTANCE.toInfuseToAll.get(toInfuseOD).containsKey(toMeltOD);
+    }
+
+    private static boolean checkConstraints(FluidStack fluidStack, ItemStack toMelt, int ticksToMelt, ItemStack toInfuse, int ticksToInfuse) {
+
+        return fluidStack.amount % ticksToMelt == 0 && ticksToMelt % toMelt.stackSize == 0 && ticksToInfuse % toInfuse.stackSize == 0;
     }
 
 }

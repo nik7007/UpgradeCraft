@@ -101,7 +101,6 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
         if (!worldObj.isRemote) {
            boolean oldIsActive = isActive;
 
-
             if (this.tank.getFluidAmount() > 0) {
 
                 if (isOperating) {
@@ -113,21 +112,14 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
                 } else {
                     isOperating = canStart();
-
                 }
-
                isActive = isOperating && (tickInfusing > 0 || tickMelting > 0);
-
             }
-
-
 
             if(isActive != oldIsActive){
                 markDirty();
                 updateModBlock();
             }
-
-
         }
 
     }
