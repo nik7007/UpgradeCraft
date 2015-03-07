@@ -6,7 +6,6 @@ import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,10 +16,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class GuiFluidFurnace extends GuiContainer {
+public class GuiFluidFurnace extends GuiWithFluid {
 
-    private final ResourceLocation fluidFurnaceGuiTextures = new ResourceLocation(Texture.GUI.FLUID_FURNACE);
-    private UpgCtileentityFluidFurnace fluidFurnace;
+    private final static ResourceLocation fluidFurnaceGuiTextures = new ResourceLocation(Texture.GUI.FLUID_FURNACE);
+    private final UpgCtileentityFluidFurnace fluidFurnace;
 
     public GuiFluidFurnace(InventoryPlayer inventoryPlayer, UpgCtileentityFluidFurnace fluidFurnace) {
         super(new ContainerFluidFurnace(inventoryPlayer, fluidFurnace));
@@ -52,25 +51,15 @@ public class GuiFluidFurnace extends GuiContainer {
 
         if (this.fluidFurnace.fluidLevel > 0) {
 
-            int level = (int)this.fluidFurnace.getFluidLevelScaled(32);
+            int level = (int) this.fluidFurnace.getFluidLevelScaled(32);
 
             Fluid fluid = FluidRegistry.getFluid("lava");
 
-            IIcon icon = fluid.getIcon();
-
-            int color = fluid.getColor();
-
-            float r = (color >> 16 & 0xFF) / 255.0F;
-            float g = (color >> 8 & 0xFF) / 255.0F;
-            float b = (color & 0xFF) / 255.0F;
-
-            this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
-
-            GL11.glColor4f(r, g, b, 1.0F);
-
-            this.drawTexturedModelRectFromIcon(xOffset + 26, yOffset + 60 - level, icon, 16, level);
+            super.renderFluid(fluid, xOffset + 26, yOffset + 60, level);
 
         }
 
     }
+
+
 }

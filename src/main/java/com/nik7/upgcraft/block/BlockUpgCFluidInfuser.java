@@ -1,6 +1,8 @@
 package com.nik7.upgcraft.block;
 
 
+import com.nik7.upgcraft.UpgradeCraft;
+import com.nik7.upgcraft.reference.GUIs;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.RenderIds;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
@@ -45,12 +47,11 @@ public class BlockUpgCFluidInfuser extends BlockUpgCContainerOrientable {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        /*if (!world.isRemote) {
-            player.openGui(UpgradeCraft.instance, GUIs.FLUID_FURNACE.ordinal(), world, x, y, z);
+        if (!world.isRemote) {
+            player.openGui(UpgradeCraft.instance, GUIs.FLUID_INFUSER.ordinal(), world, x, y, z);
 
         }
-        return true;*/
-        return false;
+        return true;
     }
 
     @SideOnly(Side.CLIENT)
