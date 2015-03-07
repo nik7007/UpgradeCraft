@@ -58,15 +58,16 @@ public class ContainerFluidFurnace extends ContainerUpgC {
 
     @SideOnly(Side.CLIENT)
     public void updateProgressBar(int index, int value) {
-        if (index == 0) {
-            this.fluidFurnace.burningTime = value;
-        }
-        if (index == 1) {
-            this.fluidFurnace.progress = value;
-        }
-
-        if (index == 2) {
-            this.fluidFurnace.fluidLevel = value;
+        switch (index) {
+            case 0:
+                this.fluidFurnace.burningTime = value;
+                break;
+            case 1:
+                this.fluidFurnace.progress = value;
+                break;
+            case 2:
+                this.fluidFurnace.fluidLevel = value;
+                break;
         }
 
     }
