@@ -30,8 +30,8 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     protected int capacity;
     protected int flammability = 0;
     protected int fireSpreadSpeed = 0;
-    private int oldFlammability = 0;
     protected boolean haveSubBlocks = false;
+    private int oldFlammability = 0;
 
     public BlockUpgCTank(Material material) {
         super(material);
@@ -137,6 +137,28 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
             }
         }
 
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        if (this.flammability > 0) {
+            UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
+
+            if (entity.getTank().isToHot()) {
+                float f = (float) x + 0.5F;
+                float f1 = (float) y + random.nextFloat();
+                float f2 = (float) z + 0.5F;
+                float f3 = 0.52F;
+                float f4 = random.nextFloat() * 0.6F - 0.3F;
+
+                world.spawnParticle("smoke", (double) (f - f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
+                world.spawnParticle("smoke", (double) (f + f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
+                world.spawnParticle("smoke", (double) (f + f4), (double) f1, (double) (f2 - f3), 0.0D, 0.0D, 0.0D);
+                world.spawnParticle("smoke", (double) (f + f4), (double) f1, (double) (f2 + f3), 0.0D, 0.0D, 0.0D);
+
+                world.spawnParticle("smoke", x + 0.5D - random.nextDouble(), (double) y + 1, z + 0.5D - random.nextDouble(), 0.0D, 0.0D, 0.0D);
+            }
+        }
     }
 
     @Override
@@ -263,12 +285,10 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List subItems) {
 
-        if(haveSubBlocks){
-        subItems.add(new ItemStack(this, 1, 0));
-        subItems.add(new ItemStack(this, 1, 1));}
-
-        else
-        {
+        if (haveSubBlocks) {
+            subItems.add(new ItemStack(this, 1, 0));
+            subItems.add(new ItemStack(this, 1, 1));
+        } else {
             super.getSubBlocks(item, tab, subItems);
         }
 
