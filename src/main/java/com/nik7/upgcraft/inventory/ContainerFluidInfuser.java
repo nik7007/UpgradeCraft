@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 
 public class ContainerFluidInfuser extends ContainerUpgC {
@@ -30,7 +29,7 @@ public class ContainerFluidInfuser extends ContainerUpgC {
 
         this.addSlotToContainer(new Slot(fluidInfuser, MELT, 26 + dX, 17));
         this.addSlotToContainer(new Slot(fluidInfuser, INFUSE, 56 + dX, 17));
-        this.addSlotToContainer(new SlotFurnace(playerInventory.player, fluidInfuser, OUTPUT, 116 + dX, 35));
+        this.addSlotToContainer(new SlotInfuser(playerInventory.player, fluidInfuser, OUTPUT, 116 + dX, 35));
 
         addPlayerSlots(playerInventory, 8, 84);
     }

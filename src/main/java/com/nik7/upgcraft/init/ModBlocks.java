@@ -2,6 +2,7 @@ package com.nik7.upgcraft.init;
 
 
 import com.nik7.upgcraft.block.*;
+import com.nik7.upgcraft.item.ItemBlockCSlimyLog;
 import com.nik7.upgcraft.item.ItemBlockWoodenTank;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Reference;
@@ -20,10 +21,10 @@ public class ModBlocks {
     public static void init() {
 
         GameRegistry.registerBlock(blockWoodenLiquidTank, ItemBlockWoodenTank.class, Reference.MOD_ID + "Block" + Names.Blocks.WOODEN_LIQUID_TANK);
-        GameRegistry.registerBlock(blockSlimyLog, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_LOG);
+        GameRegistry.registerBlock(blockSlimyLog, ItemBlockCSlimyLog.class, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_LOG);
         GameRegistry.registerBlock(blockFluidBasicHopper, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_HOPPER);
         GameRegistry.registerBlock(blockFluidFurnace, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_FURNACE);
-        GameRegistry.registerBlock(blockFluidInfuse,Reference.MOD_ID + "Block" + Names.Blocks.FLUID_INFUSE);
+        GameRegistry.registerBlock(blockFluidInfuse, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_INFUSE);
 
     }
 }
