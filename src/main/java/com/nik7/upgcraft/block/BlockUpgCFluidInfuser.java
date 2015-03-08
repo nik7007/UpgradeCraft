@@ -103,11 +103,8 @@ public class BlockUpgCFluidInfuser extends BlockUpgCContainerOrientable {
 
     @Override
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
-        int meta = world.getBlockMetadata(x, y, z);
-        if (meta == 1) {
-            return ((UpgCtileentityInventoryFluidHandler) world.getTileEntity(x, y, z)).getFluidLightLevel();
-        } else
-            return 0;
+        return ((UpgCtileentityInventoryFluidHandler) world.getTileEntity(x, y, z)).getFluidLightLevel();
+
     }
 
 
