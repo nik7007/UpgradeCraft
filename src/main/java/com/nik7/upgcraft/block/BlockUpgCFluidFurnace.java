@@ -11,8 +11,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
@@ -113,16 +111,6 @@ public class BlockUpgCFluidFurnace extends BlockUpgCContainerOrientable {
             return FluidRegistry.getFluid("lava").getLuminosity();
         } else
             return 0;
-    }
-
-    @Override
-    public boolean hasComparatorInputOverride() {
-        return true;
-    }
-
-    @Override
-    public int getComparatorInputOverride(World world, int x, int y, int z, int meta) {
-        return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
     }
 
 

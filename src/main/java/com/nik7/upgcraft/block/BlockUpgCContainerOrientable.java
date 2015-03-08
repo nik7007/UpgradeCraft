@@ -5,6 +5,8 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
@@ -71,5 +73,15 @@ public abstract class BlockUpgCContainerOrientable extends BlockUpgC implements 
             }
         }
 
+    }
+
+    @Override
+    public boolean hasComparatorInputOverride() {
+        return true;
+    }
+
+    @Override
+    public int getComparatorInputOverride(World world, int x, int y, int z, int meta) {
+        return Container.calcRedstoneFromInventory((IInventory) world.getTileEntity(x, y, z));
     }
 }
