@@ -31,6 +31,7 @@ public class Texture {
     public class GUI {
         public final static String TEXTURE_GUI_LOCATION = "textures/gui/";
         public final static String FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "fluidfurnace.png";
+        public final static String FLUID_INFUSER = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "fluidinfuser.png";
 
     }
 

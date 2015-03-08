@@ -2,18 +2,20 @@ package com.nik7.upgcraft.client.gui.inventory;
 
 
 import com.nik7.upgcraft.inventory.ContainerFluidInfuser;
+import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class GuiFluidInfuser extends GuiWithFluid {
 
-    private static final ResourceLocation fluidInfuserGuiTextures = new ResourceLocation("textures/gui/container/furnace.png");
+    private static final ResourceLocation fluidInfuserGuiTextures = new ResourceLocation(Texture.GUI.FLUID_INFUSER);
     private final UpgCtileentityFluidInfuser fluidInfuser;
 
     public GuiFluidInfuser(InventoryPlayer playerInventory, UpgCtileentityFluidInfuser fluidInfuser) {
@@ -37,6 +39,20 @@ public class GuiFluidInfuser extends GuiWithFluid {
         int xOffset = (this.width - this.xSize) / 2;
         int yOffset = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(xOffset, yOffset, 0, 0, this.xSize, this.ySize);
+
+        int inc = fluidInfuser.getMeltingTimeRemainingScaled(13);
+        this.drawTexturedModalRect(xOffset + 46, yOffset + 36 + 13 - inc, 176, 13 - inc, 15, inc);
+
+        inc = fluidInfuser.getInfusingTimeRemainingScaled(24);
+        this.drawTexturedModalRect(xOffset + 99, yOffset + 34, 176, 14, inc + 1, 16);
+
+        if (this.fluidInfuser.fluidLevel > 0) {
+            FluidStack fluid = this.fluidInfuser.getFluid();
+            int level = (int) this.fluidInfuser.getFluidLevelScaled(32);
+
+            super.renderFluid(fluid.getFluid(), xOffset + 16, yOffset + 56, level);
+
+        }
 
 
     }

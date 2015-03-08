@@ -7,6 +7,8 @@ import com.nik7.upgcraft.registry.FluidInfuser.FluidInfuserRecipe;
 import com.nik7.upgcraft.registry.FluidInfuserRegister;
 import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.util.LogHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,14 +24,13 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
     public static int OUTPUT = 4;
     private static final int[] output = {OUTPUT};
     public static int INFUSE_P = 3;
+    public static short FLUID_AMOUNT = 0, FLUID_ID = 1, TICK_FOR_MELT = 2, NUMBER_TO_MELT = 3, TICK_FOR_INFUSE = 4, NUMBER_TO_INFUSE = 5;
     private static int MELT_P = 2;
-    private static short FLUID_AMOUNT = 0, FLUID_ID = 1, TICK_FOR_MELT = 2, NUMBER_TO_MELT = 3, TICK_FOR_INFUSE = 4, NUMBER_TO_INFUSE = 5;
-
     public boolean isActive = false;
+    public int[] properties = {0, -1, 0, 0, 0, 0};
+    public int tickMelting = 0;
+    public int tickInfusing = 0;
     private boolean isOperating = false;
-    private int[] properties = {0, -1, 0, 0, 0, 0};
-    private int tickMelting = 0;
-    private int tickInfusing = 0;
     private int burning = 0;
 
 
@@ -99,7 +100,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
     public void updateEntity() {
 
         if (!worldObj.isRemote) {
-           boolean oldIsActive = isActive;
+            boolean oldIsActive = isActive;
 
             if (this.tank.getFluidAmount() > 0) {
 
@@ -113,10 +114,10 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
                 } else {
                     isOperating = canStart();
                 }
-               isActive = isOperating && (tickInfusing > 0 || tickMelting > 0);
+                isActive = isOperating && (tickInfusing > 0 || tickMelting > 0);
             }
 
-            if(isActive != oldIsActive){
+            if (isActive != oldIsActive) {
                 markDirty();
                 updateModBlock();
             }
@@ -145,7 +146,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     private void infuse() {
 
-        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT_P], itemStacks[INFUSE_P],getFluid());
+        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT_P], itemStacks[INFUSE_P], getFluid());
 
         itemStacks[MELT_P] = null;
         itemStacks[INFUSE_P] = null;
@@ -160,12 +161,35 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
         cleanProcess();
     }
 
+    @SideOnly(Side.CLIENT)
+    public float getFluidLevelScaled(int scaleFactor) {
+        return scaleFactor * (float) fluidLevel / capacity;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getInfusingTimeRemainingScaled(int scaleFactor) {
+
+        if (this.properties[TICK_FOR_INFUSE] != 0 && tickInfusing != 0) {
+            return tickInfusing * scaleFactor / this.properties[TICK_FOR_INFUSE];
+        } else return 0;
+
+    }
+
     private void infusing() {
         tickInfusing++;
         if (tickInfusing % (this.properties[TICK_FOR_INFUSE] / this.properties[NUMBER_TO_INFUSE]) == 0) {
             this.moveItem(INFUSE, INFUSE_P);
             this.properties[NUMBER_TO_INFUSE]--;
         }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getMeltingTimeRemainingScaled(int scaleFactor) {
+
+        if (this.properties[TICK_FOR_MELT] != 0 && tickMelting != 0) {
+            return tickMelting * scaleFactor / this.properties[TICK_FOR_MELT];
+        } else return 0;
+
     }
 
     private void melting() {
@@ -178,6 +202,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
                 this.properties[NUMBER_TO_MELT]--;
                 burning = 0;
             }
+
         }
     }
 
@@ -212,7 +237,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
             return false;
         }
 
-        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT], itemStacks[INFUSE],getFluid());
+        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT], itemStacks[INFUSE], getFluid());
 
         if (recipe != null) {
 
