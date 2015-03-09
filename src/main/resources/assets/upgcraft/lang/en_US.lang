@@ -7,13 +7,13 @@ item.upgcraft:DragonSword.name=Dragon Sword
 
 #Bloks
 tile.upgcraft:WoodenTank.name=Wooden Tank
-tile.upgcraft:SlimyLog.name=Slimy Log
+tile.upgcraft:SlimyLog.name=Slimy Wood Planks
 tile.upgcraft:BasicFluidHopper.name=Basic Fluid Hopper
 tile.upgcraft:FluidFurnace.name=Fluid Furnace
 tile.upgcraft:FluidInfuser.name=Fluid Infuser
 
 #Tooltip
-tooltip.upgcraft:woodentank.hollow=Hollow
+tooltip.upgcraft:woodentank.hollow=Transparent
 
 #Inventory
 upgcraft:container.fluidfurnace=Fluid Furnace
