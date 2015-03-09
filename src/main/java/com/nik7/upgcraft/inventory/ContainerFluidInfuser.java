@@ -109,11 +109,11 @@ public class ContainerFluidInfuser extends ContainerUpgC {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (slotIndex == OUTPUT) {
-                if (!this.mergeItemStack(itemstack1,3, 39, true)) {
+            if (slotIndex == 2) {
+                if (!this.mergeItemStack(itemstack1, 3, 39, true)) {
                     return null;
                 }
-
+                slot.onSlotChange(itemstack1, itemstack);
             } else if (slotIndex != INFUSE && slotIndex != MELT) {
                 if (FluidInfuserRegister.canBeMelted(itemstack1)) {
                     if (!this.mergeItemStack(itemstack1, 0, 1, false)) {

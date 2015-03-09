@@ -10,9 +10,11 @@ tile.upgcraft:WoodenTank.name=Wooden Tank
 tile.upgcraft:SlimyLog.name=Slimy Log
 tile.upgcraft:BasicFluidHopper.name=Basic Fluid Hopper
 tile.upgcraft:FluidFurnace.name=Fluid Furnace
+tile.upgcraft:FluidInfuser.name=Fluid Infuser
 
 #Tooltip
 tooltip.upgcraft:woodentank.hollow=Hollow
 
 #Inventory
 upgcraft:container.fluidfurnace=Fluid Furnace
+upgcraft:container.fluidinfuser=Fluid Infuser
