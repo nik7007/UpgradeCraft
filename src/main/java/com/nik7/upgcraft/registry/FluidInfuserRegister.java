@@ -151,6 +151,10 @@ public class FluidInfuserRegister {
 
     public static boolean canBeMelted(ItemStack toMelt, ItemStack toInfuse) {
 
+        if (toInfuse == null) {
+            return canBeMelted(toMelt);
+        }
+
         ItemOD toMeltOD = new ItemOD(toMelt);
         ItemOD toInfuseOD = new ItemOD(toInfuse);
 
@@ -162,6 +166,10 @@ public class FluidInfuserRegister {
     }
 
     public static boolean canBeInfused(ItemStack toInfuse, ItemStack toMelt) {
+
+        if (toMelt == null) {
+            return canBeInfused(toInfuse);
+        }
 
         ItemOD toMeltOD = new ItemOD(toMelt);
         ItemOD toInfuseOD = new ItemOD(toInfuse);

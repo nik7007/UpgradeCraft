@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.inventory;
 
 
+import com.nik7.upgcraft.registry.FluidInfuserRegister;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -99,8 +100,57 @@ public class ContainerFluidInfuser extends ContainerUpgC {
     }
 
     @Override
-    //TODO
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        return null;
+
+        ItemStack itemstack = null;
+        Slot slot = (Slot) this.inventorySlots.get(slotIndex);
+
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+
+            if (slotIndex == OUTPUT) {
+                if (!this.mergeItemStack(itemstack1,3, 39, true)) {
+                    return null;
+                }
+
+            } else if (slotIndex != INFUSE && slotIndex != MELT) {
+                if (FluidInfuserRegister.canBeMelted(itemstack1)) {
+                    if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+                        return null;
+                    }
+                } else if (FluidInfuserRegister.canBeInfused(itemstack1)) {
+                    if (!this.mergeItemStack(itemstack1, 1, 2, false)) {
+                        return null;
+                    }
+                } else if (slotIndex >= 3 && slotIndex < 30) {
+
+                    if (!this.mergeItemStack(itemstack1, 30, 39, false)) {
+                        return null;
+                    }
+                } else if (slotIndex >= 30 && slotIndex < 39 && !this.mergeItemStack(itemstack1, 3, 30, false)) {
+                    return null;
+                }
+
+            } else if (!this.mergeItemStack(itemstack1, 3, 39, false)) {
+                return null;
+            }
+            if (itemstack1.stackSize == 0) {
+                slot.putStack(null);
+            } else {
+                slot.onSlotChanged();
+            }
+
+            if (itemstack1.stackSize == itemstack.stackSize) {
+                return null;
+            }
+
+            slot.onPickupFromSlot(player, itemstack1);
+
+        }
+
+
+        return itemstack;
     }
+
 }
