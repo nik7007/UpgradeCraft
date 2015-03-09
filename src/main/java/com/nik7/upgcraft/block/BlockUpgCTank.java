@@ -145,19 +145,28 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
             UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
 
             if (entity.getTank().isToHot()) {
-                float f = (float) x + 0.5F;
-                float f1 = (float) y + random.nextFloat();
-                float f2 = (float) z + 0.5F;
-                float f3 = 0.52F;
-                float f4 = random.nextFloat() * 0.6F - 0.3F;
-
-                world.spawnParticle("smoke", (double) (f - f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("smoke", (double) (f + f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("smoke", (double) (f + f4), (double) f1, (double) (f2 - f3), 0.0D, 0.0D, 0.0D);
-                world.spawnParticle("smoke", (double) (f + f4), (double) f1, (double) (f2 + f3), 0.0D, 0.0D, 0.0D);
-
-                world.spawnParticle("smoke", x + 0.5D - random.nextDouble(), (double) y + 1, z + 0.5D - random.nextDouble(), 0.0D, 0.0D, 0.0D);
+                spawnParticle(world, x, y, z, random, "smoke");
             }
+        }
+    }
+
+    protected void spawnParticle(World world, int x, int y, int z, Random random, String... strings) {
+
+        float f = (float) x + 0.5F;
+        float f1 = (float) y + random.nextFloat();
+        float f2 = (float) z + 0.5F;
+        float f3 = 0.52F;
+        float f4 = random.nextFloat() * 0.6F - 0.3F;
+
+        for (String s : strings) {
+
+
+            world.spawnParticle(s, (double) (f - f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
+            world.spawnParticle(s, (double) (f + f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
+            world.spawnParticle(s, (double) (f + f4), (double) f1, (double) (f2 - f3), 0.0D, 0.0D, 0.0D);
+            world.spawnParticle(s, (double) (f + f4), (double) f1, (double) (f2 + f3), 0.0D, 0.0D, 0.0D);
+
+            world.spawnParticle(s, x + 0.5D - random.nextDouble(), (double) y + 1, z + 0.5D - random.nextDouble(), 0.0D, 0.0D, 0.0D);
         }
     }
 
