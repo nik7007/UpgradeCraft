@@ -40,7 +40,8 @@ public class ItemOD {
             return nameOD.hashCode();
         } else {
             ItemStack stack = new ItemStack(this.itemStack.getItem(), 1, this.itemStack.getItemDamage());
-            return stack.hashCode();
+            String name = stack.toString();
+            return name.hashCode();
         }
     }
 

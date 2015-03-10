@@ -1,5 +1,6 @@
 package com.nik7.upgcraft.init;
 
+import com.nik7.upgcraft.item.ItemClayIronIngot;
 import com.nik7.upgcraft.item.ItemConcentratedEnderPearl;
 import com.nik7.upgcraft.item.ItemDragonSword;
 import com.nik7.upgcraft.item.ItemUpgC;
@@ -12,10 +13,12 @@ public class ModItems {
 
     public static ItemUpgC itemDragonSword = new ItemDragonSword();
     public static ItemUpgC itemConcentratedEnderPearl = new ItemConcentratedEnderPearl();
+    public static ItemUpgC itemClayeyIronIngot = new ItemClayIronIngot();
 
     public static void init() {
 
         GameRegistry.registerItem(itemDragonSword, Reference.MOD_ID + "Item" + Names.Items.DRAGON_SWORD);
         GameRegistry.registerItem(itemConcentratedEnderPearl, Reference.MOD_ID + "Item" + Names.Items.CONCENTRATED_ENDER_PEARL);
+        GameRegistry.registerItem(itemClayeyIronIngot, Reference.MOD_ID + "Item" + Names.Items.CLAY_IRON_INGOT);
     }
 }

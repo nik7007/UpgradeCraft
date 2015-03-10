@@ -75,7 +75,12 @@ public class FluidInfuserRegister {
 
 
                         INSTANCE.toMeltToAll.put(toMeltOD, new HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>());
-                        INSTANCE.toMeltToAll.get(toMeltOD).put(toInfuseOD, map);
+
+                        boolean c = INSTANCE.toMeltToAll.containsKey(toMeltOD);
+
+                        HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>> a = INSTANCE.toMeltToAll.get(toMeltOD);
+                        a.put(toInfuseOD, map);
+
                     }
 
 

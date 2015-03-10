@@ -17,6 +17,7 @@ public class Names {
 
         public final static String DRAGON_SWORD = "DragonSword";
         public final static String CONCENTRATED_ENDER_PEARL = "ConcentratedEnderPearl";
+        public final static String CLAY_IRON_INGOT = "ClayIronIngot";
 
     }
 

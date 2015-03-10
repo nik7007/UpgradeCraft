@@ -4,6 +4,7 @@ import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.RenderIds;
 import com.nik7.upgcraft.reference.Texture;
+import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTankSmall;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,6 +15,8 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import java.util.Random;
 
 
 public class BlockWoodenLiquidTank extends BlockUpgCTank {
@@ -44,6 +47,18 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
         return fireSpreadSpeed;
+    }
+
+
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        if (this.flammability > 0) {
+            UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
+
+            if (entity.getTank().isToHot()) {
+                spawnParticle(world, x, y, z, random, "smoke");
+            }
+        }
     }
 
 

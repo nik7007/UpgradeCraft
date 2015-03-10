@@ -139,17 +139,6 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     }
 
-    @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-        if (this.flammability > 0) {
-            UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
-
-            if (entity.getTank().isToHot()) {
-                spawnParticle(world, x, y, z, random, "smoke");
-            }
-        }
-    }
-
     protected void spawnParticle(World world, int x, int y, int z, Random random, String... strings) {
 
         float f = (float) x + 0.5F;
