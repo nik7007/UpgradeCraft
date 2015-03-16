@@ -153,10 +153,10 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
         if (itemStacks[OUTPUT] == null) {
 
-            itemStacks[OUTPUT] = new ItemStack(recipe.getResult().getItem(), 1, recipe.getResult().getItemDamage());
+            itemStacks[OUTPUT] = new ItemStack(recipe.getResult().getItem(), recipe.getResult().stackSize, recipe.getResult().getItemDamage());
 
         } else {
-            itemStacks[OUTPUT].stackSize++;
+            itemStacks[OUTPUT].stackSize+=recipe.getResult().stackSize;
         }
         cleanProcess();
     }
