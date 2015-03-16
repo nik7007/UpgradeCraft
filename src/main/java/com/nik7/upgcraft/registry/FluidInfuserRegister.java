@@ -33,7 +33,7 @@ public class FluidInfuserRegister {
 
         if (fluidStack != null && result != null && toMelt != null && toInfuse != null && ticksToInfuse > 0 && ticksToMelt > 0) {
 
-            if (checkConstraints(fluidStack, toMelt, ticksToMelt, toInfuse, ticksToInfuse)) {
+            if (checkConstraints(fluidStack, toMelt, ticksToMelt)) {
 
                 InputItemStacks inputs = new InputItemStacks(toMelt, toInfuse, fluidStack);
                 FluidInfuserRecipe recipe = new FluidInfuserRecipe(inputs, fluidStack, result, ticksToInfuse, ticksToMelt);
@@ -182,9 +182,9 @@ public class FluidInfuserRegister {
         return INSTANCE.toInfuseToAll.containsKey(toInfuseOD) && INSTANCE.toInfuseToAll.get(toInfuseOD).containsKey(toMeltOD);
     }
 
-    private static boolean checkConstraints(FluidStack fluidStack, ItemStack toMelt, int ticksToMelt, ItemStack toInfuse, int ticksToInfuse) {
+    private static boolean checkConstraints(FluidStack fluidStack, ItemStack toMelt, int ticksToMelt) {
 
-        return fluidStack.amount % ticksToMelt == 0 && ticksToMelt % toMelt.stackSize == 0 && ticksToInfuse % toInfuse.stackSize == 0;
+        return fluidStack.amount % ticksToMelt == 0 && ticksToMelt % toMelt.stackSize == 0;
     }
 
 }

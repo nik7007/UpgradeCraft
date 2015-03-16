@@ -156,7 +156,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
             itemStacks[OUTPUT] = new ItemStack(recipe.getResult().getItem(), recipe.getResult().stackSize, recipe.getResult().getItemDamage());
 
         } else {
-            itemStacks[OUTPUT].stackSize+=recipe.getResult().stackSize;
+            itemStacks[OUTPUT].stackSize += recipe.getResult().stackSize;
         }
         cleanProcess();
     }
@@ -177,9 +177,13 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     private void infusing() {
         tickInfusing++;
-        if (tickInfusing % (this.properties[TICK_FOR_INFUSE] / this.properties[NUMBER_TO_INFUSE]) == 0) {
-            this.moveItem(INFUSE, INFUSE_P);
-            this.properties[NUMBER_TO_INFUSE]--;
+        if (itemStacks[INFUSE] != null && itemStacks[INFUSE_P] == null) {
+            itemStacks[INFUSE_P] = new ItemStack(itemStacks[INFUSE].getItem(), properties[NUMBER_TO_INFUSE], itemStacks[INFUSE].getItemDamage());
+            itemStacks[INFUSE].stackSize -= properties[NUMBER_TO_INFUSE];
+            if (itemStacks[INFUSE].stackSize <= 0) {
+                itemStacks[INFUSE] = null;
+            }
+            this.properties[NUMBER_TO_INFUSE] = 0;
         }
     }
 
@@ -252,7 +256,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
             int nToMelt = recipe.getNumberItemToMelt();
             int nToInfuse = recipe.getNumberItemToInfuse();
 
-            boolean result = itemStacks[MELT].stackSize > 0 && itemStacks[INFUSE].stackSize > 0; // for prevent any possibles future bugs...
+            boolean result = itemStacks[MELT].stackSize >= recipe.getNumberItemToMelt() && itemStacks[INFUSE].stackSize >= recipe.getNumberItemToInfuse(); // for prevent any possibles future bugs...
 
             if (!result) {
                 return false;
