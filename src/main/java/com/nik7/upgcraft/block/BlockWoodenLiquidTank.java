@@ -5,7 +5,7 @@ import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.RenderIds;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
-import com.nik7.upgcraft.tileentities.UpgCtileentityTankSmall;
+import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenTankSmall;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -36,7 +36,7 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
 
         this.haveSubBlocks = true;
 
-        this.capacity = Capacity.SMALL_WOODEN_TANK;
+        this.capacity = Capacity.SMALL_TANK;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
 
     @Override
     public int getRenderType() {
-        return RenderIds.WOODEN_FLUID_TANK;
+        return RenderIds.FLUID_TANK;
     }
 
     @Override
@@ -115,7 +115,7 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new UpgCtileentityTankSmall();
+        return new UpgCtileentityWoodenTankSmall();
     }
 
 

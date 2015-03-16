@@ -8,13 +8,16 @@ item.upgcraft:ClayIronIngot.name=Clay Iron Ingot
 
 #Bloks
 tile.upgcraft:WoodenTank.name=Wooden Tank
+tile.upgcraft:ClayTank.name=Clay Tank
+tile.upgcraft:ClayTank.Hardened.name=Hardened Clay Tank
 tile.upgcraft:SlimyLog.name=Slimy Wood Planks
 tile.upgcraft:BasicFluidHopper.name=Basic Fluid Hopper
 tile.upgcraft:FluidFurnace.name=Fluid Furnace
 tile.upgcraft:FluidInfuser.name=Fluid Infuser
 
 #Tooltip
-tooltip.upgcraft:woodentank.hollow=Transparent
+tooltip.upgcraft:tank.hollow=Transparent
+tooltip.upgcraft:tank.tobecooked=This should be cooked into something hotter than a regular furnace...
 
 #Inventory
 upgcraft:container.fluidfurnace=Fluid Furnace

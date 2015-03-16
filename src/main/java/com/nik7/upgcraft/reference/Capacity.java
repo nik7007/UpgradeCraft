@@ -4,7 +4,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class Capacity {
 
-    public final static int SMALL_WOODEN_TANK = 3 * 9 * FluidContainerRegistry.BUCKET_VOLUME;
+    public final static int SMALL_TANK = 3 * 9 * FluidContainerRegistry.BUCKET_VOLUME;
     public final static int FLUID_HOPPER_TANK = 5 * FluidContainerRegistry.BUCKET_VOLUME;
     public final static int INTERNAL_FLUID_TANK_TR1 = 22 * FluidContainerRegistry.BUCKET_VOLUME;
 

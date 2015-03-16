@@ -7,6 +7,7 @@ public class Names {
     public class Blocks {
 
         public final static String WOODEN_LIQUID_TANK = "WoodenTank";
+        public final static String CLAY_LIQUID_TANK = "ClayTank";
         public final static String SLIMY_LOG = "SlimyLog";
         public final static String FLUID_HOPPER = "FluidHopper";
         public final static String FLUID_FURNACE = "FluidFurnace";
