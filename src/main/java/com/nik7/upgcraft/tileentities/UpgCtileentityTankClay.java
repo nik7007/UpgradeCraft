@@ -3,14 +3,19 @@ package com.nik7.upgcraft.tileentities;
 
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.tank.UpgCTank;
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.IFluidBlock;
 
 public class UpgCtileentityTankClay extends UpgCtileentityTank {
 
     private static int TOTAL_PROGRESS = 200;
+    private static int AMOUNT_LOST = 5;
+    public boolean isCooking = false;
     private int progress = TOTAL_PROGRESS;
-    private int amountLost = 5;
 
     public UpgCtileentityTankClay() {
         super();
@@ -19,26 +24,47 @@ public class UpgCtileentityTankClay extends UpgCtileentityTank {
 
     }
 
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        if (getBlockMetadata() < 2) {
+            progress = tag.getInteger("progress");
+            isCooking = tag.getBoolean("isCooking");
+        }
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        if (getBlockMetadata() < 2) {
+            tag.setInteger("progress", progress);
+            tag.setBoolean("isCooking", isCooking);
+        }
+    }
+
     public void updateEntity() {
         super.updateEntity();
         if (getBlockMetadata() < 2) {
+
+            if (progress <= 0) {
+                int newMeta;
+                if (getBlockMetadata() == 0) {
+                    newMeta = 2;
+
+
+                } else newMeta = 3;
+
+                this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, newMeta, 3);
+            }
+
+            cook();
+
             if (getFluid() != null) {
-                this.drain(ForgeDirection.UNKNOWN, amountLost, true);
-
+                this.drain(ForgeDirection.UNKNOWN, AMOUNT_LOST, true);
                 if (this.getTank().isToHot()) {
-                    if (progress <= 0) {
-                        int newMeta;
-                        if (getBlockMetadata() == 0) {
-                            newMeta = 2;
 
-
-                        } else newMeta = 3;
-
-                        this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, newMeta, 3);
-                    } else {
-                        progress--;
-                        this.drain(ForgeDirection.UNKNOWN, 2 * amountLost, true);
-                    }
+                    progress--;
+                    this.drain(ForgeDirection.UNKNOWN, 2 * AMOUNT_LOST, true);
 
                 } else if (progress < TOTAL_PROGRESS)
                     progress++;
@@ -48,6 +74,42 @@ public class UpgCtileentityTankClay extends UpgCtileentityTank {
             }
 
         }
+    }
+
+    private void cook() {
+        boolean result;
+        result = isBlockFluidHot(xCoord + 1, yCoord, zCoord);
+        result |= isBlockFluidHot(xCoord - 1, yCoord, zCoord);
+        result |= isBlockFluidHot(xCoord, yCoord + 1, zCoord);
+        result |= isBlockFluidHot(xCoord, yCoord - 1, zCoord);
+        result |= isBlockFluidHot(xCoord, yCoord, zCoord + 1);
+        result |= isBlockFluidHot(xCoord, yCoord, zCoord - 1);
+
+        isCooking = result;
+        if (isCooking) {
+            progress--;
+        }
+        if (getFluid() != null) {
+            isCooking = this.getTank().isToHot();
+        }
+
+    }
+
+    private boolean isBlockFluidHot(int x, int y, int z) {
+
+        Block block = worldObj.getBlock(x, y, z);
+        String name = block.getUnlocalizedName();
+
+        if (block instanceof IFluidBlock) {
+            Fluid fluid = ((IFluidBlock) block).getFluid();
+
+            return fluid.getTemperature() > (300 + 273);
+
+        } else if (name.equals("tile.lava")) {
+            return true;
+        }
+
+        return false;
     }
 
     @Override

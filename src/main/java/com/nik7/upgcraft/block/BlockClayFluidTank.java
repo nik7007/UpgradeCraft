@@ -57,7 +57,7 @@ public class BlockClayFluidTank extends BlockUpgCTank {
             int meta = entity.getBlockMetadata();
 
             if (meta < 2) {
-                boolean hot = ((UpgCtileentityTankClay) entity).getTank().isToHot();
+                boolean hot = ((UpgCtileentityTankClay) entity).isCooking;
                 if (hot) {
                     spawnParticle(world, x, y, z, random, "smoke");
                 }
