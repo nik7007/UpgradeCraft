@@ -3,7 +3,6 @@ package com.nik7.upgcraft.tileentities;
 
 import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.reference.Capacity;
-import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -18,9 +17,7 @@ public class UpgCtilientityFluidHopper extends UpgCtileentityTank {
     protected int speed = Capacity.Speed.BASIC_FLUID_HOPPER_SPEED;
 
     public UpgCtilientityFluidHopper() {
-        super();
-        this.setTank(new UpgCTank(Capacity.FLUID_HOPPER_TANK));
-
+        super(Capacity.FLUID_HOPPER_TANK);
     }
 
     @Override

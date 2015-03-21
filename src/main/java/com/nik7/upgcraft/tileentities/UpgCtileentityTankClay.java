@@ -2,7 +2,6 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.reference.Capacity;
-import com.nik7.upgcraft.tank.UpgCTank;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -12,34 +11,29 @@ import net.minecraftforge.fluids.IFluidBlock;
 
 public class UpgCtileentityTankClay extends UpgCtileentityTank {
 
-    private static int TOTAL_PROGRESS = 200;
-    private static int AMOUNT_LOST = 5;
+    private static final int TOTAL_PROGRESS = 200;
+    private static final int AMOUNT_LOST = 5;
     public boolean isCooking = false;
     private int progress = TOTAL_PROGRESS;
 
     public UpgCtileentityTankClay() {
-        super();
-        setTank(new UpgCTank(Capacity.SMALL_TANK));
-        setCanBeDouble(true);
+        super(Capacity.SMALL_TANK, true);
 
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        if (getBlockMetadata() < 2) {
-            progress = tag.getInteger("progress");
-            isCooking = tag.getBoolean("isCooking");
-        }
+        progress = tag.getInteger("progress");
+        isCooking = tag.getBoolean("isCooking");
+
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        if (getBlockMetadata() < 2) {
-            tag.setInteger("progress", progress);
-            tag.setBoolean("isCooking", isCooking);
-        }
+        tag.setInteger("progress", progress);
+        tag.setBoolean("isCooking", isCooking);
     }
 
     public void updateEntity() {

@@ -18,11 +18,40 @@ import net.minecraftforge.fluids.TileFluidHandler;
 
 public abstract class UpgCtileentityTank extends TileFluidHandler {
 
+    private final int TANK_CAPACITY;
     public UpgCtileentityTank adjacentTankYPos = null;
     public UpgCtileentityTank adjacentTankYNeg = null;
     private boolean canBeDouble = false;
     private boolean isDouble = false;
     private boolean isTop = false;
+
+    protected UpgCtileentityTank(int tankCapacity, boolean canBeDouble) {
+
+        this(tankCapacity);
+        setCanBeDouble(canBeDouble);
+
+    }
+
+    protected UpgCtileentityTank(int tankCapacity) {
+        super();
+        this.TANK_CAPACITY = tankCapacity;
+        this.setTank(new UpgCTank(tankCapacity));
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        isDouble = tag.getBoolean("isDouble");
+        isTop = tag.getBoolean("isTop");
+
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        tag.setBoolean("isDouble", isDouble);
+        tag.setBoolean("isTop", isTop);
+    }
 
     public boolean isCanBeDouble() {
         return canBeDouble;
@@ -137,8 +166,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     }
 
     @Override
-    public Packet getDescriptionPacket()
-    {
+    public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
         writeToNBT(tag);
 
@@ -146,8 +174,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet)
-    {
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
         readFromNBT(packet.func_148857_g());
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
@@ -157,8 +184,18 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     private void findAdjacentTank() {
 
         boolean shouldBeDouble = true;
+
+        if (this.adjacentTankYNeg != null) {
+            this.adjacentTankYNeg.separateTank();
+        }
+        if (this.adjacentTankYPos != null) {
+            this.adjacentTankYPos.separateTank();
+        }
+
         this.adjacentTankYNeg = null;
         this.adjacentTankYPos = null;
+
+        separateTank();
 
         if (isCanBeDouble()) {
 
@@ -215,7 +252,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     private void mergeTank(UpgCtileentityTank other) {
 
-        int capacity = ((BlockUpgCTank) getWorldObj().getBlock(xCoord, yCoord, zCoord)).getCapacity();
+        int capacity = this.TANK_CAPACITY;
 
         UpgCTank newUpgCTank;
 
@@ -243,7 +280,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
                 other.setTank(newUpgCTank);
 
             } else {
-                LogHelper.fatal("This two tank can't be merged:at least one of two has already a double tank container!!");
+                LogHelper.debug("This two tank can't be merged:at least one of two has already a double tank container!!");
             }
         } else {
 
@@ -290,7 +327,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     }
 
     private void separateTank() {
-        int capacity = ((BlockUpgCTank) getWorldObj().getBlock(xCoord, yCoord, zCoord)).getCapacity();
+        int capacity = this.TANK_CAPACITY;
 
         if (this.getTank().getCapacity() == capacity * 2) {
             UpgCTank upgCTank = new UpgCTank(capacity);
