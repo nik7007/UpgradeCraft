@@ -40,7 +40,9 @@ public class ItemBlockClayTank extends ItemBlock {
             list.add(StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.hollow"));
         }
         if (metaData < 2) {
-            list.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.tobecooked"));
+            list.add("");
+            list.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.tobecooked.t"));
+            list.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.tobecooked.b"));
         }
 
     }

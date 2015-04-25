@@ -17,7 +17,8 @@ tile.upgcraft:FluidInfuser.name=Fluid Infuser
 
 #Tooltip
 tooltip.upgcraft:tank.hollow=Transparent
-tooltip.upgcraft:tank.tobecooked=This should be cooked into something hotter than a regular furnace...
+tooltip.upgcraft:tank.tobecooked.t=This should be cooked into something
+tooltip.upgcraft:tank.tobecooked.b=hotter than a regular furnace...
 
 #Inventory
 upgcraft:container.fluidfurnace=Fluid Furnace
