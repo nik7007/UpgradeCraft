@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -23,6 +24,10 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
 
     @SideOnly(Side.CLIENT)
     private IIcon icon;
+
+    private int flammability = 0;
+    private int fireSpreadSpeed = 0;
+    private int oldFlammability = 0;
 
     public BlockWoodenLiquidTank() {
         super(Material.wood);
@@ -59,6 +64,78 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
                 spawnParticle(world, x, y, z, random, "smoke");
             }
         }
+    }
+
+    @Override
+    public void updateTick(World world, int x, int y, int z, Random rand) {
+        boolean canBurn = flammability > 0;
+        UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
+        boolean toHot = entity.getTank().isToHot();
+
+        if (toHot && canBurn) {
+
+            if (oldFlammability == 0)
+                oldFlammability = flammability;
+            flammability = 75;
+
+            if (!setInFire(world, x, y, z))
+                setInFireNeighbors(world, x, y, z);
+
+        }
+
+        if ((!toHot || !canBurn) && oldFlammability > 0)
+            flammability = oldFlammability;
+
+    }
+
+    private boolean setInFireNeighbors(World world, int x, int y, int z) {
+
+        if (world.getBlock(x, y + 1, z).isFlammable(world, x, y + 1, z, ForgeDirection.UNKNOWN)) {
+            return setInFire(world, x, y + 1, z);
+
+        } else if (world.getBlock(x, y, z + 1).isFlammable(world, x, y, z + 1, ForgeDirection.UNKNOWN)) {
+            return setInFire(world, x, y, z + 1);
+
+        } else if (world.getBlock(x, y, z - 1).isFlammable(world, x, y, z - 1, ForgeDirection.UNKNOWN)) {
+            return setInFire(world, x, y, z - 1);
+
+        } else if (world.getBlock(x + 1, y, z).isFlammable(world, x + 1, y, z, ForgeDirection.UNKNOWN)) {
+            return setInFire(world, x + 1, y, z);
+
+        } else if (world.getBlock(x - 1, y, z).isFlammable(world, x - 1, y, z, ForgeDirection.UNKNOWN)) {
+            return setInFire(world, x - 1, y, z);
+
+        } else if (world.getBlock(x, y - 1, z).isFlammable(world, x, y - 1, z, ForgeDirection.UNKNOWN)) {
+            return setInFire(world, x, y - 1, z);
+
+        }
+
+        return false;
+    }
+
+    private boolean setInFire(World world, int x, int y, int z) {
+
+        if (world.isAirBlock(x, y + 1, z)) {
+            world.setBlock(x, y + 1, z, Blocks.fire);
+            return true;
+        } else if (world.isAirBlock(x, y - 1, z)) {
+            world.setBlock(x, y - 1, z, Blocks.fire);
+            return true;
+        } else if (world.isAirBlock(x, y, z + 1)) {
+            world.setBlock(x, y, z + 1, Blocks.fire);
+            return true;
+        } else if (world.isAirBlock(x, y, z - 1)) {
+            world.setBlock(x, y, z - 1, Blocks.fire);
+            return true;
+        } else if (world.isAirBlock(x + 1, y, z)) {
+            world.setBlock(x + 1, y, z, Blocks.fire);
+            return true;
+        } else if (world.isAirBlock(x - 1, y, z)) {
+            world.setBlock(x - 1, y, z, Blocks.fire);
+            return true;
+        }
+
+        return false;
     }
 
 

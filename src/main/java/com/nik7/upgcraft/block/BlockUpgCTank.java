@@ -12,13 +12,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -28,10 +26,7 @@ import java.util.Random;
 public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider {
 
     protected int capacity;
-    protected int flammability = 0;
-    protected int fireSpreadSpeed = 0;
     protected boolean haveSubBlocks = false;
-    private int oldFlammability = 0;
 
     public BlockUpgCTank(Material material) {
         super(material);
@@ -159,77 +154,6 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         }
     }
 
-    @Override
-    public void updateTick(World world, int x, int y, int z, Random rand) {
-        boolean canBurn = flammability > 0;
-        UpgCtileentityTank entity = (UpgCtileentityTank) world.getTileEntity(x, y, z);
-        boolean toHot = entity.getTank().isToHot();
-
-        if (toHot && canBurn) {
-
-            if (oldFlammability == 0)
-                oldFlammability = flammability;
-            flammability = 75;
-
-            if (!setInFire(world, x, y, z))
-                setInFireNeighbors(world, x, y, z);
-
-        }
-
-        if ((!toHot || !canBurn) && oldFlammability > 0)
-            flammability = oldFlammability;
-
-    }
-
-    private boolean setInFire(World world, int x, int y, int z) {
-
-        if (world.isAirBlock(x, y + 1, z)) {
-            world.setBlock(x, y + 1, z, Blocks.fire);
-            return true;
-        } else if (world.isAirBlock(x, y - 1, z)) {
-            world.setBlock(x, y - 1, z, Blocks.fire);
-            return true;
-        } else if (world.isAirBlock(x, y, z + 1)) {
-            world.setBlock(x, y, z + 1, Blocks.fire);
-            return true;
-        } else if (world.isAirBlock(x, y, z - 1)) {
-            world.setBlock(x, y, z - 1, Blocks.fire);
-            return true;
-        } else if (world.isAirBlock(x + 1, y, z)) {
-            world.setBlock(x + 1, y, z, Blocks.fire);
-            return true;
-        } else if (world.isAirBlock(x - 1, y, z)) {
-            world.setBlock(x - 1, y, z, Blocks.fire);
-            return true;
-        }
-
-        return false;
-    }
-
-    private boolean setInFireNeighbors(World world, int x, int y, int z) {
-
-        if (world.getBlock(x, y + 1, z).isFlammable(world, x, y + 1, z, ForgeDirection.UNKNOWN)) {
-            return setInFire(world, x, y + 1, z);
-
-        } else if (world.getBlock(x, y, z + 1).isFlammable(world, x, y, z + 1, ForgeDirection.UNKNOWN)) {
-            return setInFire(world, x, y, z + 1);
-
-        } else if (world.getBlock(x, y, z - 1).isFlammable(world, x, y, z - 1, ForgeDirection.UNKNOWN)) {
-            return setInFire(world, x, y, z - 1);
-
-        } else if (world.getBlock(x + 1, y, z).isFlammable(world, x + 1, y, z, ForgeDirection.UNKNOWN)) {
-            return setInFire(world, x + 1, y, z);
-
-        } else if (world.getBlock(x - 1, y, z).isFlammable(world, x - 1, y, z, ForgeDirection.UNKNOWN)) {
-            return setInFire(world, x - 1, y, z);
-
-        } else if (world.getBlock(x, y - 1, z).isFlammable(world, x, y - 1, z, ForgeDirection.UNKNOWN)) {
-            return setInFire(world, x, y - 1, z);
-
-        }
-
-        return false;
-    }
 
     @Override
     public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
@@ -282,6 +206,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item item, CreativeTabs tab, List subItems) {
+
 
         if (haveSubBlocks) {
             subItems.add(new ItemStack(this, 1, 0));
