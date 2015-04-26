@@ -37,36 +37,40 @@ public class UpgCtileentityTankClay extends UpgCtileentityTank {
     }
 
     public void updateEntity() {
+
         super.updateEntity();
-        if (getBlockMetadata() < 2) {
 
-            if (progress <= 0) {
-                int newMeta;
-                if (getBlockMetadata() == 0) {
-                    newMeta = 2;
+        if (!worldObj.isRemote) {
+            if (getBlockMetadata() < 2) {
+
+                if (progress <= 0) {
+                    int newMeta;
+                    if (getBlockMetadata() == 0) {
+                        newMeta = 2;
 
 
-                } else newMeta = 3;
+                    } else newMeta = 3;
 
-                this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, newMeta, 3);
+                    this.worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, newMeta, 3);
+                }
+
+                cook();
+
+                if (getFluid() != null) {
+                    this.drain(ForgeDirection.UNKNOWN, AMOUNT_LOST, true);
+                    if (this.getTank().isToHot()) {
+
+                        progress--;
+                        this.drain(ForgeDirection.UNKNOWN, 2 * AMOUNT_LOST, true);
+
+                    } else if (progress < TOTAL_PROGRESS)
+                        progress++;
+                    else if (progress > TOTAL_PROGRESS)
+                        progress = TOTAL_PROGRESS;
+
+                }
+
             }
-
-            cook();
-
-            if (getFluid() != null) {
-                this.drain(ForgeDirection.UNKNOWN, AMOUNT_LOST, true);
-                if (this.getTank().isToHot()) {
-
-                    progress--;
-                    this.drain(ForgeDirection.UNKNOWN, 2 * AMOUNT_LOST, true);
-
-                } else if (progress < TOTAL_PROGRESS)
-                    progress++;
-                else if (progress > TOTAL_PROGRESS)
-                    progress = TOTAL_PROGRESS;
-
-            }
-
         }
     }
 
