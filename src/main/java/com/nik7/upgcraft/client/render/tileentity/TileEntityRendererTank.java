@@ -21,16 +21,16 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityRendererTank extends TileEntitySpecialRenderer {
 
-    private final ModelBase smallModelTank = new ModelTank();
-    private final ModelBase doubleModelTank = new ModelDoubleTank();
+    private final static ModelBase smallModelTank = new ModelTank();
+    private final static ModelBase doubleModelTank = new ModelDoubleTank();
 
-    private final float xMin = 0.063f;
-    private final float yMin = 0.06f;
-    private final float zMin = 0.063f;
+    private final static float xMin = 0.063f;
+    private final static float yMin = 0.06f;
+    private final static float zMin = 0.063f;
 
-    private final float xMaz = 0.937f;
-    private final float yMaz = 0.9f;
-    private final float zMaz = 0.937f;
+    private final static float xMaz = 0.937f;
+    private final static float yMaz = 0.9f;
+    private final static float zMaz = 0.937f;
 
 
     @Override
