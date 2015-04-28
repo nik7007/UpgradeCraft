@@ -179,23 +179,91 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
-    protected abstract boolean tileEntityInstanceOf(TileEntity tileEntity);
+    protected abstract boolean canMerge(TileEntity tileEntity);
+
+
+    private void merge() {
+
+        if (!(getTank().getCapacity() == 2 * this.TANK_CAPACITY)) {
+
+            UpgCtileentityTank tank;
+            FluidStack fluidStack = this.getFluid();
+
+            if (isTop)
+                tank = adjacentTankYNeg;
+            else tank = adjacentTankYPos;
+
+
+            UpgCTank cTank = tank.getTank();
+
+            if (cTank.getCapacity() == this.TANK_CAPACITY) {
+
+                cTank = new UpgCTank(2 * TANK_CAPACITY);
+            } else if (cTank.getCapacity() != 2 * this.TANK_CAPACITY)
+                LogHelper.error("Unknow tank capacity: " + cTank.getCapacity());
+
+            this.setTank(cTank);
+
+            this.tank.fill(fluidStack, true);
+
+        }
+
+    }
+
+    private void separate() {
+
+        if (!(getTank().getCapacity() == this.TANK_CAPACITY)) {
+
+            int amount = 0;
+            FluidStack fluidStack = null;
+            UpgCTank tank = new UpgCTank(this.TANK_CAPACITY);
+
+            if (this.tank.getFluid() != null)
+                fluidStack = new FluidStack(this.tank.getFluid(), amount);
+
+            if (fluidStack != null) {
+
+
+                if (isTop) {
+                    amount = this.tank.getFluidAmount() - this.TANK_CAPACITY;
+                    if (amount < 0) amount = 0;
+
+                } else {
+
+                    if (this.tank.getFluidAmount() > this.TANK_CAPACITY)
+                        amount = this.TANK_CAPACITY;
+                    else {
+
+                        amount = this.tank.getFluidAmount();
+
+                    }
+                }
+
+                if (amount == 0)
+                    fluidStack = null;
+                else
+                    fluidStack.amount = amount;
+
+            }
+
+
+            tank.fill(fluidStack, true);
+
+            this.setTank(tank);
+
+
+        }
+
+    }
 
     private void findAdjacentTank() {
 
         boolean shouldBeDouble = true;
 
-        if (this.adjacentTankYNeg != null) {
-            this.adjacentTankYNeg.separateTank();
-        }
-        if (this.adjacentTankYPos != null) {
-            this.adjacentTankYPos.separateTank();
-        }
 
         this.adjacentTankYNeg = null;
         this.adjacentTankYPos = null;
 
-        separateTank();
 
         if (isCanBeDouble()) {
 
@@ -203,7 +271,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
             TileEntity tileEntity = world.getTileEntity(xCoord, yCoord + 1, zCoord);
 
-            if (tileEntity != null && tileEntityInstanceOf(tileEntity)) {
+            if (tileEntity != null && canMerge(tileEntity)) {
 
                 adjacentTankYPos = (UpgCtileentityTank) tileEntity;
                 if (adjacentTankYPos.getFluid() != null) {
@@ -213,14 +281,15 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
                         }
                 }
                 if (shouldBeDouble) {
-                    mergeTank(adjacentTankYPos);
+                    isTop = false;
+                    merge();
                 }
 
                 adjacentTankYPos.updateModBlock();
 
             } else {
                 tileEntity = world.getTileEntity(xCoord, yCoord - 1, zCoord);
-                if (tileEntity != null && tileEntityInstanceOf(tileEntity)) {
+                if (tileEntity != null && canMerge(tileEntity)) {
 
                     adjacentTankYNeg = (UpgCtileentityTank) tileEntity;
 
@@ -230,15 +299,15 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
                                 shouldBeDouble = adjacentTankYNeg.getFluid().equals(this.getFluid());
                             }
                     }
-
-                    if (shouldBeDouble) {
-                        mergeTank(adjacentTankYNeg);
-                    }
                     isTop = true;
+                    if (shouldBeDouble) {
+                        merge();
+                    }
+
                     adjacentTankYNeg.updateModBlock();
                 } else {
 
-                    separateTank();
+                    separate();
                     isTop = false;
                     this.updateModBlock();
                 }
@@ -250,110 +319,6 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     }
 
-    private void mergeTank(UpgCtileentityTank other) {
-
-        int capacity = this.TANK_CAPACITY;
-
-        UpgCTank newUpgCTank;
-
-        if (this.getTank() != null && other.getTank() != null) {
-
-            if (this.getTank() == other.getTank()) {
-
-                if (this.getTank().getCapacity() != (capacity * 2)) {
-
-                    LogHelper.debug("Merge Tank: This case should be not possible!!");
-
-                }
-            } else if (this.getTank().equals(other.getTank()) && this.getTank().getCapacity() == capacity * 2) {
-
-                other.setTank(this.getTank());
-
-            } else if (this.getTank().getCapacity() == other.getTank().getCapacity() && this.getTank().getCapacity() == capacity) {
-
-                newUpgCTank = new UpgCTank(capacity * 2);
-
-                newUpgCTank.fill(this.getFluid(), true);
-                newUpgCTank.fill(other.getFluid(), true);
-
-                this.setTank(newUpgCTank);
-                other.setTank(newUpgCTank);
-
-            } else {
-                LogHelper.debug("This two tank can't be merged:at least one of two has already a double tank container!!");
-            }
-        } else {
-
-            if (this.getTank() == null && other.getTank() != null) {
-
-                if (other.getTank().getCapacity() == capacity * 2) {
-                    this.setTank(other.getTank());
-                } else {
-
-                    newUpgCTank = new UpgCTank(capacity * 2);
-
-                    newUpgCTank.fill(other.getFluid(), true);
-
-                    this.setTank(newUpgCTank);
-                    other.setTank(newUpgCTank);
-
-                }
-
-
-            } else if (this.getTank() != null) {
-
-                if (this.getTank().getCapacity() == capacity * 2) {
-                    other.setTank(this.getTank());
-                } else {
-                    newUpgCTank = new UpgCTank(capacity * 2);
-
-                    newUpgCTank.fill(this.getFluid(), true);
-
-                    this.setTank(newUpgCTank);
-                    other.setTank(newUpgCTank);
-                }
-
-            } else {
-
-                newUpgCTank = new UpgCTank(capacity * 2);
-
-                this.setTank(newUpgCTank);
-                other.setTank(newUpgCTank);
-
-
-            }
-        }
-
-    }
-
-    private void separateTank() {
-        int capacity = this.TANK_CAPACITY;
-
-        if (this.getTank().getCapacity() == capacity * 2) {
-            UpgCTank upgCTank = new UpgCTank(capacity);
-            if (!isTop) {
-                upgCTank.fill(this.getFluid(), true);
-            } else {
-
-                int amount = 0;
-
-                if (this.getFluid() != null) {
-                    amount = this.getFluid().amount;
-                }
-
-                int fluidAmount = amount - capacity;
-                if (fluidAmount > 0 && this.getFluid() != null) {
-                    FluidStack fluidStack = new FluidStack(this.getFluid(), fluidAmount);
-                    upgCTank.fill(fluidStack, true);
-                }
-
-            }
-            this.setTank(upgCTank);
-
-        } else if (this.getTank().getCapacity() != capacity) {
-            LogHelper.error("Unable to separate tank: this has a strange capacity!!");
-        }
-    }
 
     public void updateContainingBlockInfo() {
         super.updateContainingBlockInfo();

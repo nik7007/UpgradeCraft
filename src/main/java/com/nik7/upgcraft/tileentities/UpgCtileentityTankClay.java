@@ -111,7 +111,7 @@ public class UpgCtileentityTankClay extends UpgCtileentityTank {
     }
 
     @Override
-    protected boolean tileEntityInstanceOf(TileEntity tileEntity) {
+    protected boolean canMerge(TileEntity tileEntity) {
         int myMeta = this.getBlockMetadata();
         int otherMeta = tileEntity.getBlockMetadata();
 

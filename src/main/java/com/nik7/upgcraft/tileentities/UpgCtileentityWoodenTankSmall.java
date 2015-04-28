@@ -10,7 +10,7 @@ public class UpgCtileentityWoodenTankSmall extends UpgCtileentityTank {
     }
 
     @Override
-    protected boolean tileEntityInstanceOf(TileEntity tileEntity) {
+    protected boolean canMerge(TileEntity tileEntity) {
         return tileEntity instanceof UpgCtileentityWoodenTankSmall;
     }
 }

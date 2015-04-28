@@ -85,7 +85,7 @@ public class UpgCtilientityFluidHopper extends UpgCtileentityTank {
 
 
     @Override
-    protected boolean tileEntityInstanceOf(TileEntity tileEntity) {
+    protected boolean canMerge(TileEntity tileEntity) {
         return false;
     }
 }
