@@ -184,7 +184,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     private void merge() {
 
-        if (!(getTank().getCapacity() == 2 * this.TANK_CAPACITY)) {
+        if (!(getTank().getCapacity() == 2 * this.TANK_CAPACITY) && !worldObj.isRemote) {
 
             UpgCtileentityTank tank;
             FluidStack fluidStack = this.getFluid();
@@ -212,7 +212,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     private void separate() {
 
-        if (!(getTank().getCapacity() == this.TANK_CAPACITY)) {
+        if (!(getTank().getCapacity() == this.TANK_CAPACITY) && !worldObj.isRemote) {
 
             int amount = 0;
             FluidStack fluidStack = null;
