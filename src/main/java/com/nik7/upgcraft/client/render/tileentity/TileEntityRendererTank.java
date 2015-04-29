@@ -50,12 +50,11 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
             doubleTank = ((UpgCtileentityTank) te).hasAdjacentTank();
 
             if (doubleTank) {
-                if (((UpgCtileentityTank) te).adjacentTankYNeg != null) {
+                if (((UpgCtileentityTank) te).isTop()) {
                     dY = 1;
-                    metaAdj = ((UpgCtileentityTank) te).adjacentTankYNeg.blockMetadata;
-                } else if (((UpgCtileentityTank) te).adjacentTankYPos != null) {
-                    metaAdj = ((UpgCtileentityTank) te).adjacentTankYPos.blockMetadata;
                 }
+                metaAdj = ((UpgCtileentityTank) te).getAdjMeta();
+
             }
 
 
@@ -122,7 +121,7 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                         return;
                     }
                 } else if (meta == 1 || metaAdj == 1) {
-                    if (meta == 0 && ((UpgCtileentityTank) te).adjacentTankYNeg != null) {
+                    if (meta == 0 && ((UpgCtileentityTank) te).isTop()) {
                         if (te instanceof UpgCtileentityWoodenTankSmall)
                             textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_DOWN_WOODEN_TANK);
                         else if (te instanceof UpgCtileentityTankClay)
@@ -132,7 +131,7 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                             return;
                         }
 
-                    } else if (meta == 1 && ((UpgCtileentityTank) te).adjacentTankYNeg == null) {
+                    } else if (meta == 1 && !((UpgCtileentityTank) te).isTop()) {
                         if (te instanceof UpgCtileentityWoodenTankSmall)
                             textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_DOWN_WOODEN_TANK);
                         else if (te instanceof UpgCtileentityTankClay)
@@ -165,9 +164,9 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                             if (meta == 3 && metaAdj == 3) {
                                 textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_HARDENED_CLAY_TANK);
                             } else if (meta == 3 || metaAdj == 3) {
-                                if (meta == 2 && ((UpgCtileentityTank) te).adjacentTankYNeg != null) {
+                                if (meta == 2 && ((UpgCtileentityTank) te).isTop()) {
                                     textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_DOWN_HARDENED_CLAY_TANK);
-                                } else if (meta == 3 && ((UpgCtileentityTank) te).adjacentTankYNeg == null) {
+                                } else if (meta == 3 && !((UpgCtileentityTank) te).isTop()) {
                                     textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_DOWN_HARDENED_CLAY_TANK);
                                 } else {
                                     textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_TOP_HARDENED_CLAY_TANK);
@@ -185,7 +184,6 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                         return;
                     }
                 }
-
 
             }
 
@@ -209,14 +207,11 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
 
                     RenderHelper.fluidRender(((UpgCtileentityTank) te).getFillPercentage(), fluidStack.getFluid(), xMin, yMin, zMin, xMaz, yMaz, zMaz, false, false);
 
-
                 } else if (meta == 1 || metaAdj == 1 || ((meta == 3 || metaAdj == 3) && te instanceof UpgCtileentityTankClay)) {
 
                     float percentage = ((UpgCtileentityTank) te).getFillPercentage();
                     if (dY == 0) {
-
                         RenderHelper.fluidRender(percentage * 2, fluidStack.getFluid(), xMin, yMin, zMin, xMaz, 1, zMaz, false, false);
-
 
                     } else if (percentage >= 0.5f) {
                         RenderHelper.fluidRender((percentage - 0.5f) * 2, fluidStack.getFluid(), xMin, 0, zMin, xMaz, yMaz, zMaz, true, false);

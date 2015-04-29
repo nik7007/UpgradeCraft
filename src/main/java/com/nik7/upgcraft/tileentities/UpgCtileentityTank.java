@@ -19,8 +19,8 @@ import net.minecraftforge.fluids.TileFluidHandler;
 public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     private final int TANK_CAPACITY;
-    public UpgCtileentityTank adjacentTankYPos = null;
-    public UpgCtileentityTank adjacentTankYNeg = null;
+    private UpgCtileentityTank adjacentTankYPos = null;
+    private UpgCtileentityTank adjacentTankYNeg = null;
     private boolean canBeDouble = false;
     private boolean isDouble = false;
     private boolean isTop = false;
@@ -65,7 +65,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
         return (UpgCTank) tank;
     }
 
-    void setTank(FluidTank tank) {
+    private void setTank(FluidTank tank) {
         this.tank = tank;
     }
 
@@ -159,9 +159,8 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
         if (canBeDouble) {
             findAdjacentTank();
-            markDirty();
-
         }
+        super.updateEntity();
 
     }
 
@@ -241,8 +240,12 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
                 if (amount == 0)
                     fluidStack = null;
-                else
+                else {
                     fluidStack.amount = amount;
+                    if(isTop){
+                        this.tank.drain(amount,true);
+                    }
+                }
 
             }
 
@@ -363,6 +366,14 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     }
 
+    public boolean isTop() {
+        return isTop;
+    }
+
+    public boolean isDouble() {
+        return isDouble;
+    }
+
     public int getFluidLightLevel() {
         FluidStack stack = tank.getFluid();
         if (stack != null) {
@@ -371,6 +382,18 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
         }
 
         return 0;
+    }
+
+    public int getAdjMeta() {
+
+        if (hasAdjacentTank()) {
+            if (isTop)
+                return this.worldObj.getBlockMetadata(this.xCoord, this.yCoord - 1, this.zCoord);
+            else
+                return this.worldObj.getBlockMetadata(this.xCoord, this.yCoord + 1, this.zCoord);
+
+        } else return -1;
+
     }
 
 }
