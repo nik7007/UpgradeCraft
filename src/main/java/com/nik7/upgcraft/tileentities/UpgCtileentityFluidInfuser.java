@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHandler {
@@ -48,7 +49,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
         int fluidID = -1;
         if (fluidStack != null) {
             fluidAmount = fluidStack.amount;
-            fluidID = fluidStack.fluidID;
+            fluidID = fluidStack.getFluidID();
         }
 
         buf.writeInt(fluidAmount);
@@ -66,7 +67,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
         if (fluidAmount > 0) {
 
-            this.tank.setFluid(new FluidStack(fluidID, fluidAmount));
+            this.tank.setFluid(new FluidStack(FluidRegistry.getFluid(fluidID), fluidAmount));
             this.fluidLevel = fluidAmount;
         }
 
@@ -147,6 +148,12 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
     private void infuse() {
 
         FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT_P], itemStacks[INFUSE_P], getFluid());
+
+        if(recipe==null)
+        {
+            LogHelper.fatal("Fluid Infuser recipe is nul!!");
+            return;
+        }
 
         itemStacks[MELT_P] = null;
         itemStacks[INFUSE_P] = null;
@@ -271,7 +278,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
             }
 
             if (result) {
-                this.initProcess(otherFluid.amount, otherFluid.fluidID, recipe.getTicksToMelt(), nToMelt, recipe.getTicksToInfuse(), nToInfuse);
+                this.initProcess(otherFluid.amount, otherFluid.getFluidID(), recipe.getTicksToMelt(), nToMelt, recipe.getTicksToInfuse(), nToInfuse);
             }
 
             return result;
