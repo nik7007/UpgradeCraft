@@ -47,7 +47,7 @@ public class GuiFluidInfuser extends GuiWithFluid {
         this.drawTexturedModalRect(xOffset + 99, yOffset + 34, 176, 14, inc + 1, 16);
 
         if (this.fluidInfuser.fluidLevel > 0) {
-            FluidStack fluid = this.fluidInfuser.getFluid();
+            FluidStack fluid = this.fluidInfuser.getFluid(0);
             int level = (int) this.fluidInfuser.getFluidLevelScaled(32);
 
             super.renderFluid(fluid.getFluid(), xOffset + 16, yOffset + 56, level);

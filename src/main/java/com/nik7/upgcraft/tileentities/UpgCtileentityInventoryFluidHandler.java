@@ -19,7 +19,7 @@ import net.minecraftforge.fluids.*;
 
 public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity implements IFluidHandler, ISidedInventory {
 
-    protected FluidTank tank;
+    protected FluidTank[] tank;
     public int fluidLevel = 0;
     public int capacity;
     //Inventory
@@ -29,7 +29,18 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        tank.readFromNBT(tag);
+
+       //tank
+        NBTTagList nbtTagList = tag.getTagList("Tanks", 10);
+        this.tank = new FluidTank[this.getNumberTank()];
+        for (int i =0; i<nbtTagList.tagCount(); ++i){
+            NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
+            byte b0 = nbtTagCompound.getByte("Slot");
+            if (b0 >= 0 && b0 < this.itemStacks.length) {
+                this.tank[b0].readFromNBT(nbtTagCompound);
+            }
+
+        }
 
         //itemStack
         NBTTagList nbttaglist = tag.getTagList("Items", 10);
@@ -70,7 +81,21 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tank.writeToNBT(tag);
+
+
+        NBTTagList nbtTagList = new NBTTagList();
+        for (int i = 0; i < this.tank.length; ++i) {
+
+            if(this.tank[i] !=null){
+
+                NBTTagCompound nbtTagCompound = new NBTTagCompound();
+                nbtTagCompound.setByte("Slot", (byte) i);
+                this.tank[i].writeToNBT(nbtTagCompound);
+                nbtTagList.appendTag(nbtTagCompound);
+            }
+        }
+
+        tag.setTag("Tanks", nbtTagList);
 
         //itemStack
         NBTTagList nbttaglist = new NBTTagList();
@@ -102,38 +127,36 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     public abstract void updateEntity();
 
     //Fluid method
-    @Override
-    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+    public int fill(ForgeDirection from, FluidStack resource,int tankN, boolean doFill) {
         if (resource != null) {
             if (this.canFill(from, resource.getFluid())) {
                 updateModBlock();
-                return tank.fill(resource, doFill);
+                return tank[tankN].fill(resource, doFill);
             }
         }
         return 0;
     }
 
-    @Override
-    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+    public FluidStack drain(ForgeDirection from, FluidStack resource,int tankN, boolean doDrain) {
 
-        if ((resource == null || !resource.isFluidEqual(tank.getFluid()))) {
+        if ((resource == null || !resource.isFluidEqual(tank[tankN].getFluid()))) {
             return null;
         }
 
         if (canDrain(from, resource.getFluid())) {
             updateModBlock();
-            return tank.drain(resource.amount, doDrain);
+            return tank[tankN].drain(resource.amount, doDrain);
 
         } else return null;
 
     }
 
-    @Override
-    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+
+    public FluidStack drain(ForgeDirection from, int maxDrain,int tankN, boolean doDrain) {
 
         if (canDrain(from, null)) {
             updateModBlock();
-            return tank.drain(maxDrain, doDrain);
+            return tank[tankN].drain(maxDrain, doDrain);
         } else return null;
 
     }
@@ -144,14 +167,18 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     @Override
     public abstract boolean canDrain(ForgeDirection from, Fluid fluid);
 
-    @Override
-    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
-        return new FluidTankInfo[]{tank.getInfo()};
+
+    public FluidTankInfo[] getTankInfo(ForgeDirection from,int tankN) {
+        return new FluidTankInfo[]{tank[tankN].getInfo()};
 
     }
 
-    public FluidStack getFluid() {
-        return this.tank.getFluid();
+    public int getNumberTank(){
+        return tank.length;
+    }
+
+    public FluidStack getFluid(int tankN) {
+        return this.tank[tankN].getFluid();
     }
 
 
@@ -227,8 +254,8 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
     }
 
-    public int getFluidLightLevel() {
-        FluidStack stack = tank.getFluid();
+    public int getFluidLightLevel(int tankN) {
+        FluidStack stack = tank[tankN].getFluid();
         if (stack != null) {
             Fluid fluid = stack.getFluid();
             if (fluid != null) return fluid.getLuminosity();

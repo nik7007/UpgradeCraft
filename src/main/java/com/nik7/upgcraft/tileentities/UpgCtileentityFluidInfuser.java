@@ -16,6 +16,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHandler {
 
@@ -36,7 +37,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
 
     public UpgCtileentityFluidInfuser() {
-        this.tank = new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1);
+        this.tank = new UpgCTank[]{new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1)};
         this.itemStacks = new ItemStack[5];
         this.capacity = Capacity.INTERNAL_FLUID_TANK_TR1;
 
@@ -44,7 +45,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     @Override
     public void writeToPacket(ByteBuf buf) {
-        FluidStack fluidStack = this.tank.getFluid();
+        FluidStack fluidStack = this.tank[0].getFluid();
         int fluidAmount = -1;
         int fluidID = -1;
         if (fluidStack != null) {
@@ -67,7 +68,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
         if (fluidAmount > 0) {
 
-            this.tank.setFluid(new FluidStack(FluidRegistry.getFluid(fluidID), fluidAmount));
+            this.tank[0].setFluid(new FluidStack(FluidRegistry.getFluid(fluidID), fluidAmount));
             this.fluidLevel = fluidAmount;
         }
 
@@ -103,7 +104,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
         if (!worldObj.isRemote) {
             boolean oldIsActive = isActive;
 
-            if (this.tank.getFluidAmount() > 0) {
+            if (this.tank[0].getFluidAmount() > 0) {
 
                 if (isOperating) {
                     if (canContinue()) {
@@ -128,7 +129,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     private void operating() {
         if (burning == 0 && tickMelting < this.properties[TICK_FOR_MELT]) {
-            FluidStack fluidBurned = this.tank.drain((this.properties[FLUID_AMOUNT] / this.properties[TICK_FOR_MELT]), true);
+            FluidStack fluidBurned = this.tank[0].drain((this.properties[FLUID_AMOUNT] / this.properties[TICK_FOR_MELT]), true);
             burning = fluidBurned.amount;
         }
 
@@ -147,10 +148,9 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     private void infuse() {
 
-        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT_P], itemStacks[INFUSE_P], getFluid());
+        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT_P], itemStacks[INFUSE_P], getFluid(0));
 
-        if(recipe==null)
-        {
+        if (recipe == null) {
             LogHelper.fatal("Fluid Infuser recipe is nul!!");
             return;
         }
@@ -248,7 +248,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
             return false;
         }
 
-        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT], itemStacks[INFUSE], getFluid());
+        FluidInfuserRecipe recipe = FluidInfuserRegister.getFluidInfuserRecipe(itemStacks[MELT], itemStacks[INFUSE], getFluid(0));
 
         if (recipe != null) {
 
@@ -269,7 +269,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
                 return false;
             }
 
-            FluidStack fluid = this.tank.getFluid();
+            FluidStack fluid = this.tank[0].getFluid();
 
             if (fluid != null) {
                 result = fluid.containsFluid(otherFluid) && fluid.amount >= (otherFluid.amount / recipe.getTicksToMelt());
@@ -295,7 +295,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
         int nMelt = this.properties[NUMBER_TO_MELT];
         int nInfuse = this.properties[NUMBER_TO_INFUSE];
         int nFluid = this.properties[FLUID_AMOUNT];
-        int fluidAmount = this.tank.getFluidAmount();
+        int fluidAmount = this.tank[0].getFluidAmount();
 
         return !((nMelt > 0 && melt == null) || (nInfuse > 0 && infuse == null) || fluidAmount < nFluid);
 
@@ -324,6 +324,21 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
 
     @Override
+    public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+        return super.fill(from, resource, 0, doFill);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+        return super.drain(from, resource, 0, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+        return super.drain(from, maxDrain, 0, doDrain);
+    }
+
+    @Override
     public boolean canFill(ForgeDirection from, Fluid fluid) {
 
         if (fluid != null && FluidInfuserRegister.isUsefulFluid(fluid)) {
@@ -338,6 +353,11 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
         return from == ForgeDirection.DOWN;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return super.getTankInfo(from, 0);
     }
 
     @Override

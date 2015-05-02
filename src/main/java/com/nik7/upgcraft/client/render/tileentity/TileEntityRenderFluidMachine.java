@@ -26,13 +26,13 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
     private final ResourceLocation textureInfuser = new ResourceLocation(Texture.Blocks.MODEL_FLUID_INFUSER);
 
     //Fluid render
-    private final float xMin = 0.063f;
-    private final float yMin = 0.0625f;
-    private final float zMin = 0.063f;
+    private final static float xMin = 0.063f;
+    private final static float yMin = 0.0625f;
+    private final static float zMin = 0.063f;
 
-    private final float xMaz = 0.85f;
-    private final float yMaz = 0.5f;
-    private final float zMaz = 0.987f;
+    private final static float xMaz = 0.85f;
+    private final static float yMaz = 0.5f;
+    private final static float zMaz = 0.987f;
 
 
     @Override
@@ -106,7 +106,7 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
 
             GL11.glRotatef(angle + dA, 0.0F, 1.0F, 0.0F);
 
-            FluidStack fluid = inventoryFluidHandler.getFluid();
+            FluidStack fluid = inventoryFluidHandler.getFluid(0);
 
             if (fluid != null) {
 

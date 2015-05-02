@@ -15,6 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 
 public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHandler {
 
@@ -32,7 +33,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public boolean isActive = false;
 
     public UpgCtileentityFluidFurnace() {
-        this.tank = new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1);
+        this.tank = new UpgCTank[]{new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1)};
         this.itemStacks = new ItemStack[2];
         this.capacity = Capacity.INTERNAL_FLUID_TANK_TR1;
 
@@ -90,16 +91,16 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
 
         if (this.fluidLevel > 0) {
-            this.tank.setFluid(new FluidStack(FluidRegistry.getFluid("lava"), fluidLevel));
-        } else this.tank.setFluid(null);
+            this.tank[0].setFluid(new FluidStack(FluidRegistry.getFluid("lava"), fluidLevel));
+        } else this.tank[0].setFluid(null);
     }
 
     @Override
     public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
-        int result = super.fill(from, resource, doFill);
+        int result = super.fill(from, resource, 0, doFill);
 
         if (!worldObj.isRemote) {
-            this.fluidLevel = this.tank.getFluidAmount();
+            this.fluidLevel = this.tank[0].getFluidAmount();
         }
 
         return result;
@@ -108,10 +109,10 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-        FluidStack result = super.drain(from, resource, doDrain);
+        FluidStack result = super.drain(from, resource, 0, doDrain);
 
         if (result != null && !worldObj.isRemote) {
-            this.fluidLevel = this.tank.getFluidAmount();
+            this.fluidLevel = this.tank[0].getFluidAmount();
         }
 
         return result;
@@ -120,10 +121,10 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        FluidStack result = super.drain(from, maxDrain, doDrain);
+        FluidStack result = super.drain(from, maxDrain, 0, doDrain);
 
         if (result != null && !worldObj.isRemote) {
-            this.fluidLevel = this.tank.getFluidAmount();
+            this.fluidLevel = this.tank[0].getFluidAmount();
         }
 
         return result;
@@ -131,8 +132,8 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
     private boolean canSmelt() {
 
-        if (tank.getFluid() != null && this.itemStacks[INPUT] != null) {
-            if (tank.getFluid().amount >= 1) {
+        if (tank[0].getFluid() != null && this.itemStacks[INPUT] != null) {
+            if (tank[0].getFluid().amount >= 1) {
 
                 ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.itemStacks[INPUT]);
 
@@ -150,8 +151,8 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
     private void burning() {
         if (burningTime <= 0) {
-            this.tank.drain(1, true);
-            this.fluidLevel = this.tank.getFluidAmount();
+            this.tank[0].drain(1, true);
+            this.fluidLevel = this.tank[0].getFluidAmount();
             burningTime = 20;
         } else burningTime--;
     }
@@ -230,6 +231,11 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
 
         return from == ForgeDirection.DOWN;
+    }
+
+    @Override
+    public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+        return super.getTankInfo(from, 0);
     }
 
     @Override
