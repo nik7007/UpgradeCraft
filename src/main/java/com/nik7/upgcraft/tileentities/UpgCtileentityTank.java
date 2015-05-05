@@ -184,17 +184,18 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     private void merge() {
 
-        if(isFirst){
+        if (isFirst) {
 
-            if(isTop && adjacentTankYNeg!=null){
+            if (isTop && adjacentTankYNeg != null) {
 
-                setTank(adjacentTankYNeg.getTank());
+                if (adjacentTankYNeg.getTank().getCapacity() == 2 * TANK_CAPACITY) {
+                    setTank(adjacentTankYNeg.getTank());
+                    isFirst = false;
+                }
 
-            }
-            isFirst = false;
-        }
+            } else isFirst = false;
 
-        else if (!(getTank().getCapacity() == 2 * this.TANK_CAPACITY) && !worldObj.isRemote) {
+        } else if (!(getTank().getCapacity() == 2 * this.TANK_CAPACITY) && !worldObj.isRemote) {
 
             UpgCtileentityTank tank;
             FluidStack fluidStack = this.getFluid();
@@ -253,8 +254,8 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
                     fluidStack = null;
                 else {
                     fluidStack.amount = amount;
-                    if(isTop){
-                        this.tank.drain(amount,true);
+                    if (isTop) {
+                        this.tank.drain(amount, true);
                     }
                 }
 
