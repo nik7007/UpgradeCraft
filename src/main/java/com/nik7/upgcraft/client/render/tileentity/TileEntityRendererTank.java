@@ -211,7 +211,14 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
 
                     float percentage = ((UpgCtileentityTank) te).getFillPercentage();
                     if (dY == 0) {
-                        RenderHelper.fluidRender(percentage * 2, fluidStack.getFluid(), xMin, yMin, zMin, xMaz, 1, zMaz, false, false);
+                        boolean renderTop = true;
+
+                        if (percentage > 0.5f){
+                            percentage = 0.5f;
+                            renderTop = false;
+                        }
+
+                        RenderHelper.fluidRender(percentage * 2, fluidStack.getFluid(), xMin, yMin, zMin, xMaz, 1, zMaz, false, false, renderTop);
 
                     } else if (percentage >= 0.5f) {
                         RenderHelper.fluidRender((percentage - 0.5f) * 2, fluidStack.getFluid(), xMin, 0, zMin, xMaz, yMaz, zMaz, true, false);

@@ -12,6 +12,11 @@ public class RenderHelper {
 
     public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMaz, float maxY, float zMax, boolean top, boolean renderDown) {
 
+        fluidRender(fillPercentage, fluid, xMin, yMin, zMin, xMaz, maxY, zMax, top, renderDown, true);
+    }
+
+    public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMaz, float maxY, float zMax, boolean top, boolean renderDown, boolean renderTop) {
+
 
         if (fillPercentage > 0 && maxY > 0) {
 
@@ -85,7 +90,7 @@ public class RenderHelper {
             t.addVertexWithUV(xMin, yMin, zMin, uMax, vMin);
 
             //up
-            if (height <= maxY) {
+            if (renderTop && height <= maxY) {
                 t.addVertexWithUV(xMaz, height, zMax, uMax, vMin);
                 t.addVertexWithUV(xMaz, height, zMin, uMin, vMin);
                 t.addVertexWithUV(xMin, height, zMin, uMin, vMax);
