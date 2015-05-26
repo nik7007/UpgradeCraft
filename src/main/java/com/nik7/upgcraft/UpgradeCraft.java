@@ -1,6 +1,7 @@
 package com.nik7.upgcraft;
 
 import com.nik7.upgcraft.handler.GuiHandler;
+import com.nik7.upgcraft.handler.PlayerEventHandler;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.init.ModItems;
@@ -56,6 +57,8 @@ public class UpgradeCraft {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+
+        PlayerEventHandler.init();
 
     }
 }
