@@ -15,6 +15,7 @@ public class ModBlocks {
 
     public static final Block blockWoodenLiquidTank = new BlockWoodenLiquidTank();
     public static final Block blockClayLiquidTank = new BlockClayFluidTank();
+    public static final Block blockUpgCEnderTank = new BlockUpgCEnderTank();
     public static final Block blockSlimyLog = new BlockUpgCSlimyLog();
     public static final Block blockFluidBasicHopper = new BlockUpgCBasicFluidHopper();
     public static final Block blockFluidFurnace = new BlockUpgCFluidFurnace();
@@ -24,6 +25,7 @@ public class ModBlocks {
 
         GameRegistry.registerBlock(blockWoodenLiquidTank, ItemBlockWoodenTank.class, Reference.MOD_ID + "Block" + Names.Blocks.WOODEN_LIQUID_TANK);
         GameRegistry.registerBlock(blockClayLiquidTank, ItemBlockClayTank.class, Reference.MOD_ID + "Block" + Names.Blocks.CLAY_LIQUID_TANK);
+        GameRegistry.registerBlock(blockUpgCEnderTank ,/* ItemBlockClayTank.class,*/ Reference.MOD_ID + "Block" + Names.Blocks.ENDER_TANK);
         GameRegistry.registerBlock(blockSlimyLog, ItemBlockCSlimyLog.class, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_LOG);
         GameRegistry.registerBlock(blockFluidBasicHopper, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_HOPPER);
         GameRegistry.registerBlock(blockFluidFurnace, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_FURNACE);

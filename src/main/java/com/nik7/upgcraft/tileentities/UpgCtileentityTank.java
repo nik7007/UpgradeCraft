@@ -66,7 +66,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
         return (UpgCTank) tank;
     }
 
-    private void setTank(FluidTank tank) {
+    public void setTank(FluidTank tank) {
         this.tank = tank;
     }
 

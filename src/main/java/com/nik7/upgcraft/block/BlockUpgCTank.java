@@ -54,7 +54,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         return super.onBlockActivated(world, x, y, z, player, side, hitX, hitY, hitZ);
     }
 
-    private void handleContainerClick(World world, int x, int y, int z, EntityPlayer player, UpgCtileentityTank entity, ItemStack equippedItemStack) {
+    protected void handleContainerClick(World world, int x, int y, int z, EntityPlayer player, UpgCtileentityTank entity, ItemStack equippedItemStack) {
 
         if (FluidContainerRegistry.isBucket(equippedItemStack)) {
             if (FluidContainerRegistry.isEmptyContainer(equippedItemStack)) {
@@ -67,7 +67,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     }
 
-    private void fillBucketFromTank(World world, int x, int y, int z, EntityPlayer player, UpgCtileentityTank entity, ItemStack equippedItemStack) {
+    protected void fillBucketFromTank(World world, int x, int y, int z, EntityPlayer player, UpgCtileentityTank entity, ItemStack equippedItemStack) {
 
         FluidStack fluid = entity.getFluid();
 
@@ -106,7 +106,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     }
 
-    private void drainBucketIntoTank(EntityPlayer player, UpgCtileentityTank entity, ItemStack equippedItemStack) {
+    protected void drainBucketIntoTank(EntityPlayer player, UpgCtileentityTank entity, ItemStack equippedItemStack) {
 
         if (entity == null) {
             LogHelper.fatal("tile is null");
