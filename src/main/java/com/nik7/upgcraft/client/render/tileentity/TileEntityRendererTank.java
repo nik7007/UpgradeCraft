@@ -3,6 +3,7 @@ package com.nik7.upgcraft.client.render.tileentity;
 import com.nik7.upgcraft.client.render.model.ModelDoubleTank;
 import com.nik7.upgcraft.client.render.model.ModelTank;
 import com.nik7.upgcraft.reference.Texture;
+import com.nik7.upgcraft.tileentities.UpgCtileentityEnderTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTankClay;
 import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenTankSmall;
@@ -17,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
+
 
 @SideOnly(Side.CLIENT)
 public class TileEntityRendererTank extends TileEntitySpecialRenderer {
@@ -66,6 +68,8 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                             textures = new ResourceLocation(Texture.Blocks.MODEL_SMALL_WOODEN_TANK);
                         else if (te instanceof UpgCtileentityTankClay)
                             textures = new ResourceLocation(Texture.Blocks.MODEL_SMALL_CLAY_TANK);
+                        else if (te instanceof UpgCtileentityEnderTank)
+                            textures = new ResourceLocation(Texture.Blocks.MODEL_SMALL_ENDER_TANK);
                         else {
                             LogHelper.fatal("Impossible to render this tank!! Unknown entity!");
                             return;
@@ -213,7 +217,7 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                     if (dY == 0) {
                         boolean renderTop = true;
 
-                        if (percentage > 0.5f){
+                        if (percentage > 0.5f) {
                             percentage = 0.5f;
                             renderTop = false;
                         }
@@ -227,6 +231,10 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                 }
 
                 GL11.glDisable(GL11.GL_BLEND);
+            }
+
+            if (te instanceof UpgCtileentityEnderTank) {
+                RenderHelper.renderEndPortal(xMin - 0.5, xMaz - 0.5, yMin + 0.5, yMaz + 0.5, zMin - 0.5, zMaz - 0.5, (float) this.field_147501_a.field_147560_j, (float) this.field_147501_a.field_147561_k, (float) this.field_147501_a.field_147558_l);
             }
 
             GL11.glPopMatrix();

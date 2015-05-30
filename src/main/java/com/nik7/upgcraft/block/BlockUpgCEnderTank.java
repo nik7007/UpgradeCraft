@@ -4,21 +4,28 @@ package com.nik7.upgcraft.block;
 import com.nik7.upgcraft.entity.player.ExtendedPlayerUpgC;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.reference.RenderIds;
+import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityEnderTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 import java.util.Random;
 
 public class BlockUpgCEnderTank extends BlockUpgCTank {
+
+    @SideOnly(Side.CLIENT)
+    private IIcon icon;
 
     public BlockUpgCEnderTank() {
         super(Material.rock);
@@ -40,6 +47,24 @@ public class BlockUpgCEnderTank extends BlockUpgCTank {
     public boolean isOpaqueCube() {
         return false;
     }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister iconRegister) {
+        this.icon = iconRegister.registerIcon(Texture.Blocks.ENDER_LIQUID_TANK);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return icon;
+    }
+
+    @Override
+    public int getRenderType() {
+        return RenderIds.FLUID_TANK;
+    }
+
 
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {

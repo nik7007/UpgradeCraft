@@ -1,9 +1,6 @@
 package com.nik7.upgcraft.proxy;
 
-import com.nik7.upgcraft.client.render.item.ItemRenderClayTank;
-import com.nik7.upgcraft.client.render.item.ItemRenderWoodenTank;
-import com.nik7.upgcraft.client.render.item.itemRenderFluidFurnace;
-import com.nik7.upgcraft.client.render.item.itemRenderFluidInfuser;
+import com.nik7.upgcraft.client.render.item.*;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderBasicFluidHopper;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidMachine;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRendererTank;
@@ -34,11 +31,13 @@ public class ClientProxy extends CommonProxy {
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockWoodenLiquidTank), new ItemRenderWoodenTank());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockClayLiquidTank), new ItemRenderClayTank());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockUpgCEnderTank), new ItemRenderEnderTank());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockFluidFurnace), new itemRenderFluidFurnace());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockFluidInfuse), new itemRenderFluidInfuser());
 
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityWoodenTankSmall.class, new TileEntityRendererTank());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityTankClay.class, new TileEntityRendererTank());
+        ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityEnderTank.class, new TileEntityRendererTank());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityFluidHopper.class, new TileEntityRenderBasicFluidHopper());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityFluidFurnace.class, new TileEntityRenderFluidMachine());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityFluidInfuser.class, new TileEntityRenderFluidMachine());
