@@ -1,6 +1,8 @@
 package com.nik7.upgcraft.util;
 
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GLAllocation;
@@ -14,6 +16,7 @@ import org.lwjgl.opengl.GL11;
 import java.nio.FloatBuffer;
 import java.util.Random;
 
+@SideOnly(Side.CLIENT)
 public class RenderHelper {
 
     private static final ResourceLocation endSky = new ResourceLocation("textures/environment/end_sky.png");
