@@ -19,10 +19,7 @@ import java.util.Random;
 @SideOnly(Side.CLIENT)
 public class RenderHelper {
 
-    private static final ResourceLocation endSky = new ResourceLocation("textures/environment/end_sky.png");
-    private static final ResourceLocation endPortal = new ResourceLocation("textures/entity/end_portal.png");
-    private static final Random random = new Random(31100L);
-    private static final FloatBuffer gl = GLAllocation.createDirectFloatBuffer(16);
+    private static final Tessellator tessellator = Tessellator.instance;
 
 
     public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMaz, float maxY, float zMax, boolean top, boolean renderDown) {
@@ -74,76 +71,79 @@ public class RenderHelper {
             final float g = (color >> 8 & 0xFF) / 255.0F;
             final float b = (color & 0xFF) / 255.0F;
 
-
-            Tessellator t = Tessellator.instance;
-            t.startDrawingQuads();
-            t.setColorOpaque_F(r, g, b);
+            tessellator.startDrawingQuads();
+            tessellator.setColorOpaque_F(r, g, b);
 
 
             //north
-            t.addVertexWithUV(xMaz, yMin, zMin, uMax, vMin);
-            t.addVertexWithUV(xMin, yMin, zMin, uMin, vMin);
-            t.addVertexWithUV(xMin, height, zMin, uMin, vMin + (vHeight * height));
-            t.addVertexWithUV(xMaz, height, zMin, uMax, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMaz, yMin, zMin, uMax, vMin);
+            tessellator.addVertexWithUV(xMin, yMin, zMin, uMin, vMin);
+            tessellator.addVertexWithUV(xMin, height, zMin, uMin, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMaz, height, zMin, uMax, vMin + (vHeight * height));
 
             //south
-            t.addVertexWithUV(xMaz, yMin, zMax, uMin, vMin);
-            t.addVertexWithUV(xMaz, height, zMax, uMin, vMin + (vHeight * height));
-            t.addVertexWithUV(xMin, height, zMax, uMax, vMin + (vHeight * height));
-            t.addVertexWithUV(xMin, yMin, zMax, uMax, vMin);
+            tessellator.addVertexWithUV(xMaz, yMin, zMax, uMin, vMin);
+            tessellator.addVertexWithUV(xMaz, height, zMax, uMin, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMin, height, zMax, uMax, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMin, yMin, zMax, uMax, vMin);
 
             //east
-            t.addVertexWithUV(xMaz, yMin, zMin, uMin, vMin);
-            t.addVertexWithUV(xMaz, height, zMin, uMin, vMin + (vHeight * height));
-            t.addVertexWithUV(xMaz, height, zMax, uMax, vMin + (vHeight * height));
-            t.addVertexWithUV(xMaz, yMin, zMax, uMax, vMin);
+            tessellator.addVertexWithUV(xMaz, yMin, zMin, uMin, vMin);
+            tessellator.addVertexWithUV(xMaz, height, zMin, uMin, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMaz, height, zMax, uMax, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMaz, yMin, zMax, uMax, vMin);
 
             //west
-            t.addVertexWithUV(xMin, yMin, zMax, uMin, vMin);
-            t.addVertexWithUV(xMin, height, zMax, uMin, vMin + (vHeight * height));
-            t.addVertexWithUV(xMin, height, zMin, uMax, vMin + (vHeight * height));
-            t.addVertexWithUV(xMin, yMin, zMin, uMax, vMin);
+            tessellator.addVertexWithUV(xMin, yMin, zMax, uMin, vMin);
+            tessellator.addVertexWithUV(xMin, height, zMax, uMin, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMin, height, zMin, uMax, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMin, yMin, zMin, uMax, vMin);
 
             //up
             if (renderTop && height <= maxY) {
-                t.addVertexWithUV(xMaz, height, zMax, uMax, vMin);
-                t.addVertexWithUV(xMaz, height, zMin, uMin, vMin);
-                t.addVertexWithUV(xMin, height, zMin, uMin, vMax);
-                t.addVertexWithUV(xMin, height, zMax, uMax, vMax);
+                tessellator.addVertexWithUV(xMaz, height, zMax, uMax, vMin);
+                tessellator.addVertexWithUV(xMaz, height, zMin, uMin, vMin);
+                tessellator.addVertexWithUV(xMin, height, zMin, uMin, vMax);
+                tessellator.addVertexWithUV(xMin, height, zMax, uMax, vMax);
             }
 
 
             //down
             if (renderDown) {
-                t.addVertexWithUV(xMaz, yMin, zMin, uMax, vMin);
-                t.addVertexWithUV(xMaz, yMin, zMax, uMin, vMin);
-                t.addVertexWithUV(xMin, yMin, zMax, uMin, vMax);
-                t.addVertexWithUV(xMin, yMin, zMin, uMax, vMax);
+                tessellator.addVertexWithUV(xMaz, yMin, zMin, uMax, vMin);
+                tessellator.addVertexWithUV(xMaz, yMin, zMax, uMin, vMin);
+                tessellator.addVertexWithUV(xMin, yMin, zMax, uMin, vMax);
+                tessellator.addVertexWithUV(xMin, yMin, zMin, uMax, vMax);
             }
 
-            t.draw();
+            tessellator.draw();
             GL11.glEnable(GL11.GL_LIGHTING);
 
         }
 
     }
 
+    private static final ResourceLocation endSky = new ResourceLocation("textures/environment/end_sky.png");
+    private static final ResourceLocation endPortal = new ResourceLocation("textures/entity/end_portal.png");
+    private static final Random random = new Random(31100L);
+    private static final FloatBuffer gl = GLAllocation.createDirectFloatBuffer(5);
+
     public static void renderEndPortal(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax, float oldPx, float oldPy, float oldPz) {
         GL11.glDisable(GL11.GL_LIGHTING);
         random.setSeed(31100L);
         float f4 = 0.75F;
 
-        for (int i = 0; i < 15; ++i) {
+        for (int i = 0; i < 5; ++i) {
             GL11.glPushMatrix();
-            float f5 = (float) (16 - i);
-            float f6 = 0.0625F;
-            float f7 = 1.0F / (f5 + 1.0F);
+            float f5 = (float) (7.4 - i);
+            float f6 = 1f;//0.0625F + 0.3f;
+            float f7 = 1F / (f5 + 1.0F - 0.4f);
 
             if (i == 0) {
                 Minecraft.getMinecraft().renderEngine.bindTexture(endSky);
-                f7 = 0.1F;
-                f5 = 65.0F;
-                f6 = 0.125F;
+                f7 = 0.086F;
+                f5 = 8.0F;
+                f6 = 0.97F;
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
             }
@@ -152,7 +152,8 @@ public class RenderHelper {
                 Minecraft.getMinecraft().renderEngine.bindTexture(endPortal);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
-                f6 = 0.5F;
+                f6 = 0.26F;
+                f7 = 0.148F;
             }
 
             float f8 = (float) (-(yMin + (double) f4));
@@ -167,10 +168,10 @@ public class RenderHelper {
             GL11.glTexGeni(GL11.GL_R, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_OBJECT_LINEAR);
             GL11.glTexGeni(GL11.GL_Q, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_EYE_LINEAR);
 
-            GL11.glTexGen(GL11.GL_S, GL11.GL_OBJECT_PLANE, func_147525_a(1.0F, 0.0F, 0.0F, 0.0F));
-            GL11.glTexGen(GL11.GL_T, GL11.GL_OBJECT_PLANE, func_147525_a(0.0F, 0.0F, 1.0F, 0.0F));
-            GL11.glTexGen(GL11.GL_R, GL11.GL_OBJECT_PLANE, func_147525_a(0.0F, 0.0F, 0.0F, 1.0F));
-            GL11.glTexGen(GL11.GL_Q, GL11.GL_EYE_PLANE, func_147525_a(0.0F, 1.0F, 0.0F, 0.0F));
+            GL11.glTexGen(GL11.GL_S, GL11.GL_OBJECT_PLANE, fillFloatBuffer(1.0F, 0.0F, 0.0F, 0.0F));
+            GL11.glTexGen(GL11.GL_T, GL11.GL_OBJECT_PLANE, fillFloatBuffer(0.0F, 0.0F, 1.0F, 0.0F));
+            GL11.glTexGen(GL11.GL_R, GL11.GL_OBJECT_PLANE, fillFloatBuffer(0.0F, 0.0F, 0.0F, 1.0F));
+            GL11.glTexGen(GL11.GL_Q, GL11.GL_EYE_PLANE, fillFloatBuffer(0.0F, 1.0F, 0.0F, 0.0F));
 
             GL11.glEnable(GL11.GL_TEXTURE_GEN_S);
             GL11.glEnable(GL11.GL_TEXTURE_GEN_T);
@@ -188,7 +189,7 @@ public class RenderHelper {
             GL11.glTranslatef(-oldPx, -oldPz, -oldPy);
             f9 = f8 + ActiveRenderInfo.objectY;
             GL11.glTranslatef(ActiveRenderInfo.objectX * f5 / f9, ActiveRenderInfo.objectZ * f5 / f9, -oldPy);
-            Tessellator tessellator = Tessellator.instance;
+
             tessellator.startDrawingQuads();
             f11 = random.nextFloat() * 0.5F + 0.1F;
             float f12 = random.nextFloat() * 0.5F + 0.4F;
@@ -239,9 +240,9 @@ public class RenderHelper {
         GL11.glEnable(GL11.GL_LIGHTING);
     }
 
-    private static FloatBuffer func_147525_a(float p_147525_1_, float p_147525_2_, float p_147525_3_, float p_147525_4_) {
+    private static FloatBuffer fillFloatBuffer(float f1, float f2, float f3, float f4) {
         gl.clear();
-        gl.put(p_147525_1_).put(p_147525_2_).put(p_147525_3_).put(p_147525_4_);
+        gl.put(f1).put(f2).put(f3).put(f4);
         gl.flip();
         return gl;
     }

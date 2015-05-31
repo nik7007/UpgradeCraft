@@ -2,6 +2,7 @@ package com.nik7.upgcraft.client.render.item;
 
 
 import com.nik7.upgcraft.client.render.model.ModelTank;
+import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.util.RenderHelper;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -17,13 +18,6 @@ import org.lwjgl.opengl.GL11;
 public class ItemRenderEnderTank implements IItemRenderer {
 
     private final ModelTank modelTank = new ModelTank();
-    private final static float xMin = 0.063f;
-    private final static float yMin = 0.06f;
-    private final static float zMin = 0.063f;
-
-    private final static float xMaz = 0.937f;
-    private final static float yMaz = 0.9f;
-    private final static float zMaz = 0.937f;
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
@@ -53,10 +47,9 @@ public class ItemRenderEnderTank implements IItemRenderer {
 
             EntityClientPlayerMP player = null;
 
-            for (int i = 0; i < data.length; i++) {
-
-                if (data[i] instanceof EntityClientPlayerMP) {
-                    player = (EntityClientPlayerMP) data[i];
+            for (Object aData : data) {
+                if (aData instanceof EntityClientPlayerMP) {
+                    player = (EntityClientPlayerMP) aData;
                     break;
 
                 }
@@ -65,7 +58,7 @@ public class ItemRenderEnderTank implements IItemRenderer {
 
             if (player != null) {
 
-                RenderHelper.renderEndPortal(xMin - 0.5, xMaz - 0.5, yMin + 0.5, yMaz + 0.5, zMin - 0.5, zMaz - 0.5, (float) player.field_71091_bM,(float) player.field_71096_bN,(float) player.field_71097_bO);
+                RenderHelper.renderEndPortal(Render.TankInternalDimension.xMin - 0.5, Render.TankInternalDimension.xMaz - 0.5, Render.TankInternalDimension.yMin + 0.5, Render.TankInternalDimension.yMaz + 0.5, Render.TankInternalDimension.zMin - 0.5, Render.TankInternalDimension.zMaz - 0.5, (float) player.field_71091_bM, (float) player.field_71096_bN, (float) player.field_71097_bO);
 
             }
 

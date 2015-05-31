@@ -2,6 +2,7 @@ package com.nik7.upgcraft.client.render.tileentity;
 
 import com.nik7.upgcraft.client.render.model.ModelDoubleTank;
 import com.nik7.upgcraft.client.render.model.ModelTank;
+import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityEnderTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
@@ -25,14 +26,6 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
 
     private final static ModelBase smallModelTank = new ModelTank();
     private final static ModelBase doubleModelTank = new ModelDoubleTank();
-
-    private final static float xMin = 0.063f;
-    private final static float yMin = 0.06f;
-    private final static float zMin = 0.063f;
-
-    private final static float xMaz = 0.937f;
-    private final static float yMaz = 0.9f;
-    private final static float zMaz = 0.937f;
 
 
     @Override
@@ -209,7 +202,7 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
 
                 if ((meta == 1 || (meta == 3 && te instanceof UpgCtileentityTankClay)) && !doubleTank) {
 
-                    RenderHelper.fluidRender(((UpgCtileentityTank) te).getFillPercentage(), fluidStack.getFluid(), xMin, yMin, zMin, xMaz, yMaz, zMaz, false, false);
+                    RenderHelper.fluidRender(((UpgCtileentityTank) te).getFillPercentage(), fluidStack.getFluid(), Render.TankInternalDimension.xMin, Render.TankInternalDimension.yMin, Render.TankInternalDimension.zMin, Render.TankInternalDimension.xMaz, Render.TankInternalDimension.yMaz, Render.TankInternalDimension.zMaz, false, false);
 
                 } else if (meta == 1 || metaAdj == 1 || ((meta == 3 || metaAdj == 3) && te instanceof UpgCtileentityTankClay)) {
 
@@ -222,10 +215,10 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                             renderTop = false;
                         }
 
-                        RenderHelper.fluidRender(percentage * 2, fluidStack.getFluid(), xMin, yMin, zMin, xMaz, 1, zMaz, false, false, renderTop);
+                        RenderHelper.fluidRender(percentage * 2, fluidStack.getFluid(), Render.TankInternalDimension.xMin, Render.TankInternalDimension.yMin, Render.TankInternalDimension.zMin, Render.TankInternalDimension.xMaz, 1, Render.TankInternalDimension.zMaz, false, false, renderTop);
 
                     } else if (percentage >= 0.5f) {
-                        RenderHelper.fluidRender((percentage - 0.5f) * 2, fluidStack.getFluid(), xMin, 0, zMin, xMaz, yMaz, zMaz, true, false);
+                        RenderHelper.fluidRender((percentage - 0.5f) * 2, fluidStack.getFluid(), Render.TankInternalDimension.xMin, 0, Render.TankInternalDimension.zMin, Render.TankInternalDimension.xMaz, Render.TankInternalDimension.yMaz, Render.TankInternalDimension.zMaz, true, false);
                     }
 
                 }
@@ -234,7 +227,7 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
             }
 
             if (te instanceof UpgCtileentityEnderTank) {
-                RenderHelper.renderEndPortal(xMin - 0.5, xMaz - 0.5, yMin + 0.5, yMaz + 0.5, zMin - 0.5, zMaz - 0.5, (float) this.field_147501_a.field_147560_j, (float) this.field_147501_a.field_147561_k, (float) this.field_147501_a.field_147558_l);
+                RenderHelper.renderEndPortal(Render.TankInternalDimension.xMin - 0.5, Render.TankInternalDimension.xMaz - 0.5, Render.TankInternalDimension.yMin + 0.5, Render.TankInternalDimension.yMaz + 0.5, Render.TankInternalDimension.zMin - 0.5, Render.TankInternalDimension.zMaz - 0.5, (float) this.field_147501_a.field_147560_j, (float) this.field_147501_a.field_147561_k, (float) this.field_147501_a.field_147558_l);
             }
 
             GL11.glPopMatrix();

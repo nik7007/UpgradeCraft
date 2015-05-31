@@ -5,7 +5,7 @@ import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderBasicFluidHopp
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidMachine;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRendererTank;
 import com.nik7.upgcraft.init.ModBlocks;
-import com.nik7.upgcraft.reference.RenderIds;
+import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.tileentities.*;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -25,9 +25,9 @@ public class ClientProxy extends CommonProxy {
     @Override
     public void initRenderingAndTextures() {
 
-        RenderIds.FLUID_TANK = RenderingRegistry.getNextAvailableRenderId();
-        RenderIds.BASIC_FLUID_HOPPER = RenderingRegistry.getNextAvailableRenderId();
-        RenderIds.FLUID_MACHINE = RenderingRegistry.getNextAvailableRenderId();
+        Render.Ids.FLUID_TANK = RenderingRegistry.getNextAvailableRenderId();
+        Render.Ids.BASIC_FLUID_HOPPER = RenderingRegistry.getNextAvailableRenderId();
+        Render.Ids.FLUID_MACHINE = RenderingRegistry.getNextAvailableRenderId();
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockWoodenLiquidTank), new ItemRenderWoodenTank());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockClayLiquidTank), new ItemRenderClayTank());

@@ -4,7 +4,7 @@ package com.nik7.upgcraft.block;
 import com.nik7.upgcraft.UpgradeCraft;
 import com.nik7.upgcraft.reference.GUIs;
 import com.nik7.upgcraft.reference.Names;
-import com.nik7.upgcraft.reference.RenderIds;
+import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
 import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -42,7 +42,7 @@ public class BlockUpgCFluidInfuser extends BlockUpgCContainerOrientable {
     }
 
     public int getRenderType() {
-        return RenderIds.FLUID_MACHINE;
+        return Render.Ids.FLUID_MACHINE;
     }
 
     @Override

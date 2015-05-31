@@ -2,7 +2,7 @@ package com.nik7.upgcraft.block;
 
 
 import com.nik7.upgcraft.reference.Names;
-import com.nik7.upgcraft.reference.RenderIds;
+import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtilientityFluidHopper;
 import cpw.mods.fml.relauncher.Side;
@@ -76,7 +76,7 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgCTank {
     }
 
     public int getRenderType() {
-        return RenderIds.BASIC_FLUID_HOPPER;
+        return Render.Ids.BASIC_FLUID_HOPPER;
     }
 
     @SideOnly(Side.CLIENT)

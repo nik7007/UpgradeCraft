@@ -4,7 +4,7 @@ package com.nik7.upgcraft.block;
 import com.nik7.upgcraft.entity.player.ExtendedPlayerUpgC;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
-import com.nik7.upgcraft.reference.RenderIds;
+import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityEnderTank;
@@ -62,7 +62,7 @@ public class BlockUpgCEnderTank extends BlockUpgCTank {
 
     @Override
     public int getRenderType() {
-        return RenderIds.FLUID_TANK;
+        return Render.Ids.FLUID_TANK;
     }
 
 
