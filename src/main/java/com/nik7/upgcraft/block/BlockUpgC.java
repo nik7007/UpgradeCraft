@@ -6,6 +6,9 @@ import com.nik7.upgcraft.util.StringHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
+
+import javax.swing.*;
 
 public class BlockUpgC extends Block {
 
@@ -23,8 +26,6 @@ public class BlockUpgC extends Block {
     public String getUnlocalizedName() {
         return String.format("tile.%s%s", Names.RESOURCE_PREFIX, StringHelper.getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
     }
-
-
 
 
 }

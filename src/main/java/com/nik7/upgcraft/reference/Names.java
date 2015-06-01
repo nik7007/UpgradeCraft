@@ -10,6 +10,7 @@ public class Names {
         public final static String CLAY_LIQUID_TANK = "ClayTank";
         public final static String ENDER_TANK = "EnderTank";
         public final static String SLIMY_LOG = "SlimyLog";
+        public final static String SLIMY_OBSIDIAN = "SlimyObsidian";
         public final static String FLUID_HOPPER = "FluidHopper";
         public final static String FLUID_FURNACE = "FluidFurnace";
         public final static String FLUID_INFUSE = "FluidInfuser";

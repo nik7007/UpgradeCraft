@@ -2,6 +2,7 @@ package com.nik7.upgcraft.block;
 
 
 import com.nik7.upgcraft.entity.player.ExtendedPlayerUpgC;
+import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Render;
@@ -14,6 +15,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -51,7 +53,7 @@ public class BlockUpgCEnderTank extends BlockUpgCTank {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.icon = iconRegister.registerIcon(Texture.Blocks.ENDER_LIQUID_TANK);
+        this.icon = iconRegister.registerIcon(Texture.Blocks.SLIMY_OBSIDIAN);
     }
 
     @Override
@@ -99,6 +101,18 @@ public class BlockUpgCEnderTank extends BlockUpgCTank {
             entity.setTank(new UpgCTank(0));
         }
 
+    }
+
+    public Item getItemDropped(int i, Random random, int j) {
+        return Item.getItemFromBlock(ModBlocks.blockUpgCSlimyObsidian);
+    }
+
+    public int quantityDropped(Random random) {
+        return 8;
+    }
+
+    protected boolean canSilkHarvest() {
+        return true;
     }
 
     @Override

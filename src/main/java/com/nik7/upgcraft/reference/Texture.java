@@ -40,6 +40,7 @@ public class Texture {
 
 
         public final static String SLIMY_LOG = Reference.MOD_ID + ":" + "slime_planks";
+        public final static String SLIMY_OBSIDIAN = Reference.MOD_ID + ":" +"BlockSlimyObsidian";
     }
 
     public class Items {

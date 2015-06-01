@@ -6,9 +6,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockCSlimyLog extends ItemBlock implements FluidInfuserItem {
+public class ItemBlockSlimyLog extends ItemBlock implements FluidInfuserItem {
 
-    public ItemBlockCSlimyLog(Block block) {
+    public ItemBlockSlimyLog(Block block) {
         super(block);
     }
 
