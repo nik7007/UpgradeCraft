@@ -6,7 +6,6 @@ public class Texture {
         public final static String WOODEN_LIQUID_TANK = Reference.MOD_ID + ":" + "BlockWoodenLiquidTank";
         public final static String CLAY_LIQUID_TANK = Reference.MOD_ID + ":" + "BlockClayLiquidTank";
         public final static String HARDENED_CLAY_LIQUID_TANK = Reference.MOD_ID + ":" + "BlockHardenedClayLiquidTank";
-        public final static String ENDER_LIQUID_TANK =  Reference.MOD_ID + ":" + "BlockEnderLiquidTank";
         public final static String FLUID_BASIC_HOPPER = Reference.MOD_ID + ":" + "BlockFluidBasicHopper_icon";
         //Model textures
         public final static String TEXTURE_MODEL_LOCATION = "textures/blocks/";
@@ -40,7 +39,7 @@ public class Texture {
 
 
         public final static String SLIMY_LOG = Reference.MOD_ID + ":" + "slime_planks";
-        public final static String SLIMY_OBSIDIAN = Reference.MOD_ID + ":" +"BlockSlimyObsidian";
+        public final static String SLIMY_OBSIDIAN_BASE = Reference.MOD_ID + ":" + "BlockSlimyObsidian/SlimyObsidian";
     }
 
     public class Items {

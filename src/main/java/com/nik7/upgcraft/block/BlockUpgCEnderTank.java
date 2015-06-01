@@ -53,7 +53,7 @@ public class BlockUpgCEnderTank extends BlockUpgCTank {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
-        this.icon = iconRegister.registerIcon(Texture.Blocks.SLIMY_OBSIDIAN);
+        this.icon = iconRegister.registerIcon(Texture.Blocks.SLIMY_OBSIDIAN_BASE + 0);
     }
 
     @Override
