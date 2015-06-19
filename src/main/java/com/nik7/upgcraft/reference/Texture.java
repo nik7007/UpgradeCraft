@@ -47,6 +47,7 @@ public class Texture {
         public final static String DRAGON_SWORD = Reference.MOD_ID + ":" + "dragonsword";
         public final static String CONCENTRATED_ENDER_PEARL = Reference.MOD_ID + ":" + "concentratedenderpearl";
         public final static String CLAY_IRON_INGOT = Reference.MOD_ID + ":" + "clayironIngot";
+        public final static String PERSONAL_INFORMATION = Reference.MOD_ID + ":" + "personalinformation";
 
     }
 
