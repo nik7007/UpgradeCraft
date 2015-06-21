@@ -4,6 +4,7 @@ package com.nik7.upgcraft.network;
 import com.nik7.upgcraft.UpgradeCraft;
 import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
+import com.nik7.upgcraft.tileentities.UpgCtilientityEnderHopper;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
@@ -35,6 +36,8 @@ public class DescriptionHandler extends SimpleChannelInboundHandler<FMLProxyPack
         TileEntity te = UpgradeCraft.proxy.getClientPlayer().worldObj.getTileEntity(x, y, z);
         if (te instanceof UpgCtileentityInventoryFluidHandler) {
             ((UpgCtileentityInventoryFluidHandler) te).readFromPacket(buf);
+        } else if (te instanceof UpgCtilientityEnderHopper) {
+            ((UpgCtilientityEnderHopper) te).readFromPacket(buf);
         }
 
     }
