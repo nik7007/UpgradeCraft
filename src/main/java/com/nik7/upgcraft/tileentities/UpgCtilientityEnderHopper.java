@@ -11,6 +11,7 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -18,7 +19,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.tileentity.IHopper;
 import net.minecraft.tileentity.TileEntity;
 
-public class UpgCtilientityEnderHopper extends TileEntity implements IHopper {
+public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, ISidedInventory {
 
     private ItemStack inventory[] = new ItemStack[8]; //slot: 0 {up personal information} - slot: 1 {fuel} - slots:[2-6] {inventory} - slot: 7 {exit personal information}
     private String customName = Names.Inventory.UPGC_ENDER_HOPPER;
@@ -103,22 +104,28 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper {
 
     }
 
-    private ItemStack putItemInInventory(ItemStack itemStack) {
+    private ItemStack putItemInInventory(IInventory inventory, ItemStack itemStack) {
+
+        return putItemInInventory(inventory, itemStack, 0);
+
+    }
+
+    private ItemStack putItemInInventory(IInventory inventory, ItemStack itemStack, int start) {
 
 
-        for (int i = 0; itemStack != null && i < getSizeInventory(); i++) {
+        for (int i = start; itemStack != null && i < inventory.getSizeInventory(); i++) {
 
-            if (inventory[i] == null || isItemValidForSlot(i, itemStack)) {
+            if (inventory.getStackInSlot(i) == null || inventory.isItemValidForSlot(i, itemStack)) {
 
-                int internalSize = inventory[i] == null ? 0 : inventory[i].stackSize;
+                int internalSize = inventory.getStackInSlot(i) == null ? 0 : inventory.getStackInSlot(i).stackSize;
 
-                int max = Math.min(itemStack.getMaxStackSize(), getInventoryStackLimit());
+                int max = Math.min(itemStack.getMaxStackSize(), inventory.getInventoryStackLimit());
                 if (itemStack.stackSize + internalSize > max) {
 
-                    inventory[i] = new ItemStack(itemStack.getItem(), max, itemStack.getItemDamage());
-                    return putItemInInventory(new ItemStack(itemStack.getItem(), itemStack.stackSize + internalSize - max, itemStack.getItemDamage()));
+                    inventory.setInventorySlotContents(i, new ItemStack(itemStack.getItem(), max, itemStack.getItemDamage()));
+                    return putItemInInventory(inventory, new ItemStack(itemStack.getItem(), itemStack.stackSize + internalSize - max, itemStack.getItemDamage()), i + 1);
                 } else {
-                    inventory[i] = new ItemStack(itemStack.getItem(), itemStack.stackSize + internalSize, itemStack.getItemDamage());
+                    inventory.setInventorySlotContents(i, new ItemStack(itemStack.getItem(), itemStack.stackSize + internalSize, itemStack.getItemDamage()));
                     return null;
                 }
             }
@@ -139,6 +146,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper {
 
     }
 
+    //TODO: ISidedInventory version
     private ItemStack getItemsFromInventory(IInventory inventory, int howMany) {
 
         if (inventory == null || howMany == 0)
@@ -299,5 +307,20 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper {
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
         return ItemStack.areItemStacksEqual(inventory[slot], itemStack) && inventory[slot].stackSize < inventory[slot].getMaxStackSize();
+    }
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side) {
+        return new int[]{2,3,4,5,6};
+    }
+
+    @Override
+    public boolean canInsertItem(int slot, ItemStack itemStack, int side) {
+        return false;
+    }
+
+    @Override
+    public boolean canExtractItem(int slot, ItemStack itemStack, int side) {
+        return false;
     }
 }
