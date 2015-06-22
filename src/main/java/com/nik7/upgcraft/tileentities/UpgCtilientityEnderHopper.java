@@ -104,6 +104,8 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     }
 
+    //TODO: ISidedInventory version
+
     private ItemStack putItemInInventory(IInventory inventory, ItemStack itemStack) {
 
         return putItemInInventory(inventory, itemStack, 0);
@@ -147,6 +149,14 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
     }
 
     //TODO: ISidedInventory version
+    private ItemStack getItemsFromInventory(ISidedInventory sidedInventory, int howMany, int side){
+
+        if(sidedInventory == null || howMany == 0)
+            return null;
+
+        return null;
+    }
+
     private ItemStack getItemsFromInventory(IInventory inventory, int howMany) {
 
         if (inventory == null || howMany == 0)
