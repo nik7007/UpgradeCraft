@@ -148,14 +148,26 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     }
 
-    //TODO: ISidedInventory version
-    private ItemStack getItemsFromInventory(ISidedInventory sidedInventory, int howMany, int side){
+    private ItemStack getItemsFromInventory(ISidedInventory sidedInventory, int howMany, int side) {
 
-        if(sidedInventory == null || howMany == 0)
+        if (sidedInventory == null || howMany == 0)
             return null;
 
-        return null;
+        int slot[] = sidedInventory.getAccessibleSlotsFromSide(side);
+
+        ItemStack itemStack = null;
+
+        for (int i : slot) {
+            if (sidedInventory.getStackInSlot(i) != null) {
+                itemStack = getItemsFromInventory((IInventory) sidedInventory, howMany, i, side);
+                if (itemStack != null)
+                    break;
+            }
+        }
+
+        return itemStack;
     }
+
 
     private ItemStack getItemsFromInventory(IInventory inventory, int howMany) {
 
@@ -179,6 +191,11 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     private ItemStack getItemsFromInventory(IInventory inventory, int howMany, int slot) {
 
+        return getItemsFromInventory(inventory, howMany, slot, -1);
+    }
+
+    private ItemStack getItemsFromInventory(IInventory inventory, int howMany, int slot, int side) {
+
         if (inventory == null || howMany == 0)
             return null;
 
@@ -188,6 +205,11 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
         if (itemStack == null)
             return null;
+
+        if (side != -1 && inventory instanceof ISidedInventory) {
+            if (!((ISidedInventory) inventory).canExtractItem(slot, itemStack, side))
+                return null;
+        }
 
         int slotLength = itemStack.stackSize;
 
@@ -321,16 +343,16 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        return new int[]{2,3,4,5,6};
+        return new int[]{2, 3, 4, 5, 6};
     }
 
     @Override
     public boolean canInsertItem(int slot, ItemStack itemStack, int side) {
-        return false;
+        return isItemValidForSlot(slot, itemStack);
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack itemStack, int side) {
-        return false;
+        return isItemValidForSlot(slot, itemStack);
     }
 }
