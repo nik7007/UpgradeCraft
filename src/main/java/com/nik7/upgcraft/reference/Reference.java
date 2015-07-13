@@ -4,7 +4,7 @@ public class Reference {
 
     public static final String MOD_ID = "upgcraft";
     public static final String MOD_NAME = "UpgradeCraft";
-    public static final String VERSION = "alpha";
+    public static final String VERSION = "alpha-1.5";
 
     public static final String EXTENDED_PLAYER = MOD_ID + ".ExtendedPlayer.AddProperties";
 
