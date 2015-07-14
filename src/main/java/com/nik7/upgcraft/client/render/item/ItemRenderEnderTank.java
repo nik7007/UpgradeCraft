@@ -36,9 +36,8 @@ public class ItemRenderEnderTank implements IItemRenderer {
 
         GL11.glPushMatrix(); //start
 
-        GL11.glTranslated(0.28f, 1.24f, 0.28f);
-
-        GL11.glRotatef(180, 1, 0, 0);
+        GL11.glTranslated(0, 0.99, 0);
+        GL11.glRotatef(180, 1.0f, 0, 0);
         GL11.glRotatef(-90, 0, 1, 0);
 
         this.modelTank.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
