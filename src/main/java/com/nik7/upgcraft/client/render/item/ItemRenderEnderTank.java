@@ -36,9 +36,22 @@ public class ItemRenderEnderTank implements IItemRenderer {
 
         GL11.glPushMatrix(); //start
 
-        GL11.glTranslated(0, 0.99, 0);
-        GL11.glRotatef(180, 1.0f, 0, 0);
-        GL11.glRotatef(-90, 0, 1, 0);
+        switch (type) {
+            case ENTITY:
+            case INVENTORY:
+                GL11.glTranslated(0, 0.99, 0);
+                break;
+            case EQUIPPED:
+            case EQUIPPED_FIRST_PERSON:
+                GL11.glTranslated(0.42, 1.53, 0.42);
+                break;
+            default:
+                break;
+
+        }
+
+        GL11.glRotatef(180, 1, 0, 0);
+        GL11.glRotatef(90, 0, 1, 0);
 
         this.modelTank.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
@@ -59,7 +72,9 @@ public class ItemRenderEnderTank implements IItemRenderer {
 
                 RenderHelper.renderEndPortal(Render.TankInternalDimension.xMin - 0.5, Render.TankInternalDimension.xMaz - 0.5, Render.TankInternalDimension.yMin + 0.5, Render.TankInternalDimension.yMaz + 0.5, Render.TankInternalDimension.zMin - 0.5, Render.TankInternalDimension.zMaz - 0.5, (float) player.field_71091_bM, (float) player.field_71096_bN, (float) player.field_71097_bO);
 
-            }
+            } else
+                RenderHelper.renderEndPortal(Render.TankInternalDimension.xMin - 0.5, Render.TankInternalDimension.xMaz - 0.5, Render.TankInternalDimension.yMin + 0.5, Render.TankInternalDimension.yMaz + 0.5, Render.TankInternalDimension.zMin - 0.5, Render.TankInternalDimension.zMaz - 0.5, 1, 1, 1);
+
 
         }
 

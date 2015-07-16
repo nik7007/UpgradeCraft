@@ -39,7 +39,7 @@ public class ItemRenderWoodenTank extends ItemRenderTank {
                 break;
         }
 
-        renderModel();
+        renderModel(type);
 
     }
 }

@@ -47,7 +47,7 @@ public class ItemRenderClayTank extends ItemRenderTank {
                 return;
         }
 
-        renderModel();
+        renderModel(type);
 
     }
 
