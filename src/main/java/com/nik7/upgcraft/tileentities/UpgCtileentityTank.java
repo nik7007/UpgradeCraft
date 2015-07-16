@@ -189,6 +189,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
             if (isTop && adjacentTankYNeg != null) {
 
                 if (adjacentTankYNeg.getTank().getCapacity() == 2 * TANK_CAPACITY) {
+                    adjacentTankYNeg.fill(ForgeDirection.UNKNOWN, this.getFluid(), true);
                     setTank(adjacentTankYNeg.getTank());
                     isFirst = false;
                 }
