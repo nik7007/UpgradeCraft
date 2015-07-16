@@ -3,8 +3,8 @@
   "modid": "upgcraft",
   "name": "UpgradeCraft",
   "description": "I try to make a mod! XP",
-  "version": "1.7.10-alpha",
-  "mcversion": "1.7.10",
+  "version": "${mod_version}",
+  "mcversion": "${minecraft_version}",
   "url": "",
   "updateUrl": "",
   "authorList": [
