@@ -19,12 +19,14 @@ import net.minecraftforge.fluids.TileFluidHandler;
 public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     private final int TANK_CAPACITY;
+    private int oldCapacity = -1;
     private UpgCtileentityTank adjacentTankYPos = null;
     private UpgCtileentityTank adjacentTankYNeg = null;
     private boolean canBeDouble = false;
     private boolean isDouble = false;
     private boolean isTop = false;
     private boolean isFirst = true;
+    private int oldMeta = -1;
 
     protected UpgCtileentityTank(int tankCapacity, boolean canBeDouble) {
 
@@ -44,6 +46,8 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
         super.readFromNBT(tag);
         isDouble = tag.getBoolean("isDouble");
         isTop = tag.getBoolean("isTop");
+        if (tag.hasKey("oldCapacity"))
+            oldCapacity = tag.getInteger("oldCapacity");
 
     }
 
@@ -52,6 +56,11 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
         super.writeToNBT(tag);
         tag.setBoolean("isDouble", isDouble);
         tag.setBoolean("isTop", isTop);
+
+        if (oldCapacity == -1)
+            oldCapacity = TANK_CAPACITY;
+        tag.setInteger("oldCapacity", oldCapacity);
+
     }
 
     public boolean isCanBeDouble() {
@@ -158,6 +167,9 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     public void updateEntity() {
 
+        if (oldMeta == -1)
+            oldMeta = getBlockMetadata();
+
         if (canBeDouble) {
             findAdjacentTank();
         }
@@ -184,39 +196,71 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     private void merge() {
 
-        if (isFirst) {
+        if (worldObj.isRemote)
+            return;
 
-            if (isTop && adjacentTankYNeg != null) {
+        if (isTop) {
+
+            if (oldMeta != getBlockMetadata())
+                isFirst = true;
+
+            if (isFirst && adjacentTankYNeg != null) {
 
                 if (adjacentTankYNeg.getTank().getCapacity() == 2 * TANK_CAPACITY) {
-                    adjacentTankYNeg.fill(ForgeDirection.UNKNOWN, this.getFluid(), true);
+                    oldCapacity = TANK_CAPACITY;
                     setTank(adjacentTankYNeg.getTank());
                     isFirst = false;
                 }
+            }
 
-            } else isFirst = false;
+        } else if (!(getTank().getCapacity() == 2 * this.TANK_CAPACITY)) {
 
-        } else if (!(getTank().getCapacity() == 2 * this.TANK_CAPACITY) && !worldObj.isRemote) {
+            if (oldCapacity != -1) {
 
-            UpgCtileentityTank tank;
+                if (oldCapacity != TANK_CAPACITY) {
+
+                    if (this.tank.getCapacity() == 2 * oldCapacity) {
+                        UpgCTank tank = new UpgCTank(2 * TANK_CAPACITY);
+                        tank.fill(this.tank.getFluid(), true);
+                        this.setTank(tank);
+                    } else if (this.tank.getCapacity() == oldCapacity) {
+
+                        FluidStack fluidStack = this.getFluid();
+                        FluidStack fluidStackD = adjacentTankYPos.getFluid();
+                        UpgCTank tank = new UpgCTank(2 * TANK_CAPACITY);
+
+                        this.setTank(tank);
+
+                        this.tank.fill(fluidStack, true);
+                        this.tank.fill(fluidStackD, true);
+                    }
+
+                    oldCapacity = TANK_CAPACITY;
+
+                    return;
+
+                }
+            }
+
+            oldCapacity = TANK_CAPACITY;
+
+            UpgCtileentityTank tank = adjacentTankYPos;
             FluidStack fluidStack = this.getFluid();
-
-            if (isTop)
-                tank = adjacentTankYNeg;
-            else tank = adjacentTankYPos;
-
+            FluidStack fluidStackD = tank.getFluid();
 
             UpgCTank cTank = tank.getTank();
 
             if (cTank.getCapacity() == this.TANK_CAPACITY) {
 
                 cTank = new UpgCTank(2 * TANK_CAPACITY);
-            } else if (cTank.getCapacity() != 2 * this.TANK_CAPACITY)
+            } else if (cTank.getCapacity() != 2 * this.TANK_CAPACITY) {
                 LogHelper.error("Unknow tank capacity: " + cTank.getCapacity());
+            }
 
             this.setTank(cTank);
 
             this.tank.fill(fluidStack, true);
+            this.tank.fill(fluidStackD, true);
 
         }
 
@@ -225,6 +269,9 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     private void separate() {
 
         if (!(getTank().getCapacity() == this.TANK_CAPACITY) && !worldObj.isRemote) {
+
+            if (!isFirst)
+                isFirst = true;
 
             int amount = 0;
             FluidStack fluidStack = null;

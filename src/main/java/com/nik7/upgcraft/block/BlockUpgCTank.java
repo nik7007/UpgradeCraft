@@ -1,5 +1,8 @@
 package com.nik7.upgcraft.block;
 
+import com.nik7.upgcraft.config.ConfigurableObject;
+import com.nik7.upgcraft.config.SystemConfig;
+import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.util.LogHelper;
@@ -23,7 +26,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.List;
 import java.util.Random;
 
-public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider {
+public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider, ConfigurableObject {
 
     protected int capacity;
     protected boolean haveSubBlocks = false;
@@ -228,6 +231,24 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     public int getCapacity() {
         return capacity;
+    }
+
+    @Override
+    public void appliedConfig(SystemConfig.ConfigValue... values) {
+
+        if (values.length >= 1) {
+            for (SystemConfig.ConfigValue c : values) {
+
+                if (c.configName.equals("basicTankCapacity")) {
+
+                    this.capacity = new Integer(c.value);
+
+                }
+
+            }
+
+        }
+
     }
 
 }

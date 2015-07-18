@@ -1,5 +1,6 @@
 package com.nik7.upgcraft.block;
 
+import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Render;
@@ -196,6 +197,30 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
     }
 
 
+    @Override
+    public void appliedConfig(SystemConfig.ConfigValue... values) {
+
+        if (values.length >= 1) {
+            super.appliedConfig(values);
+            for (SystemConfig.ConfigValue c : values) {
+
+                if (c.configName.equals("basicWoodenBlockFlammability")) {
+
+                    boolean value = c.value.toLowerCase().equals("true");
+
+                    if (!value) {
+
+                        this.flammability = 0;
+                        this.fireSpreadSpeed = 0;
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
 }
 
 
