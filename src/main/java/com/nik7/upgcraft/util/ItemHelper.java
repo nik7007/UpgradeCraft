@@ -49,6 +49,9 @@ public class ItemHelper {
 
     public static ItemStack generateItemStack(ItemStack itemStack, int size, int damage) {
 
+        if (size <= 0)
+            return null;
+
         ItemStack result = new ItemStack(itemStack.getItem(), size, damage);
 
         if (itemStack.hasTagCompound())

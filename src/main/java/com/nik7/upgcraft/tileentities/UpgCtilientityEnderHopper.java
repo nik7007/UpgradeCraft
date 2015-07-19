@@ -10,6 +10,8 @@ import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.BlockEnderChest;
+import net.minecraft.command.IEntitySelector;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -19,6 +21,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.IHopper;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+
+import java.util.List;
 
 public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, ISidedInventory {
 
@@ -122,10 +128,29 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
         } else if (worldObj.getTileEntity(xCoord, yCoord + 1, zCoord) instanceof ISidedInventory) {
             inventory = (ISidedInventory) worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
         }
+        if (inventory != null)
+            transferItems(inventory, this, 1, 0, 0);
+        else {
+            EntityItem entityItem = getItemsFromUpAir(getWorldObj(), getXPos(), getYPos() + 1, getZPos());
 
-        transferItems(inventory, this, 1, 0, 0);
+            if (entityItem != null) {
+
+                ItemStack origin = entityItem.getEntityItem();
+                int result = transferItemToInventory(this, origin, 1, 0);
+                ItemStack itemStackResult = ItemHelper.generateItemStack(origin, origin.stackSize - result);
+
+                if (itemStackResult != null && itemStackResult.stackSize > 0)
+                    entityItem.setEntityItemStack(itemStackResult);
+                else entityItem.setDead();
+            }
+        }
 
 
+    }
+
+    private static EntityItem getItemsFromUpAir(World world, double x, double y, double z) {
+        List list = world.selectEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D), IEntitySelector.selectAnything);
+        return list.size() > 0 ? (EntityItem) list.get(0) : null;
     }
 
     private static void transferItems(IInventory src, IInventory dest, int quantity, int sideSrc, int sideDest) {
@@ -134,9 +159,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
             return;
 
         int indexSrc = -1;
-        int indexDest = -1;
         ItemStack itemStackSrc = null;
-        ItemStack imItemStackDest = null;
 
         if (src instanceof ISidedInventory) {
             int[] slots = ((ISidedInventory) src).getAccessibleSlotsFromSide(sideSrc);
@@ -160,56 +183,73 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
         if (itemStackSrc != null) {
 
-            if (dest instanceof ISidedInventory) {
-                int slots[] = ((ISidedInventory) dest).getAccessibleSlotsFromSide(sideDest);
-
-                for (int i : slots) {
-                    if (canPutItemsInventory(dest, itemStackSrc, i) && ((imItemStackDest = dest.getStackInSlot(i)) == null || imItemStackDest.stackSize < imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
-                        indexDest = i;
-                        break;
-                    }
-                }
-
-            } else {
-                int dimDest = dest.getSizeInventory();
-                for (int i = 0; i < dimDest; i++) {
-                    if (canPutItemsInventory(dest, itemStackSrc, i) && ((imItemStackDest = dest.getStackInSlot(i)) == null || imItemStackDest.stackSize < imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
-                        indexDest = i;
-                        imItemStackDest = dest.getStackInSlot(i);
-                        break;
-                    }
-                }
-            }
-
-            if (indexDest != -1) {
-
-                quantity = Math.min(dest.getInventoryStackLimit(), quantity);
-                quantity = Math.min(quantity, itemStackSrc.getItem().getItemStackLimit(itemStackSrc));
-
-                int quantityDest = quantity;
-
-                if (imItemStackDest != null) {
-                    int max;
-                    if (imItemStackDest.stackSize + quantity > (max = imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
-
-                        quantity = max - imItemStackDest.stackSize;
-                    }
-
-                    int newDim = imItemStackDest.stackSize + quantity;
-                    if (newDim > dest.getInventoryStackLimit()) {
-                        quantityDest = quantity = quantity - (newDim - dest.getInventoryStackLimit());
-
-                    } else quantityDest = newDim;
-
-                }
-
-                src.decrStackSize(indexSrc, quantity);
-                dest.setInventorySlotContents(indexDest, ItemHelper.generateItemStack(itemStackSrc, quantityDest));
-            }
+            src.decrStackSize(indexSrc, transferItemToInventory(dest, itemStackSrc, quantity, sideDest));
 
         }
 
 
+    }
+
+    private static int transferItemToInventory(IInventory inventory, ItemStack itemStack, int quantity, int side) {
+
+
+        if (inventory == null || itemStack == null)
+            return 0;
+
+        int indexDest = -1;
+        ItemStack imItemStackDest = null;
+
+        if (inventory instanceof ISidedInventory) {
+            int slots[] = ((ISidedInventory) inventory).getAccessibleSlotsFromSide(side);
+
+            for (int i : slots) {
+                if (canPutItemsInventory(inventory, itemStack, i) && ((imItemStackDest = inventory.getStackInSlot(i)) == null || imItemStackDest.stackSize < imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
+                    indexDest = i;
+                    break;
+                }
+            }
+
+        } else {
+            int dimDest = inventory.getSizeInventory();
+            for (int i = 0; i < dimDest; i++) {
+                if (canPutItemsInventory(inventory, itemStack, i) && ((imItemStackDest = inventory.getStackInSlot(i)) == null || imItemStackDest.stackSize < imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
+                    indexDest = i;
+                    imItemStackDest = inventory.getStackInSlot(i);
+                    break;
+                }
+            }
+        }
+
+        if (indexDest != -1) {
+
+            quantity = Math.min(inventory.getInventoryStackLimit(), quantity);
+            quantity = Math.min(quantity, itemStack.getItem().getItemStackLimit(itemStack));
+
+            int quantityDest = quantity;
+
+            if (imItemStackDest != null) {
+                int max;
+                if (imItemStackDest.stackSize + quantity > (max = imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
+
+                    quantity = max - imItemStackDest.stackSize;
+                }
+
+                int newDim = imItemStackDest.stackSize + quantity;
+                if (newDim > inventory.getInventoryStackLimit()) {
+                    quantityDest = quantity = quantity - (newDim - inventory.getInventoryStackLimit());
+
+                } else quantityDest = newDim;
+
+            }
+
+            inventory.setInventorySlotContents(indexDest, ItemHelper.generateItemStack(itemStack, quantityDest));
+
+            return quantity;
+
+
+        }
+
+        return 0;
     }
 
     private static boolean canPutItemsInventory(IInventory inventory, ItemStack itemStack, int slot) {
