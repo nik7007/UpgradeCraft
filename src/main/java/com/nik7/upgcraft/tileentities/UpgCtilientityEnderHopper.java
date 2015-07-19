@@ -164,9 +164,8 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
                 int slots[] = ((ISidedInventory) dest).getAccessibleSlotsFromSide(sideDest);
 
                 for (int i : slots) {
-                    if (canPutItemsInventory(dest, itemStackSrc, i)) {
+                    if (canPutItemsInventory(dest, itemStackSrc, i) && ((imItemStackDest = dest.getStackInSlot(i)) == null || imItemStackDest.stackSize < imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
                         indexDest = i;
-                        imItemStackDest = dest.getStackInSlot(i);
                         break;
                     }
                 }
@@ -174,7 +173,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
             } else {
                 int dimDest = dest.getSizeInventory();
                 for (int i = 0; i < dimDest; i++) {
-                    if (canPutItemsInventory(dest, itemStackSrc, i)) {
+                    if (canPutItemsInventory(dest, itemStackSrc, i) && ((imItemStackDest = dest.getStackInSlot(i)) == null || imItemStackDest.stackSize < imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
                         indexDest = i;
                         imItemStackDest = dest.getStackInSlot(i);
                         break;
