@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.tileentities;
 
 
+import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.item.ItemUpgCPersonalInformation;
 import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.reference.Names;
@@ -23,6 +24,7 @@ import net.minecraft.tileentity.IHopper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import java.util.List;
 
@@ -30,7 +32,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     private ItemStack inventory[] = new ItemStack[8]; //slot: 0 {up personal information} - slot: 1 {fuel} - slots:[2-6] {inventory} - slot: 7 {exit personal information}
     private String customName = Names.Inventory.UPGC_ENDER_HOPPER;
-    private int cycle = 0;
+    private int cyclePush = 0;
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
@@ -97,12 +99,48 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     @Override
     public void updateEntity() {
+        int meta = this.getBlockMetadata();
+        if (!worldObj.isRemote && BlockUpgCBasicFluidHopper.isNotPowered(meta)) {
 
-        if (!worldObj.isRemote) {
-            cycle++;
-            if ((cycle %= 7) == 0)
+            int cyclePull = cyclePush + 6;
+
+            if ((cyclePull % 7) == 0) {
                 getItemStackFromTop();
+            }
+
+            if (cyclePush > 6) {
+                cyclePush = 0;
+                int dir = BlockUpgCBasicFluidHopper.getDirectionFromMetadata(meta);
+                pushItems(dir);
+
+            }
+            cyclePush++;
+
+
         }
+    }
+
+    void pushItems(int dir) {
+        TileEntity tile;
+        IInventory inventory = null;
+        ForgeDirection direction = ForgeDirection.getOrientation(dir);
+
+        if (worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) instanceof BlockEnderChest) {
+
+            if (this.inventory[7] != null && this.inventory[7].getItem() instanceof ItemUpgCPersonalInformation) {
+                EntityPlayer player = ItemUpgCPersonalInformation.getPlayer(this.inventory[7], getWorldObj());
+
+                if (player != null) {
+                    inventory = getEnderChestInventory(player);
+                }
+
+            }
+
+        } else if ((tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ)) instanceof IInventory) {
+            inventory = (IInventory) tile;
+        }
+        if (inventory != null)
+            transferItems(this, inventory, 1, 0, dir);
     }
 
     void getItemStackFromTop() {
@@ -116,7 +154,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
                 EntityPlayer player = ItemUpgCPersonalInformation.getPlayer(this.inventory[0], getWorldObj());
 
                 if (player != null) {
-                    inventory = getEnderChestInventory(this.inventory[0]);
+                    inventory = getEnderChestInventory(player);
                 }
 
             }
@@ -148,12 +186,12 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     }
 
-    private static EntityItem getItemsFromUpAir(World world, double x, double y, double z) {
+    protected static EntityItem getItemsFromUpAir(World world, double x, double y, double z) {
         List list = world.selectEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D), IEntitySelector.selectAnything);
         return list.size() > 0 ? (EntityItem) list.get(0) : null;
     }
 
-    private static void transferItems(IInventory src, IInventory dest, int quantity, int sideSrc, int sideDest) {
+    protected static void transferItems(IInventory src, IInventory dest, int quantity, int sideSrc, int sideDest) {
 
         if (src == null || dest == null)
             return;
@@ -190,7 +228,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     }
 
-    private static int transferItemToInventory(IInventory inventory, ItemStack itemStack, int quantity, int side) {
+    protected static int transferItemToInventory(IInventory inventory, ItemStack itemStack, int quantity, int side) {
 
 
         if (inventory == null || itemStack == null)
@@ -252,7 +290,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
         return 0;
     }
 
-    private static boolean canPutItemsInventory(IInventory inventory, ItemStack itemStack, int slot) {
+    protected static boolean canPutItemsInventory(IInventory inventory, ItemStack itemStack, int slot) {
 
         if (inventory.isItemValidForSlot(slot, itemStack)) {
             ItemStack stack = inventory.getStackInSlot(slot);
@@ -261,11 +299,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
     }
 
 
-    private IInventory getEnderChestInventory(ItemStack personalInformation) {
-
-        if (!(personalInformation.getItem() instanceof ItemUpgCPersonalInformation))
-            return null;
-        EntityPlayer player = ItemUpgCPersonalInformation.getPlayer(personalInformation, this.getWorldObj());
+    private IInventory getEnderChestInventory(EntityPlayer player) {
         if (player == null)
             return null;
         return player.getInventoryEnderChest();
