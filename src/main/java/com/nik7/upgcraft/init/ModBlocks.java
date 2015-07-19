@@ -2,8 +2,8 @@ package com.nik7.upgcraft.init;
 
 
 import com.nik7.upgcraft.block.*;
-import com.nik7.upgcraft.item.ItemBlockSlimyLog;
 import com.nik7.upgcraft.item.ItemBlockClayTank;
+import com.nik7.upgcraft.item.ItemBlockSlimyLog;
 import com.nik7.upgcraft.item.ItemBlockWoodenTank;
 import com.nik7.upgcraft.item.itemBlockSlimyObsidian;
 import com.nik7.upgcraft.reference.Names;
@@ -22,6 +22,7 @@ public class ModBlocks {
     public static final Block blockFluidFurnace = new BlockUpgCFluidFurnace();
     public static final Block blockFluidInfuse = new BlockUpgCFluidInfuser();
     public static final Block blockUpgCSlimyObsidian = new BlockUpgCSlimyObsidian();
+    public static final Block blockUpgCEnderHopper = new BlockUpgCEnderHopper();
 
     public static void init() {
 
@@ -33,6 +34,7 @@ public class ModBlocks {
         GameRegistry.registerBlock(blockFluidBasicHopper, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_HOPPER);
         GameRegistry.registerBlock(blockFluidFurnace, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_FURNACE);
         GameRegistry.registerBlock(blockFluidInfuse, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_INFUSE);
+        GameRegistry.registerBlock(blockUpgCEnderHopper, Reference.MOD_ID + "Block" + Names.Blocks.ENDER_HOPPER);
 
     }
 }

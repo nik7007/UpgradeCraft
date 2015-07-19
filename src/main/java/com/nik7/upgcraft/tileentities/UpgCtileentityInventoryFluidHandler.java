@@ -2,6 +2,7 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.network.DescriptionHandler;
+import com.nik7.upgcraft.util.ItemHelper;
 import com.nik7.upgcraft.util.LogHelper;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
@@ -231,12 +232,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
                 itemStacks[slot] = null;
             }
 
-            ItemStack result = new ItemStack(itemStack.getItem(), number, itemStack.getItemDamage());
-
-            if (itemStack.hasTagCompound())
-                result.setTagCompound(itemStack.getTagCompound());
-
-            return result;
+            return ItemHelper.generateItemStack(itemStack, number);
 
         }
     }

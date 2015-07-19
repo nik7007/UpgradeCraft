@@ -50,7 +50,7 @@ public class ItemUpgCPersonalInformation extends ItemUpgC {
 
     public static EntityPlayer getPlayer(ItemStack itemStack, World world) {
 
-        if (itemStack.stackTagCompound != null) {
+        if (itemStack != null && itemStack.stackTagCompound != null) {
 
             if (itemStack.stackTagCompound.hasKey(playerUUID)) {
                 String pUUID = itemStack.stackTagCompound.getString(playerUUID);
