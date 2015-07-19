@@ -164,7 +164,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
                 int slots[] = ((ISidedInventory) dest).getAccessibleSlotsFromSide(sideDest);
 
                 for (int i : slots) {
-                    if (canPutItemsInventory(dest, itemStackSrc, i, quantity)) {
+                    if (canPutItemsInventory(dest, itemStackSrc, i)) {
                         indexDest = i;
                         imItemStackDest = dest.getStackInSlot(i);
                         break;
@@ -174,7 +174,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
             } else {
                 int dimDest = dest.getSizeInventory();
                 for (int i = 0; i < dimDest; i++) {
-                    if (canPutItemsInventory(dest, itemStackSrc, i, quantity)) {
+                    if (canPutItemsInventory(dest, itemStackSrc, i)) {
                         indexDest = i;
                         imItemStackDest = dest.getStackInSlot(i);
                         break;
@@ -190,6 +190,12 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
                 int quantityDest = quantity;
 
                 if (imItemStackDest != null) {
+                    int max;
+                    if (imItemStackDest.stackSize + quantity > (max = imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
+
+                        quantity = max - imItemStackDest.stackSize;
+                    }
+
                     int newDim = imItemStackDest.stackSize + quantity;
                     if (newDim > dest.getInventoryStackLimit()) {
                         quantityDest = quantity = quantity - (newDim - dest.getInventoryStackLimit());
@@ -207,11 +213,11 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     }
 
-    private static boolean canPutItemsInventory(IInventory inventory, ItemStack itemStack, int slot, int qnt) {
+    private static boolean canPutItemsInventory(IInventory inventory, ItemStack itemStack, int slot) {
 
         if (inventory.isItemValidForSlot(slot, itemStack)) {
             ItemStack stack = inventory.getStackInSlot(slot);
-            return stack == null || stack.stackSize + qnt <= stack.getItem().getItemStackLimit(stack);
+            return stack == null || stack.stackSize < stack.getItem().getItemStackLimit(stack);
         } else return false;
     }
 
@@ -344,7 +350,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        return !(slot < 0 || slot >= getSizeInventory()) && (inventory[slot] == null || itemStack == null || inventory[slot].isItemEqual(itemStack) && !((inventory[slot].hasTagCompound() && !itemStack.hasTagCompound()) || (!inventory[slot].hasTagCompound() && itemStack.hasTagCompound())) && (!(inventory[slot].hasTagCompound() && itemStack.hasTagCompound()) || inventory[slot].getTagCompound().equals(itemStack.hasTagCompound())));
+        return !(slot < 0 || slot >= getSizeInventory()) && (inventory[slot] == null || itemStack == null || inventory[slot].isItemEqual(itemStack) && !((inventory[slot].hasTagCompound() && !itemStack.hasTagCompound()) || (!inventory[slot].hasTagCompound() && itemStack.hasTagCompound())) && (!(inventory[slot].hasTagCompound() && itemStack.hasTagCompound()) || inventory[slot].getTagCompound().equals(itemStack.hasTagCompound()))) && (inventory[slot] == null || inventory[slot].stackSize < inventory[slot].getItem().getItemStackLimit(inventory[slot]));
 
     }
 
