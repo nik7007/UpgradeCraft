@@ -2,6 +2,7 @@ package com.nik7.upgcraft.proxy;
 
 import com.nik7.upgcraft.client.render.item.*;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderBasicFluidHopper;
+import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderEnderHopper;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidMachine;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRendererTank;
 import com.nik7.upgcraft.init.ModBlocks;
@@ -28,6 +29,8 @@ public class ClientProxy extends CommonProxy {
         Render.Ids.FLUID_TANK = RenderingRegistry.getNextAvailableRenderId();
         Render.Ids.BASIC_FLUID_HOPPER = RenderingRegistry.getNextAvailableRenderId();
         Render.Ids.FLUID_MACHINE = RenderingRegistry.getNextAvailableRenderId();
+        Render.Ids.ENDER_HOPPER = RenderingRegistry.getNextAvailableRenderId();
+
 
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockWoodenLiquidTank), new ItemRenderWoodenTank());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockClayLiquidTank), new ItemRenderClayTank());
@@ -39,6 +42,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityTankClay.class, new TileEntityRendererTank());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityEnderTank.class, new TileEntityRendererTank());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityFluidHopper.class, new TileEntityRenderBasicFluidHopper());
+        ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityEnderHopper.class, new TileEntityRenderEnderHopper());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityFluidFurnace.class, new TileEntityRenderFluidMachine());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityFluidInfuser.class, new TileEntityRenderFluidMachine());
 

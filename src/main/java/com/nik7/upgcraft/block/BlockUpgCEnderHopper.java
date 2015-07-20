@@ -4,6 +4,8 @@ package com.nik7.upgcraft.block;
 import com.nik7.upgcraft.UpgradeCraft;
 import com.nik7.upgcraft.reference.GUIs;
 import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.reference.Render;
+import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtilientityEnderHopper;
 import com.nik7.upgcraft.util.ItemHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -29,6 +31,7 @@ public class BlockUpgCEnderHopper extends BlockUpgC implements ITileEntityProvid
         setBlockName(Names.Blocks.ENDER_HOPPER);
         this.setHardness(25.0F);
         this.setResistance(2000.0F);
+        this.textureName = Texture.Blocks.ENDER_HOPPER;
     }
 
     @Override
@@ -80,6 +83,10 @@ public class BlockUpgCEnderHopper extends BlockUpgC implements ITileEntityProvid
 
         super.breakBlock(world, x, y, z, block, n);
 
+    }
+
+    public int getRenderType() {
+        return Render.Ids.ENDER_HOPPER;
     }
 
     @SideOnly(Side.CLIENT)

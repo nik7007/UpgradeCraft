@@ -16,6 +16,7 @@ public class Render {
         public static int FLUID_TANK;
         public static int BASIC_FLUID_HOPPER;
         public static int FLUID_MACHINE;
+        public static int ENDER_HOPPER;
     }
 
 }
