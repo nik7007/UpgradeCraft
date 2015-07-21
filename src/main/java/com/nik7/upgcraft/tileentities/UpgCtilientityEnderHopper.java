@@ -12,7 +12,6 @@ import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.BlockEnderChest;
-import net.minecraft.block.BlockHopper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -219,7 +218,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
         if (inventory == null) {
             return false;
         } else {
-            int side = Facing.oppositeSide[BlockHopper.getDirectionFromMetadata(this.getBlockMetadata())];
+            int side = Facing.oppositeSide[BlockUpgCBasicFluidHopper.getDirectionFromMetadata(this.getBlockMetadata())];
 
             if (ItemHelper.inventoryIsFull(inventory, side)) {
                 return false;
@@ -245,7 +244,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
     }
 
     private IInventory getInventoryToPush() {
-        int meta = BlockHopper.getDirectionFromMetadata(this.getBlockMetadata());
+        int meta = BlockUpgCBasicFluidHopper.getDirectionFromMetadata(this.getBlockMetadata());
 
         int dX = Facing.offsetsXForSide[meta];
         int dY = Facing.offsetsYForSide[meta];
