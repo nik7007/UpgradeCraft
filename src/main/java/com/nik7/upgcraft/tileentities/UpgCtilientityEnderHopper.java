@@ -5,13 +5,14 @@ import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.item.ItemUpgCPersonalInformation;
 import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.util.CoolDownProvider;
 import com.nik7.upgcraft.util.ItemHelper;
 import com.nik7.upgcraft.util.LogHelper;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.BlockEnderChest;
-import net.minecraft.command.IEntitySelector;
+import net.minecraft.block.BlockHopper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -22,17 +23,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.tileentity.IHopper;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.Facing;
 
-import java.util.List;
-
-public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, ISidedInventory {
+public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, ISidedInventory, CoolDownProvider {
 
     private ItemStack inventory[] = new ItemStack[8]; //slot: 0 {up personal information} - slot: 1 {fuel} - slots:[2-6] {inventory} - slot: 7 {exit personal information}
     private String customName = Names.Inventory.UPGC_ENDER_HOPPER;
-    private int cyclePush = 0;
+    private int transferCoolDown;
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
@@ -54,6 +51,8 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
         if (this.hasCustomInventoryName()) {
             tag.setString("CustomName", this.customName);
         }
+
+        tag.setInteger("TransferCooldown", this.transferCoolDown);
     }
 
     @Override
@@ -75,6 +74,8 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
         if (tag.hasKey("CustomName")) {
             this.customName = tag.getString("CustomName");
         }
+
+        this.transferCoolDown = tag.getInteger("TransferCooldown");
 
     }
 
@@ -99,54 +100,84 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     @Override
     public void updateEntity() {
-        int meta = this.getBlockMetadata();
-        if (!worldObj.isRemote && BlockUpgCBasicFluidHopper.isNotPowered(meta)) {
 
-            int cyclePull = cyclePush + 6;
+        if (this.worldObj != null && !this.worldObj.isRemote) {
+            --this.transferCoolDown;
 
-            if ((cyclePull % 7) == 0) {
-                getItemStackFromTop();
+            if (!this.checkTransferCoolDown()) {
+                this.setTransferCoolDown(0);
+                this.transfer();
             }
-
-            if (cyclePush > 6) {
-                cyclePush = 0;
-                int dir = BlockUpgCBasicFluidHopper.getDirectionFromMetadata(meta);
-                pushItems(dir);
-
-            }
-            cyclePush++;
-
-
         }
+
     }
 
-    void pushItems(int dir) {
-        TileEntity tile;
-        IInventory inventory = null;
-        ForgeDirection direction = ForgeDirection.getOrientation(dir);
+    public boolean transfer() {
+        if (this.worldObj != null && !this.worldObj.isRemote) {
+            if (!this.checkTransferCoolDown() && BlockUpgCBasicFluidHopper.isNotPowered(this.getBlockMetadata())) {
+                boolean flag = false;
 
-        if (worldObj.getBlock(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ) instanceof BlockEnderChest) {
-
-            if (this.inventory[7] != null && this.inventory[7].getItem() instanceof ItemUpgCPersonalInformation) {
-                EntityPlayer player = ItemUpgCPersonalInformation.getPlayer(this.inventory[7], getWorldObj());
-
-                if (player != null) {
-                    inventory = getEnderChestInventory(player);
+                if (!this.isEmpty()) {
+                    flag = this.pushItem();
                 }
 
+                if (!this.isFull()) {
+                    flag = addItemsToHopper() || flag;
+                }
+
+                if (flag) {
+                    this.setTransferCoolDown(8);
+                    this.markDirty();
+                    return true;
+                }
             }
 
-        } else if ((tile = worldObj.getTileEntity(xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ)) instanceof IInventory) {
-            inventory = (IInventory) tile;
+            return false;
+        } else {
+            return false;
         }
-        if (inventory != null)
-            transferItems(this, inventory, 1, 0, dir);
     }
 
-    void getItemStackFromTop() {
+    private boolean addItemsToHopper() {
+        IInventory inventory = getInventoryAbove();
 
-        IInventory inventory = null;
+        if (inventory != null) {
+            byte side = 0;
 
+            if (ItemHelper.inventoryIsEmpty(inventory, side)) {
+                return false;
+            }
+
+            if (inventory instanceof ISidedInventory) {
+                ISidedInventory isidedinventory = (ISidedInventory) inventory;
+                int[] slots = isidedinventory.getAccessibleSlotsFromSide(side);
+
+                for (int slot1 : slots) {
+                    if (putItemIntoHopper(inventory, slot1, side)) {
+                        return true;
+                    }
+                }
+            } else {
+                int i = inventory.getSizeInventory();
+
+                for (int j = 0; j < i; ++j) {
+                    if (putItemIntoHopper(inventory, j, side)) {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            EntityItem entityitem = ItemHelper.getEntityItem(this.getWorldObj(), this.getXPos(), this.getYPos() + 1.0D, this.getZPos());
+
+            if (entityitem != null) {
+                return ItemHelper.putEntityItemInInventory(this, entityitem);
+            }
+        }
+
+        return false;
+    }
+
+    private IInventory getInventoryAbove() {
 
         if (worldObj.getBlock(xCoord, yCoord + 1, zCoord) instanceof BlockEnderChest) {
 
@@ -154,148 +185,111 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
                 EntityPlayer player = ItemUpgCPersonalInformation.getPlayer(this.inventory[0], getWorldObj());
 
                 if (player != null) {
-                    inventory = getEnderChestInventory(player);
-                }
+                    return getEnderChestInventory(player);
+                } else return null;
 
-            }
+            } else return null;
 
-        } else if (worldObj.getTileEntity(xCoord, yCoord + 1, zCoord) instanceof IInventory) {
-
-            inventory = (IInventory) worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-
-        } else if (worldObj.getTileEntity(xCoord, yCoord + 1, zCoord) instanceof ISidedInventory) {
-            inventory = (ISidedInventory) worldObj.getTileEntity(xCoord, yCoord + 1, zCoord);
-        }
-        if (inventory != null)
-            transferItems(inventory, this, 1, 0, 0);
-        else {
-            EntityItem entityItem = getItemsFromUpAir(getWorldObj(), getXPos(), getYPos() + 1, getZPos());
-
-            if (entityItem != null) {
-
-                ItemStack origin = entityItem.getEntityItem();
-                int result = transferItemToInventory(this, origin, 1, 0);
-                ItemStack itemStackResult = ItemHelper.generateItemStack(origin, origin.stackSize - result);
-
-                if (itemStackResult != null && itemStackResult.stackSize > 0)
-                    entityItem.setEntityItemStack(itemStackResult);
-                else entityItem.setDead();
-            }
         }
 
-
+        return ItemHelper.getInventoryForCoordinates(this.getWorldObj(), this.getXPos(), this.getYPos() + 1.0D, this.getZPos());
     }
 
-    protected static EntityItem getItemsFromUpAir(World world, double x, double y, double z) {
-        List list = world.selectEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(x, y, z, x + 1.0D, y + 1.0D, z + 1.0D), IEntitySelector.selectAnything);
-        return list.size() > 0 ? (EntityItem) list.get(0) : null;
-    }
+    private boolean putItemIntoHopper(IInventory inventory, int slot, int side) {
+        ItemStack itemstack = inventory.getStackInSlot(slot);
 
-    protected static void transferItems(IInventory src, IInventory dest, int quantity, int sideSrc, int sideDest) {
+        if (itemstack != null && ItemHelper.canExtractItem(inventory, itemstack, slot, side)) {
+            ItemStack itemstack1 = itemstack.copy();
+            ItemStack itemstack2 = ItemHelper.putItemInInventory(this, inventory.decrStackSize(slot, 1), 1);
 
-        if (src == null || dest == null)
-            return;
-
-        int indexSrc = -1;
-        ItemStack itemStackSrc = null;
-
-        if (src instanceof ISidedInventory) {
-            int[] slots = ((ISidedInventory) src).getAccessibleSlotsFromSide(sideSrc);
-
-            for (int i : slots) {
-                if ((itemStackSrc = src.getStackInSlot(i)) != null) {
-                    indexSrc = i;
-                    break;
-                }
+            if (itemstack2 == null || itemstack2.stackSize == 0) {
+                inventory.markDirty();
+                return true;
             }
 
+            inventory.setInventorySlotContents(slot, itemstack1);
+        }
+
+        return false;
+    }
+
+    private boolean pushItem() {
+        IInventory inventory = this.getInventoryToPush();
+
+        if (inventory == null) {
+            return false;
         } else {
-            int dimSrc = src.getSizeInventory();
-            for (int i = 0; i < dimSrc; i++) {
-                if ((itemStackSrc = src.getStackInSlot(i)) != null) {
-                    indexSrc = i;
-                    break;
+            int side = Facing.oppositeSide[BlockHopper.getDirectionFromMetadata(this.getBlockMetadata())];
+
+            if (ItemHelper.inventoryIsFull(inventory, side)) {
+                return false;
+            } else {
+                int[] slots = getAccessibleSlotsFromSide(0);
+                for (int slot : slots) {
+                    if (this.getStackInSlot(slot) != null) {
+                        ItemStack itemstack = this.getStackInSlot(slot).copy();
+                        ItemStack itemstack1 = ItemHelper.putItemInInventory(inventory, this.decrStackSize(slot, 1), side);
+
+                        if (itemstack1 == null || itemstack1.stackSize == 0) {
+                            inventory.markDirty();
+                            return true;
+                        }
+
+                        this.setInventorySlotContents(slot, itemstack);
+                    }
                 }
+
+                return false;
             }
         }
-
-        if (itemStackSrc != null) {
-
-            src.decrStackSize(indexSrc, transferItemToInventory(dest, itemStackSrc, quantity, sideDest));
-
-        }
-
-
     }
 
-    protected static int transferItemToInventory(IInventory inventory, ItemStack itemStack, int quantity, int side) {
+    private IInventory getInventoryToPush() {
+        int meta = BlockHopper.getDirectionFromMetadata(this.getBlockMetadata());
 
+        int dX = Facing.offsetsXForSide[meta];
+        int dY = Facing.offsetsYForSide[meta];
+        int dZ = Facing.offsetsZForSide[meta];
 
-        if (inventory == null || itemStack == null)
-            return 0;
+        if (worldObj.getBlock(xCoord + dX, yCoord + dY, zCoord + dZ) instanceof BlockEnderChest) {
 
-        int indexDest = -1;
-        ItemStack imItemStackDest = null;
+            if (this.inventory[7] != null && this.inventory[7].getItem() instanceof ItemUpgCPersonalInformation) {
+                EntityPlayer player = ItemUpgCPersonalInformation.getPlayer(this.inventory[7], getWorldObj());
 
-        if (inventory instanceof ISidedInventory) {
-            int slots[] = ((ISidedInventory) inventory).getAccessibleSlotsFromSide(side);
+                if (player != null) {
+                    return getEnderChestInventory(player);
+                } else return null;
 
-            for (int i : slots) {
-                if (canPutItemsInventory(inventory, itemStack, i) && ((imItemStackDest = inventory.getStackInSlot(i)) == null || imItemStackDest.stackSize < imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
-                    indexDest = i;
-                    break;
-                }
-            }
-
-        } else {
-            int dimDest = inventory.getSizeInventory();
-            for (int i = 0; i < dimDest; i++) {
-                if (canPutItemsInventory(inventory, itemStack, i) && ((imItemStackDest = inventory.getStackInSlot(i)) == null || imItemStackDest.stackSize < imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
-                    indexDest = i;
-                    imItemStackDest = inventory.getStackInSlot(i);
-                    break;
-                }
-            }
+            } else return null;
         }
 
-        if (indexDest != -1) {
-
-            quantity = Math.min(inventory.getInventoryStackLimit(), quantity);
-            quantity = Math.min(quantity, itemStack.getItem().getItemStackLimit(itemStack));
-
-            int quantityDest = quantity;
-
-            if (imItemStackDest != null) {
-                int max;
-                if (imItemStackDest.stackSize + quantity > (max = imItemStackDest.getItem().getItemStackLimit(imItemStackDest))) {
-
-                    quantity = max - imItemStackDest.stackSize;
-                }
-
-                int newDim = imItemStackDest.stackSize + quantity;
-                if (newDim > inventory.getInventoryStackLimit()) {
-                    quantityDest = quantity = quantity - (newDim - inventory.getInventoryStackLimit());
-
-                } else quantityDest = newDim;
-
-            }
-
-            inventory.setInventorySlotContents(indexDest, ItemHelper.generateItemStack(itemStack, quantityDest));
-
-            return quantity;
-
-
-        }
-
-        return 0;
+        return ItemHelper.getInventoryForCoordinates(this.getWorldObj(), (double) (this.xCoord + dX), (double) (this.yCoord + dY), (double) (this.zCoord + dZ));
     }
 
-    protected static boolean canPutItemsInventory(IInventory inventory, ItemStack itemStack, int slot) {
+    private boolean isEmpty() {
 
-        if (inventory.isItemValidForSlot(slot, itemStack)) {
-            ItemStack stack = inventory.getStackInSlot(slot);
-            return stack == null || stack.stackSize < stack.getItem().getItemStackLimit(stack);
-        } else return false;
+        int[] slots = getAccessibleSlotsFromSide(0);
+
+        for (int slot : slots) {
+            if (this.inventory[slot] != null) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isFull() {
+
+        int[] slots = getAccessibleSlotsFromSide(0);
+
+        for (int slot : slots) {
+            if (this.inventory[slot] == null || this.inventory[slot].stackSize != this.inventory[slot].getMaxStackSize()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 
@@ -338,31 +332,29 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
     }
 
     @Override
-    public ItemStack decrStackSize(int slot, int maxNumber) {
-        if (maxNumber == 0 || slot >= getSizeInventory()) {
-            return null;
-        } else if (inventory[slot] == null) {
-            return null;
-        } else {
-            int number;
-            ItemStack itemStack = inventory[slot];
-            if (itemStack.stackSize >= maxNumber) {
-                number = maxNumber;
-            } else number = itemStack.stackSize;
+    public ItemStack decrStackSize(int slot, int amount) {
 
-            inventory[slot].stackSize = itemStack.stackSize - number;
+        if (slot < 0 || slot >= getSizeInventory() || amount < 1)
+            return null;
 
-            if (inventory[slot].stackSize <= 0) {
-                inventory[slot] = null;
+        if (this.inventory[slot] != null) {
+            ItemStack itemstack;
+
+            if (this.inventory[slot].stackSize <= amount) {
+                itemstack = this.inventory[slot];
+                this.inventory[slot] = null;
+                return itemstack;
+            } else {
+                itemstack = this.inventory[slot].splitStack(amount);
+
+                if (this.inventory[slot].stackSize == 0) {
+                    this.inventory[slot] = null;
+                }
+
+                return itemstack;
             }
-
-            ItemStack result = new ItemStack(itemStack.getItem(), number, itemStack.getItemDamage());
-
-            if (itemStack.hasTagCompound())
-                result.setTagCompound(itemStack.getTagCompound());
-
-            return result;
-
+        } else {
+            return null;
         }
     }
 
@@ -390,10 +382,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
     @Override
     public String getInventoryName() {
 
-        if (hasCustomInventoryName())
-            return customName;
-        else
-            return Names.Inventory.UPGC_ENDER_HOPPER;
+        return hasCustomInventoryName() ? customName : Names.Inventory.UPGC_ENDER_HOPPER;
     }
 
     @Override
@@ -423,8 +412,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack itemStack) {
-        return !(slot < 0 || slot >= getSizeInventory()) && (inventory[slot] == null || itemStack == null || inventory[slot].isItemEqual(itemStack) && !((inventory[slot].hasTagCompound() && !itemStack.hasTagCompound()) || (!inventory[slot].hasTagCompound() && itemStack.hasTagCompound())) && (!(inventory[slot].hasTagCompound() && itemStack.hasTagCompound()) || inventory[slot].getTagCompound().equals(itemStack.hasTagCompound()))) && (inventory[slot] == null || inventory[slot].stackSize < inventory[slot].getItem().getItemStackLimit(inventory[slot]));
-
+        return true;
     }
 
     @Override
@@ -444,5 +432,13 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     public ItemStack[] getInventory() {
         return inventory;
+    }
+
+    public void setTransferCoolDown(int transferCoolDown) {
+        this.transferCoolDown = transferCoolDown;
+    }
+
+    public boolean checkTransferCoolDown() {
+        return this.transferCoolDown > 0;
     }
 }

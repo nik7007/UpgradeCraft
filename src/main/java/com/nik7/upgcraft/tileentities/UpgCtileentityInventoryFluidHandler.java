@@ -2,7 +2,6 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.network.DescriptionHandler;
-import com.nik7.upgcraft.util.ItemHelper;
 import com.nik7.upgcraft.util.LogHelper;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
@@ -226,13 +225,16 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
                 number = maxNumber;
             } else number = itemStack.stackSize;
 
-            itemStacks[slot].stackSize = itemStack.stackSize - number;
+            ItemStack result = itemStack.splitStack(number);
 
             if (itemStacks[slot].stackSize <= 0) {
                 itemStacks[slot] = null;
             }
 
-            return ItemHelper.generateItemStack(itemStack, number);
+            if (number <= 0)
+                return null;
+
+            return result;
 
         }
     }
