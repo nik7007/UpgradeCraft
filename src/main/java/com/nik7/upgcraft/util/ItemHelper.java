@@ -135,7 +135,6 @@ public class ItemHelper {
             boolean flag = false;
 
             if (itemStack1 == null) {
-                //Forge: BUGFIX: Again, make things respect max stack sizes.
                 int max = Math.min(itemStack.getMaxStackSize(), inventory.getInventoryStackLimit());
                 if (max >= itemStack.stackSize) {
                     inventory.setInventorySlotContents(slot, itemStack);
@@ -145,7 +144,6 @@ public class ItemHelper {
                 }
                 flag = true;
             } else if (itemStackAreEquals(itemStack1, itemStack)) {
-                //Forge: BUGFIX: Again, make things respect max stack sizes.
                 int max = Math.min(itemStack.getMaxStackSize(), inventory.getInventoryStackLimit());
                 if (max > itemStack1.stackSize) {
                     int l = Math.min(itemStack.stackSize, max - itemStack1.stackSize);
@@ -157,7 +155,7 @@ public class ItemHelper {
 
             if (flag) {
                 if (inventory instanceof CoolDownProvider) {
-                    ((CoolDownProvider) inventory).setTransferCoolDown(8);
+                    ((CoolDownProvider) inventory).setTransferCoolDown(((CoolDownProvider) inventory).getMaxCoolDown());
                     inventory.markDirty();
                 }
 

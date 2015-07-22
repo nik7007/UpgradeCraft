@@ -29,6 +29,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
     private ItemStack inventory[] = new ItemStack[8]; //slot: 0 {up personal information} - slot: 1 {fuel} - slots:[2-6] {inventory} - slot: 7 {exit personal information}
     private String customName = Names.Inventory.UPGC_ENDER_HOPPER;
     private int transferCoolDown;
+    private int maxCoolDown = 8;
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
@@ -125,7 +126,7 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
                 }
 
                 if (flag) {
-                    this.setTransferCoolDown(8);
+                    this.setTransferCoolDown(getMaxCoolDown());
                     this.markDirty();
                     return true;
                 }
@@ -439,5 +440,10 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
 
     public boolean checkTransferCoolDown() {
         return this.transferCoolDown > 0;
+    }
+
+    @Override
+    public int getMaxCoolDown() {
+        return maxCoolDown;
     }
 }
