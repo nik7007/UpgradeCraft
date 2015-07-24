@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class ItemBlockClayTank extends ItemBlock {
@@ -40,9 +41,14 @@ public class ItemBlockClayTank extends ItemBlock {
             list.add(StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.hollow"));
         }
         if (metaData < 2) {
-            list.add("");
-            list.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.tobecooked.t"));
-            list.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.tobecooked.b"));
+            List hiddenInformation = new LinkedList();
+
+            hiddenInformation.add("");
+            hiddenInformation.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.tobecooked.t"));
+            hiddenInformation.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.tobecooked.b"));
+
+            ItemUpgC.addHiddenInformation(list, hiddenInformation);
+
         }
 
     }

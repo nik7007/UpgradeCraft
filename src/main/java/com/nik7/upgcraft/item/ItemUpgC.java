@@ -5,6 +5,10 @@ import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.util.StringHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumChatFormatting;
+import org.lwjgl.input.Keyboard;
+
+import java.util.List;
 
 public class ItemUpgC extends Item {
 
@@ -22,6 +26,17 @@ public class ItemUpgC extends Item {
     @Override
     public String getUnlocalizedName(ItemStack itemStack) {
         return String.format("item.%s%s", Reference.MOD_ID.toLowerCase() + ":", StringHelper.getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
+    }
+
+    public static void addHiddenInformation(List list, List hiddenInformation) {
+
+        if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            list.addAll(hiddenInformation);
+        } else {
+            list.add(EnumChatFormatting.DARK_GRAY + "[Shift]");
+        }
+
+
     }
 
 }
