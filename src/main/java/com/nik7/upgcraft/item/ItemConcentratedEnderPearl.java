@@ -93,7 +93,7 @@ public class ItemConcentratedEnderPearl extends ItemUpgC {
 
         float enderPower = getEnderPower(itemStack);
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+        if (player.isSneaking()) {
 
             onItemShiftRightClick(player, itemStack);
 

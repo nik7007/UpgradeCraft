@@ -83,7 +83,7 @@ public class ItemUpgCPersonalInformation extends ItemUpgC {
     public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
 
         if (!world.isRemote)
-            if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+            if (player.isSneaking()) {
                 setPlayer(itemStack, player);
             }
 
