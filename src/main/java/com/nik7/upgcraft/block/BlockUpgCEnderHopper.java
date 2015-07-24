@@ -49,6 +49,29 @@ public class BlockUpgCEnderHopper extends BlockUpgC implements ITileEntityProvid
         return newMeta;
     }
 
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+
+        UpgCtilientityEnderHopper te = (UpgCtilientityEnderHopper) world.getTileEntity(x, y, z);
+
+        if (te != null && te.needsEnderPortalRender())
+            for (int l = 0; l < 3; ++l) {
+                double d1 = (double) ((float) y + random.nextFloat());
+                double d3;
+                double d4;
+                double d5;
+                int i1 = random.nextInt(2) * 2 - 1;
+                int j1 = random.nextInt(2) * 2 - 1;
+                d4 = ((double) random.nextFloat() - 0.5D) * 0.125D;
+                double d2 = (double) z + 0.5D + 0.25D * (double) j1;
+                d5 = (double) (random.nextFloat() * 1.0F * (float) j1);
+                double d0 = (double) x + 0.5D + 0.25D * (double) i1;
+                d3 = (double) (random.nextFloat() * 1.0F * (float) i1);
+                world.spawnParticle("portal", d0, d1, d2, d3, d4, d5);
+            }
+
+    }
+
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {

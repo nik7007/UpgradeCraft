@@ -12,7 +12,7 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockUpgCSlimyObsidian extends BlockUpgC {
 
-    @SideOnly(Side.CLIENT)
+
     public static IIcon[] icons = new IIcon[16];
 
     public BlockUpgCSlimyObsidian() {
