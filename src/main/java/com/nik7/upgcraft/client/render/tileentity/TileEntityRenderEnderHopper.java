@@ -3,7 +3,10 @@ package com.nik7.upgcraft.client.render.tileentity;
 
 import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.client.render.model.ModelHopper;
+import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
+import com.nik7.upgcraft.tileentities.UpgCtilientityEnderHopper;
+import com.nik7.upgcraft.util.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -59,6 +62,10 @@ public class TileEntityRenderEnderHopper extends TileEntitySpecialRenderer {
 
 
         enderHopper.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+
+        if (te instanceof UpgCtilientityEnderHopper)
+            if (((UpgCtilientityEnderHopper) te).needsEnderPortalRender())
+                RenderHelper.renderEndPortal(Render.TankInternalDimension.xMin - 0.5, Render.TankInternalDimension.xMaz - 0.5, 0.68, 0, Render.TankInternalDimension.zMin - 0.5, Render.TankInternalDimension.zMaz - 0.5, (float) this.field_147501_a.field_147560_j, (float) this.field_147501_a.field_147561_k, (float) this.field_147501_a.field_147558_l);
 
         GL11.glPopMatrix();
 

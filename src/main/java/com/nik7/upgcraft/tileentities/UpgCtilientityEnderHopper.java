@@ -11,6 +11,7 @@ import com.nik7.upgcraft.util.LogHelper;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockEnderChest;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +31,8 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
     private String customName = Names.Inventory.UPGC_ENDER_HOPPER;
     private int transferCoolDown;
     private int maxCoolDown = 8;
+    private boolean needsEnderPortalRender;
+    private boolean oldNeedsEnderPortalRender = false;
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
@@ -90,18 +93,33 @@ public class UpgCtilientityEnderHopper extends TileEntity implements IHopper, IS
     }
 
     public void writeToPacket(ByteBuf buf) {
-
+        buf.writeBoolean(needsEnderPortalRender);
     }
 
     public void readFromPacket(ByteBuf buf) {
-
+        needsEnderPortalRender = buf.readBoolean();
     }
 
+
+    public boolean needsEnderPortalRender() {
+        return needsEnderPortalRender;
+    }
 
     @Override
     public void updateEntity() {
 
         if (this.worldObj != null && !this.worldObj.isRemote) {
+
+            needsEnderPortalRender = (inventory[0] != null && inventory[0].getItem() instanceof ItemUpgCPersonalInformation || inventory[7] != null && inventory[7].getItem() instanceof ItemUpgCPersonalInformation);
+
+            if (needsEnderPortalRender != oldNeedsEnderPortalRender) {
+                oldNeedsEnderPortalRender = needsEnderPortalRender;
+                oldNeedsEnderPortalRender = needsEnderPortalRender;
+                Block block = this.worldObj.getBlock(xCoord, yCoord, zCoord);
+                this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, block);
+                worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            }
+
             --this.transferCoolDown;
 
             if (!this.checkTransferCoolDown()) {

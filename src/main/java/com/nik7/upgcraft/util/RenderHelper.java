@@ -22,12 +22,12 @@ public class RenderHelper {
     private static final Tessellator tessellator = Tessellator.instance;
 
 
-    public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMaz, float maxY, float zMax, boolean top, boolean renderDown) {
+    public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMax, float maxY, float zMax, boolean top, boolean renderDown) {
 
-        fluidRender(fillPercentage, fluid, xMin, yMin, zMin, xMaz, maxY, zMax, top, renderDown, true);
+        fluidRender(fillPercentage, fluid, xMin, yMin, zMin, xMax, maxY, zMax, top, renderDown, true);
     }
 
-    public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMaz, float maxY, float zMax, boolean top, boolean renderDown, boolean renderTop) {
+    public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMax, float maxY, float zMax, boolean top, boolean renderDown, boolean renderTop) {
 
 
         if (fillPercentage > 0 && maxY > 0) {
@@ -76,22 +76,22 @@ public class RenderHelper {
 
 
             //north
-            tessellator.addVertexWithUV(xMaz, yMin, zMin, uMax, vMin);
+            tessellator.addVertexWithUV(xMax, yMin, zMin, uMax, vMin);
             tessellator.addVertexWithUV(xMin, yMin, zMin, uMin, vMin);
             tessellator.addVertexWithUV(xMin, height, zMin, uMin, vMin + (vHeight * height));
-            tessellator.addVertexWithUV(xMaz, height, zMin, uMax, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMax, height, zMin, uMax, vMin + (vHeight * height));
 
             //south
-            tessellator.addVertexWithUV(xMaz, yMin, zMax, uMin, vMin);
-            tessellator.addVertexWithUV(xMaz, height, zMax, uMin, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMax, yMin, zMax, uMin, vMin);
+            tessellator.addVertexWithUV(xMax, height, zMax, uMin, vMin + (vHeight * height));
             tessellator.addVertexWithUV(xMin, height, zMax, uMax, vMin + (vHeight * height));
             tessellator.addVertexWithUV(xMin, yMin, zMax, uMax, vMin);
 
             //east
-            tessellator.addVertexWithUV(xMaz, yMin, zMin, uMin, vMin);
-            tessellator.addVertexWithUV(xMaz, height, zMin, uMin, vMin + (vHeight * height));
-            tessellator.addVertexWithUV(xMaz, height, zMax, uMax, vMin + (vHeight * height));
-            tessellator.addVertexWithUV(xMaz, yMin, zMax, uMax, vMin);
+            tessellator.addVertexWithUV(xMax, yMin, zMin, uMin, vMin);
+            tessellator.addVertexWithUV(xMax, height, zMin, uMin, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMax, height, zMax, uMax, vMin + (vHeight * height));
+            tessellator.addVertexWithUV(xMax, yMin, zMax, uMax, vMin);
 
             //west
             tessellator.addVertexWithUV(xMin, yMin, zMax, uMin, vMin);
@@ -101,8 +101,8 @@ public class RenderHelper {
 
             //up
             if (renderTop && height <= maxY) {
-                tessellator.addVertexWithUV(xMaz, height, zMax, uMax, vMin);
-                tessellator.addVertexWithUV(xMaz, height, zMin, uMin, vMin);
+                tessellator.addVertexWithUV(xMax, height, zMax, uMax, vMin);
+                tessellator.addVertexWithUV(xMax, height, zMin, uMin, vMin);
                 tessellator.addVertexWithUV(xMin, height, zMin, uMin, vMax);
                 tessellator.addVertexWithUV(xMin, height, zMax, uMax, vMax);
             }
@@ -110,8 +110,8 @@ public class RenderHelper {
 
             //down
             if (renderDown) {
-                tessellator.addVertexWithUV(xMaz, yMin, zMin, uMax, vMin);
-                tessellator.addVertexWithUV(xMaz, yMin, zMax, uMin, vMin);
+                tessellator.addVertexWithUV(xMax, yMin, zMin, uMax, vMin);
+                tessellator.addVertexWithUV(xMax, yMin, zMax, uMin, vMin);
                 tessellator.addVertexWithUV(xMin, yMin, zMax, uMin, vMax);
                 tessellator.addVertexWithUV(xMin, yMin, zMin, uMax, vMax);
             }
@@ -203,29 +203,45 @@ public class RenderHelper {
 
             tessellator.setColorRGBA_F(f11 * f7, f12 * f7, f13 * f7, 1.0F);
 
-            //north
-            tessellator.addVertex(xMax, yMin, zMin);
-            tessellator.addVertex(xMin, yMin, zMin);
-            tessellator.addVertex(xMin, yMax, zMin);
-            tessellator.addVertex(xMax, yMax, zMin);
+            if (yMax > yMin) {
+                //north
+                tessellator.addVertex(xMax, yMin, zMin);
+                tessellator.addVertex(xMin, yMin, zMin);
+                tessellator.addVertex(xMin, yMax, zMin);
+                tessellator.addVertex(xMax, yMax, zMin);
 
-            //south
-            tessellator.addVertex(xMax, yMin, zMax);
-            tessellator.addVertex(xMax, yMax, zMax);
-            tessellator.addVertex(xMin, yMax, zMax);
-            tessellator.addVertex(xMin, yMin, zMax);
+                //south
+                tessellator.addVertex(xMax, yMin, zMax);
+                tessellator.addVertex(xMax, yMax, zMax);
+                tessellator.addVertex(xMin, yMax, zMax);
+                tessellator.addVertex(xMin, yMin, zMax);
 
-            //east
-            tessellator.addVertex(xMax, yMin, zMin);
-            tessellator.addVertex(xMax, yMax, zMin);
-            tessellator.addVertex(xMax, yMax, zMax);
-            tessellator.addVertex(xMax, yMin, zMax);
+                //east
+                tessellator.addVertex(xMax, yMin, zMin);
+                tessellator.addVertex(xMax, yMax, zMin);
+                tessellator.addVertex(xMax, yMax, zMax);
+                tessellator.addVertex(xMax, yMin, zMax);
 
-            //west
-            tessellator.addVertex(xMin, yMin, zMax);
-            tessellator.addVertex(xMin, yMax, zMax);
-            tessellator.addVertex(xMin, yMax, zMin);
-            tessellator.addVertex(xMin, yMin, zMin);
+                //west
+                tessellator.addVertex(xMin, yMin, zMax);
+                tessellator.addVertex(xMin, yMax, zMax);
+                tessellator.addVertex(xMin, yMax, zMin);
+                tessellator.addVertex(xMin, yMin, zMin);
+            } else {
+
+                /*//up
+                tessellator.addVertex(xMax, yMax, zMax);
+                tessellator.addVertex(xMax, yMax, zMin);
+                tessellator.addVertex(xMin, yMax, zMin);
+                tessellator.addVertex(xMin, yMax, zMax);*/
+
+
+                //down
+                tessellator.addVertex(xMax, yMin, zMin);
+                tessellator.addVertex(xMax, yMin, zMax);
+                tessellator.addVertex(xMin, yMin, zMax);
+                tessellator.addVertex(xMin, yMin, zMin);
+            }
 
             tessellator.draw();
             GL11.glPopMatrix();
