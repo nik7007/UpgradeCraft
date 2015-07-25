@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import org.lwjgl.input.Keyboard;
 
 import java.math.BigInteger;
 import java.util.List;

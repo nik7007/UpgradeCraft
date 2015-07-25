@@ -132,7 +132,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
     private boolean canSmelt() {
 
-        if (tank[0].getFluid() != null && this.itemStacks[INPUT] != null) {
+        if (tank[0]!= null && tank[0].getFluid() != null && this.itemStacks[INPUT] != null) {
             if (tank[0].getFluid().amount >= 1) {
 
                 ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.itemStacks[INPUT]);

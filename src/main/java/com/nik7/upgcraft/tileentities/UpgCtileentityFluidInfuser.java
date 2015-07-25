@@ -45,7 +45,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     @Override
     public void writeToPacket(ByteBuf buf) {
-        FluidStack fluidStack = this.tank[0].getFluid();
+        FluidStack fluidStack = this.tank[0] != null ? this.tank[0].getFluid() : null;
         int fluidAmount = -1;
         int fluidID = -1;
         if (fluidStack != null) {
@@ -104,7 +104,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
         if (!worldObj.isRemote) {
             boolean oldIsActive = isActive;
 
-            if (this.tank[0].getFluidAmount() > 0) {
+            if (this.tank[0] != null && this.tank[0].getFluidAmount() > 0) {
 
                 if (isOperating) {
                     if (canContinue()) {
