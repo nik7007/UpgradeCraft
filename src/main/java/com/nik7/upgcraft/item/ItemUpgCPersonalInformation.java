@@ -11,16 +11,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 
-import java.math.BigInteger;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 public class ItemUpgCPersonalInformation extends ItemUpgC {
 
     private static final String playerUUID = Reference.MOD_ID + ":playerUUID";
     private static final String playerName = Reference.MOD_ID + ":playerName";
-    private static final Random random = new Random();
     private static String oldRnDString = "No player";
 
     public ItemUpgCPersonalInformation() {
@@ -108,18 +105,16 @@ public class ItemUpgCPersonalInformation extends ItemUpgC {
 
             int ln = 4 + (int) (Math.random() * 5);
             char s[] = new char[ln];
-            String newName = new BigInteger(130, random).toString(32);
             String rndName = oldRnDString;
 
             if (Math.random() > 0.63) {
                 for (int i = 0; i < ln; i++)
-                    s[i] = newName.charAt(i);
+                    s[i] = 'A';
 
                 rndName = new String(s);
-                oldRnDString = rndName;
             }
-
-            playerName = rndName;
+            oldRnDString = rndName;
+            playerName = EnumChatFormatting.OBFUSCATED + rndName;
 
         }
 
