@@ -12,8 +12,8 @@ import net.minecraft.world.IBlockAccess;
 
 public class BlockUpgCSlimyObsidian extends BlockUpgC {
 
-
-    public static IIcon[] icons = new IIcon[16];
+    @SideOnly(Side.CLIENT)
+    public IIcon[] icons;
 
     public BlockUpgCSlimyObsidian() {
 
@@ -29,6 +29,10 @@ public class BlockUpgCSlimyObsidian extends BlockUpgC {
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister iconRegister) {
+
+        if (icons == null)
+            icons = new IIcon[16];
+
         for (int i = 0; i < 16; i++)
             icons[i] = iconRegister.registerIcon(Texture.Blocks.SLIMY_OBSIDIAN_BASE + i);
     }
