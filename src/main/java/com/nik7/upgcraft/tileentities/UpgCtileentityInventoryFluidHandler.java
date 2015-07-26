@@ -262,7 +262,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     }
 
     public int getFluidLightLevel(int tankN) {
-        FluidStack stack = tank[tankN].getFluid();
+        FluidStack stack = tank[tankN] != null ? tank[tankN].getFluid() : null;
         if (stack != null) {
             Fluid fluid = stack.getFluid();
             if (fluid != null) return fluid.getLuminosity();
