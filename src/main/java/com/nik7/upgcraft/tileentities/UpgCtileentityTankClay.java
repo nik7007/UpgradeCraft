@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 
 public class UpgCtileentityTankClay extends UpgCtileentityTank {
@@ -72,6 +73,24 @@ public class UpgCtileentityTankClay extends UpgCtileentityTank {
 
             }
         }
+    }
+
+    public FluidStack getFluidFormSingleTank() {
+        FluidStack fluidStack = getFluid();
+
+
+        if (fluidStack != null && hasAdjacentTank()) {
+
+            if (isTop()) {
+                fluidStack.amount = fluidStack.amount - Capacity.SMALL_TANK;
+                if (fluidStack.amount < 0)
+                    fluidStack.amount = 0;
+            } else if (fluidStack.amount > Capacity.SMALL_TANK)
+                fluidStack.amount = Capacity.SMALL_TANK;
+
+        }
+
+        return fluidStack;
     }
 
     private void cook() {
