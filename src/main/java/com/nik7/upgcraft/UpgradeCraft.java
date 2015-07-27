@@ -3,7 +3,6 @@ package com.nik7.upgcraft;
 import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.handler.GuiHandler;
-import com.nik7.upgcraft.handler.PlayerEventHandler;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.init.ModFluids;
 import com.nik7.upgcraft.init.ModItems;
@@ -54,6 +53,7 @@ public class UpgradeCraft {
 
         proxy.registerTileEntities();
         proxy.initRenderingAndTextures();
+        proxy.registerEventHandlers();
         Recipes.init();
 
 
@@ -62,7 +62,6 @@ public class UpgradeCraft {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
 
-        PlayerEventHandler.init();
         SystemConfig.applyConfig();
 
     }

@@ -24,6 +24,7 @@ public class ItemBlockWoodenTank extends ItemBlock {
     }
 
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean flag) {
         int metaData = itemStack.getItemDamage();
         if (metaData == 1) {

@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
@@ -82,6 +81,7 @@ public class ItemConcentratedEnderPearl extends ItemUpgC {
 
 
     @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
         list.add("[WIP]");
         list.add(EnumChatFormatting.GREEN + "Ender Power: " + getEnderPower(itemStack) + "/" + getMaxEnderPower());

@@ -49,11 +49,6 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public void registerEventHandlers() {
-
-    }
-
-    @Override
     public void registerKeybindings() {
 
     }

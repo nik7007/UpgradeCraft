@@ -84,6 +84,7 @@ public class ItemDragonSword extends ItemConcentratedEnderPearl {
     }
 
     @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public Multimap getAttributeModifiers(ItemStack stack) {
         float maxAttack = 10;
         float attack = 10;

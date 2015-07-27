@@ -1,5 +1,6 @@
 package com.nik7.upgcraft.proxy;
 
+import com.nik7.upgcraft.handler.PlayerEventHandler;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tileentities.*;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -15,5 +16,11 @@ public abstract class CommonProxy implements IProxy {
         GameRegistry.registerTileEntity(UpgCtileentityFluidInfuser.class, "Basic" + Names.TileEntity.UPG_TILE_ENTITY_FLUID_INFUSER);
         GameRegistry.registerTileEntity(UpgCtileentityTankClay.class, Names.TileEntity.UPGC_TILE_ENTITY_TANK + "Clay");
         GameRegistry.registerTileEntity(UpgCtileentityEnderTank.class, Names.TileEntity.UPGC_TILE_ENTITY_TANK + "Ender");
+    }
+
+    public void registerEventHandlers() {
+
+        PlayerEventHandler.init();
+
     }
 }

@@ -93,6 +93,7 @@ public class ItemUpgCPersonalInformation extends ItemUpgC {
     }
 
     @Override
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
 
         World world = entityPlayer.getEntityWorld();
