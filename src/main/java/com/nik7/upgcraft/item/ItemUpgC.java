@@ -31,11 +31,13 @@ public class ItemUpgC extends Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public static void addHiddenInformation(List list, List hiddenInformation) {
 
-        if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
-            list.addAll(hiddenInformation);
-        } else {
-            list.add(EnumChatFormatting.DARK_GRAY + "[Shift]");
-        }
+        if (!hiddenInformation.isEmpty())
+            if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+                list.add("");
+                list.addAll(hiddenInformation);
+            } else {
+                list.add(EnumChatFormatting.DARK_GRAY + "[Shift]");
+            }
 
 
     }

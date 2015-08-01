@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.item;
 
 
+import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -19,8 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem {
-
-    private int capacity;
 
     public ItemBlockClayTank(Block block) {
         super(block);
@@ -47,16 +46,28 @@ public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem 
         if (metaData == 1 || metaData == 3) {
             list.add(StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.hollow"));
         }
+        List hiddenInformation = new LinkedList();
         if (metaData < 2) {
-            List hiddenInformation = new LinkedList();
-
-            hiddenInformation.add("");
             hiddenInformation.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.tobecooked.t"));
             hiddenInformation.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.tobecooked.b"));
+        }
 
-            ItemUpgC.addHiddenInformation(list, hiddenInformation);
+        if (metaData > 1) {
+            FluidStack fluidStack = getFluid(itemStack);
+            int amount = 0;
+            String fluidName = StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluiddfname");
+
+            if (fluidStack != null) {
+                amount = fluidStack.amount;
+                fluidName = fluidStack.getLocalizedName();
+
+            }
+            hiddenInformation.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidname") + ": " + EnumChatFormatting.RESET + fluidName);
+            hiddenInformation.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidamount") + ": " + EnumChatFormatting.RESET + amount + "/" + getCapacity(itemStack));
 
         }
+
+        ItemUpgC.addHiddenInformation(list, hiddenInformation);
 
     }
 
@@ -66,14 +77,9 @@ public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem 
         int metaData = itemStack.getItemDamage();
         if (metaData < 2)
             return;
-
-        capacity = 0;
-
+        //capacity = 0;
         if (!itemStack.hasTagCompound())
             itemStack.stackTagCompound = new NBTTagCompound();
-        else if (itemStack.getTagCompound().hasKey("capacity")) {
-            capacity = itemStack.stackTagCompound.getInteger("capacity");
-        }
     }
 
     @Override
@@ -82,21 +88,14 @@ public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem 
         int metaData = container.getItemDamage();
         if (metaData < 2)
             return null;
+        int capacity = Capacity.SMALL_TANK;
 
-        if (capacity == 0) {
-            if (!container.hasTagCompound())
-                container.stackTagCompound = new NBTTagCompound();
-            else if (container.getTagCompound().hasKey("capacity")) {
-                capacity = container.stackTagCompound.getInteger("capacity");
-            }
-            if(capacity == 0)
-                return null;
-        }
+        if (capacity == 0)
+            return null;
 
         if (!container.hasTagCompound())
             return null;
         else {
-
             return FluidStack.loadFluidStackFromNBT(container.getTagCompound());
 
         }
@@ -109,11 +108,7 @@ public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem 
         if (metaData < 2)
             return 0;
 
-        if (container.hasTagCompound() && container.getTagCompound().hasKey("capacity")) {
-            capacity = container.stackTagCompound.getInteger("capacity");
-        }
-
-        return capacity;
+        return Capacity.SMALL_TANK;
     }
 
     @Override
@@ -123,14 +118,20 @@ public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem 
         if (metaData < 2)
             return 0;
 
+        int capacity = getCapacity(container);
+
         if (capacity == 0)
             return 0;
 
-        if (resource == null || !container.hasTagCompound()) {
+        if (resource == null) {
             return 0;
         }
 
-        FluidStack fluid = FluidStack.loadFluidStackFromNBT(container.getTagCompound());
+        FluidStack fluid = null;
+
+        if (!container.hasTagCompound()) {
+            container.stackTagCompound = new NBTTagCompound();
+        } else fluid = FluidStack.loadFluidStackFromNBT(container.getTagCompound());
 
         if (!doFill) {
             if (fluid == null) {
@@ -173,14 +174,16 @@ public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem 
 
         if (metaData < 2)
             return null;
+        int capacity = getCapacity(container);
 
         if (capacity == 0)
             return null;
 
+        FluidStack fluid = null;
+
         if (!container.hasTagCompound()) {
-            return null;
-        }
-        FluidStack fluid = FluidStack.loadFluidStackFromNBT(container.getTagCompound());
+            container.stackTagCompound = new NBTTagCompound();
+        } else fluid = FluidStack.loadFluidStackFromNBT(container.getTagCompound());
 
         if (fluid == null)
             return null;

@@ -76,19 +76,24 @@ public class UpgCtileentityTankClay extends UpgCtileentityTank {
     }
 
     public FluidStack getFluidFormSingleTank() {
+
         FluidStack fluidStack = getFluid();
+        if (fluidStack != null)
+            fluidStack = fluidStack.copy();
+        else return null;
+        if (fluidStack.amount <= 0)
+            return null;
 
-
-        if (fluidStack != null && hasAdjacentTank()) {
+        if (hasAdjacentTank()) {
 
             if (isTop()) {
                 fluidStack.amount = fluidStack.amount - Capacity.SMALL_TANK;
                 if (fluidStack.amount < 0)
-                    fluidStack.amount = 0;
+                    fluidStack = null;
             } else if (fluidStack.amount > Capacity.SMALL_TANK)
                 fluidStack.amount = Capacity.SMALL_TANK;
-
         }
+
 
         return fluidStack;
     }

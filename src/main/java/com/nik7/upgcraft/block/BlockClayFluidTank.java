@@ -40,13 +40,19 @@ public class BlockClayFluidTank extends BlockUpgCTank {
     private IIcon iconHarden;
 
     public BlockClayFluidTank() {
-        super(Material.clay);
+        super(Material.rock);
         this.setBlockName(Names.Blocks.CLAY_LIQUID_TANK);
         this.setHardness(2.8f);
         this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
         this.setStepSound(soundTypeStone);
 
         this.capacity = Capacity.SMALL_TANK;
+
+        for (int meta = 0; meta <= 3; meta++) {
+            if (meta == 0 || meta == 1)
+                this.setHarvestLevel("pickaxe", 1, meta);
+            else this.setHarvestLevel("pickaxe", 2, meta);
+        }
     }
 
 
@@ -152,19 +158,17 @@ public class BlockClayFluidTank extends BlockUpgCTank {
         int meta = world.getBlockMetadata(x, y, z);
 
         if (meta == 3 && this.canSilkHarvest(world, player, x, y, z, meta) && EnchantmentHelper.getSilkTouchModifier(player)) {
-            UpgCtileentityTank upgCtileentityTank = (UpgCtileentityTank) world.getTileEntity(x, y, z);
+            UpgCtileentityTankClay upgCtileentityTank = (UpgCtileentityTankClay) world.getTileEntity(x, y, z);
             ArrayList<ItemStack> itemStacks = getDrops(world, x, y, z, meta, 0);
 
             if (!itemStacks.isEmpty() && upgCtileentityTank != null) {
 
-                int capacity = (int) upgCtileentityTank.getCapacity();
-                FluidStack fluidStack = upgCtileentityTank.getFluid();
+                FluidStack fluidStack = upgCtileentityTank.getFluidFormSingleTank();
 
                 if (fluidStack != null) {
                     for (ItemStack itemStack : itemStacks) {
                         if (!itemStack.hasTagCompound())
                             itemStack.stackTagCompound = new NBTTagCompound();
-                        itemStack.getTagCompound().setInteger("capacity", capacity);
                         fluidStack.writeToNBT(itemStack.getTagCompound());
                     }
                 }
@@ -217,10 +221,14 @@ public class BlockClayFluidTank extends BlockUpgCTank {
         UpgCtileentityTankClay tileEntity = meta < 2 ? null : (UpgCtileentityTankClay) world.getTileEntity(x, y, z);
 
         if (tileEntity != null) {
-            if (!itemTank.hasTagCompound())
-                itemTank.stackTagCompound = new NBTTagCompound();
-            tileEntity.getFluidFormSingleTank().writeToNBT(itemTank.stackTagCompound);
-            itemTank.getTagCompound().setInteger("capacity", (int) tileEntity.getCapacity());
+
+            FluidStack fluidStack = tileEntity.getFluidFormSingleTank();
+
+            if (fluidStack != null) {
+                if (!itemTank.hasTagCompound())
+                    itemTank.stackTagCompound = new NBTTagCompound();
+                fluidStack.writeToNBT(itemTank.stackTagCompound);
+            }
         }
 
         return itemTank;
