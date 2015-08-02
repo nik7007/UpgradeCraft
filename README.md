@@ -1,4 +1,4 @@
 UpgradeCraft
 =======
 
-Try to make a Minecraft mod
+It's time to upgrade Minecraft!
