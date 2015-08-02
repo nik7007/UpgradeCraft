@@ -10,6 +10,7 @@ import com.nik7.upgcraft.tileentities.UpgCtileentityTankClay;
 import com.nik7.upgcraft.util.BlockToItemHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -240,6 +241,10 @@ public class BlockClayFluidTank extends BlockUpgCTank {
         return true;
     }
 
+    @Override
+    public MapColor getMapColor(int meta) {
+        return MapColor.clayColor;
+    }
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {

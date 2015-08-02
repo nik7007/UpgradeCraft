@@ -5,6 +5,7 @@ import com.nik7.upgcraft.reference.Texture;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
@@ -104,6 +105,11 @@ public class BlockUpgCSlimyObsidian extends BlockUpgC {
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
         return icons[0];
+    }
+
+    @Override
+    public MapColor getMapColor(int meta) {
+        return MapColor.obsidianColor;
     }
 
 
