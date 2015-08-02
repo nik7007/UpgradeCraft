@@ -2,7 +2,7 @@
 {
   "modid": "upgcraft",
   "name": "UpgradeCraft",
-  "description": "I try to make a mod! XP",
+  "description": "It's time to upgrade Minecraft!",
   "version": "${mod_version}",
   "mcversion": "${minecraft_version}",
   "url": "",
