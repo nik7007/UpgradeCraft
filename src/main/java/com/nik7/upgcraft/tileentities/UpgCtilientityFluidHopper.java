@@ -4,6 +4,7 @@ package com.nik7.upgcraft.tileentities;
 import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.util.LogHelper;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -22,11 +23,19 @@ public class UpgCtilientityFluidHopper extends UpgCtileentityTank {
 
     @Override
     public Packet getDescriptionPacket() {
-        return null;
+
+        FluidStack fluidStack = getFluid();
+        if (fluidStack != null) {
+            NBTTagCompound tag = new NBTTagCompound();
+            fluidStack.writeToNBT(tag);
+            return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -1, tag);
+
+        } else return null;
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+        this.getTank().setFluid(FluidStack.loadFluidStackFromNBT(packet.func_148857_g()));
     }
 
     @Override

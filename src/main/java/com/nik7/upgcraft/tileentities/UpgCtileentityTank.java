@@ -405,6 +405,32 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
         else return null;
     }
 
+
+    public FluidStack getFluidFormSingleTank() {
+
+        int capacity = ((BlockUpgCTank) worldObj.getBlock(xCoord, yCoord, zCoord)).getCapacity();
+
+        FluidStack fluidStack = getFluid();
+        if (fluidStack != null)
+            fluidStack = fluidStack.copy();
+        else return null;
+        if (fluidStack.amount <= 0)
+            return null;
+
+        if (hasAdjacentTank()) {
+
+            if (isTop()) {
+                fluidStack.amount = fluidStack.amount - capacity;
+                if (fluidStack.amount < 0)
+                    fluidStack = null;
+            } else if (fluidStack.amount > capacity)
+                fluidStack.amount = capacity;
+        }
+
+
+        return fluidStack;
+    }
+
     public boolean isEmpty() {
         return getFluid() == null;
     }
