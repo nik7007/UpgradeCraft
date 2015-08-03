@@ -2,7 +2,6 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.config.ConfigurableObject;
 import com.nik7.upgcraft.config.SystemConfig;
-import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.tank.UpgCTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.util.LogHelper;
@@ -208,6 +207,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     @Override
     @SideOnly(Side.CLIENT)
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void getSubBlocks(Item item, CreativeTabs tab, List subItems) {
 
 
