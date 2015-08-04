@@ -4,11 +4,11 @@ package com.nik7.upgcraft.registry;
 import com.nik7.upgcraft.registry.FluidInfuser.FluidInfuserRecipe;
 import com.nik7.upgcraft.registry.FluidInfuser.InputItemStacks;
 import com.nik7.upgcraft.util.LogHelper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,12 +20,18 @@ public class FluidInfuserRegister {
 
     private HashMap<InputItemStacks, FluidInfuserRecipe> inputsToAll = new HashMap<InputItemStacks, FluidInfuserRecipe>();
 
-    private HashMap<Item, HashSet<FluidInfuserRecipe>> resultToAll = new HashMap<Item, HashSet<FluidInfuserRecipe>>();
+    private HashMap<ItemOD, HashSet<FluidInfuserRecipe>> resultToAll = new HashMap<ItemOD, HashSet<FluidInfuserRecipe>>();
     private HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>> toMeltToAll = new HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>>();
     private HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>> toInfuseToAll = new HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>>();
     private HashSet<Fluid> fluid = new HashSet<Fluid>();
 
     private FluidInfuserRegister() {
+
+    }
+
+    public static Collection<HashSet<FluidInfuserRecipe>> getRecipes() {
+
+        return INSTANCE.resultToAll.values();
 
     }
 
@@ -45,12 +51,12 @@ public class FluidInfuserRegister {
                     if (!INSTANCE.fluid.contains(fluidStack)) {
                         INSTANCE.fluid.add(fluidStack.getFluid());
                     }
-
-                    if (INSTANCE.resultToAll.containsKey(result)) {
-                        (INSTANCE.resultToAll.get(result)).add(recipe);
+                    ItemOD toCheck = new ItemOD(result);
+                    if (INSTANCE.resultToAll.containsKey(toCheck)) {
+                        (INSTANCE.resultToAll.get(toCheck)).add(recipe);
                     } else {
-                        INSTANCE.resultToAll.put(result.getItem(), new HashSet<FluidInfuserRecipe>());
-                        (INSTANCE.resultToAll.get(result.getItem())).add(recipe);
+                        INSTANCE.resultToAll.put(toCheck, new HashSet<FluidInfuserRecipe>());
+                        (INSTANCE.resultToAll.get(toCheck)).add(recipe);
                     }
 
                     ItemOD toMeltOD = new ItemOD(toMelt);
