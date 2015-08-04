@@ -29,6 +29,13 @@ public class GuiFluidInfuser extends GuiWithFluid {
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 
+        if (this.fluidInfuser.fluidLevel > 0) {
+
+            FluidStack fluid = this.fluidInfuser.getFluid(0);
+            int level = (int) this.fluidInfuser.getFluidLevelScaled(32);
+
+            super.renderFluidWithToolTip(fluid, fluidInfuser.capacity, 16, 56, 16, 32, mouseX, mouseY, level);
+        }
     }
 
     @Override
@@ -45,15 +52,6 @@ public class GuiFluidInfuser extends GuiWithFluid {
 
         inc = fluidInfuser.getInfusingTimeRemainingScaled(24);
         this.drawTexturedModalRect(xOffset + 99, yOffset + 34, 176, 14, inc + 1, 16);
-
-        if (this.fluidInfuser.fluidLevel > 0) {
-            FluidStack fluid = this.fluidInfuser.getFluid(0);
-            int level = (int) this.fluidInfuser.getFluidLevelScaled(32);
-
-            super.renderFluid(fluid.getFluid(), xOffset + 16, yOffset + 56, level);
-
-        }
-
 
     }
 }

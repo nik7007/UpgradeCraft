@@ -6,13 +6,9 @@ import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -30,6 +26,14 @@ public class GuiFluidFurnace extends GuiWithFluid {
         String s = this.fluidFurnace.hasCustomInventoryName() ? this.fluidFurnace.getInventoryName() : I18n.format(this.fluidFurnace.getInventoryName());
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+
+        if (this.fluidFurnace.fluidLevel > 0) {
+
+            int level = (int) this.fluidFurnace.getFluidLevelScaled(32);
+
+            super.renderFluidWithToolTip(fluidFurnace.getFluid(0), fluidFurnace.capacity, 26, 60, 16, 32, mouseX, mouseY, level);
+
+        }
     }
 
 
@@ -48,16 +52,6 @@ public class GuiFluidFurnace extends GuiWithFluid {
         inc = this.fluidFurnace.getCookProgressScaled(24);
         this.drawTexturedModalRect(xOffset + 79, yOffset + 34, 176, 14, inc + 1, 16);
 
-
-        if (this.fluidFurnace.fluidLevel > 0) {
-
-            int level = (int) this.fluidFurnace.getFluidLevelScaled(32);
-
-            Fluid fluid = FluidRegistry.getFluid("lava");
-
-            super.renderFluid(fluid, xOffset + 26, yOffset + 60, level);
-
-        }
 
     }
 

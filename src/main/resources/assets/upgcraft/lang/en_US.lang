@@ -24,8 +24,8 @@ tooltip.upgcraft:tank.hollow=Transparent
 tooltip.upgcraft:tank.tobecooked.t=This should be cooked into something
 tooltip.upgcraft:tank.tobecooked.b=hotter than a regular furnace...
 tooltip.upgcraft:tank.fluiddfname=Empty
-tooltip.upgcraft:tank.fluidname=Fluid Name
-tooltip.upgcraft:tank.fluidamount=Fluid Amount
+tooltip.upgcraft:tank.fluidname=Fluid
+tooltip.upgcraft:tank.fluidamount=Amount
 
 #Inventory
 upgcraft:container.fluidfurnace=Fluid Furnace
