@@ -52,11 +52,15 @@ public class FluidInfuserRecipeHandler extends TemplateRecipeHandler {
 
         @Override
         public List<PositionedStack> getIngredients() {
+            for (PositionedStack positionedStack : inputs) {
+                this.randomRenderPermutation(positionedStack, FluidInfuserRecipeHandler.this.cycleticks / 20);
+            }
             return inputs;
         }
 
         @Override
         public PositionedStack getResult() {
+            this.randomRenderPermutation(output, FluidInfuserRecipeHandler.this.cycleticks / 20);
             return output;
         }
 
