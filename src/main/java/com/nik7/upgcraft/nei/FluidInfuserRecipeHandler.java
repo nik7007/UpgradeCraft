@@ -96,6 +96,9 @@ public class FluidInfuserRecipeHandler extends TemplateRecipeHandler {
                 GL11.glEnable(GL11.GL_BLEND);
             }
         }
+        GuiDraw.changeTexture(getGuiTexture());
+        this.drawProgressBar(41, 25, 176, 0, 15, 15, 20, 3);
+        this.drawProgressBar(94, 23, 176, 14,25, 16, 60, 0);
     }
 
     @Override
@@ -161,6 +164,12 @@ public class FluidInfuserRecipeHandler extends TemplateRecipeHandler {
         }
 
     }
+
+    @Override
+    public void loadTransferRects() {
+        transferRects.add(new RecipeTransferRect(new Rectangle(67, 23, 50,16), getRecipeID()));
+    }
+
 
     @Override
     public Class<? extends GuiContainer> getGuiClass() {
