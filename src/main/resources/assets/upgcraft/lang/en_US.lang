@@ -31,3 +31,6 @@ tooltip.upgcraft:tank.fluidamount=Fluid Amount
 upgcraft:container.fluidfurnace=Fluid Furnace
 upgcraft:container.fluidinfuser=Fluid Infuser
 upgcraft:container.enderhopper=Ender Hopper
+
+#NEI
+gui.nei.upgcraft:FluidInfuser=Fluid Infuser
