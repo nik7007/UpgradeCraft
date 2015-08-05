@@ -34,3 +34,4 @@ upgcraft:container.enderhopper=Ender Hopper
 
 #NEI
 gui.nei.upgcraft:FluidInfuser=Fluid Infuser
+gui.nei.upgcraft:FluidFurnace=Fluid Furnace

@@ -20,6 +20,9 @@ public class PositionedFluidTank {
     private int tankCapacity;
     private int x, y, w, h;
 
+    private boolean consPerTick = false;
+    private String ticks = "";
+
     public PositionedFluidTank(FluidStack fluidStack, int tankCapacity, int x, int y, int w, int h) {
         this.fluidStack = fluidStack;
         this.tankCapacity = tankCapacity;
@@ -67,10 +70,21 @@ public class PositionedFluidTank {
 
             if ((relMouse.x >= x && relMouse.x <= x + w) && (relMouse.y < y && relMouse.y > y - h - 3)) {
                 currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidname") + ": " + EnumChatFormatting.RESET + fluidStack.getLocalizedName());
-                currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidamount") + ": " + EnumChatFormatting.RESET + fluidStack.amount + " mB");
+                currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidamount") + ": " + EnumChatFormatting.RESET + fluidStack.amount + (consPerTick ? " mB/" + ticks + "t" : " mB"));
             }
         }
 
         return currenttip;
     }
+
+    public void setConsPerTick(boolean consPerTick) {
+        this.consPerTick = consPerTick;
+    }
+
+    public void setTicks(int ticks) {
+        if (ticks > 1) {
+            this.ticks = ticks + " ";
+        }
+    }
+
 }

@@ -11,6 +11,10 @@ public class NEIConfig implements IConfigureNEI {
         API.registerRecipeHandler(fluidInfuserRecipeHandler);
         API.registerUsageHandler(fluidInfuserRecipeHandler);
 
+        FluidFurnaceRecipeHandler fluidFurnaceRecipeHandler = new FluidFurnaceRecipeHandler();
+        API.registerRecipeHandler(fluidFurnaceRecipeHandler);
+        API.registerUsageHandler(fluidFurnaceRecipeHandler);
+
     }
 
     @Override
