@@ -26,10 +26,8 @@ public class FluidInfuserRecipeHandler extends TemplateRecipeHandler {
     public class CachedFluidInfuserRecipe extends CachedRecipe {
 
         public List<PositionedStack> inputs;
-
         public PositionedStack output;
 
-        //public FluidStack fluidStack;
         public PositionedFluidTank positionedFluidTank;
 
         public CachedFluidInfuserRecipe(FluidInfuserRecipe recipe) {
@@ -37,9 +35,8 @@ public class FluidInfuserRecipeHandler extends TemplateRecipeHandler {
             ItemStack toMelt = recipe.getInputs().getToMelt();
             ItemStack toInfuse = recipe.getInputs().getToInfuse();
             ItemStack result = recipe.getResult();
-            //fluidStack = recipe.getFluidStack();
-            positionedFluidTank = new PositionedFluidTank(recipe.getFluidStack(), Capacity.INTERNAL_FLUID_TANK_TR1, 11, 45, 16, 32);
 
+            positionedFluidTank = new PositionedFluidTank(recipe.getFluidStack(), Capacity.INTERNAL_FLUID_TANK_TR1, 11, 45, 16, 32);
             inputs = Arrays.asList(new PositionedStack(toMelt, 41, 6), new PositionedStack(toInfuse, 71, 6));
             output = new PositionedStack(result, 131, 24);
 
