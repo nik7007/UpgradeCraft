@@ -40,10 +40,11 @@ public class UpgradeCraft {
         NetworkHandler.init();
         DescriptionHandler.init();
 
-        //item, block, fluid
+        //fluid, item, block
+        ModFluids.init();
         ModBlocks.init();
         ModItems.init();
-        ModFluids.init();
+
 
     }
 

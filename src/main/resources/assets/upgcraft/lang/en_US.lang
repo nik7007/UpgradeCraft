@@ -1,6 +1,9 @@
 # Creative Tabs
 itemGroup.UpgradeCraft=UpgradeCraft
 
+#Fluids
+fluid.upgcraft:ActiveLava.name=Active Lava
+
 #Items
 item.upgcraft:ConcentratedEnderPearl.name=Concentrated Ender Pearl
 item.upgcraft:DragonSword.name=Dragon Sword
@@ -18,6 +21,7 @@ tile.upgcraft:SlimyObsidian.name=Slimy Obsidian
 tile.upgcraft:BasicFluidHopper.name=Basic Fluid Hopper
 tile.upgcraft:FluidFurnace.name=Fluid Furnace
 tile.upgcraft:FluidInfuser.name=Fluid Infuser
+tile.upgcraft:ActiveLava.name=Active Lava
 
 #Tooltip
 tooltip.upgcraft:tank.hollow=Transparent

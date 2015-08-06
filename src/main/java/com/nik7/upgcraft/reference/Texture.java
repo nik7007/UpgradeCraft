@@ -53,6 +53,11 @@ public class Texture {
 
     }
 
+    public class Fluid{
+        public final static String ACTIVE_LAVE = Reference.MOD_ID + ":" + "active_lava";
+
+    }
+
     public class GUI {
         public final static String TEXTURE_GUI_LOCATION = "textures/gui/";
         public final static String FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "fluidfurnace.png";

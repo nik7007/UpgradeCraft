@@ -10,6 +10,7 @@ import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 
 @GameRegistry.ObjectHolder(Reference.MOD_ID)
 public class ModBlocks {
@@ -23,9 +24,12 @@ public class ModBlocks {
     public static final Block blockFluidInfuse = new BlockUpgCFluidInfuser();
     public static final Block blockUpgCSlimyObsidian = new BlockUpgCSlimyObsidian();
     public static final Block blockUpgCEnderHopper = new BlockUpgCEnderHopper();
+    public static Block blockActiveLava;
 
     public static void init() {
-
+        blockActiveLava = new BlockUpgCActiveLava(ModFluids.ActiveLava);
+        GameRegistry.registerBlock(blockActiveLava, Reference.MOD_ID + "Block" + Names.Fluid.ACTIVE_LAVE);
+        /****/
         GameRegistry.registerBlock(blockWoodenLiquidTank, ItemBlockWoodenTank.class, Reference.MOD_ID + "Block" + Names.Blocks.WOODEN_LIQUID_TANK);
         GameRegistry.registerBlock(blockClayLiquidTank, ItemBlockClayTank.class, Reference.MOD_ID + "Block" + Names.Blocks.CLAY_LIQUID_TANK);
         GameRegistry.registerBlock(blockUpgCEnderTank, Reference.MOD_ID + "Block" + Names.Blocks.ENDER_TANK);
@@ -35,6 +39,7 @@ public class ModBlocks {
         GameRegistry.registerBlock(blockFluidFurnace, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_FURNACE);
         GameRegistry.registerBlock(blockFluidInfuse, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_INFUSE);
         GameRegistry.registerBlock(blockUpgCEnderHopper, Reference.MOD_ID + "Block" + Names.Blocks.ENDER_HOPPER);
+
 
     }
 }
