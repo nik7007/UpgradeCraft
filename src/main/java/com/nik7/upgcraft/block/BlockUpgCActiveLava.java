@@ -10,7 +10,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -78,34 +80,34 @@ public class BlockUpgCActiveLava extends BlockFluidClassic {
     private void worldAction(World world, int x, int y, int z) {
         if (world.getBlock(x, y, z) == this) {
             if (this.blockMaterial == Material.lava) {
-                boolean flag = false;
+                boolean touchWater = false;
 
                 if (world.getBlock(x, y, z - 1).getMaterial() == Material.water) {
-                    flag = true;
+                    touchWater = true;
                 }
 
-                if (flag || world.getBlock(x, y, z + 1).getMaterial() == Material.water) {
-                    flag = true;
+                if (touchWater || world.getBlock(x, y, z + 1).getMaterial() == Material.water) {
+                    touchWater = true;
                 }
 
-                if (flag || world.getBlock(x - 1, y, z).getMaterial() == Material.water) {
-                    flag = true;
+                if (touchWater || world.getBlock(x - 1, y, z).getMaterial() == Material.water) {
+                    touchWater = true;
                 }
 
-                if (flag || world.getBlock(x + 1, y, z).getMaterial() == Material.water) {
-                    flag = true;
+                if (touchWater || world.getBlock(x + 1, y, z).getMaterial() == Material.water) {
+                    touchWater = true;
                 }
 
-                if (flag || world.getBlock(x, y + 1, z).getMaterial() == Material.water) {
-                    flag = true;
+                if (touchWater || world.getBlock(x, y + 1, z).getMaterial() == Material.water) {
+                    touchWater = true;
                 }
 
-                if (flag) {
-                    int l = world.getBlockMetadata(x, y, z);
+                if (touchWater) {
+                    int metadata = world.getBlockMetadata(x, y, z);
 
-                    if (l == 0) {
+                    if (metadata == 0) {
                         world.setBlock(x, y, z, Blocks.obsidian);
-                    } else if (l <= 4) {
+                    } else if (metadata <= 4) {
                         world.setBlock(x, y, z, Blocks.cobblestone);
                     }
 
@@ -129,6 +131,12 @@ public class BlockUpgCActiveLava extends BlockFluidClassic {
         super.updateTick(world, x, y, z, random);
         toStone(world, x, y, z);
         toFire(world, x, y, z, random);
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+        entity.setFire(20);
+        entity.attackEntityFrom(DamageSource.lava, 2.0F);
     }
 
     private void toFire(World world, int x, int y, int z, Random random) {
