@@ -2,7 +2,7 @@
 itemGroup.UpgradeCraft=UpgradeCraft
 
 #Fluids
-fluid.upgcraft:ActiveLava.name=Active Lava
+fluid.upgcraft:ActiveLava=Active Lava
 
 #Items
 item.upgcraft:ConcentratedEnderPearl.name=Concentrated Ender Pearl

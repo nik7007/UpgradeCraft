@@ -24,7 +24,7 @@ public class ModBlocks {
     public static final Block blockFluidInfuse = new BlockUpgCFluidInfuser();
     public static final Block blockUpgCSlimyObsidian = new BlockUpgCSlimyObsidian();
     public static final Block blockUpgCEnderHopper = new BlockUpgCEnderHopper();
-    public static final Block blockActiveLava =  new BlockUpgCActiveLava(ModFluids.ActiveLava);
+    public static final Block blockActiveLava =  new BlockUpgCActiveLava();
 
     public static void init() {
 

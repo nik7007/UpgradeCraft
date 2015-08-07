@@ -15,7 +15,7 @@ public class ActiveLava extends UpgFluid {
         setLuminosity(2);
         setDensity(5000);
         setViscosity(8000);
-        setTemperature(500);
+        setTemperature(500 + 273);
         setRarity(EnumRarity.uncommon);
     }
 

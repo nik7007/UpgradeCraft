@@ -28,8 +28,8 @@ public class BlockUpgCActiveLava extends BlockFluidClassic {
     @SideOnly(Side.CLIENT)
     protected IIcon flowingIcon;
 
-    public BlockUpgCActiveLava(Fluid fluid) {
-        super(fluid, Material.lava);
+    public BlockUpgCActiveLava() {
+        super(ModFluids.ActiveLava, Material.lava);
         ModFluids.ActiveLava.setBlock(this);
         this.setBlockName(Names.Fluid.ACTIVE_LAVE);
         this.setBlockTextureName(Texture.Fluid.ACTIVE_LAVE + "_still");
@@ -137,6 +137,7 @@ public class BlockUpgCActiveLava extends BlockFluidClassic {
     public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
         entity.setFire(20);
         entity.attackEntityFrom(DamageSource.lava, 2.0F);
+        entity.attackEntityFrom(DamageSource.onFire, 1.0F);
     }
 
     private void toFire(World world, int x, int y, int z, Random random) {
