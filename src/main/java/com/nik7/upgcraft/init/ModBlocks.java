@@ -10,7 +10,6 @@ import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 
 @GameRegistry.ObjectHolder(Reference.MOD_ID)
 public class ModBlocks {
@@ -24,7 +23,7 @@ public class ModBlocks {
     public static final Block blockFluidInfuse = new BlockUpgCFluidInfuser();
     public static final Block blockUpgCSlimyObsidian = new BlockUpgCSlimyObsidian();
     public static final Block blockUpgCEnderHopper = new BlockUpgCEnderHopper();
-    public static final Block blockActiveLava =  new BlockUpgCActiveLava();
+    public static final Block blockActiveLava = new BlockUpgCActiveLava();
 
     public static void init() {
 
