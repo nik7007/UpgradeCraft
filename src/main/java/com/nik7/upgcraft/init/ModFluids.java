@@ -8,9 +8,12 @@ public class ModFluids {
 
     public static final Fluid ActiveLava = new ActiveLava();
 
+    static {
+        FluidRegistry.registerFluid(ActiveLava);
+    }
+
     public static void init() {
 
-        FluidRegistry.registerFluid(ActiveLava);
 
     }
 
