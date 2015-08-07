@@ -23,6 +23,7 @@ public class Names {
         public final static String CONCENTRATED_ENDER_PEARL = "ConcentratedEnderPearl";
         public final static String CLAY_IRON_INGOT = "ClayIronIngot";
         public final static String PERSONAL_INFORMATION = "PersonalInformation";
+        public final static String ACTIVE_LAVA_BUCKET = "ActiveLavaBucket";
 
     }
 

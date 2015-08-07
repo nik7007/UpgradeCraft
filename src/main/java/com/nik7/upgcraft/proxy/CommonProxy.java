@@ -1,5 +1,6 @@
 package com.nik7.upgcraft.proxy;
 
+import com.nik7.upgcraft.handler.BucketHandler;
 import com.nik7.upgcraft.handler.PlayerEventHandler;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tileentities.*;
@@ -21,6 +22,7 @@ public abstract class CommonProxy implements IProxy {
     public void registerEventHandlers() {
 
         PlayerEventHandler.init();
+        BucketHandler.init();
 
     }
 }

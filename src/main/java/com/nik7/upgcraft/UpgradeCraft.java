@@ -19,6 +19,9 @@ import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, guiFactory = Reference.GUI_FACTORY_CLASS)
 public class UpgradeCraft {
@@ -44,6 +47,8 @@ public class UpgradeCraft {
         ModFluids.init();
         ModBlocks.init();
         ModItems.init();
+
+        FluidContainerRegistry.registerFluidContainer(ModFluids.ActiveLava, new ItemStack(ModItems.itemActiveLavaBucket), new ItemStack(Items.bucket));
 
 
     }
