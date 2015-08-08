@@ -12,7 +12,7 @@ public class ActiveLava extends UpgFluid {
 
     public ActiveLava() {
         super(Names.Fluid.ACTIVE_LAVE);
-        setLuminosity(2);
+        setLuminosity(8);
         setDensity(5000);
         setViscosity(8000);
         setTemperature(500 + 273);
