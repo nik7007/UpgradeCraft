@@ -33,7 +33,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public boolean isActive = false;
 
     public UpgCtileentityFluidFurnace() {
-        this.tank = new UpgCTank[]{new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1)};
+        this.tank = new UpgCTank[]{new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1, this)};
         this.itemStacks = new ItemStack[2];
         this.capacity = Capacity.INTERNAL_FLUID_TANK_TR1;
 
@@ -132,7 +132,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
     private boolean canSmelt() {
 
-        if (tank[0]!= null && tank[0].getFluid() != null && this.itemStacks[INPUT] != null) {
+        if (tank[0] != null && tank[0].getFluid() != null && this.itemStacks[INPUT] != null) {
             if (tank[0].getFluid().amount >= 1) {
 
                 ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.itemStacks[INPUT]);

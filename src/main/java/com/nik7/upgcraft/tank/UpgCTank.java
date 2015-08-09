@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.tank;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
@@ -8,8 +9,13 @@ public class UpgCTank extends FluidTank {
 
     private boolean toHot = false;
 
-    public UpgCTank(int capacity) {
+    public UpgCTank(int capacity, TileEntity tile) {
 
+        this(capacity);
+        this.tile = tile;
+    }
+
+    public UpgCTank(int capacity) {
         super(capacity);
     }
 
@@ -76,6 +82,10 @@ public class UpgCTank extends FluidTank {
 
         return this.getFluid() == null && upgCTank.getFluid() == null || !(this.getFluid() == null || upgCTank.getFluid() == null) && this.getFluid().isFluidStackIdentical(upgCTank.getFluid());
 
+    }
+
+    public TileEntity getTileEntity() {
+        return this.tile;
     }
 
 }

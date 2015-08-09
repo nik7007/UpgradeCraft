@@ -38,7 +38,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     protected UpgCtileentityTank(int tankCapacity) {
         super();
         this.TANK_CAPACITY = tankCapacity;
-        this.setTank(new UpgCTank(tankCapacity));
+        this.setTank(new UpgCTank(tankCapacity, this));
     }
 
     @Override
@@ -220,14 +220,14 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
                 if (oldCapacity != TANK_CAPACITY) {
 
                     if (this.tank.getCapacity() == 2 * oldCapacity) {
-                        UpgCTank tank = new UpgCTank(2 * TANK_CAPACITY);
+                        UpgCTank tank = new UpgCTank(2 * TANK_CAPACITY, this);
                         tank.fill(this.tank.getFluid(), true);
                         this.setTank(tank);
                     } else if (this.tank.getCapacity() == oldCapacity) {
 
                         FluidStack fluidStack = this.getFluid();
                         FluidStack fluidStackD = adjacentTankYPos.getFluid();
-                        UpgCTank tank = new UpgCTank(2 * TANK_CAPACITY);
+                        UpgCTank tank = new UpgCTank(2 * TANK_CAPACITY, this);
 
                         this.setTank(tank);
 
@@ -252,7 +252,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
             if (cTank.getCapacity() == this.TANK_CAPACITY) {
 
-                cTank = new UpgCTank(2 * TANK_CAPACITY);
+                cTank = new UpgCTank(2 * TANK_CAPACITY, this);
             } else if (cTank.getCapacity() != 2 * this.TANK_CAPACITY) {
                 LogHelper.error("Unknow tank capacity: " + cTank.getCapacity());
             }
@@ -275,7 +275,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
             int amount = 0;
             FluidStack fluidStack = null;
-            UpgCTank tank = new UpgCTank(this.TANK_CAPACITY);
+            UpgCTank tank = new UpgCTank(this.TANK_CAPACITY, this);
 
             if (this.tank.getFluid() != null)
                 fluidStack = new FluidStack(this.tank.getFluid(), amount);

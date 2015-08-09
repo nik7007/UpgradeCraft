@@ -37,7 +37,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
 
     public UpgCtileentityFluidInfuser() {
-        this.tank = new UpgCTank[]{new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1)};
+        this.tank = new UpgCTank[]{new UpgCTank(Capacity.INTERNAL_FLUID_TANK_TR1, this)};
         this.itemStacks = new ItemStack[5];
         this.capacity = Capacity.INTERNAL_FLUID_TANK_TR1;
 
