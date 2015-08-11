@@ -46,6 +46,7 @@ public class Names {
         public final static String UPGC_FLUID_FURNACE = Reference.MOD_ID + ":" + "container.fluidfurnace";
         public final static String UPGC_FLUID_INFUSER = Reference.MOD_ID + ":" + "container.fluidinfuser";
         public final static String UPGC_ENDER_HOPPER = Reference.MOD_ID + ":" + "container.enderhopper";
+        public final static String UPGC_TERMO_FURNACE = Reference.MOD_ID + ":" + "container.termofurnace";
     }
 
 
