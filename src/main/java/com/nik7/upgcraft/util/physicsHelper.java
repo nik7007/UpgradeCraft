@@ -16,7 +16,7 @@ public class physicsHelper {
     public static float getFluidVolume(FluidStack fluidStack) {
         if (fluidStack == null)
             return 0;
-        return fluidStack.amount / (1000 * 1000); // "m3"
+        return fluidStack.amount / (float) (1000 * 1000); // "m3"
     }
 
     public static float getFluidMass(FluidStack fluidStack, float volume) {
@@ -35,13 +35,9 @@ public class physicsHelper {
 
         final double heatTransferCoefficient = 10000 * 1.75;
 
-        float fluidHeat = getFluidHeat(fluidStack, otherTemp, otherMass) - heatLose;
+        float fluidHeat = getHeat(fluidStack, otherTemp, otherMass) - heatLose;
 
-        float result = 0;
-        for (int t = 1; t <= dTime; t++)
-            result = (float) (otherTemp + (fluidHeat / (0.25 * heatTransferCoefficient * dTime)));
-
-        return result;
+        return (float) ((fluidHeat / (0.25 * heatTransferCoefficient * dTime)));
 
     }
 
@@ -53,7 +49,7 @@ public class physicsHelper {
         return (temp1 * mass1 + temp2 * mass2) / (mass1 + mass2);
     }
 
-    public static float getFluidHeat(FluidStack fluidStack, float otherTemp, float otherMass) {
+    public static float getHeat(FluidStack fluidStack, float otherTemp, float otherMass) {
         if (fluidStack == null)
             return 0;
 
@@ -61,7 +57,7 @@ public class physicsHelper {
         float mass = getFluidMass(fluidStack);
         float finalTemp = getBalanceTemperature(temp, otherTemp, mass, otherMass);
 
-        return mass * getSpecificHeatFromFluid(fluidStack) * (temp - finalTemp); //Q = m c (Tfin - Tiniz)
+        return mass * getSpecificHeatFromFluid(fluidStack) * (finalTemp - otherTemp); //Q = m c (Tfin - Tiniz)
 
     }
 

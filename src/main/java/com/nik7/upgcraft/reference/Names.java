@@ -15,6 +15,7 @@ public class Names {
         public final static String ENDER_HOPPER = "EnderHopper";
         public final static String FLUID_FURNACE = "FluidFurnace";
         public final static String FLUID_INFUSE = "FluidInfuser";
+        public final static String TERMO_FLUID_FURNACE = "Termo" + FLUID_FURNACE;
     }
 
     public class Items {

@@ -24,6 +24,7 @@ public class ModBlocks {
     public static final Block blockUpgCSlimyObsidian = new BlockUpgCSlimyObsidian();
     public static final Block blockUpgCEnderHopper = new BlockUpgCEnderHopper();
     public static final Block blockActiveLava = new BlockUpgCActiveLava();
+    public static final Block blockUpgCTermoFluidFurnace = new BlockUpgCTermoFluidFurnace();
 
     public static void init() {
 
@@ -36,6 +37,7 @@ public class ModBlocks {
         GameRegistry.registerBlock(blockFluidFurnace, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_FURNACE);
         GameRegistry.registerBlock(blockFluidInfuse, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_INFUSE);
         GameRegistry.registerBlock(blockUpgCEnderHopper, Reference.MOD_ID + "Block" + Names.Blocks.ENDER_HOPPER);
+        GameRegistry.registerBlock(blockUpgCTermoFluidFurnace, Reference.MOD_ID + "Block" + Names.Blocks.TERMO_FLUID_FURNACE);
 
         GameRegistry.registerBlock(blockActiveLava, Reference.MOD_ID + "Block" + Names.Fluid.ACTIVE_LAVE);
 

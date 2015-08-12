@@ -2,6 +2,7 @@ package com.nik7.upgcraft.tank;
 
 
 import com.nik7.upgcraft.fluid.ActiveLava;
+import com.nik7.upgcraft.init.ModFluids;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidEvent;
@@ -20,7 +21,7 @@ public class UpgCActiveTank extends UpgCTank {
             return 0;
         }
 
-        if (!(resource.getFluid() instanceof ActiveLava)) {
+        if (!(resource.getFluid() == ModFluids.ActiveLava)) {
             return super.fill(resource, doFill);
         } else {
 
