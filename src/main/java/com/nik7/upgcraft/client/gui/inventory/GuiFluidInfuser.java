@@ -29,7 +29,7 @@ public class GuiFluidInfuser extends GuiWithFluid {
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 
-        if (this.fluidInfuser.fluidLevel > 0) {
+        if (this.fluidInfuser.getFluid(0) != null && this.fluidInfuser.getFluid(0).amount > 0) {
 
             FluidStack fluid = this.fluidInfuser.getFluid(0);
             int level = (int) this.fluidInfuser.getFluidLevelScaled(32);

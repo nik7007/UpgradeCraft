@@ -27,7 +27,9 @@ public class GuiFluidFurnace extends GuiWithFluid {
         this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
         this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 
-        if (this.fluidFurnace.fluidLevel > 0) {
+        int fluidLevel = this.fluidFurnace.getFluid(0) == null ? 0 : this.fluidFurnace.getFluid(0).amount;
+
+        if (fluidLevel > 0) {
 
             int level = (int) this.fluidFurnace.getFluidLevelScaled(32);
 

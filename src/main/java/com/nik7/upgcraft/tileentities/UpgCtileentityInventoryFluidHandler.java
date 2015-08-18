@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.*;
 public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity implements IFluidHandler, ISidedInventory {
 
     protected FluidTank[] tank;
-    public int fluidLevel = 0;
+    //public int fluidLevel = 0;
     public int capacity;
     //Inventory
     protected ItemStack[] itemStacks;
@@ -71,6 +71,32 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         buf.writeInt(zCoord);
         writeToPacket(buf);
         return new FMLProxyPacket(buf, DescriptionHandler.CHANNEL);
+    }
+
+    protected void writeFluidToByteBuf(FluidTank tank, ByteBuf buf) {
+
+        FluidStack fluidStack = tank != null ? this.tank[0].getFluid() : null;
+        int fluidAmount = -1;
+        int fluidID = -1;
+        if (fluidStack != null) {
+            fluidAmount = fluidStack.amount;
+            fluidID = fluidStack.getFluidID();
+        }
+
+        buf.writeInt(fluidAmount);
+        buf.writeInt(fluidID);
+    }
+
+    protected void readFluidToByteBuf(FluidTank tank, ByteBuf buf) {
+
+        int fluidAmount = buf.readInt();
+        int fluidID = buf.readInt();
+        if (fluidAmount > 0) {
+            tank.setFluid(new FluidStack(FluidRegistry.getFluid(fluidID), fluidAmount));
+        }
+
+        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+
     }
 
     public void writeToPacket(ByteBuf buf) {

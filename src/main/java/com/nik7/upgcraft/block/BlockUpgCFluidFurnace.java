@@ -107,7 +107,7 @@ public class BlockUpgCFluidFurnace extends BlockUpgCContainerOrientable {
     @Override
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
         UpgCtileentityFluidFurnace tile = ((UpgCtileentityFluidFurnace) world.getTileEntity(x, y, z));
-        if (tile.fluidLevel > 0) {
+        if (tile.getFluid(0) != null && tile.getFluid(0).amount > 0) {
             return FluidRegistry.getFluid("lava").getLuminosity();
         } else
             return 0;

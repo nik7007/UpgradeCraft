@@ -38,6 +38,7 @@ public class Texture {
         public final static String MODEL_ENDER_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockEnderHopper.png";
         public final static String MODEL_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockFluidFurnace.png";
         public final static String MODEL_FLUID_INFUSER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockFluidInfuser.png";
+        public final static String MODEL_TERMO_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockTermoFluidFurnace.png";
 
 
         public final static String SLIMY_LOG = Reference.MOD_ID + ":" + "slime_planks";
@@ -54,7 +55,7 @@ public class Texture {
 
     }
 
-    public class Fluid{
+    public class Fluid {
         public final static String ACTIVE_LAVE = Reference.MOD_ID + ":" + "active_lava";
 
     }

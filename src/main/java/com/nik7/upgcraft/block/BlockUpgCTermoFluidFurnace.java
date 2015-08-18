@@ -33,7 +33,7 @@ public class BlockUpgCTermoFluidFurnace extends BlockUpgCContainerOrientable {
         return true;
     }
 
-    /*public int getRenderType() {
+    public int getRenderType() {
         return Render.Ids.FLUID_MACHINE;
     }
 
@@ -41,7 +41,6 @@ public class BlockUpgCTermoFluidFurnace extends BlockUpgCContainerOrientable {
     public boolean isOpaqueCube() {
         return false;
     }
-    */
 
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
@@ -50,7 +49,7 @@ public class BlockUpgCTermoFluidFurnace extends BlockUpgCContainerOrientable {
             int l = world.getBlockMetadata(x, y, z);
             float f = (float) x + 0.5F;
             float f1 = (float) y + 0.2F + random.nextFloat() * 6.0F / 16.0F;
-            float f2 = (float) z + 0.5F;
+            float f2 = (float) z + 0.4F + random.nextFloat()* 4.0F / 16.0F;
             float f3 = 0.52F;
             float f4 = random.nextFloat() * 0.6F - 0.3F;
 

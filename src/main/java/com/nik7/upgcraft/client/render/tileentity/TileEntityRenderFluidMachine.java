@@ -6,6 +6,7 @@ import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
 import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
+import com.nik7.upgcraft.tileentities.UpgCtileentityTermoFluidFurnace;
 import com.nik7.upgcraft.util.LogHelper;
 import com.nik7.upgcraft.util.RenderHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -21,9 +22,10 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
 
-    private final ModelBase fluidFurnace = new ModelFluidMachine();
+    private final ModelBase fluidMachine = new ModelFluidMachine();
     private final ResourceLocation textureFurnace = new ResourceLocation(Texture.Blocks.MODEL_FLUID_FURNACE);
     private final ResourceLocation textureInfuser = new ResourceLocation(Texture.Blocks.MODEL_FLUID_INFUSER);
+    private final ResourceLocation textureTermoFluidFurnace = new ResourceLocation(Texture.Blocks.MODEL_TERMO_FLUID_FURNACE);
 
     //Fluid render
     private final static float xMin = 0.063f;
@@ -50,6 +52,9 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
             } else if (inventoryFluidHandler instanceof UpgCtileentityFluidInfuser) {
                 texture = textureInfuser;
 
+
+            } else if (inventoryFluidHandler instanceof UpgCtileentityTermoFluidFurnace) {
+                texture = textureTermoFluidFurnace;
             } else {
                 LogHelper.error("This entity has not a skin! " + tileEntity.getClass());
                 return;
@@ -81,7 +86,7 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
             GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
             GL11.glRotatef((float) angle, 0.0F, 1.0F, 0.0F);
 
-            fluidFurnace.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
+            fluidMachine.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
             GL11.glEnable(GL11.GL_BLEND);
             OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
@@ -108,15 +113,14 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
 
             FluidStack fluid = inventoryFluidHandler.getFluid(0);
 
+
             if (fluid != null) {
 
-                float level = (float) inventoryFluidHandler.fluidLevel / (float) inventoryFluidHandler.capacity;
+                float level = (float) fluid.amount / (float) inventoryFluidHandler.capacity;
+                    RenderHelper.fluidRender(level, fluid.getFluid(), xMin, yMin, zMin, xMaz, yMaz, zMaz, false, false);
 
-                RenderHelper.fluidRender(level, fluid.getFluid(), xMin, yMin, zMin, xMaz, yMaz, zMaz, false, false);
             }
-
             GL11.glDisable(GL11.GL_BLEND);
-
             GL11.glPopMatrix();
         } else {
             LogHelper.error("Try to Render something that isn't a UpgCtileentityInventoryFluidHandler: " + tileEntity.getClass());

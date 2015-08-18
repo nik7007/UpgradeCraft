@@ -7,16 +7,14 @@ import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tank.UpgCActiveTank;
 import com.nik7.upgcraft.util.physicsHelper;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.*;
 
 public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFluidHandler {
 
@@ -26,13 +24,12 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     public static final int MAX_TEMPERATURE = 5700;
 
     private static final int DIAMOND_THERMAL_CONDUCTIVITY = 1600;
-    //private static final int diamondSpecificHeat = 502;
     private float internalTemp = 273;
     private float workingTemp = 0;
     private int workingTick = 0;
     private int activeCycles = 1;
     private static final float INTERNAL_MASS = 1 * 0.004f;
-    private static final int INTERNAL_CAPACITY_WORKING_TANK = 10 * FluidContainerRegistry.BUCKET_VOLUME;
+    public static final int INTERNAL_CAPACITY_WORKING_TANK = 10 * FluidContainerRegistry.BUCKET_VOLUME;
     private boolean canOperate = true;
 
     private boolean balanced = false;
@@ -49,7 +46,22 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     public UpgCtileentityTermoFluidFurnace() {
         this.tank = new UpgCActiveTank[]{new UpgCActiveTank(Capacity.INTERNAL_FLUID_TANK_TR1, this), new UpgCActiveTank(INTERNAL_CAPACITY_WORKING_TANK, this), new UpgCActiveTank(INTERNAL_CAPACITY_WORKING_TANK, this)};
         this.itemStacks = new ItemStack[4];
+        this.capacity = Capacity.INTERNAL_FLUID_TANK_TR1;
+        this.tank[2].fill(new FluidStack(FluidRegistry.getFluid("water"), INTERNAL_CAPACITY_WORKING_TANK), true);
 
+    }
+
+
+    @Override
+    public void writeToPacket(ByteBuf buf) {
+        buf.writeBoolean(isActive);
+        writeFluidToByteBuf(this.tank[0], buf);
+    }
+
+    @Override
+    public void readFromPacket(ByteBuf buf) {
+        this.isActive = buf.readBoolean();
+        readFluidToByteBuf(this.tank[0], buf);
     }
 
 
@@ -105,7 +117,8 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
 
                 if ((workingTick % 80) == 10) {
                     if (Math.random() > internalTemp / (double) MAX_TEMPERATURE)
-                        wasteOperation();
+                        if (!balanced)
+                            wasteOperation();
                 }
             }
 
@@ -227,15 +240,14 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
         int amountToAsk = tank[1].fill(new FluidStack(tank[0].getFluid().getFluid(), tank[1].getCapacity()), false);
         FluidStack fluidStack = tank[0].drain(amountToAsk, true);
         tank[1].fill(fluidStack, true);
-
-
+        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
     }
 
 
     private void TempOperation() {
         this.workingTemp = physicsHelper.getFinalTemp(tank[1].getFluid(), internalTemp, INTERNAL_MASS, 20, heatLost());
 
-        if (((int) Math.abs(workingTemp)) == 0)
+        if (((int) Math.abs(workingTemp)) <= 12)
             balanced = true;
 
     }
@@ -243,45 +255,51 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     private void wasteOperation() {
         if (tank[1].getFluid() != null) {
             if (!(this.tank[1].getFluid().getFluid() == ModFluids.ActiveLava)) {
-                int amountToDrain = (int) ((FluidContainerRegistry.BUCKET_VOLUME / 4f) - FluidContainerRegistry.BUCKET_VOLUME / 3f * (internalTemp / MAX_TEMPERATURE));
-                FluidStack fluidStack = this.tank[1].drain(amountToDrain, true);
-                if (fluidStack.getFluid().getTemperature(fluidStack) < 100 + 273 && (fluidStack.getFluid().getBlock() != null && fluidStack.getFluid().getBlock().getMaterial() == Material.water)) {
-                    int fluidTemp = fluidStack.getFluid().getTemperature(fluidStack);
-                    int dTemp = (int) ((internalTemp + workingTemp) - fluidTemp);
-                    if (dTemp > 120)
-                        tank[1].setFluid(null);
-                } else {
-                    double rnd = Math.random();
-                    if (fluidStack.amount == amountToDrain) {
-                        if (rnd <= 0.15) {
-                            addCobblestone();
+                int amountToDrain = (int) ((FluidContainerRegistry.BUCKET_VOLUME / 4f) - FluidContainerRegistry.BUCKET_VOLUME / 3.8f * (internalTemp / this.tank[1].getFluid().getFluid().getTemperature(this.tank[1].getFluid())));
+                if (amountToDrain > 0) {
+                    FluidStack fluidStack = this.tank[1].drain(amountToDrain, true);
+                    if (fluidStack.getFluid().getTemperature(fluidStack) < 100 + 273 && (fluidStack.getFluid().getBlock() != null && fluidStack.getFluid().getBlock().getMaterial() == Material.water)) {
+                        int fluidTemp = fluidStack.getFluid().getTemperature(fluidStack);
+                        int dTemp = (int) ((internalTemp + workingTemp) - fluidTemp);
+                        if (dTemp > 120)
+                            tank[1].setFluid(null);
+                    } else {
+                        double rnd = Math.random();
+                        if (fluidStack.amount == amountToDrain) {
+                            if (rnd <= 0.15) {
+                                addCobblestone();
+
+                            } else {
+
+                                if (rnd <= 0.28) {
+                                    addObsidian();
+                                } else if (rnd <= 0.78) {
+                                    addCobblestone();
+                                }
+
+                            }
 
                         } else {
-
-                            if (rnd <= 0.28) {
-                                addObsidian();
-                            } else if (rnd <= 0.78) {
+                            if (rnd <= 0.36) {
                                 addCobblestone();
+
                             }
 
                         }
 
-                    } else {
-                        if (rnd <= 0.36) {
-                            addCobblestone();
-
-                        }
-
                     }
-
                 }
             } else {
                 FluidStack ActiveFluidStack = tank[1].getFluid();
-                if (ActiveFluidStack.getFluid().getTemperature(ActiveFluidStack) < this.internalTemp) {
-                    FluidStack fluidStack = tank[1].drain((int) (FluidContainerRegistry.BUCKET_VOLUME / 8f - FluidContainerRegistry.BUCKET_VOLUME / 7f * (internalTemp / MAX_TEMPERATURE)), true);
-                    if (tank[2].fill(fluidStack, true) != fluidStack.amount)
-                        canOperate = false;
-
+                int temp = ActiveFluidStack.getFluid().getTemperature(ActiveFluidStack);
+                if (temp < this.internalTemp - 200) {
+                    int principalTemp = tank[0].getFluid() == null ? 0 : tank[0].getFluid().getFluid().getTemperature(tank[0].getFluid());
+                    if (principalTemp > temp) {
+                        int amountToDrain = (1 + (int) (8 * internalTemp / temp)) * FluidContainerRegistry.BUCKET_VOLUME;
+                        FluidStack fluidStack = tank[1].drain(amountToDrain, true);
+                        if (tank[2].fill(fluidStack, true) != fluidStack.amount)
+                            canOperate = false;
+                    }
                 }
                 if ((activeCycles % 20) == 3)
                     ((ActiveLava) tank[1].getFluid().getFluid()).decreaseActiveValue(tank[1].getFluid());

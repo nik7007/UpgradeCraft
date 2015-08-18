@@ -67,9 +67,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
         this.isActive = buf.readBoolean();
 
         if (fluidAmount > 0) {
-
             this.tank[0].setFluid(new FluidStack(FluidRegistry.getFluid(fluidID), fluidAmount));
-            this.fluidLevel = fluidAmount;
         }
 
         worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
@@ -170,7 +168,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     @SideOnly(Side.CLIENT)
     public float getFluidLevelScaled(int scaleFactor) {
-        return scaleFactor * (float) fluidLevel / capacity;
+        return scaleFactor * (float) (this.tank[0].getFluid() == null ? 0 : tank[0].getFluid().amount) / capacity;
     }
 
     @SideOnly(Side.CLIENT)

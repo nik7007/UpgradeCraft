@@ -65,9 +65,6 @@ public class ContainerFluidFurnace extends ContainerUpgC {
             case 1:
                 this.fluidFurnace.progress = value;
                 break;
-            case 2:
-                this.fluidFurnace.fluidLevel = value;
-                break;
         }
 
     }
