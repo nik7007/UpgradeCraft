@@ -39,6 +39,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockUpgCEnderTank), new ItemRenderEnderTank());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockFluidFurnace), new itemRenderFluidFurnace());
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockFluidInfuse), new itemRenderFluidInfuser());
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockUpgCTermoFluidFurnace), new itemRenderTermoFluidFurnace());
 
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityTank.class, new TileEntityRendererTank());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityFluidHopper.class, new TileEntityRenderBasicFluidHopper());
