@@ -5,6 +5,8 @@ import com.nik7.upgcraft.fluid.ActiveLava;
 import com.nik7.upgcraft.init.ModFluids;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.registry.TermoSmelting.TermoSmeltingRecipe;
+import com.nik7.upgcraft.registry.TermoSmeltingRegister;
 import com.nik7.upgcraft.tank.UpgCActiveTank;
 import com.nik7.upgcraft.util.physicsHelper;
 import io.netty.buffer.ByteBuf;
@@ -28,7 +30,7 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     private float workingTemp = 0;
     private int workingTick = 0;
     private int activeCycles = 1;
-    private static final float INTERNAL_MASS = 1 * 0.004f;
+    private static final float INTERNAL_MASS = 1 * 0.004f; // volume * density
     public static final int INTERNAL_CAPACITY_WORKING_TANK = 10 * FluidContainerRegistry.BUCKET_VOLUME;
     private boolean canOperate = true;
 
@@ -40,6 +42,8 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     private static final int STD_BURN_TIME = 200;
     private int smeltingTicks = 0;
     private boolean canSmelt = false;
+    private boolean isTermoSmelting;
+    private TermoSmeltingRecipe termoSmeltingRecipe;
 
     public boolean isActive = false;
 
@@ -77,6 +81,7 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
 
         this.canSmelt = tag.getBoolean("canSmelt");
         this.smeltingTicks = tag.getInteger("smeltingTicks");
+        this.isTermoSmelting = tag.getBoolean("isTermoSmelting");
     }
 
     @Override
@@ -91,6 +96,7 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
 
         tag.setBoolean("canSmelt", this.canSmelt);
         tag.setInteger("smeltingTicks", this.smeltingTicks);
+        tag.setBoolean("isTermoSmelting", this.isTermoSmelting);
 
     }
 
@@ -122,9 +128,7 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
                 }
             }
 
-            if (internalTemp >= MIN_OPERATION_TEMP)
-                canSmelt();
-            else canSmelt = false;
+            canSmelt();
 
             if (canSmelt) {
                 smelting();
@@ -166,9 +170,14 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
             if (smeltingTicks >= time) {
                 smeltItem();
                 smeltingTicks = 0;
-                internalTemp -= 25;
+
+                if (isTermoSmelting)
+                    internalTemp -= 100;
+                else internalTemp -= 25;
 
             } else {
+                if (isTermoSmelting)
+                    internalTemp -= (int) (2f * Math.random());
                 isActive = true;
                 smeltingTicks++;
             }
@@ -180,7 +189,23 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
 
     private void smeltItem() {
 
-        ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.itemStacks[0]);
+        ItemStack itemstack;
+        if (isTermoSmelting) {
+            if (termoSmeltingRecipe == null) {
+                isTermoSmelting = false;
+                canSmelt = false;
+                return;
+            }
+            itemstack = termoSmeltingRecipe.getOutput();
+        } else {
+            itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.itemStacks[0]);
+        }
+
+        if (itemStacks == null) {
+            isTermoSmelting = false;
+            canSmelt = false;
+            return;
+        }
 
         if (this.itemStacks[1] == null) {
             this.itemStacks[1] = itemstack.copy();
@@ -197,14 +222,24 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     }
 
     private int smeltingTime() {
-        if (internalTemp == 273)
-            return -1;
+        if (!isTermoSmelting) {
+            if (internalTemp == 273)
+                return -1;
 
-        return (int) ((STD_TEMP / internalTemp) * STD_BURN_TIME);
+            return (int) ((STD_TEMP / internalTemp) * STD_BURN_TIME);
+        } else {
+            if (termoSmeltingRecipe == null) {
+                isTermoSmelting = false;
+                canSmelt = false;
+                return -1;
+            }
+            if (internalTemp < termoSmeltingRecipe.getTemperature())
+                return -1;
+            return (int) ((termoSmeltingRecipe.getTemperature() / internalTemp) * termoSmeltingRecipe.getTicks());
+        }
     }
 
-    private void canSmelt() {
-
+    private void canNormaSmelt() {
         if (this.itemStacks[0] != null && internalTemp >= MIN_OPERATION_TEMP) {
             ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.itemStacks[0]);
 
@@ -224,6 +259,43 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
             canSmelt = result <= getInventoryStackLimit() && result <= this.itemStacks[1].getMaxStackSize();
         } else
             canSmelt = false;
+    }
+
+    private void canTermoSmelt() {
+        isTermoSmelting = false;
+        if (this.itemStacks[0] != null) {
+
+            termoSmeltingRecipe = TermoSmeltingRegister.getRecipeFromInput(this.itemStacks[0]);
+
+            if (termoSmeltingRecipe != null && termoSmeltingRecipe.getTemperature() <= internalTemp) {
+                isTermoSmelting = true;
+                if (this.itemStacks[1] == null) {
+                    canSmelt = true;
+                    return;
+                }
+                if (!this.itemStacks[1].isItemEqual(termoSmeltingRecipe.getOutput())) {
+                    canSmelt = false;
+                    return;
+                }
+                int result = itemStacks[1].stackSize + termoSmeltingRecipe.getOutput().stackSize;
+                canSmelt = result <= getInventoryStackLimit() && result <= this.itemStacks[1].getMaxStackSize();
+                return;
+            }
+
+        }
+
+        canSmelt = false;
+        isTermoSmelting = false;
+
+    }
+
+    private void canSmelt() {
+        canSmelt = false;
+        if (!isTermoSmelting)
+            canNormaSmelt();
+        if (!canSmelt) {
+            canTermoSmelt();
+        }
 
     }
 
