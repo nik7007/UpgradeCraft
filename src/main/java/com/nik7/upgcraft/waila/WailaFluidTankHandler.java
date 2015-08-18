@@ -73,7 +73,9 @@ public class WailaFluidTankHandler implements IWailaDataProvider {
     public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
         if (!(te instanceof UpgCtileentityEnderTank)) {
             UpgCtileentityTank tank = (UpgCtileentityTank) te;
-            tank.getFluid().writeToNBT(tag);
+            FluidStack fluidStack = tank.getFluid();
+            if (fluidStack != null)
+                fluidStack.writeToNBT(tag);
         }
         return tag;
     }
