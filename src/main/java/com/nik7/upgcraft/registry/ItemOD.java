@@ -6,8 +6,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class ItemOD {
 
-    public ItemStack itemStack;
-    public String nameOD = "Unknown";
+    private final ItemStack itemStack;
+    private final String nameOD;
 
 
     public ItemOD(ItemStack itemStack) {
@@ -21,6 +21,17 @@ public class ItemOD {
         if (iDs.length > 0)
             return OreDictionary.getOreName(iDs[0]);
         else return "Unknown";
+    }
+
+    public ItemStack getItemStack() {
+        if (nameOD.equals("Unknown"))
+            return itemStack;
+        ItemStack oreDictionaryItem = OreDictionary.getOres(nameOD).get(0);
+        return new ItemStack(oreDictionaryItem.getItem(), itemStack.stackSize, oreDictionaryItem.getItemDamage());
+    }
+
+    public String getOreDictionaryName() {
+        return nameOD;
     }
 
     @Override

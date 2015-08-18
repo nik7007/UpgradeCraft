@@ -3,7 +3,6 @@ package com.nik7.upgcraft.registry.FluidInfuser;
 import com.nik7.upgcraft.registry.ItemOD;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class InputItemStacks {
 
@@ -20,19 +19,19 @@ public class InputItemStacks {
     }
 
     public ItemStack getToMelt() {
-        return getToMeltS().equals("Unknown") ? toMelt.itemStack : OreDictionary.getOres(getToMeltS()).get(0);
+        return toMelt.getItemStack();
     }
 
     public ItemStack getToInfuse() {
-        return getToInfuseS().equals("Unknown") ? toInfuse.itemStack : OreDictionary.getOres(getToInfuseS()).get(0);
+        return toInfuse.getItemStack();
     }
 
     public String getToMeltS() {
-        return toMelt.nameOD;
+        return toMelt.getOreDictionaryName();
     }
 
     public String getToInfuseS() {
-        return toInfuse.nameOD;
+        return toInfuse.getOreDictionaryName();
     }
 
     public FluidStack getFluid() {
