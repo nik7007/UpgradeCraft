@@ -34,6 +34,8 @@ public class ContainerEnderHopper extends ContainerUpgC {
     public boolean canInteractWith(EntityPlayer player) {
         return enderHopper.isUseableByPlayer(player);
     }
+
+    //TODO
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
         return null;
