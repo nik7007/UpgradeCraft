@@ -14,8 +14,8 @@ import net.minecraft.block.Block;
 @GameRegistry.ObjectHolder(Reference.MOD_ID)
 public class ModBlocks {
 
-    public static final Block blockWoodenLiquidTank = new BlockWoodenLiquidTank();
-    public static final Block blockClayLiquidTank = new BlockClayFluidTank();
+    public static final Block blockWoodenLiquidTank = new BlockUpgCWoodenLiquidTank();
+    public static final Block blockClayLiquidTank = new BlockUpgCClayFluidTank();
     public static final Block blockUpgCEnderTank = new BlockUpgCEnderTank();
     public static final Block blockSlimyLog = new BlockUpgCSlimyLog();
     public static final Block blockFluidBasicHopper = new BlockUpgCBasicFluidHopper();

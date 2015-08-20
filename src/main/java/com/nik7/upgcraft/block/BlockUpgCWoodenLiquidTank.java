@@ -21,7 +21,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import java.util.Random;
 
 
-public class BlockWoodenLiquidTank extends BlockUpgCTank {
+public class BlockUpgCWoodenLiquidTank extends BlockUpgCTank {
 
     @SideOnly(Side.CLIENT)
     private IIcon icon;
@@ -30,7 +30,7 @@ public class BlockWoodenLiquidTank extends BlockUpgCTank {
     private int fireSpreadSpeed = 0;
     private int oldFlammability = 0;
 
-    public BlockWoodenLiquidTank() {
+    public BlockUpgCWoodenLiquidTank() {
         super(Material.wood);
         this.setBlockName(Names.Blocks.WOODEN_LIQUID_TANK);
         this.setHardness(2.5f);

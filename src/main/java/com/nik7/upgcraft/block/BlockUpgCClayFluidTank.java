@@ -34,13 +34,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockClayFluidTank extends BlockUpgCTank {
+public class BlockUpgCClayFluidTank extends BlockUpgCTank {
 
     @SideOnly(Side.CLIENT)
     private IIcon icon;
     private IIcon iconHarden;
 
-    public BlockClayFluidTank() {
+    public BlockUpgCClayFluidTank() {
         super(Material.rock);
         this.setBlockName(Names.Blocks.CLAY_LIQUID_TANK);
         this.setHardness(2.8f);
