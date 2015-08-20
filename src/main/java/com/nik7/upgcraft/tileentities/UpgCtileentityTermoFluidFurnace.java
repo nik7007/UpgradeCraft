@@ -39,7 +39,7 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     private boolean balanced = false;
     private int balancedTicks = 0;
 
-    private static final int MIN_OPERATION_TEMP = 270 + 273;
+    public static final int MIN_OPERATION_TEMP = 270 + 273;
     private static final int STD_TEMP = 300 + 273;
     private static final int STD_BURN_TIME = 200;
     public int smeltingTicks = 0;

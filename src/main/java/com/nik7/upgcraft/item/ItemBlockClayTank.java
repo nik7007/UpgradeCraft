@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
-import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -69,17 +68,6 @@ public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem 
 
         ItemUpgC.addHiddenInformation(list, hiddenInformation);
 
-    }
-
-    @Override
-    public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
-
-        int metaData = itemStack.getItemDamage();
-        if (metaData < 2)
-            return;
-        //capacity = 0;
-        if (!itemStack.hasTagCompound())
-            itemStack.stackTagCompound = new NBTTagCompound();
     }
 
     @Override
@@ -179,10 +167,10 @@ public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem 
         if (capacity == 0)
             return null;
 
-        FluidStack fluid = null;
+        FluidStack fluid;
 
         if (!container.hasTagCompound()) {
-            container.stackTagCompound = new NBTTagCompound();
+            return null;
         } else fluid = FluidStack.loadFluidStackFromNBT(container.getTagCompound());
 
         if (fluid == null)

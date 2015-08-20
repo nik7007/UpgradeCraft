@@ -66,6 +66,7 @@ public class Texture {
         public final static String FLUID_INFUSER = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "fluidinfuser.png";
         public final static String ENDER_HOPPER = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "enderhopper.png";
         public final static String TERMO_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "termofluidfurnace.png";
+        public final static String TERMO_FURNACE = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "termofurnace.png";
     }
 
 }

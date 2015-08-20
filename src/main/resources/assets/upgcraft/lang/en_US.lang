@@ -43,3 +43,4 @@ upgcraft:container.termofurnace=Termo Fluid Furnace
 #NEI
 gui.nei.upgcraft:FluidInfuser=Fluid Infuser
 gui.nei.upgcraft:FluidFurnace=Fluid Furnace
+gui.nei.upgcraft:TermoFluidFurnace=Termo Fluid Furnace
