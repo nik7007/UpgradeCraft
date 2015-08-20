@@ -94,7 +94,7 @@ public class FluidFurnaceRecipeHandler extends TemplateRecipeHandler {
 
         for (Object o : recipes.entrySet()) {
             Map.Entry recipe = (Map.Entry) o;
-            if (NEIServerUtils.areStacksSameType((ItemStack) recipe.getValue(), ingredient)) {
+            if (NEIServerUtils.areStacksSameType((ItemStack) recipe.getKey(), ingredient)) {
                 arecipes.add(new CachedFluidFurnaceRecipe((ItemStack) recipe.getKey(), (ItemStack) recipe.getValue()));
             }
         }
