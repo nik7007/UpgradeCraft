@@ -5,6 +5,7 @@ public enum GUIs {
 
     FLUID_FURNACE,
     FLUID_INFUSER,
-    ENDER_HOPPER
+    ENDER_HOPPER,
+    TERMO_FLUID_FURNACE
 
 }
