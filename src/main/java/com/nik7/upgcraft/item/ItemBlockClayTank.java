@@ -190,13 +190,7 @@ public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem 
             if (fluid != null)
                 fluid.writeToNBT(container.getTagCompound());
             else {
-                NBTTagCompound tag = container.getTagCompound();
-                if (tag.hasKey("FluidName"))
-                    tag.removeTag("FluidName");
-                if (tag.hasKey("Amount"))
-                    tag.removeTag("Amount");
-                if (tag.hasKey("Tag"))
-                    tag.removeTag("Tag");
+                container.stackTagCompound = null;
             }
         }
         return stack;

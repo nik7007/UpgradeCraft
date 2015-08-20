@@ -167,7 +167,7 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
                     if (Math.random() > internalTemp / (double) MAX_TEMPERATURE) {
                         if (!balanced)
                             wasteOperation();
-                        else if (Math.random() < 0.22) {
+                        else if (Math.random() < 0.12) {
                             wasteOperation();
                         }
                     }
