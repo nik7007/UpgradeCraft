@@ -9,6 +9,8 @@ import com.nik7.upgcraft.registry.TermoSmelting.TermoSmeltingRecipe;
 import com.nik7.upgcraft.registry.TermoSmeltingRegister;
 import com.nik7.upgcraft.tank.UpgCActiveTank;
 import com.nik7.upgcraft.util.physicsHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -21,12 +23,12 @@ import net.minecraftforge.fluids.*;
 public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFluidHandler {
 
     //tank[0]: fuel - tank[1]: working tank - tank[2]: waste
-    //itemStacks[0]: input - itemStacks[1]: output - itemStacks[2 - 3]: waste
+    //itemStacks[0]: input - itemStacks[1]: output - itemStacks[2 - 3]: waste - itemStack[4]: waste fluid output
 
     public static final int MAX_TEMPERATURE = 5700;
 
     private static final int DIAMOND_THERMAL_CONDUCTIVITY = 1600;
-    private float internalTemp = 273;
+    public float internalTemp = 273;
     private float workingTemp = 0;
     private int workingTick = 0;
     private int activeCycles = 1;
@@ -40,19 +42,20 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     private static final int MIN_OPERATION_TEMP = 270 + 273;
     private static final int STD_TEMP = 300 + 273;
     private static final int STD_BURN_TIME = 200;
-    private int smeltingTicks = 0;
+    public int smeltingTicks = 0;
+    public int totalSmeltingTicks;
     private boolean canSmelt = false;
     private boolean isTermoSmelting;
     private TermoSmeltingRecipe termoSmeltingRecipe;
+
+    public int wasteFluidAmount;
 
     public boolean isActive = false;
 
     public UpgCtileentityTermoFluidFurnace() {
         this.tank = new UpgCActiveTank[]{new UpgCActiveTank(Capacity.INTERNAL_FLUID_TANK_TR1, this), new UpgCActiveTank(INTERNAL_CAPACITY_WORKING_TANK, this), new UpgCActiveTank(INTERNAL_CAPACITY_WORKING_TANK, this)};
-        this.itemStacks = new ItemStack[4];
+        this.itemStacks = new ItemStack[5];
         this.capacity = Capacity.INTERNAL_FLUID_TANK_TR1;
-        this.tank[2].fill(new FluidStack(FluidRegistry.getFluid("water"), INTERNAL_CAPACITY_WORKING_TANK), true);
-
     }
 
 
@@ -81,7 +84,10 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
 
         this.canSmelt = tag.getBoolean("canSmelt");
         this.smeltingTicks = tag.getInteger("smeltingTicks");
+        this.totalSmeltingTicks = tag.getInteger("totalSmeltingTicks");
         this.isTermoSmelting = tag.getBoolean("isTermoSmelting");
+
+        this.wasteFluidAmount = tag.getInteger("wasteFluidAmount");
     }
 
     @Override
@@ -96,8 +102,44 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
 
         tag.setBoolean("canSmelt", this.canSmelt);
         tag.setInteger("smeltingTicks", this.smeltingTicks);
+        tag.setInteger("totalSmeltingTicks", this.totalSmeltingTicks);
         tag.setBoolean("isTermoSmelting", this.isTermoSmelting);
 
+        tag.setInteger("wasteFluidAmount", this.wasteFluidAmount);
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float getFluidLevelScaled(int scaleFactor) {
+        return scaleFactor * (float) (this.tank[0].getFluid() == null ? 0 : tank[0].getFluid().amount) / capacity;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float getWasteFluidLevelScaled(int scaleFactor) {
+        return scaleFactor * (float) (wasteFluidAmount) / INTERNAL_CAPACITY_WORKING_TANK;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getCookProgressScaled(int scaleFactor) {
+
+        if (totalSmeltingTicks <= 0)
+            return 0;
+
+        return (int) ((float) this.smeltingTicks * scaleFactor) / this.totalSmeltingTicks;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int geTemperatureScaled(int scaleFactor) {
+
+        if (internalTemp <= 273)
+            return 0;
+
+        int result = (int) (internalTemp - 273) * scaleFactor / (MAX_TEMPERATURE - 273);
+
+        if (result == 0 && internalTemp > 273 + 100)
+            return 1;
+
+        return result;
     }
 
     @Override
@@ -122,11 +164,18 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
                 }
 
                 if ((workingTick % 80) == 10) {
-                    if (Math.random() > internalTemp / (double) MAX_TEMPERATURE)
+                    if (Math.random() > internalTemp / (double) MAX_TEMPERATURE) {
                         if (!balanced)
                             wasteOperation();
+                        else if (Math.random() < 0.22) {
+                            wasteOperation();
+                        }
+                    }
                 }
             }
+
+            if (!canOperate && (workingTick % 20) == 3)
+                checkOperation();
 
             canSmelt();
 
@@ -156,18 +205,56 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
                 }
             }
 
+            if ((workingTick % 20) == 10) {
+                outPutWasteFluid();
+            }
+
             workingTick++;
             workingTick %= 20000;
+
+
+        }
+    }
+
+    private void checkOperation() {
+
+        canOperate = !((itemStacks[2] != null && itemStacks[2].stackSize == 64) || (itemStacks[3] != null && itemStacks[3].stackSize == 64) || tank[2].getCapacity() == tank[2].getFluidAmount());
+    }
+
+    private void outPutWasteFluid() {
+        FluidStack fluid = tank[2].getFluid();
+        if (fluid != null) {
+            if (itemStacks[4] != null && itemStacks[4].stackSize == 1) {
+                ItemStack itemStack = itemStacks[4];
+                if (FluidContainerRegistry.isEmptyContainer(itemStack)) {
+                    if (fluid.amount >= FluidContainerRegistry.BUCKET_VOLUME) {
+                        FluidStack oneBucketOfFluid = new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME);
+                        ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(oneBucketOfFluid, FluidContainerRegistry.EMPTY_BUCKET);
+                        itemStacks[4] = filledBucket;
+                        fluid.amount -= FluidContainerRegistry.BUCKET_VOLUME;
+                    }
+                } else if (itemStack.getItem() instanceof IFluidContainerItem) {
+                    if (fluid.amount >= FluidContainerRegistry.BUCKET_VOLUME) {
+
+                        IFluidContainerItem fluidContainerItem = (IFluidContainerItem) itemStack.getItem();
+                        int amount = fluidContainerItem.fill(itemStack, fluid, true);
+                        if (amount > 0) {
+                            fluid.amount -= amount;
+                        }
+                    }
+
+                }
+            }
         }
     }
 
     private void smelting() {
 
-        int time = smeltingTime();
+        this.totalSmeltingTicks = smeltingTime();
 
-        if (time != -1) {
+        if (totalSmeltingTicks != -1) {
 
-            if (smeltingTicks >= time) {
+            if (smeltingTicks >= totalSmeltingTicks) {
                 smeltItem();
                 smeltingTicks = 0;
 
@@ -301,18 +388,20 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
 
     private void getWorkingFuel() {
 
-        if (tank[0].getFluid() == null)
+        if (tank[0].getFluid() == null) {
             return;
+        }
 
         if (tank[0].getFluid().amount <= 0) {
             tank[0].setFluid(null);
+            updateModBlock();
             return;
         }
 
         int amountToAsk = tank[1].fill(new FluidStack(tank[0].getFluid().getFluid(), tank[1].getCapacity()), false);
         FluidStack fluidStack = tank[0].drain(amountToAsk, true);
         tank[1].fill(fluidStack, true);
-        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+        updateModBlock();
     }
 
 
@@ -373,6 +462,11 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
                             canOperate = false;
                     }
                 }
+
+                if (tank[1].getFluid() != null) {
+                    wasteFluidAmount = tank[1].getFluid().amount;
+                } else wasteFluidAmount = 0;
+
                 if ((activeCycles % 20) == 3)
                     ((ActiveLava) tank[1].getFluid().getFluid()).decreaseActiveValue(tank[1].getFluid());
 
@@ -396,6 +490,7 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
                 }
             }
         }
+        updateModBlock();
     }
 
     private void addCobblestone() {
