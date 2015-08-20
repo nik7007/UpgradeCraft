@@ -1,14 +1,18 @@
 package com.nik7.upgcraft.block;
 
 
+import com.nik7.upgcraft.UpgradeCraft;
+import com.nik7.upgcraft.reference.GUIs;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
+import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTermoFluidFurnace;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -42,6 +46,15 @@ public class BlockUpgCTermoFluidFurnace extends BlockUpgCContainerOrientable {
         return false;
     }
 
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+        if (!world.isRemote) {
+            player.openGui(UpgradeCraft.instance, GUIs.TERMO_FLUID_FURNACE.ordinal(), world, x, y, z);
+
+        }
+        return true;
+    }
+
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(World world, int x, int y, int z, Random random) {
         UpgCtileentityTermoFluidFurnace te = (UpgCtileentityTermoFluidFurnace) world.getTileEntity(x, y, z);
@@ -49,7 +62,7 @@ public class BlockUpgCTermoFluidFurnace extends BlockUpgCContainerOrientable {
             int l = world.getBlockMetadata(x, y, z);
             float f = (float) x + 0.5F;
             float f1 = (float) y + 0.2F + random.nextFloat() * 6.0F / 16.0F;
-            float f2 = (float) z + 0.4F + random.nextFloat()* 4.0F / 16.0F;
+            float f2 = (float) z + 0.4F + random.nextFloat() * 4.0F / 16.0F;
             float f3 = 0.52F;
             float f4 = random.nextFloat() * 0.6F - 0.3F;
 
@@ -83,6 +96,12 @@ public class BlockUpgCTermoFluidFurnace extends BlockUpgCContainerOrientable {
             dropItems(world, x, y, z, te.getStackInSlot(slot), rand);
         }
         super.breakBlock(world, x, y, z, block, n);
+    }
+
+    @Override
+    public int getLightValue(IBlockAccess world, int x, int y, int z) {
+        return ((UpgCtileentityInventoryFluidHandler) world.getTileEntity(x, y, z)).getFluidLightLevel(0);
+
     }
 
 
