@@ -27,22 +27,34 @@ public abstract class GuiWithFluid extends GuiContainer {
 
     protected void renderFluidWithToolTip(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level) {
 
-        renderFluid(fluid.getFluid(), x, y, mazX, level);
+        int amount = 0;
+        String fluidName = StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluiddfname");
 
+        if (fluid != null && fluid.amount > 0) {
+            renderFluid(fluid.getFluid(), x, y, mazX, level);
+            amount = fluid.amount;
+            fluidName = fluid.getLocalizedName();
+        }
+
+        List<String> text = new ArrayList<String>();
+        text.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidname") + ": " + EnumChatFormatting.RESET + fluidName);
+        text.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidamount") + ": " + EnumChatFormatting.RESET + amount + "/" + maxFluidAmount + " mB");
+
+        drawToolTip(text, x, y, mazX, maxY, mouseX, mouseY);
+
+
+    }
+
+    protected void drawToolTip(List<String> text, int x, int y, int mazX, int maxY, int mouseX, int mouseY) {
         int posX = mouseX - this.guiLeft;
         int posY = mouseY - this.guiTop;
 
+
         if ((posX > x && posX < (mazX + x)) && (posY < y && posY > (y - maxY - 2))) {
-            List<String> strings = new ArrayList<String>();
 
-            strings.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidname") + ": " + EnumChatFormatting.RESET + fluid.getLocalizedName());
-            strings.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidamount") + ": " + EnumChatFormatting.RESET + fluid.amount + "/" + maxFluidAmount + " mB");
-
-            drawHoveringText(strings, posX, posY, mc.fontRenderer);
+            drawHoveringText(text, posX, posY, mc.fontRenderer);
 
         }
-
-
     }
 
     protected void renderFluid(Fluid fluid, int x, int y, int mazX, int level) {
