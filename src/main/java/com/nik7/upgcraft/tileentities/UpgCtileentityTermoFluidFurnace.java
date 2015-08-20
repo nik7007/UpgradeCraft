@@ -414,6 +414,7 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     }
 
     private void wasteOperation() {
+        wasteFluidAmount = 0;
         if (tank[1].getFluid() != null) {
             if (!(this.tank[1].getFluid().getFluid() == ModFluids.ActiveLava)) {
                 int amountToDrain = (int) ((FluidContainerRegistry.BUCKET_VOLUME / 4f) - FluidContainerRegistry.BUCKET_VOLUME / 3.8f * (internalTemp / this.tank[1].getFluid().getFluid().getTemperature(this.tank[1].getFluid())));
