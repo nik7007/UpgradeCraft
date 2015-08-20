@@ -93,7 +93,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         int fluidID = buf.readInt();
         if (fluidAmount > 0) {
             tank.setFluid(new FluidStack(FluidRegistry.getFluid(fluidID), fluidAmount));
-        }
+        } else tank.setFluid(null);
 
         worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 
