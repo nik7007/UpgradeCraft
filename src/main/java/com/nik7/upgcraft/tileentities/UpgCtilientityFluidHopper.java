@@ -25,27 +25,36 @@ public class UpgCtilientityFluidHopper extends UpgCtileentityTank {
     public Packet getDescriptionPacket() {
 
         FluidStack fluidStack = getFluid();
+        NBTTagCompound tag = new NBTTagCompound();
         if (fluidStack != null) {
-            NBTTagCompound tag = new NBTTagCompound();
             fluidStack.writeToNBT(tag);
-            return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -1, tag);
-
-        } else return null;
+        }
+        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, -1, tag);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-        this.getTank().setFluid(FluidStack.loadFluidStackFromNBT(packet.func_148857_g()));
+        FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(packet.func_148857_g());
+        if (fluidStack != null && fluidStack.amount <= 0)
+            fluidStack = null;
+        this.getTank().setFluid(fluidStack);
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
     public void updateEntity() {
         int meta = this.getBlockMetadata();
+
         if (worldObj != null && !this.worldObj.isRemote && BlockUpgCBasicFluidHopper.isNotPowered(meta)) {
+            int lastFluidAmount = tank.getFluidAmount();
             fillFromUp();
             int dir = BlockUpgCBasicFluidHopper.getDirectionFromMetadata(meta);
             ForgeDirection forgeDirection = ForgeDirection.getOrientation(dir);
-            autoDrain(forgeDirection);
+
+            if (lastFluidAmount > 0)
+                autoDrain(forgeDirection);
+
+
         }
 
     }
