@@ -11,13 +11,14 @@ public abstract class CommonProxy implements IProxy {
     public void registerTileEntities() {
 
         GameRegistry.registerTileEntity(UpgCtileentityWoodenTankSmall.class, Names.TileEntity.UPGC_TILE_ENTITY_TANK + "Small");
-        GameRegistry.registerTileEntity(UpgCtilientityFluidHopper.class, "Basic" + Names.TileEntity.UPGC_TILE_ENTITY_FLUID_HOPPER);
+        GameRegistry.registerTileEntity(UpgCtilientityFluidHopper.class, Names.TileEntity.UPGC_TILE_ENTITY_FLUID_HOPPER + "Basic");
         GameRegistry.registerTileEntity(UpgCtilientityEnderHopper.class, Names.TileEntity.UPGC_TILE_ENTITY_ENDER_HOPPER);
-        GameRegistry.registerTileEntity(UpgCtileentityFluidFurnace.class, "Basic" + Names.TileEntity.UPGC_TILE_ENTITY_FLUID_FURNACE);
-        GameRegistry.registerTileEntity(UpgCtileentityFluidInfuser.class, "Basic" + Names.TileEntity.UPG_TILE_ENTITY_FLUID_INFUSER);
+        GameRegistry.registerTileEntity(UpgCtileentityFluidFurnace.class, Names.TileEntity.UPGC_TILE_ENTITY_FLUID_FURNACE + "Basic");
+        GameRegistry.registerTileEntity(UpgCtileentityFluidInfuser.class, Names.TileEntity.UPG_TILE_ENTITY_FLUID_INFUSER + "Basic");
         GameRegistry.registerTileEntity(UpgCtileentityTankClay.class, Names.TileEntity.UPGC_TILE_ENTITY_TANK + "Clay");
         GameRegistry.registerTileEntity(UpgCtileentityEnderTank.class, Names.TileEntity.UPGC_TILE_ENTITY_TANK + "Ender");
-        GameRegistry.registerTileEntity(UpgCtileentityTermoFluidFurnace.class, "Termo" + Names.TileEntity.UPGC_TILE_ENTITY_FLUID_FURNACE);
+        GameRegistry.registerTileEntity(UpgCtileentityTermoFluidFurnace.class, Names.TileEntity.UPGC_TILE_ENTITY_FLUID_FURNACE + "Termo");
+        GameRegistry.registerTileEntity(UpgCtileentityActiveMaker.class, Names.TileEntity.UPG_TILE_ENTITY_ACTIVE_MAKER);
     }
 
     public void registerEventHandlers() {

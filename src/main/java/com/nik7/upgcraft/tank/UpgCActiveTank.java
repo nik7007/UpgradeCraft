@@ -75,17 +75,13 @@ public class UpgCActiveTank extends UpgCTank {
             FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, this, filled));
         }
 
-        int active = fluid.tag != null && fluid.tag.hasKey(ActiveLava.ACTIVE_VALUE) ? fluid.tag.getInteger(ActiveLava.ACTIVE_VALUE) : 0;
-        int activeR = resource.tag != null && resource.tag.hasKey(ActiveLava.ACTIVE_VALUE) ? resource.tag.getInteger(ActiveLava.ACTIVE_VALUE) : 0;
+        int active = ((ActiveLava)fluid.getFluid()).getActiveValue(fluid);
+        int activeR = ((ActiveLava)resource.getFluid()).getActiveValue(resource);
 
-        int newActive = (int) (((float) active * capacity + activeR * filled) / filled + capacity);
+        int newActive = (int) (((float) active * capacity + activeR * filled) / (filled + capacity));
 
-        if (fluid.tag == null)
-            fluid.tag = new NBTTagCompound();
-        else if (fluid.tag.hasKey(ActiveLava.ACTIVE_VALUE))
-            fluid.tag.removeTag(ActiveLava.ACTIVE_VALUE);
+        ((ActiveLava)fluid.getFluid()).setActiveValue(fluid,newActive);
 
-        fluid.tag.setInteger(ActiveLava.ACTIVE_VALUE, newActive);
 
         return filled;
 

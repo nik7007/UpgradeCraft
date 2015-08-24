@@ -16,6 +16,7 @@ public class Names {
         public final static String FLUID_FURNACE = "FluidFurnace";
         public final static String FLUID_INFUSE = "FluidInfuser";
         public final static String TERMO_FLUID_FURNACE = "Termo" + FLUID_FURNACE;
+        public final static String ACTIVE_MAKER = "ActiveMaker";
     }
 
     public class Items {
@@ -40,6 +41,7 @@ public class Names {
         public final static String UPGC_TILE_ENTITY_ENDER_HOPPER = Reference.MOD_ID + ":" + "EnderHopperEntity";
         public final static String UPGC_TILE_ENTITY_FLUID_FURNACE = Reference.MOD_ID + ":" + "FluidFurnaceEntity";
         public final static String UPG_TILE_ENTITY_FLUID_INFUSER = Reference.MOD_ID + ":" + "FluidInfuserEntity";
+        public final static String UPG_TILE_ENTITY_ACTIVE_MAKER = Reference.MOD_ID + ":" + "ActiveMaker";
 
     }
 
@@ -48,6 +50,7 @@ public class Names {
         public final static String UPGC_FLUID_INFUSER = Reference.MOD_ID + ":" + "container.fluidinfuser";
         public final static String UPGC_ENDER_HOPPER = Reference.MOD_ID + ":" + "container.enderhopper";
         public final static String UPGC_TERMO_FURNACE = Reference.MOD_ID + ":" + "container.termofurnace";
+        public final static String UPGC_ACTIVE_MAKER = Reference.MOD_ID + ":" + "container.activemaker";
     }
 
 
