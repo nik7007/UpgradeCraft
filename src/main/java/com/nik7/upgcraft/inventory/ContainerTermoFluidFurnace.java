@@ -21,7 +21,6 @@ public class ContainerTermoFluidFurnace extends ContainerUpgC {
 
     private int lastSmeltingTicks;
     private int lastTotalSmeltingTicks;
-    private int lastWasteFluidAmount;
     private int lastInternalTemp;
 
     public ContainerTermoFluidFurnace(InventoryPlayer playerInventory, UpgCtileentityTermoFluidFurnace termoFluidFurnace) {
@@ -42,8 +41,7 @@ public class ContainerTermoFluidFurnace extends ContainerUpgC {
         super.addCraftingToCrafters(iCrafting);
         iCrafting.sendProgressBarUpdate(this, 0, this.termoFluidFurnace.smeltingTicks);
         iCrafting.sendProgressBarUpdate(this, 1, this.termoFluidFurnace.totalSmeltingTicks);
-        iCrafting.sendProgressBarUpdate(this, 2, this.termoFluidFurnace.wasteFluidAmount);
-        iCrafting.sendProgressBarUpdate(this, 3, (int) this.termoFluidFurnace.internalTemp);
+        iCrafting.sendProgressBarUpdate(this, 2, (int) this.termoFluidFurnace.internalTemp);
     }
 
     public void detectAndSendChanges() {
@@ -60,17 +58,13 @@ public class ContainerTermoFluidFurnace extends ContainerUpgC {
                 icrafting.sendProgressBarUpdate(this, 1, this.termoFluidFurnace.totalSmeltingTicks);
             }
 
-            if (this.lastWasteFluidAmount != this.termoFluidFurnace.wasteFluidAmount) {
-                icrafting.sendProgressBarUpdate(this, 2, this.termoFluidFurnace.wasteFluidAmount);
-            }
             if (this.lastInternalTemp != (int) this.termoFluidFurnace.internalTemp) {
-                icrafting.sendProgressBarUpdate(this, 3, (int) this.termoFluidFurnace.internalTemp);
+                icrafting.sendProgressBarUpdate(this, 2, (int) this.termoFluidFurnace.internalTemp);
             }
         }
 
         this.lastSmeltingTicks = this.termoFluidFurnace.smeltingTicks;
         this.lastTotalSmeltingTicks = this.termoFluidFurnace.totalSmeltingTicks;
-        this.lastWasteFluidAmount = this.termoFluidFurnace.wasteFluidAmount;
         this.lastInternalTemp = (int) this.termoFluidFurnace.internalTemp;
     }
 
@@ -84,9 +78,6 @@ public class ContainerTermoFluidFurnace extends ContainerUpgC {
                 this.termoFluidFurnace.totalSmeltingTicks = value;
                 break;
             case 2:
-                this.termoFluidFurnace.wasteFluidAmount = value;
-                break;
-            case 3:
                 this.termoFluidFurnace.internalTemp = value;
                 break;
         }

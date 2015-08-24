@@ -48,8 +48,6 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     private boolean isTermoSmelting;
     private TermoSmeltingRecipe termoSmeltingRecipe;
 
-    public int wasteFluidAmount;
-
     public boolean isActive = false;
 
     public UpgCtileentityTermoFluidFurnace() {
@@ -63,12 +61,14 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     public void writeToPacket(ByteBuf buf) {
         buf.writeBoolean(isActive);
         writeFluidToByteBuf(this.tank[0], buf);
+        writeFluidToByteBuf(this.tank[2], buf);
     }
 
     @Override
     public void readFromPacket(ByteBuf buf) {
         this.isActive = buf.readBoolean();
         readFluidToByteBuf(this.tank[0], buf);
+        readFluidToByteBuf(this.tank[2], buf);
     }
 
 
@@ -87,7 +87,6 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
         this.totalSmeltingTicks = tag.getInteger("totalSmeltingTicks");
         this.isTermoSmelting = tag.getBoolean("isTermoSmelting");
 
-        this.wasteFluidAmount = tag.getInteger("wasteFluidAmount");
     }
 
     @Override
@@ -105,18 +104,21 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
         tag.setInteger("totalSmeltingTicks", this.totalSmeltingTicks);
         tag.setBoolean("isTermoSmelting", this.isTermoSmelting);
 
-        tag.setInteger("wasteFluidAmount", this.wasteFluidAmount);
 
     }
 
     @SideOnly(Side.CLIENT)
     public float getFluidLevelScaled(int scaleFactor) {
-        return scaleFactor * (float) (this.tank[0].getFluid() == null ? 0 : tank[0].getFluid().amount) / capacity;
+        return scaleFactor * (float) (this.tank[0].getFluidAmount()) / capacity;
     }
 
     @SideOnly(Side.CLIENT)
     public float getWasteFluidLevelScaled(int scaleFactor) {
-        return scaleFactor * (float) (wasteFluidAmount) / INTERNAL_CAPACITY_WORKING_TANK;
+
+        float result = scaleFactor * (float) (this.tank[2].getFluidAmount()) / INTERNAL_CAPACITY_WORKING_TANK;
+        if (result > scaleFactor)
+            result = scaleFactor;
+        return result;
     }
 
     @SideOnly(Side.CLIENT)
@@ -414,7 +416,6 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
     }
 
     private void wasteOperation() {
-        wasteFluidAmount = 0;
         if (tank[1].getFluid() != null) {
             if (!(this.tank[1].getFluid().getFluid() == ModFluids.ActiveLava)) {
                 int amountToDrain = (int) ((FluidContainerRegistry.BUCKET_VOLUME / 4f) - FluidContainerRegistry.BUCKET_VOLUME / 3.8f * (internalTemp / this.tank[1].getFluid().getFluid().getTemperature(this.tank[1].getFluid())));
@@ -454,7 +455,7 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
             } else {
                 FluidStack ActiveFluidStack = tank[1].getFluid();
                 int temp = ActiveFluidStack.getFluid().getTemperature(ActiveFluidStack);
-                if (temp < this.internalTemp - 200) {
+                if (temp < this.internalTemp + 200) {
                     int principalTemp = tank[0].getFluid() == null ? 0 : tank[0].getFluid().getFluid().getTemperature(tank[0].getFluid());
                     if (principalTemp > temp) {
                         int amountToDrain = (1 + (int) (8 * internalTemp / temp)) * FluidContainerRegistry.BUCKET_VOLUME;
@@ -463,10 +464,6 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
                             canOperate = false;
                     }
                 }
-
-                if (tank[1].getFluid() != null) {
-                    wasteFluidAmount = tank[1].getFluid().amount;
-                } else wasteFluidAmount = 0;
 
                 if ((activeCycles % 20) == 3)
                     ((ActiveLava) tank[1].getFluid().getFluid()).decreaseActiveValue(tank[1].getFluid());
@@ -527,12 +524,18 @@ public class UpgCtileentityTermoFluidFurnace extends UpgCtileentityInventoryFlui
 
     @Override
     public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
-        return super.drain(from, resource, 1, doDrain);
+
+        FluidStack result = super.drain(from, resource, 2, doDrain);
+        updateModBlock();
+        return result;
     }
 
     @Override
     public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
-        return super.drain(from, maxDrain, 1, doDrain);
+
+        FluidStack result = super.drain(from, maxDrain, 2, doDrain);
+        updateModBlock();
+        return result;
     }
 
     @Override

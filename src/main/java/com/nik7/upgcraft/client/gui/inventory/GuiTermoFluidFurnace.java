@@ -73,8 +73,9 @@ public class GuiTermoFluidFurnace extends GuiWithFluid {
         inc = this.termoFluidFurnace.getCookProgressScaled(24);
         this.drawTexturedModalRect(xOffset + 79, yOffset + 27, 176, 14, inc + 1, 16);
 
-        if (termoFluidFurnace.wasteFluidAmount > 0) {
-            int level = (int) termoFluidFurnace.getWasteFluidLevelScaled(16);
+
+        int level = (int) termoFluidFurnace.getWasteFluidLevelScaled(16);
+        if (level > 0) {
             super.renderFluid(ModFluids.ActiveLava, xOffset + 148, yOffset + 40, level);
         }
 
