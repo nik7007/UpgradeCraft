@@ -36,6 +36,27 @@ public class ActiveLava extends UpgFluid {
         }
     }
 
+    public void setActiveValue(FluidStack stack, int activeValue) {
+
+        if (stack.tag == null) {
+            stack.tag = new NBTTagCompound();
+        }
+        if (activeValue > MAX_ACTIVE_VALUE)
+            activeValue = MAX_ACTIVE_VALUE;
+        if (activeValue < 0)
+            activeValue = 0;
+        stack.tag.setInteger(ACTIVE_VALUE, activeValue);
+    }
+
+    public int getActiveValue(FluidStack fluidStack) {
+        if (fluidStack.tag == null) {
+            return 0;
+        } else if (!fluidStack.tag.hasKey(ACTIVE_VALUE)) {
+            return 0;
+        }
+        return fluidStack.tag.getInteger(ACTIVE_VALUE);
+    }
+
     public void increaseActiveValue(FluidStack stack) {
         if (stack.tag == null) {
             stack.tag = new NBTTagCompound();
@@ -45,7 +66,6 @@ public class ActiveLava extends UpgFluid {
             int activeValue = stack.tag.getInteger(ACTIVE_VALUE) + 1;
             if (activeValue > MAX_ACTIVE_VALUE)
                 activeValue = MAX_ACTIVE_VALUE;
-            stack.tag.removeTag(ACTIVE_VALUE);
             stack.tag.setInteger(ACTIVE_VALUE, activeValue);
 
         }
@@ -61,7 +81,6 @@ public class ActiveLava extends UpgFluid {
             int activeValue = stack.tag.getInteger(ACTIVE_VALUE) - 1;
             if (activeValue < 0)
                 activeValue = 0;
-            stack.tag.removeTag(ACTIVE_VALUE);
             stack.tag.setInteger(ACTIVE_VALUE, activeValue);
 
         }
