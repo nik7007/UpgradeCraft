@@ -4,9 +4,11 @@ package com.nik7.upgcraft.tileentities;
 import com.nik7.upgcraft.fluid.ActiveLava;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.init.ModFluids;
+import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tank.UpgCActiveTank;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -37,7 +39,21 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
         coordinates[0] = this.xCoord;
         coordinates[1] = this.yCoord;
         coordinates[2] = this.zCoord;
+        capacity = Capacity.INTERNAL_FLUID_TANK_TR1;
     }
+
+    @Override
+    public void writeToPacket(ByteBuf buf) {
+        writeFluidToByteBuf(this.tank[0], buf);
+        writeFluidToByteBuf(this.tank[1], buf);
+    }
+
+    @Override
+    public void readFromPacket(ByteBuf buf) {
+        readFluidToByteBuf(this.tank[0], buf);
+        readFluidToByteBuf(this.tank[1], buf);
+    }
+
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
@@ -71,6 +87,9 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
     public void updateEntity() {
 
         if (!worldObj.isRemote) {
+
+            int lastAmount = tank[0].getFluidAmount();
+
             byte type = operationType(itemStacks[1]);
             if (type != 0 && (workingTick % 2) == 0) {
                 int activeValue = tank[1].getFluid() == null ? 0 : ((ActiveLava) tank[1].getFluid().getFluid()).getActiveValue(tank[1].getFluid());
@@ -95,10 +114,81 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
                 }
             }
 
+            outputActiveLava();
+            inputLava();
+
+
             workingTick++;
             workingTick %= 2000;
+
+            if (lastAmount != tank[0].getFluidAmount())
+                updateModBlock();
         }
 
+    }
+
+    private void inputLava() {
+
+        if (itemStacks[0] != null) {
+            Item item = itemStacks[0].getItem();
+
+            if (item != null) {
+                if (item == Items.lava_bucket || item == ModItems.itemActiveLavaBucket) {
+
+                    if (tank[0].getCapacity() - tank[0].getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME) {
+                        FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(itemStacks[0]);
+
+                        int result = tank[0].fill(fluidStack, false);
+
+                        if (result == FluidContainerRegistry.BUCKET_VOLUME) {
+                            itemStacks[0] = new ItemStack(Items.bucket, 1);
+                            tank[0].fill(fluidStack, true);
+                        }
+                    }
+
+
+                } else if (item instanceof IFluidContainerItem) {
+                    IFluidContainerItem fluidContainerItem = (IFluidContainerItem) item;
+                    FluidStack fluidStack = fluidContainerItem.getFluid(itemStacks[0]).copy();
+
+                    int result = tank[0].fill(fluidStack, true);
+                    if (result > 0) {
+                        fluidContainerItem.drain(itemStacks[0], result, true);
+                    }
+                }
+
+            }
+
+
+        }
+
+    }
+
+    private void outputActiveLava() {
+        FluidStack fluid = tank[1].getFluid();
+        if (fluid != null) {
+            if (itemStacks[2] != null && itemStacks[2].stackSize == 1) {
+                ItemStack itemStack = itemStacks[2];
+                if (FluidContainerRegistry.isEmptyContainer(itemStack)) {
+                    if (fluid.amount >= FluidContainerRegistry.BUCKET_VOLUME) {
+                        FluidStack oneBucketOfFluid = new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME);
+                        ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(oneBucketOfFluid, FluidContainerRegistry.EMPTY_BUCKET);
+                        itemStacks[2] = filledBucket;
+                        fluid.amount -= FluidContainerRegistry.BUCKET_VOLUME;
+                    }
+                } else if (itemStack.getItem() instanceof IFluidContainerItem) {
+                    if (fluid.amount >= FluidContainerRegistry.BUCKET_VOLUME) {
+
+                        IFluidContainerItem fluidContainerItem = (IFluidContainerItem) itemStack.getItem();
+                        int amount = fluidContainerItem.fill(itemStack, fluid, true);
+                        if (amount > 0) {
+                            fluid.amount -= amount;
+                        }
+                    }
+
+                }
+            }
+        }
     }
 
     private void termoOperation() {

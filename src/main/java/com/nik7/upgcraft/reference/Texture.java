@@ -39,6 +39,7 @@ public class Texture {
         public final static String MODEL_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockFluidFurnace.png";
         public final static String MODEL_FLUID_INFUSER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockFluidInfuser.png";
         public final static String MODEL_TERMO_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockTermoFluidFurnace.png";
+        public final static String MODEL_ACTION_MAKER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockaActiveMaker.png";
 
 
         public final static String SLIMY_LOG = Reference.MOD_ID + ":" + "slime_planks";
@@ -67,6 +68,7 @@ public class Texture {
         public final static String ENDER_HOPPER = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "enderhopper.png";
         public final static String TERMO_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "termofluidfurnace.png";
         public final static String TERMO_FURNACE = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "termofurnace.png";
+        public final static String ACTIVE_MAKER = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "activemaker.png";
     }
 
 }

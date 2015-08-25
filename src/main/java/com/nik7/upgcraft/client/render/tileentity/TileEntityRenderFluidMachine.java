@@ -3,10 +3,7 @@ package com.nik7.upgcraft.client.render.tileentity;
 
 import com.nik7.upgcraft.client.render.model.ModelFluidMachine;
 import com.nik7.upgcraft.reference.Texture;
-import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
-import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
-import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
-import com.nik7.upgcraft.tileentities.UpgCtileentityTermoFluidFurnace;
+import com.nik7.upgcraft.tileentities.*;
 import com.nik7.upgcraft.util.LogHelper;
 import com.nik7.upgcraft.util.RenderHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -22,10 +19,11 @@ import org.lwjgl.opengl.GL11;
 @SideOnly(Side.CLIENT)
 public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
 
-    private final ModelBase fluidMachine = new ModelFluidMachine();
-    private final ResourceLocation textureFurnace = new ResourceLocation(Texture.Blocks.MODEL_FLUID_FURNACE);
-    private final ResourceLocation textureInfuser = new ResourceLocation(Texture.Blocks.MODEL_FLUID_INFUSER);
-    private final ResourceLocation textureTermoFluidFurnace = new ResourceLocation(Texture.Blocks.MODEL_TERMO_FLUID_FURNACE);
+    private static final ModelBase fluidMachine = new ModelFluidMachine();
+    private static final ResourceLocation textureFurnace = new ResourceLocation(Texture.Blocks.MODEL_FLUID_FURNACE);
+    private static final ResourceLocation textureInfuser = new ResourceLocation(Texture.Blocks.MODEL_FLUID_INFUSER);
+    private static final ResourceLocation textureTermoFluidFurnace = new ResourceLocation(Texture.Blocks.MODEL_TERMO_FLUID_FURNACE);
+    private static final ResourceLocation textureActionMaker = new ResourceLocation(Texture.Blocks.MODEL_ACTION_MAKER);
 
     //Fluid render
     private final static float xMin = 0.063f;
@@ -55,6 +53,8 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
 
             } else if (inventoryFluidHandler instanceof UpgCtileentityTermoFluidFurnace) {
                 texture = textureTermoFluidFurnace;
+            } else if (inventoryFluidHandler instanceof UpgCtileentityActiveMaker) {
+                texture = textureActionMaker;
             } else {
                 LogHelper.error("This entity has not a skin! " + tileEntity.getClass());
                 return;
@@ -117,7 +117,7 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
             if (fluid != null) {
 
                 float level = (float) fluid.amount / (float) inventoryFluidHandler.capacity;
-                    RenderHelper.fluidRender(level, fluid.getFluid(), xMin, yMin, zMin, xMaz, yMaz, zMaz, false, false);
+                RenderHelper.fluidRender(level, fluid.getFluid(), xMin, yMin, zMin, xMaz, yMaz, zMaz, false, false);
 
             }
             GL11.glDisable(GL11.GL_BLEND);
