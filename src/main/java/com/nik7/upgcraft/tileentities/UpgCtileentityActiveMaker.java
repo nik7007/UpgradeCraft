@@ -8,6 +8,8 @@ import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.tank.UpgCActiveTank;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -83,15 +85,26 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
         tag.setInteger("coolDown", this.coolDown);
     }
 
+    @SideOnly(Side.CLIENT)
+    public float getFluidLevelScaled(int scaleFactor) {
+        return scaleFactor * (float) (this.tank[0].getFluidAmount()) / capacity;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float getActiveFluidLevelScaled(int scaleFactor) {
+        return scaleFactor * (float) (this.tank[1].getFluidAmount()) / capacity;
+    }
+
     @Override
     public void updateEntity() {
 
         if (!worldObj.isRemote) {
 
             int lastAmount = tank[0].getFluidAmount();
+            int lastActive = tank[1].getFluidAmount();
 
             byte type = operationType(itemStacks[1]);
-            if (type != 0 && (workingTick % 2) == 0) {
+            if (type != 0 && (workingTick % 10) == 0) {
                 int activeValue = tank[1].getFluid() == null ? 0 : ((ActiveLava) tank[1].getFluid().getFluid()).getActiveValue(tank[1].getFluid());
                 if (activeValue < ActiveLava.MAX_ACTIVE_VALUE || tank[1].getFluidAmount() < tank[1].getCapacity()) {
                     if (tank[0].getFluid() != null || tank[1].getFluid() != null) {
@@ -102,11 +115,15 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
                         else {
                             heatOperation(type);
                         }
+
+                        if (tank[1].getCapacity() == tank[1].getFluidAmount() && (workingTick % 80) == 5)
+                            heatOperation(type);
                     }
                 }
+                updateModBlock();
             }
 
-            if ((workingTick % 20) == 0) {
+            if ((workingTick % 20) == 0 && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
                 if (coolDown > 0) {
                     coolDown--;
                 } else if (tank[1].getFluid() != null) {
@@ -121,7 +138,8 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
             workingTick++;
             workingTick %= 2000;
 
-            if (lastAmount != tank[0].getFluidAmount())
+
+            if (lastAmount != tank[0].getFluidAmount() || lastActive != tank[1].getFluidAmount())
                 updateModBlock();
         }
 
@@ -147,13 +165,16 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
                     }
 
 
-                } else if (item instanceof IFluidContainerItem) {
+                } else if (item instanceof IFluidContainerItem && (workingTick % 20) == 5) {
                     IFluidContainerItem fluidContainerItem = (IFluidContainerItem) item;
-                    FluidStack fluidStack = fluidContainerItem.getFluid(itemStacks[0]).copy();
+                    FluidStack fluidStack = fluidContainerItem.getFluid(itemStacks[0]);
 
-                    int result = tank[0].fill(fluidStack, true);
-                    if (result > 0) {
-                        fluidContainerItem.drain(itemStacks[0], result, true);
+                    if (fluidStack != null) {
+                        fluidStack = fluidStack.copy();
+                        int result = tank[0].fill(fluidStack, true);
+                        if (result > 0) {
+                            fluidContainerItem.drain(itemStacks[0], result, true);
+                        }
                     }
                 }
 
@@ -176,7 +197,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
                         itemStacks[2] = filledBucket;
                         fluid.amount -= FluidContainerRegistry.BUCKET_VOLUME;
                     }
-                } else if (itemStack.getItem() instanceof IFluidContainerItem) {
+                } else if (itemStack.getItem() instanceof IFluidContainerItem && (workingTick % 20) == 10) {
                     if (fluid.amount >= FluidContainerRegistry.BUCKET_VOLUME) {
 
                         IFluidContainerItem fluidContainerItem = (IFluidContainerItem) itemStack.getItem();
@@ -275,11 +296,13 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
 
         ActiveLava fluid = (ActiveLava) tank[1].getFluid().getFluid();
         int activeValue = fluid.getActiveValue(tank[1].getFluid());
-        activeValue = Math.abs(activeValue);
-        activeValue += type * 25;
-        fluid.setActiveValue(tank[1].getFluid(), activeValue);
+        if (activeValue < ActiveLava.MAX_ACTIVE_VALUE) {
+            activeValue = Math.abs(activeValue);
+            activeValue += type * 25;
+            fluid.setActiveValue(tank[1].getFluid(), activeValue);
 
-        decrStackSize(1, 1);
+            decrStackSize(1, 1);
+        }
 
     }
 
@@ -348,6 +371,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
                 if (Math.random() < 0.26)
                     decrStackSize(1, 1);
             }
+
         } else {
 
             ActiveLava fluid = (ActiveLava) tank[1].getFluid().getFluid();

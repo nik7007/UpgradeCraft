@@ -5,6 +5,7 @@ import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityActiveMaker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -18,6 +19,27 @@ public class GuiActiveMaker extends GuiWithFluid {
     public GuiActiveMaker(InventoryPlayer inventoryPlayer, UpgCtileentityActiveMaker upgCtileentityActiveMaker) {
         super(new ContainerActiveMaker(inventoryPlayer, upgCtileentityActiveMaker));
         this.upgCtileentityActiveMaker = upgCtileentityActiveMaker;
+    }
+
+    protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
+        String s = this.upgCtileentityActiveMaker.hasCustomInventoryName() ? this.upgCtileentityActiveMaker.getInventoryName() : I18n.format(this.upgCtileentityActiveMaker.getInventoryName());
+        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+
+        int fuelLevel = this.upgCtileentityActiveMaker.getFluid(0) == null ? 0 : this.upgCtileentityActiveMaker.getFluid(0).amount;
+
+        if (fuelLevel > 0) {
+            int level = (int) this.upgCtileentityActiveMaker.getFluidLevelScaled(32);
+            super.renderFluidWithToolTipAndTemp(upgCtileentityActiveMaker.getFluid(0), upgCtileentityActiveMaker.capacity, 16, 56, 16, 32, mouseX, mouseY, level);
+        }
+
+        int activeLevel = this.upgCtileentityActiveMaker.getFluid(1) == null ? 0 : this.upgCtileentityActiveMaker.getFluid(1).amount;
+
+        if (activeLevel > 0) {
+            int level = (int) this.upgCtileentityActiveMaker.getActiveFluidLevelScaled(32);
+            super.renderFluidWithToolTipAndTemp(upgCtileentityActiveMaker.getFluid(1), upgCtileentityActiveMaker.capacity, 145, 56, 16, 32, mouseX, mouseY, level);
+        }
+
     }
 
     @Override

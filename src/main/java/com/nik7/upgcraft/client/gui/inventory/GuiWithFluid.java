@@ -27,18 +27,34 @@ public abstract class GuiWithFluid extends GuiContainer {
 
     protected void renderFluidWithToolTip(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level) {
 
+        renderFluidWithToolTipEX(fluid, maxFluidAmount, x, y, mazX, maxY, mouseX, mouseY, level, false);
+    }
+
+    protected void renderFluidWithToolTipAndTemp(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level) {
+
+        renderFluidWithToolTipEX(fluid, maxFluidAmount, x, y, mazX, maxY, mouseX, mouseY, level, true);
+    }
+
+    protected void renderFluidWithToolTipEX(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level, boolean temp) {
+
         int amount = 0;
         String fluidName = StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluiddfname");
+        int temperature = 0;
 
         if (fluid != null && fluid.amount > 0) {
             renderFluid(fluid.getFluid(), x, y, mazX, level);
             amount = fluid.amount;
             fluidName = fluid.getLocalizedName();
+            if (temp)
+                temperature = fluid.getFluid().getTemperature(fluid);
         }
 
         List<String> text = new ArrayList<String>();
         text.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidname") + ": " + EnumChatFormatting.RESET + fluidName);
         text.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidamount") + ": " + EnumChatFormatting.RESET + amount + "/" + maxFluidAmount + " mB");
+
+        if (temp)
+            text.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":machine.temperature") + ": " + EnumChatFormatting.RESET + temperature + " K");
 
         drawToolTip(text, x, y, mazX, maxY, mouseX, mouseY);
 
