@@ -1,6 +1,8 @@
 package com.nik7.upgcraft.tileentities;
 
 
+import com.nik7.upgcraft.fluid.ActiveLava;
+import com.nik7.upgcraft.init.ModFluids;
 import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.util.LogHelper;
 import cpw.mods.fml.common.network.internal.FMLProxyPacket;
@@ -32,7 +34,6 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
         //tank
         NBTTagList nbtTagList = tag.getTagList("Tanks", 10);
-        this.tank = new FluidTank[this.getNumberTank()];
         for (int i = 0; i < nbtTagList.tagCount(); ++i) {
             NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
             byte b0 = nbtTagCompound.getByte("Slot");
@@ -78,21 +79,30 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         FluidStack fluidStack = tank != null ? tank.getFluid() : null;
         int fluidAmount = -1;
         int fluidID = -1;
+        int extraValue = -1;
         if (fluidStack != null) {
             fluidAmount = fluidStack.amount;
             fluidID = fluidStack.getFluidID();
+            if (fluidStack.getFluid() == ModFluids.ActiveLava)
+                extraValue = ((ActiveLava) fluidStack.getFluid()).getActiveValue(fluidStack);
         }
 
         buf.writeInt(fluidAmount);
         buf.writeInt(fluidID);
+        buf.writeInt(extraValue);
     }
 
     protected void readFluidToByteBuf(FluidTank tank, ByteBuf buf) {
 
         int fluidAmount = buf.readInt();
         int fluidID = buf.readInt();
+        int extraValue = buf.readInt();
         if (fluidAmount > 0) {
-            tank.setFluid(new FluidStack(FluidRegistry.getFluid(fluidID), fluidAmount));
+            FluidStack fluidStack = new FluidStack(FluidRegistry.getFluid(fluidID), fluidAmount);
+            if (fluidStack.getFluid() == ModFluids.ActiveLava) {
+                ((ActiveLava) fluidStack.getFluid()).setActiveValue(fluidStack, extraValue);
+            }
+            tank.setFluid(fluidStack);
         } else tank.setFluid(null);
 
         worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
