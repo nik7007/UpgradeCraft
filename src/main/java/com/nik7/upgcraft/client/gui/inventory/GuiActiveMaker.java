@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
@@ -37,7 +38,7 @@ public class GuiActiveMaker extends GuiWithFluid {
 
         if (activeLevel > 0) {
             int level = (int) this.upgCtileentityActiveMaker.getActiveFluidLevelScaled(32);
-            super.renderFluidWithToolTipAndTemp(upgCtileentityActiveMaker.getFluid(1), upgCtileentityActiveMaker.capacity, 145, 56, 16, 32, mouseX, mouseY, level);
+            super.renderFluidToolTipAndTemp(upgCtileentityActiveMaker.getFluid(1), upgCtileentityActiveMaker.capacity, 145, 56, 16, 32, mouseX, mouseY, level);
         }
 
     }
@@ -50,6 +51,13 @@ public class GuiActiveMaker extends GuiWithFluid {
         int xOffset = (this.width - this.xSize) / 2;
         int yOffset = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(xOffset, yOffset, 0, 0, this.xSize, this.ySize);
+
+        FluidStack fluidStack = upgCtileentityActiveMaker.getFluid(1);
+
+        if (fluidStack != null && fluidStack.amount > 0) {
+            int level = (int) this.upgCtileentityActiveMaker.getActiveFluidLevelScaled(32);
+            super.renderFluid(fluidStack.getFluid(), xOffset + 145, yOffset + 56, 16, level);
+        }
 
     }
 }

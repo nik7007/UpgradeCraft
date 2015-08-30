@@ -27,22 +27,27 @@ public abstract class GuiWithFluid extends GuiContainer {
 
     protected void renderFluidWithToolTip(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level) {
 
-        renderFluidWithToolTipEX(fluid, maxFluidAmount, x, y, mazX, maxY, mouseX, mouseY, level, false);
+        renderFluidWithToolTipEX(fluid, maxFluidAmount, x, y, mazX, maxY, mouseX, mouseY, level, false, true);
+    }
+
+    protected void renderFluidToolTipAndTemp(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level) {
+        renderFluidWithToolTipEX(fluid, maxFluidAmount, x, y, mazX, maxY, mouseX, mouseY, level, true, false);
     }
 
     protected void renderFluidWithToolTipAndTemp(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level) {
 
-        renderFluidWithToolTipEX(fluid, maxFluidAmount, x, y, mazX, maxY, mouseX, mouseY, level, true);
+        renderFluidWithToolTipEX(fluid, maxFluidAmount, x, y, mazX, maxY, mouseX, mouseY, level, true, true);
     }
 
-    protected void renderFluidWithToolTipEX(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level, boolean temp) {
+    protected void renderFluidWithToolTipEX(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level, boolean temp, boolean renderFluid) {
 
         int amount = 0;
         String fluidName = StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluiddfname");
         int temperature = 0;
 
         if (fluid != null && fluid.amount > 0) {
-            renderFluid(fluid.getFluid(), x, y, mazX, level);
+            if (renderFluid)
+                renderFluid(fluid.getFluid(), x, y, mazX, level);
             amount = fluid.amount;
             fluidName = fluid.getLocalizedName();
             if (temp)
