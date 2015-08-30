@@ -23,7 +23,7 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer {
     private static final ResourceLocation textureFurnace = new ResourceLocation(Texture.Blocks.MODEL_FLUID_FURNACE);
     private static final ResourceLocation textureInfuser = new ResourceLocation(Texture.Blocks.MODEL_FLUID_INFUSER);
     private static final ResourceLocation textureTermoFluidFurnace = new ResourceLocation(Texture.Blocks.MODEL_TERMO_FLUID_FURNACE);
-    private static final ResourceLocation textureActionMaker = new ResourceLocation(Texture.Blocks.MODEL_ACTION_MAKER);
+    private static final ResourceLocation textureActionMaker = new ResourceLocation(Texture.Blocks.MODEL_ACTIVE_MAKER);
 
     //Fluid render
     private final static float xMin = 0.063f;

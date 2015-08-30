@@ -39,7 +39,7 @@ public class Texture {
         public final static String MODEL_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockFluidFurnace.png";
         public final static String MODEL_FLUID_INFUSER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockFluidInfuser.png";
         public final static String MODEL_TERMO_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockTermoFluidFurnace.png";
-        public final static String MODEL_ACTION_MAKER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockaActiveMaker.png";
+        public final static String MODEL_ACTIVE_MAKER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockaActiveMaker.png";
 
 
         public final static String SLIMY_LOG = Reference.MOD_ID + ":" + "slime_planks";
