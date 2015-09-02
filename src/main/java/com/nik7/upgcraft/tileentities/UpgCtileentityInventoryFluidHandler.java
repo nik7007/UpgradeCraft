@@ -37,11 +37,8 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         for (int i = 0; i < nbtTagList.tagCount(); ++i) {
             NBTTagCompound nbtTagCompound = nbtTagList.getCompoundTagAt(i);
             byte b0 = nbtTagCompound.getByte("Slot");
-            int capacity = nbtTagCompound.getInteger("Capacity");
             if (b0 >= 0 && b0 < this.itemStacks.length) {
-                FluidTank t = new FluidTank(capacity);
-                t.readFromNBT(nbtTagCompound);
-                this.tank[b0] = t;
+                this.tank[b0].readFromNBT(nbtTagCompound);
             }
 
         }
@@ -129,7 +126,6 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
                 NBTTagCompound nbtTagCompound = new NBTTagCompound();
                 nbtTagCompound.setByte("Slot", (byte) i);
-                nbtTagCompound.setInteger("Capacity", tank[i].getCapacity());
                 this.tank[i].writeToNBT(nbtTagCompound);
                 nbtTagList.appendTag(nbtTagCompound);
             }
