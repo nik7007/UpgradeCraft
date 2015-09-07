@@ -33,6 +33,8 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
     private int coolDown = 0;
     private int[] coordinates;
 
+    public byte operate;
+
 
     public UpgCtileentityActiveMaker() {
         this.tank = new UpgCActiveTank[]{new UpgCActiveTank(Capacity.INTERNAL_FLUID_TANK_TR1, this), new UpgCActiveTank(Capacity.INTERNAL_FLUID_TANK_TR1, this)};
@@ -108,6 +110,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
                 int activeValue = tank[1].getFluid() == null ? 0 : ((ActiveLava) tank[1].getFluid().getFluid()).getActiveValue(tank[1].getFluid());
                 if (activeValue < ActiveLava.MAX_ACTIVE_VALUE || tank[1].getFluidAmount() < tank[1].getCapacity()) {
                     if (tank[0].getFluid() != null || tank[1].getFluid() != null) {
+                        this.operate = 1;
                         if (tank[1].getFluid() == null) {
                             initOperation(type);
                         } else if (tank[0].getFluid() != null)
@@ -118,10 +121,13 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
 
                         if (tank[1].getCapacity() == tank[1].getFluidAmount() && (workingTick % 80) == 5)
                             heatOperation(type);
-                    }
-                }
+                    } else
+                        this.operate = 0;
+                } else
+                    this.operate = 0;
                 updateModBlock();
-            }
+            } else if (type == 0)
+                this.operate = 0;
 
             if ((workingTick % 20) == 0 && !worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord)) {
                 if (coolDown > 0) {
@@ -300,8 +306,8 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
             activeValue = Math.abs(activeValue);
             activeValue += type * 25;
             fluid.setActiveValue(tank[1].getFluid(), activeValue);
-
-            decrStackSize(1, 1);
+            if (Math.random() < 0.32)
+                decrStackSize(1, 1);
         }
 
     }
@@ -379,10 +385,10 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
             activeValue += type * 2;
             fluid.setActiveValue(tank[1].getFluid(), activeValue);
 
-            if (Math.random() < 0.76)
+            if (Math.random() < 0.32)
                 decrStackSize(1, 1);
 
-            if (Math.random() < 0.32)
+            if (Math.random() < 0.27)
                 heatOperation(type);
 
         }
