@@ -116,11 +116,20 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
                         } else if (tank[0].getFluid() != null)
                             normalOperation(type);
                         else {
-                            heatOperation(type);
+
+                            if (activeValue < ActiveLava.MAX_ACTIVE_VALUE)
+                                heatOperation(type);
+                            else
+                                this.operate = 0;
+
                         }
 
                         if (tank[1].getCapacity() == tank[1].getFluidAmount() && (workingTick % 80) == 5)
-                            heatOperation(type);
+                            if (activeValue < ActiveLava.MAX_ACTIVE_VALUE)
+                                heatOperation(type);
+                            else
+                                this.operate = 0;
+
                     } else
                         this.operate = 0;
                 } else
