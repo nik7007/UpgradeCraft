@@ -11,11 +11,15 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Random;
+
 @SideOnly(Side.CLIENT)
 public class GuiActiveMaker extends GuiWithFluid {
 
     private final static ResourceLocation guiTextures = new ResourceLocation(Texture.GUI.ACTIVE_MAKER);
     private final UpgCtileentityActiveMaker upgCtileentityActiveMaker;
+    private final static Random RANDOM = new Random();
+    int inc = -1;
 
     public GuiActiveMaker(InventoryPlayer inventoryPlayer, UpgCtileentityActiveMaker upgCtileentityActiveMaker) {
         super(new ContainerActiveMaker(inventoryPlayer, upgCtileentityActiveMaker));
@@ -51,6 +55,12 @@ public class GuiActiveMaker extends GuiWithFluid {
         int xOffset = (this.width - this.xSize) / 2;
         int yOffset = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(xOffset, yOffset, 0, 0, this.xSize, this.ySize);
+
+        if (this.upgCtileentityActiveMaker.operate != 0) {
+            if (inc == -1 || Math.random() < 0.49)
+                inc = (int) (1 + 13 * RANDOM.nextFloat());
+            this.drawTexturedModalRect(xOffset + 82, yOffset + 38 + 31 - inc, 176, 14 - inc, 14, inc);
+        }
 
         FluidStack fluidStack = upgCtileentityActiveMaker.getFluid(1);
 
