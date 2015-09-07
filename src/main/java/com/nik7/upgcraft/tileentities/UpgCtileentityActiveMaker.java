@@ -50,12 +50,14 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
     public void writeToPacket(ByteBuf buf) {
         writeFluidToByteBuf(this.tank[0], buf);
         writeFluidToByteBuf(this.tank[1], buf);
+        buf.writeByte(operate);
     }
 
     @Override
     public void readFromPacket(ByteBuf buf) {
         readFluidToByteBuf(this.tank[0], buf);
         readFluidToByteBuf(this.tank[1], buf);
+        operate = buf.readByte();
     }
 
 

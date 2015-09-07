@@ -2,12 +2,9 @@ package com.nik7.upgcraft.inventory;
 
 
 import com.nik7.upgcraft.tileentities.UpgCtileentityActiveMaker;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -16,7 +13,6 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 public class ContainerActiveMaker extends ContainerUpgC {
 
     private final UpgCtileentityActiveMaker upgCtileentityActiveMaker;
-    private byte lastType;
 
     public ContainerActiveMaker(InventoryPlayer playerInventory, UpgCtileentityActiveMaker upgCtileentityActiveMaker) {
         this.upgCtileentityActiveMaker = upgCtileentityActiveMaker;
@@ -27,40 +23,6 @@ public class ContainerActiveMaker extends ContainerUpgC {
 
         addPlayerSlots(playerInventory, 8, 84);
     }
-
-    public void addCraftingToCrafters(ICrafting iCrafting) {
-        super.addCraftingToCrafters(iCrafting);
-        iCrafting.sendProgressBarUpdate(this, 0, this.upgCtileentityActiveMaker.operate);
-    }
-
-    public void detectAndSendChanges() {
-        super.detectAndSendChanges();
-
-        for (Object crafter : this.crafters) {
-            ICrafting icrafting = (ICrafting) crafter;
-
-            if (this.lastType != this.upgCtileentityActiveMaker.operate) {
-                icrafting.sendProgressBarUpdate(this, 0, this.upgCtileentityActiveMaker.operate);
-
-            }
-
-        }
-
-        this.lastType = this.upgCtileentityActiveMaker.operate;
-
-    }
-
-    @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int index, int value) {
-        switch (index) {
-            case 0:
-                this.upgCtileentityActiveMaker.operate = (byte) value;
-                break;
-
-        }
-
-    }
-
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
