@@ -68,6 +68,34 @@ public class BlockUpgCActiveMaker extends BlockUpgCContainerOrientable {
         return true;
     }
 
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, int x, int y, int z, Random random) {
+        UpgCtileentityActiveMaker te = (UpgCtileentityActiveMaker) world.getTileEntity(x, y, z);
+        if (te.operate != 0) {
+            int l = world.getBlockMetadata(x, y, z);
+            float f = (float) x + 0.5F;
+            float f1 = (float) y + 0.2F + random.nextFloat() * 6.0F / 16.0F;
+            float f2 = (float) z + 0.4F + random.nextFloat() * 4.0F / 16.0F;
+            float f3 = 0.52F;
+            float f4 = random.nextFloat() * 0.6F - 0.3F;
+
+            switch (l) {
+                case 4:
+                    world.spawnParticle("flame", (double) (f - f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
+                    break;
+                case 5:
+                    world.spawnParticle("flame", (double) (f + f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
+                    break;
+                case 2:
+                    world.spawnParticle("flame", (double) (f + f4), (double) f1, (double) (f2 - f3), 0.0D, 0.0D, 0.0D);
+                    break;
+                case 3:
+                    world.spawnParticle("flame", (double) (f + f4), (double) f1, (double) (f2 + f3), 0.0D, 0.0D, 0.0D);
+                    break;
+            }
+        }
+    }
+
     @Override
     public int getLightValue(IBlockAccess world, int x, int y, int z) {
         return ((UpgCtileentityInventoryFluidHandler) world.getTileEntity(x, y, z)).getFluidLightLevel(0);
