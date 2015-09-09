@@ -108,6 +108,8 @@ public class ItemBlockIronTank extends ItemBlock implements IFluidContainerItem 
         if (container.hasTagCompound())
             oldFluid = FluidStack.loadFluidStackFromNBT(container.getTagCompound());
 
+        tank.setFluid(oldFluid);
+
         FluidStack result = tank.drain(maxDrain, doDrain);
 
         FluidStack newFluid = tank.getFluid();
