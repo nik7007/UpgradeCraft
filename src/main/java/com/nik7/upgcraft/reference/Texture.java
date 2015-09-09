@@ -8,6 +8,7 @@ public class Texture {
         public final static String HARDENED_CLAY_LIQUID_TANK = Reference.MOD_ID + ":" + "BlockHardenedClayLiquidTank";
         public final static String FLUID_BASIC_HOPPER = Reference.MOD_ID + ":" + "BlockFluidBasicHopper_icon";
         public final static String ENDER_HOPPER = Reference.MOD_ID + ":" + "BlockEnderHopper_icon";
+        public final static String IRON_LIQUID_TANK = Reference.MOD_ID + ":" + "BlockIronTank";
         //Model textures
         public final static String TEXTURE_MODEL_LOCATION = "textures/blocks/";
 
