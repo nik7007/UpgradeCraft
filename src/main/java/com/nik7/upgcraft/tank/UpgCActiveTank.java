@@ -13,6 +13,10 @@ public class UpgCActiveTank extends UpgCTank {
         super(capacity, tile);
     }
 
+    public UpgCActiveTank(int capacity) {
+        super(capacity);
+    }
+
     @Override
     public int fill(FluidStack resource, boolean doFill) {
 
@@ -74,12 +78,12 @@ public class UpgCActiveTank extends UpgCTank {
             FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(fluid, tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, this, filled));
         }
 
-        int active = ((ActiveLava)fluid.getFluid()).getActiveValue(fluid);
-        int activeR = ((ActiveLava)resource.getFluid()).getActiveValue(resource);
+        int active = ((ActiveLava) fluid.getFluid()).getActiveValue(fluid);
+        int activeR = ((ActiveLava) resource.getFluid()).getActiveValue(resource);
 
         int newActive = (int) (((float) active * capacity + activeR * filled) / (filled + capacity));
 
-        ((ActiveLava)fluid.getFluid()).setActiveValue(fluid,newActive);
+        ((ActiveLava) fluid.getFluid()).setActiveValue(fluid, newActive);
 
 
         return filled;
