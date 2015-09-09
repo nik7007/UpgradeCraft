@@ -4,6 +4,7 @@ package com.nik7.upgcraft.block;
 import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTankIron;
 import com.nik7.upgcraft.util.BlockToItemHelper;
 import net.minecraft.block.material.Material;
@@ -29,6 +30,21 @@ public class BlockUpgCIronFluidTank extends BlockUpgCTank {
         this.setStepSound(soundTypeStone);
         this.haveSubBlocks = true;
         this.capacity = 2 * Capacity.SMALL_TANK;
+    }
+
+    @Override
+    public int getRenderType() {
+        return Render.Ids.FLUID_TANK;
+    }
+
+    @Override
+    public boolean renderAsNormalBlock() {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
     }
 
 

@@ -32,6 +32,13 @@ public class Texture {
         public final static String MODEL_DOUBLE_HOLLOW_TOP_HARDENED_CLAY_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockDoubleHardenedClayHollowTopTank.png";
         public final static String MODEL_DOUBLE_HOLLOW_DOWN_HARDENED_CLAY_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockDoubleHardenedClayHollowDownTank.png";
 
+        public final static String MODEL_SMALL_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockIronTank.png";
+        public final static String MODEL_SMALL_HOLLOW_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockIronHollowTank.png";
+        public final static String MODEL_DOUBLE_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockDoubleIronTank.png";
+        public final static String MODEL_DOUBLE_HOLLOW_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockDoubleIronHollowTank.png";
+        public final static String MODEL_DOUBLE_HOLLOW_TOP_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockDoubleIronHollowTopTank.png";
+        public final static String MODEL_DOUBLE_HOLLOW_DOWN_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockDoubleIronHollowDownTank.png";
+
         public final static String MODEL_SMALL_ENDER_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockEnderTank.png";
 
         public final static String MODEL_FLUID_BASIC_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + "BlockFluidBasicHopper.png";

@@ -4,10 +4,7 @@ import com.nik7.upgcraft.client.render.model.ModelDoubleTank;
 import com.nik7.upgcraft.client.render.model.ModelTank;
 import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
-import com.nik7.upgcraft.tileentities.UpgCtileentityEnderTank;
-import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
-import com.nik7.upgcraft.tileentities.UpgCtileentityTankClay;
-import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenTankSmall;
+import com.nik7.upgcraft.tileentities.*;
 import com.nik7.upgcraft.util.LogHelper;
 import com.nik7.upgcraft.util.RenderHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -63,6 +60,8 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                             textures = new ResourceLocation(Texture.Blocks.MODEL_SMALL_CLAY_TANK);
                         else if (te instanceof UpgCtileentityEnderTank)
                             textures = new ResourceLocation(Texture.Blocks.MODEL_SMALL_ENDER_TANK);
+                        else if (te instanceof UpgCtileentityTankIron)
+                            textures = new ResourceLocation(Texture.Blocks.MODEL_SMALL_IRON_TANK);
                         else {
                             LogHelper.fatal("Impossible to render this tank!! Unknown entity!");
                             return;
@@ -73,6 +72,8 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                             textures = new ResourceLocation(Texture.Blocks.MODEL_SMALL_HOLLOW_WOODEN_TANK);
                         else if (te instanceof UpgCtileentityTankClay)
                             textures = new ResourceLocation(Texture.Blocks.MODEL_SMALL_HOLLOW_CLAY_TANK);
+                        else if (te instanceof UpgCtileentityTankIron)
+                            textures = new ResourceLocation(Texture.Blocks.MODEL_SMALL_HOLLOW_IRON_TANK);
                         else {
                             LogHelper.fatal("Impossible to render this tank!! Unknown entity!");
                             return;
@@ -113,6 +114,8 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                         textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_WOODEN_TANK);
                     else if (te instanceof UpgCtileentityTankClay)
                         textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_CLAY_TANK);
+                    else if (te instanceof UpgCtileentityTankIron)
+                        textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_IRON_TANK);
                     else {
                         LogHelper.fatal("Impossible to render this tank!! Unknown entity!");
                         return;
@@ -123,6 +126,8 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                             textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_DOWN_WOODEN_TANK);
                         else if (te instanceof UpgCtileentityTankClay)
                             textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_DOWN_CLAY_TANK);
+                        else if (te instanceof UpgCtileentityTankIron)
+                            textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_DOWN_IRON_TANK);
                         else {
                             LogHelper.fatal("Impossible to render this tank!! Unknown entity!");
                             return;
@@ -133,6 +138,8 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                             textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_DOWN_WOODEN_TANK);
                         else if (te instanceof UpgCtileentityTankClay)
                             textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_DOWN_CLAY_TANK);
+                        else if (te instanceof UpgCtileentityTankIron)
+                            textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_DOWN_IRON_TANK);
                         else {
                             LogHelper.fatal("Impossible to render this tank!! Unknown entity!");
                             return;
@@ -142,6 +149,8 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                             textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_TOP_WOODEN_TANK);
                         else if (te instanceof UpgCtileentityTankClay)
                             textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_TOP_CLAY_TANK);
+                        else if (te instanceof UpgCtileentityTankIron)
+                            textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_HOLLOW_TOP_IRON_TANK);
                         else {
                             LogHelper.fatal("Impossible to render this tank!! Unknown entity!");
                             return;
@@ -176,7 +185,9 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer {
                             LogHelper.fatal("Impossible to render this tank!! Unknown meta data!");
                             return;
                         }
-                    } else {
+                    } else if (te instanceof UpgCtileentityTankIron)
+                        textures = new ResourceLocation(Texture.Blocks.MODEL_DOUBLE_IRON_TANK);
+                    else {
                         LogHelper.fatal("Impossible to render this tank!! Unknown entity!");
                         return;
                     }
