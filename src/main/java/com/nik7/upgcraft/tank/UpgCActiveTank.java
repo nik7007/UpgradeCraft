@@ -3,7 +3,6 @@ package com.nik7.upgcraft.tank;
 
 import com.nik7.upgcraft.fluid.ActiveLava;
 import com.nik7.upgcraft.init.ModFluids;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
