@@ -87,7 +87,7 @@ public class ItemRenderClayTank extends ItemRenderTank {
             int capacity = ((IFluidContainerItem) item.getItem()).getCapacity(item);
             float percentage = 0;
             if (fluidStack != null && capacity != 0) {
-                percentage = (float)fluidStack.amount /(float) capacity;
+                percentage = (float) fluidStack.amount / (float) capacity;
             }
             if (fluidStack != null)
                 RenderHelper.fluidRender(percentage, fluidStack.getFluid(), Render.TankInternalDimension.xMin, Render.TankInternalDimension.yMin, Render.TankInternalDimension.zMin, Render.TankInternalDimension.xMaz, Render.TankInternalDimension.yMaz, Render.TankInternalDimension.zMaz, false, false);
