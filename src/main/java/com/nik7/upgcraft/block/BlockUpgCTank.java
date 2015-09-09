@@ -117,14 +117,14 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
         UpgCTank tank = entity.getTank();
 
-        if ((tank.getFluidAmount() == 0 || tank.getFluid().isFluidEqual(equippedItemStack)) && tank.getCapacity() - tank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME) {
-            FluidStack fluidFromBucket = FluidContainerRegistry.getFluidForFilledItem(equippedItemStack);
+        FluidStack fluidFromBucket = FluidContainerRegistry.getFluidForFilledItem(equippedItemStack);
 
-            if (fluidFromBucket == null) {
-                LogHelper.fatal("fluidFromBucket is null");
-                return;
-            }
+        if (fluidFromBucket == null) {
+            LogHelper.fatal("fluidFromBucket is null");
+            return;
+        }
 
+        if ((tank.getFluidAmount() == 0 || tank.fill(fluidFromBucket, false) >= FluidContainerRegistry.BUCKET_VOLUME)) {
 
             if (entity.fill(null, fluidFromBucket, true) == FluidContainerRegistry.BUCKET_VOLUME) {
                 // don't consume the filled bucket in creative mode
