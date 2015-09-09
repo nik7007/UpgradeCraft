@@ -16,6 +16,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.TileFluidHandler;
 
+import java.lang.reflect.InvocationTargetException;
+
 public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     private final int TANK_CAPACITY;
@@ -27,18 +29,49 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     private boolean isTop = false;
     private boolean isFirst = true;
     private int oldMeta = -1;
+    private Class<UpgCTank> TankClass;
+
+    protected UpgCtileentityTank(int tankCapacity, Class<UpgCTank> TankClass, boolean canBeDouble) {
+
+        this(tankCapacity);
+        setCanBeDouble(canBeDouble);
+        this.TankClass = TankClass;
+
+    }
 
     protected UpgCtileentityTank(int tankCapacity, boolean canBeDouble) {
 
         this(tankCapacity);
         setCanBeDouble(canBeDouble);
-
     }
 
     protected UpgCtileentityTank(int tankCapacity) {
         super();
         this.TANK_CAPACITY = tankCapacity;
-        this.setTank(new UpgCTank(tankCapacity, this));
+        this.setTank(createNewTank(tankCapacity));
+
+
+    }
+
+    private UpgCTank createNewTank(int tankCapacity) {
+        UpgCTank result = null;
+
+        if (TankClass != null) {
+            try {
+                result = TankClass.asSubclass(UpgCTank.class).getConstructor(int.class, TileEntity.class).newInstance(tankCapacity, this);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        } else
+            result = new UpgCTank(tankCapacity, this);
+
+        return result;
     }
 
     @Override
@@ -220,14 +253,14 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
                 if (oldCapacity != TANK_CAPACITY) {
 
                     if (this.tank.getCapacity() == 2 * oldCapacity) {
-                        UpgCTank tank = new UpgCTank(2 * TANK_CAPACITY, this);
+                        UpgCTank tank = createNewTank(2 * TANK_CAPACITY);
                         tank.fill(this.tank.getFluid(), true);
                         this.setTank(tank);
                     } else if (this.tank.getCapacity() == oldCapacity) {
 
                         FluidStack fluidStack = this.getFluid();
                         FluidStack fluidStackD = adjacentTankYPos.getFluid();
-                        UpgCTank tank = new UpgCTank(2 * TANK_CAPACITY, this);
+                        UpgCTank tank = createNewTank(2 * TANK_CAPACITY);
 
                         this.setTank(tank);
 
@@ -252,7 +285,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
             if (cTank.getCapacity() == this.TANK_CAPACITY) {
 
-                cTank = new UpgCTank(2 * TANK_CAPACITY, this);
+                cTank = createNewTank(2 * TANK_CAPACITY);
             } else if (cTank.getCapacity() != 2 * this.TANK_CAPACITY) {
                 LogHelper.error("Unknow tank capacity: " + cTank.getCapacity());
             }
@@ -275,7 +308,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
             int amount = 0;
             FluidStack fluidStack = null;
-            UpgCTank tank = new UpgCTank(this.TANK_CAPACITY, this);
+            UpgCTank tank = createNewTank(this.TANK_CAPACITY);
 
             if (this.tank.getFluid() != null)
                 fluidStack = new FluidStack(this.tank.getFluid(), amount);
