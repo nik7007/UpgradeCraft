@@ -1,10 +1,23 @@
 package com.nik7.upgcraft.block;
 
 
+import com.nik7.upgcraft.config.SystemConfig;
+import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.tileentities.UpgCtileentityTankIron;
+import com.nik7.upgcraft.util.BlockToItemHelper;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
 
 public class BlockUpgCIronFluidTank extends BlockUpgCTank {
 
@@ -14,7 +27,10 @@ public class BlockUpgCIronFluidTank extends BlockUpgCTank {
         this.setHardness(2.8f);
         this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
         this.setStepSound(soundTypeStone);
+        this.haveSubBlocks = true;
+        this.capacity = 2 * Capacity.SMALL_TANK;
     }
+
 
     @Override
     public boolean canPlaceBlockAt(World world, int x, int y, int z) {
@@ -29,9 +45,76 @@ public class BlockUpgCIronFluidTank extends BlockUpgCTank {
 
     }
 
+    @Override
+    public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entityLivingBase, ItemStack itemStack) {
+
+        if (!world.isRemote) {
+            UpgCtileentityTankIron tileEntity = (UpgCtileentityTankIron) world.getTileEntity(x, y, z);
+            if (tileEntity != null) {
+                FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(itemStack.getTagCompound());
+                if (fluidStack != null) {
+                    tileEntity.fill(ForgeDirection.UNKNOWN, fluidStack, true);
+                }
+            }
+        }
+
+
+    }
+
+    @Override
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+
+        ArrayList<ItemStack> result = BlockToItemHelper.getDrops(x, y, z, world.provider.dimensionId);
+
+        if (result == null)
+            result = super.getDrops(world, x, y, z, metadata, fortune);
+        return result;
+
+    }
+
+    @Override
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer player) {
+
+        int meta = world.getBlockMetadata(x, y, z);
+        ItemStack itemTank = new ItemStack(this, 1, meta);
+
+        UpgCtileentityTankIron tileEntity = (UpgCtileentityTankIron) world.getTileEntity(x, y, z);
+
+        if (tileEntity != null) {
+
+            FluidStack fluidStack = tileEntity.getFluidFormSingleTank();
+
+            if (fluidStack != null) {
+                if (!itemTank.hasTagCompound())
+                    itemTank.stackTagCompound = new NBTTagCompound();
+                fluidStack.writeToNBT(itemTank.stackTagCompound);
+            }
+        }
+
+        return itemTank;
+    }
+
+    @Override
+    public void appliedConfig(SystemConfig.ConfigValue... values) {
+
+        if (values.length >= 1) {
+            for (SystemConfig.ConfigValue c : values) {
+
+                if (c.configName.equals("basicTankCapacity")) {
+
+                    this.capacity = 2 * new Integer(c.value);
+
+                }
+
+            }
+
+        }
+
+    }
+
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return null;
+        return new UpgCtileentityTankIron();
     }
 }
