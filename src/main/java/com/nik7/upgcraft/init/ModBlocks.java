@@ -2,10 +2,7 @@ package com.nik7.upgcraft.init;
 
 
 import com.nik7.upgcraft.block.*;
-import com.nik7.upgcraft.item.ItemBlockClayTank;
-import com.nik7.upgcraft.item.ItemBlockSlimyLog;
-import com.nik7.upgcraft.item.ItemBlockWoodenTank;
-import com.nik7.upgcraft.item.itemBlockSlimyObsidian;
+import com.nik7.upgcraft.item.*;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -26,6 +23,7 @@ public class ModBlocks {
     public static final Block blockActiveLava = new BlockUpgCActiveLava();
     public static final Block blockUpgCTermoFluidFurnace = new BlockUpgCTermoFluidFurnace();
     public static final Block blockUpgCActiveMaker = new BlockUpgCActiveMaker();
+    public static final Block blockUpgCIronFluidTank = new BlockUpgCIronFluidTank();
 
     public static void init() {
 
@@ -40,6 +38,7 @@ public class ModBlocks {
         GameRegistry.registerBlock(blockUpgCEnderHopper, Reference.MOD_ID + "Block" + Names.Blocks.ENDER_HOPPER);
         GameRegistry.registerBlock(blockUpgCTermoFluidFurnace, Reference.MOD_ID + "Block" + Names.Blocks.TERMO_FLUID_FURNACE);
         GameRegistry.registerBlock(blockUpgCActiveMaker, Reference.MOD_ID + "Block" + Names.Blocks.ACTIVE_MAKER);
+        GameRegistry.registerBlock(blockUpgCIronFluidTank, ItemBlockIronTank.class, Reference.MOD_ID + "Block" + Names.Blocks.IRON_LIQUID_TANK);
 
         GameRegistry.registerBlock(blockActiveLava, Reference.MOD_ID + "Block" + Names.Fluid.ACTIVE_LAVE);
 
