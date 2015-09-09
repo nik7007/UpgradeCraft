@@ -26,7 +26,7 @@ public class BlockUpgCIronFluidTank extends BlockUpgCTank {
     public BlockUpgCIronFluidTank() {
         super(Material.iron);
         this.setBlockName(Names.Blocks.IRON_LIQUID_TANK);
-        this.setHardness(2.8f);
+        this.setHardness(3.4f);
         this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
         this.setStepSound(soundTypeStone);
         this.haveSubBlocks = true;
