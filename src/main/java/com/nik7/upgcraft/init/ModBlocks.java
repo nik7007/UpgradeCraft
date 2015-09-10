@@ -24,6 +24,7 @@ public class ModBlocks {
     public static final Block blockUpgCTermoFluidFurnace = new BlockUpgCTermoFluidFurnace();
     public static final Block blockUpgCActiveMaker = new BlockUpgCActiveMaker();
     public static final Block blockUpgCIronFluidTank = new BlockUpgCIronFluidTank();
+    public static final Block blockUpgCFluidTankMold = new BlockUpgCFluidTankMold();
 
     public static void init() {
 
@@ -39,6 +40,7 @@ public class ModBlocks {
         GameRegistry.registerBlock(blockUpgCTermoFluidFurnace, Reference.MOD_ID + "Block" + Names.Blocks.TERMO_FLUID_FURNACE);
         GameRegistry.registerBlock(blockUpgCActiveMaker, Reference.MOD_ID + "Block" + Names.Blocks.ACTIVE_MAKER);
         GameRegistry.registerBlock(blockUpgCIronFluidTank, ItemBlockIronTank.class, Reference.MOD_ID + "Block" + Names.Blocks.IRON_LIQUID_TANK);
+        GameRegistry.registerBlock(blockUpgCFluidTankMold, ItemBlockFluidTankMold.class, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_TANK_MOLD);
 
         GameRegistry.registerBlock(blockActiveLava, Reference.MOD_ID + "Block" + Names.Fluid.ACTIVE_LAVE);
 

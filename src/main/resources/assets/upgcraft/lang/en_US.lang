@@ -26,6 +26,8 @@ tile.upgcraft:FluidInfuser.name=Fluid Infuser
 tile.upgcraft:ActiveLava.name=Active Lava
 tile.upgcraft:TermoFluidFurnace.name=Termo Fluid Furnace
 tile.upgcraft:ActiveMaker.name=Active Maker
+tile.upgcraft:FluidTankMold.name=Fluid Tank Mold
+tile.upgcraft:FluidTankMold.Hardened.name=Hardened Fluid Tank Mold
 
 #Tooltip
 tooltip.upgcraft:tank.hollow=Transparent
@@ -35,6 +37,9 @@ tooltip.upgcraft:tank.fluiddfname=Empty
 tooltip.upgcraft:tank.fluidname=Fluid
 tooltip.upgcraft:tank.fluidamount=Amount
 tooltip.upgcraft:machine.temperature=Temperature
+tooltip.upgcraft:fluidtankmold.iron=Iron
+tooltip.upgcraft:fluidtankmold.content=Content
+tooltip.upgcraft:fluidtankmold.empty=Empty
 
 #Inventory
 upgcraft:container.fluidfurnace=Fluid Furnace

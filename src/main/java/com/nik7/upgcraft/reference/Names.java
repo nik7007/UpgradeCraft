@@ -18,6 +18,8 @@ public class Names {
         public final static String FLUID_INFUSE = "FluidInfuser";
         public final static String TERMO_FLUID_FURNACE = "Termo" + FLUID_FURNACE;
         public final static String ACTIVE_MAKER = "ActiveMaker";
+        public final static String FLUID_TANK_MOLD = "FluidTankMold";
+
     }
 
     public class Items {
