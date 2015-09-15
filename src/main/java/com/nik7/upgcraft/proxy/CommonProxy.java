@@ -11,7 +11,7 @@ public abstract class CommonProxy implements IProxy {
     public void registerTileEntities() {
 
         GameRegistry.registerTileEntity(UpgCtileentityWoodenTankSmall.class, Names.TileEntity.UPGC_TILE_ENTITY_TANK + "Small");
-        GameRegistry.registerTileEntity(UpgCtilientityFluidHopper.class, Names.TileEntity.UPGC_TILE_ENTITY_FLUID_HOPPER + "Basic");
+        GameRegistry.registerTileEntity(UpgCtilientityBasicFluidHopper.class, Names.TileEntity.UPGC_TILE_ENTITY_FLUID_HOPPER + "Basic");
         GameRegistry.registerTileEntity(UpgCtilientityEnderHopper.class, Names.TileEntity.UPGC_TILE_ENTITY_ENDER_HOPPER);
         GameRegistry.registerTileEntity(UpgCtileentityFluidFurnace.class, Names.TileEntity.UPGC_TILE_ENTITY_FLUID_FURNACE + "Basic");
         GameRegistry.registerTileEntity(UpgCtileentityFluidInfuser.class, Names.TileEntity.UPG_TILE_ENTITY_FLUID_INFUSER + "Basic");
@@ -20,6 +20,7 @@ public abstract class CommonProxy implements IProxy {
         GameRegistry.registerTileEntity(UpgCtileentityTankIron.class, Names.TileEntity.UPGC_TILE_ENTITY_TANK + "Iron");
         GameRegistry.registerTileEntity(UpgCtileentityTermoFluidFurnace.class, Names.TileEntity.UPGC_TILE_ENTITY_FLUID_FURNACE + "Termo");
         GameRegistry.registerTileEntity(UpgCtileentityActiveMaker.class, Names.TileEntity.UPG_TILE_ENTITY_ACTIVE_MAKER);
+        GameRegistry.registerTileEntity(UpgCtilientityFluidHopper.class, Names.TileEntity.UPGC_TILE_ENTITY_FLUID_HOPPER);
     }
 
     public void registerEventHandlers() {

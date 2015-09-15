@@ -10,7 +10,7 @@ import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.tileentities.UpgCtilientityEnderHopper;
-import com.nik7.upgcraft.tileentities.UpgCtilientityFluidHopper;
+import com.nik7.upgcraft.tileentities.UpgCtilientityBasicFluidHopper;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.client.Minecraft;
@@ -44,7 +44,7 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ModBlocks.blockUpgCActiveMaker), new itemRenderActiveMaker());
 
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityTank.class, new TileEntityRendererTank());
-        ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityFluidHopper.class, new TileEntityRenderBasicFluidHopper());
+        ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityBasicFluidHopper.class, new TileEntityRenderBasicFluidHopper());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityEnderHopper.class, new TileEntityRenderEnderHopper());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityInventoryFluidHandler.class, new TileEntityRenderFluidMachine());
 

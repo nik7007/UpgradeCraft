@@ -4,28 +4,23 @@ package com.nik7.upgcraft.block;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
-import com.nik7.upgcraft.tileentities.UpgCtilientityFluidHopper;
+import com.nik7.upgcraft.tileentities.UpgCtilientityBasicFluidHopper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Facing;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockUpgCBasicFluidHopper extends BlockUpgCTank {
 
-    @SideOnly(Side.CLIENT)
-    private IIcon icon;
-
-
     public BlockUpgCBasicFluidHopper() {
         super(Material.iron);
         setBlockName("Basic" + Names.Blocks.FLUID_HOPPER);
+        setBlockTextureName(Texture.Blocks.FLUID_BASIC_HOPPER);
         this.setHardness(3f);
     }
 
@@ -79,18 +74,6 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgCTank {
         return Render.Ids.BASIC_FLUID_HOPPER;
     }
 
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister iconRegister) {
-        this.icon = iconRegister.registerIcon(Texture.Blocks.FLUID_BASIC_HOPPER);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-
-        return icon;
-    }
-
 
     @Override
     public boolean renderAsNormalBlock() {
@@ -104,7 +87,7 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgCTank {
 
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
-        return new UpgCtilientityFluidHopper();
+        return new UpgCtilientityBasicFluidHopper();
     }
 
 }

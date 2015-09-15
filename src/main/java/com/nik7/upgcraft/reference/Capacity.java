@@ -11,6 +11,7 @@ public class Capacity {
     public class Speed {
 
         public final static int BASIC_FLUID_HOPPER_SPEED = 50;
+        public final static int FLUID_HOPPER_SPEED = (int) (1.5f * BASIC_FLUID_HOPPER_SPEED);
 
     }
 
