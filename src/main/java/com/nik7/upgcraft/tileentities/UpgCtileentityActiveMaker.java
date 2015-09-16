@@ -188,6 +188,10 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
 
                     if (fluidStack != null) {
                         fluidStack = fluidStack.copy();
+
+                        if (fluidStack.amount > FluidContainerRegistry.BUCKET_VOLUME)
+                            fluidStack.amount = FluidContainerRegistry.BUCKET_VOLUME;
+
                         int result = tank[0].fill(fluidStack, true);
                         if (result > 0) {
                             fluidContainerItem.drain(itemStacks[0], result, true);
@@ -218,13 +222,21 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
                     if (fluid.amount >= FluidContainerRegistry.BUCKET_VOLUME) {
 
                         IFluidContainerItem fluidContainerItem = (IFluidContainerItem) itemStack.getItem();
-                        int amount = fluidContainerItem.fill(itemStack, fluid, true);
+                        FluidStack fluidStack = fluid.copy();
+
+                        if (fluidStack.amount > FluidContainerRegistry.BUCKET_VOLUME)
+                            fluidStack.amount = FluidContainerRegistry.BUCKET_VOLUME;
+
+                        int amount = fluidContainerItem.fill(itemStack, fluidStack, true);
                         if (amount > 0) {
                             fluid.amount -= amount;
                         }
+                        if (fluid.amount == 0)
+                            tank[1].setFluid(null);
                     }
 
                 }
+
             }
         }
     }
@@ -362,7 +374,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
 
                 fluidStack = tank[0].drain(amount, true);
                 activeLava = new FluidStack(ModFluids.ActiveLava, fluidStack.amount);
-                activeValue = ((ActiveLava) activeLava.getFluid()).getActiveValue(activeLava);
+                activeValue = ((ActiveLava) activeLava.getFluid()).getActiveValue(fluidStack);
 
             } else {
 
@@ -373,7 +385,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
 
             ActiveLava fluid = (ActiveLava) tank[1].getFluid().getFluid();
 
-            activeValue += fluid.getActiveValue(tank[1].getFluid());
+            //activeValue += fluid.getActiveValue(tank[1].getFluid());
 
             activeValue += type * 6;
 
