@@ -3,6 +3,7 @@ package com.nik7.upgcraft.client.render.tileentity;
 import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.client.render.model.ModelFluidHopper;
 import com.nik7.upgcraft.reference.Texture;
+import com.nik7.upgcraft.tileentities.UpgCtilientityFluidHopper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -13,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 
 
 @SideOnly(Side.CLIENT)
-public class TileEntityRenderBasicFluidHopper extends TileEntitySpecialRenderer {
+public class TileEntityRenderFluidHopper extends TileEntitySpecialRenderer {
 
     private final ModelFluidHopper fluidHopper = new ModelFluidHopper();
 
@@ -26,7 +27,10 @@ public class TileEntityRenderBasicFluidHopper extends TileEntitySpecialRenderer 
         GL11.glPushMatrix();
 
         GL11.glTranslatef((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-        this.bindTexture(new ResourceLocation(Texture.Blocks.MODEL_FLUID_BASIC_TANK));
+        if (te instanceof UpgCtilientityFluidHopper)
+            this.bindTexture(new ResourceLocation(Texture.Blocks.MODEL_FLUID_TANK));
+        else
+            this.bindTexture(new ResourceLocation(Texture.Blocks.MODEL_FLUID_BASIC_TANK));
         GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
 
 
