@@ -117,7 +117,9 @@ public class ItemBlockIronTank extends ItemBlock implements IFluidContainerItem 
         if (!container.hasTagCompound())
             container.stackTagCompound = new NBTTagCompound();
 
-        newFluid.writeToNBT(container.getTagCompound());
+        if (newFluid != null)
+            newFluid.writeToNBT(container.getTagCompound());
+        else container.stackTagCompound = null;
 
 
         return result;
