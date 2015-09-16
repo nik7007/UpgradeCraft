@@ -28,6 +28,7 @@ tile.upgcraft:TermoFluidFurnace.name=Termo Fluid Furnace
 tile.upgcraft:ActiveMaker.name=Active Maker
 tile.upgcraft:FluidTankMold.name=Fluid Tank Mold
 tile.upgcraft:FluidTankMold.Hardened.name=Hardened Fluid Tank Mold
+tile.upgcraft:FluidHopper.name=Fluid Hopper
 
 #Tooltip
 tooltip.upgcraft:tank.hollow=Transparent
