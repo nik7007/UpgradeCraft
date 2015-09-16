@@ -6,17 +6,30 @@ import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.tank.UpgCActiveTank;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.*;
 
 public class UpgCtilientityFluidHopper extends UpgCtilientityBasicFluidHopper {
+
+    int tick = 0;
 
     public UpgCtilientityFluidHopper() {
         super(Capacity.FLUID_HOPPER_TANK, UpgCActiveTank.class);
         this.speed = Capacity.Speed.FLUID_HOPPER_SPEED;
     }
 
-    int tick = 0;
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        this.tick = tag.getInteger("tick");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        tag.setInteger("tick", this.tick);
+    }
 
     @Override
     public void updateEntity() {
