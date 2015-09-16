@@ -31,11 +31,14 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     private int oldMeta = -1;
     private Class<? extends UpgCTank> TankClass;
 
-    protected UpgCtileentityTank(int tankCapacity, Class< ? extends UpgCTank> TankClass, boolean canBeDouble) {
+    protected UpgCtileentityTank(int tankCapacity, Class<? extends UpgCTank> TankClass, boolean canBeDouble) {
 
-        this(tankCapacity);
+        super();
+        this.TANK_CAPACITY = tankCapacity;
         setCanBeDouble(canBeDouble);
         this.TankClass = TankClass;
+        this.setTank(createNewTank(tankCapacity));
+
 
     }
 
