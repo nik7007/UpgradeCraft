@@ -450,7 +450,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
 
     @Override
     public boolean canDrain(ForgeDirection from, Fluid fluid) {
-        return fluid.getBlock() == ModBlocks.blockActiveLava;
+        return fluid == null || fluid.getBlock() == ModBlocks.blockActiveLava;
     }
 
     @Override
