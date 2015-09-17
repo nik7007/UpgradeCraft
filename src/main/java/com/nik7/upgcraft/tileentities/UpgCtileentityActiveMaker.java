@@ -304,12 +304,20 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
 
             int amount = inputTank.getCapacity() - inputTank.getFluidAmount();
             if (amount > 0) {
+
+                if (amount > FluidContainerRegistry.BUCKET_VOLUME)
+                    amount = FluidContainerRegistry.BUCKET_VOLUME;
+
                 FluidStack fluidStack = this.tank[1].drain(amount, true);
                 if (fluidStack != null)
                     termoFluidFurnace.fill(ForgeDirection.UNKNOWN, fluidStack, true);
 
                 amount = this.tank[1].getCapacity() - this.tank[1].getFluidAmount();
                 if (amount > 0) {
+
+                    if (amount > FluidContainerRegistry.BUCKET_VOLUME)
+                        amount = FluidContainerRegistry.BUCKET_VOLUME;
+
                     fluidStack = termoFluidFurnace.drain(ForgeDirection.UNKNOWN, amount, true);
                     if (fluidStack != null)
                         this.tank[1].fill(fluidStack, true);
@@ -329,7 +337,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
             activeValue = Math.abs(activeValue);
             activeValue += type * 25;
             fluid.setActiveValue(tank[1].getFluid(), activeValue);
-            if (Math.random() < 0.32)
+            if (Math.random() < 0.22)
                 decrStackSize(1, 1);
         }
 
@@ -368,7 +376,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
         if (amount > 0) {
             FluidStack fluidStack;
             FluidStack activeLava;
-            int activeValue = 0;
+            int activeValue;
 
             if (tank[0].getFluid().getFluid() == ModFluids.ActiveLava) {
 
@@ -379,8 +387,8 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
             } else {
 
                 fluidStack = tank[0].drain(amount * 2, true);
-
                 activeLava = new FluidStack(ModFluids.ActiveLava, fluidStack.amount / 2);
+                activeValue = tank[0].getFluid().getFluid().getTemperature();
             }
 
             ActiveLava fluid = (ActiveLava) tank[1].getFluid().getFluid();
@@ -397,7 +405,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
 
             if (Math.random() < 0.42) {
                 fluid.increaseActiveValue(tank[1].getFluid());
-                if (Math.random() < 0.26)
+                if (Math.random() < 0.16)
                     decrStackSize(1, 1);
             }
 
@@ -408,7 +416,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
             activeValue += type * 2;
             fluid.setActiveValue(tank[1].getFluid(), activeValue);
 
-            if (Math.random() < 0.32)
+            if (Math.random() < 0.22)
                 decrStackSize(1, 1);
 
             if (Math.random() < 0.27)
