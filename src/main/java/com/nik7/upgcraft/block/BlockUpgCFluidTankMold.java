@@ -31,6 +31,12 @@ public class BlockUpgCFluidTankMold extends BlockUpgC {
 
     }
 
+
+    @Override
+    public int damageDropped(int metadata) {
+        return metadata;
+    }
+
     @Override
     @SideOnly(Side.CLIENT)
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -63,7 +69,7 @@ public class BlockUpgCFluidTankMold extends BlockUpgC {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta){
+    public IIcon getIcon(int side, int meta) {
 
         if (meta < 2) {
             if (side == 0 || side == 1)
