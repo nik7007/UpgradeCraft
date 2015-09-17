@@ -20,6 +20,7 @@ public class ItemBlockFluidTankMold extends ItemBlock implements FluidInfuserIte
 
     public ItemBlockFluidTankMold(Block block) {
         super(block);
+        this.setHasSubtypes(true);
     }
 
     @Override
