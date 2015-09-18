@@ -156,28 +156,30 @@ public class BlockUpgCClayFluidTank extends BlockUpgCTank {
 
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-        int meta = world.getBlockMetadata(x, y, z);
+        if (!world.isRemote) {
+            int meta = world.getBlockMetadata(x, y, z);
 
-        if (meta == 3 && this.canSilkHarvest(world, player, x, y, z, meta) && EnchantmentHelper.getSilkTouchModifier(player)) {
-            UpgCtileentityTankClay upgCtileentityTank = (UpgCtileentityTankClay) world.getTileEntity(x, y, z);
-            ArrayList<ItemStack> itemStacks = getDrops(world, x, y, z, meta, 0);
+            if (meta == 3 && this.canSilkHarvest(world, player, x, y, z, meta) && EnchantmentHelper.getSilkTouchModifier(player)) {
+                UpgCtileentityTankClay upgCtileentityTank = (UpgCtileentityTankClay) world.getTileEntity(x, y, z);
+                ArrayList<ItemStack> itemStacks = getDrops(world, x, y, z, meta, 0);
 
-            if (!itemStacks.isEmpty() && upgCtileentityTank != null) {
+                if (!itemStacks.isEmpty() && upgCtileentityTank != null) {
 
-                FluidStack fluidStack = upgCtileentityTank.getFluidFormSingleTank();
+                    FluidStack fluidStack = upgCtileentityTank.getFluidFormSingleTank();
 
-                if (fluidStack != null) {
-                    for (ItemStack itemStack : itemStacks) {
-                        if (!itemStack.hasTagCompound())
-                            itemStack.stackTagCompound = new NBTTagCompound();
-                        fluidStack.writeToNBT(itemStack.getTagCompound());
+                    if (fluidStack != null) {
+                        for (ItemStack itemStack : itemStacks) {
+                            if (!itemStack.hasTagCompound())
+                                itemStack.stackTagCompound = new NBTTagCompound();
+                            fluidStack.writeToNBT(itemStack.getTagCompound());
+                        }
                     }
+
+                    BlockToItemHelper.addDrops(x, y, z, world.provider.dimensionId, itemStacks);
+
                 }
 
-                BlockToItemHelper.addDrops(x, y, z, world.provider.dimensionId, itemStacks);
-
             }
-
         }
         return super.removedByPlayer(world, player, x, y, z, willHarvest);
     }
@@ -204,7 +206,10 @@ public class BlockUpgCClayFluidTank extends BlockUpgCTank {
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
 
-        ArrayList<ItemStack> result = BlockToItemHelper.getDrops(x, y, z, world.provider.dimensionId);
+        ArrayList<ItemStack> result = null;
+
+        if (!world.isRemote)
+            result = BlockToItemHelper.getDrops(x, y, z, world.provider.dimensionId);
 
         if (result == null)
             result = super.getDrops(world, x, y, z, metadata, fortune);
