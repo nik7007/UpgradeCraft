@@ -29,6 +29,12 @@ public class BlockUpgCFluidTankMold extends BlockUpgC {
         this.setStepSound(soundTypeStone);
         this.setBlockName(Names.Blocks.FLUID_TANK_MOLD);
 
+        this.setHarvestLevel("shovel", 0, 0);
+        this.setHarvestLevel("shovel", 0, 1);
+
+        for (int meta = 2; meta < 6; meta++)
+            this.setHarvestLevel("pickaxe", 1, meta);
+
     }
 
 
@@ -86,8 +92,11 @@ public class BlockUpgCFluidTankMold extends BlockUpgC {
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 
-
-        if (metadata == 4) {
+        if (metadata == 0)
+            ret.add(new ItemStack(this, 1, 0));
+        else if (metadata == 1)
+            ret.add(new ItemStack(this, 1, 1));
+        else if (metadata == 4) {
             ret.add(new ItemStack(ModBlocks.blockUpgCIronFluidTank, 1, 0));
         } else if (metadata == 5) {
             ret.add(new ItemStack(ModBlocks.blockUpgCIronFluidTank, 1, 1));
