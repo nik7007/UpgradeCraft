@@ -10,7 +10,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.fluids.IFluidContainerItem;
@@ -27,7 +26,7 @@ public class ContainerTermoFluidFurnace extends ContainerUpgC {
         this.termoFluidFurnace = termoFluidFurnace;
 
         this.addSlotToContainer(new Slot(termoFluidFurnace, 0, 55, 20));
-        this.addSlotToContainer(new SlotFurnace(playerInventory.player, termoFluidFurnace, 1, 115, 28));
+        this.addSlotToContainer(new SlotTermoFurnace(playerInventory.player, termoFluidFurnace, 1, 115, 28));
         this.addSlotToContainer(new SlotOutPut(termoFluidFurnace, 2, 80, 62));
         this.addSlotToContainer(new SlotOutPut(termoFluidFurnace, 3, 98, 62));
         this.addSlotToContainer(new Slot(termoFluidFurnace, 4, 148, 62));
