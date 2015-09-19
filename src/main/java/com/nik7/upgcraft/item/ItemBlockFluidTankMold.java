@@ -62,7 +62,7 @@ public class ItemBlockFluidTankMold extends ItemBlock implements CustomCraftingE
     @Override
     public float getCustomCraftingExperience(ItemStack item) {
 
-        float value = item.getItemDamage() / 5;
-        return 0.85f * value + 0.1f;
+        float value = item.getItemDamage() / 5f;
+        return 0.65f * value + 0.35f;
     }
 }

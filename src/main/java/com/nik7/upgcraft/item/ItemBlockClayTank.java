@@ -3,6 +3,7 @@ package com.nik7.upgcraft.item;
 
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Reference;
+import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -18,7 +19,7 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem {
+public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem, CustomCraftingExperience {
 
     public ItemBlockClayTank(Block block) {
         super(block);
@@ -196,5 +197,9 @@ public class ItemBlockClayTank extends ItemBlock implements IFluidContainerItem 
         return stack;
     }
 
+    @Override
+    public float getCustomCraftingExperience(ItemStack item) {
+        return 0.8f;
+    }
 }
 
