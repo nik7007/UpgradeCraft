@@ -1,11 +1,14 @@
 package com.nik7.upgcraft.inventory;
 
 
-import com.nik7.upgcraft.registry.FluidInfuser.FluidInfuserItem;
+import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
+import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
@@ -52,8 +55,15 @@ public class SlotInfuser extends Slot {
             float f = 0;
             int j;
 
-            if (item.getItem() instanceof FluidInfuserItem) {
-                f = ((FluidInfuserItem) item.getItem()).getInfusingExperience(item);
+
+            Item itemI = item.getItem();
+
+            if (itemI instanceof CustomCraftingExperience) {
+                f = ((CustomCraftingExperience) item.getItem()).getCustomCraftingExperience(item);
+            } else if (itemI instanceof ItemBlock) {
+                Block block = ((ItemBlock) itemI).field_150939_a;
+                if (block instanceof CustomCraftingExperience)
+                    f = ((CustomCraftingExperience) block).getCustomCraftingExperience(item);
             }
 
             if (f == 0.0F) {

@@ -2,7 +2,10 @@ package com.nik7.upgcraft.init;
 
 
 import com.nik7.upgcraft.block.*;
-import com.nik7.upgcraft.item.*;
+import com.nik7.upgcraft.item.ItemBlockClayTank;
+import com.nik7.upgcraft.item.ItemBlockFluidTankMold;
+import com.nik7.upgcraft.item.ItemBlockIronTank;
+import com.nik7.upgcraft.item.ItemBlockWoodenTank;
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Reference;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -32,8 +35,8 @@ public class ModBlocks {
         GameRegistry.registerBlock(blockWoodenLiquidTank, ItemBlockWoodenTank.class, Reference.MOD_ID + "Block" + Names.Blocks.WOODEN_LIQUID_TANK);
         GameRegistry.registerBlock(blockClayLiquidTank, ItemBlockClayTank.class, Reference.MOD_ID + "Block" + Names.Blocks.CLAY_LIQUID_TANK);
         GameRegistry.registerBlock(blockUpgCEnderTank, Reference.MOD_ID + "Block" + Names.Blocks.ENDER_TANK);
-        GameRegistry.registerBlock(blockSlimyLog, ItemBlockSlimyLog.class, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_LOG);
-        GameRegistry.registerBlock(blockUpgCSlimyObsidian, itemBlockSlimyObsidian.class, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_OBSIDIAN);
+        GameRegistry.registerBlock(blockSlimyLog, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_LOG);
+        GameRegistry.registerBlock(blockUpgCSlimyObsidian, Reference.MOD_ID + "Block" + Names.Blocks.SLIMY_OBSIDIAN);
         GameRegistry.registerBlock(blockFluidBasicHopper, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_HOPPER);
         GameRegistry.registerBlock(blockFluidFurnace, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_FURNACE);
         GameRegistry.registerBlock(blockFluidInfuse, Reference.MOD_ID + "Block" + Names.Blocks.FLUID_INFUSE);

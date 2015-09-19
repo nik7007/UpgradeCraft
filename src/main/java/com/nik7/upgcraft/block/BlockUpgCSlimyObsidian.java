@@ -2,16 +2,18 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Texture;
+import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 
-public class BlockUpgCSlimyObsidian extends BlockUpgC {
+public class BlockUpgCSlimyObsidian extends BlockUpgC implements CustomCraftingExperience {
 
     @SideOnly(Side.CLIENT)
     public IIcon[] icons;
@@ -112,6 +114,10 @@ public class BlockUpgCSlimyObsidian extends BlockUpgC {
         return MapColor.obsidianColor;
     }
 
+    @Override
+    public float getCustomCraftingExperience(ItemStack item) {
+        return 1f;
+    }
 
     @Override
     public int getMobilityFlag() {

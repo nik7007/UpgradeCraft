@@ -2,15 +2,14 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Texture;
+import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
 
-public class BlockUpgCSlimyLog extends BlockUpgC {
-
-    private int flammability = 7;
-    private int fireSpreadSpeed = 15;
+public class BlockUpgCSlimyLog extends BlockUpgC implements CustomCraftingExperience {
 
     public BlockUpgCSlimyLog() {
         super(Material.wood);
@@ -23,12 +22,17 @@ public class BlockUpgCSlimyLog extends BlockUpgC {
 
     @Override
     public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return flammability;
+        return 7;
     }
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return fireSpreadSpeed;
+        return 15;
+    }
+
+    @Override
+    public float getCustomCraftingExperience(ItemStack item) {
+        return 0.6F;
     }
 }
 

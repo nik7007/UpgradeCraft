@@ -3,10 +3,10 @@ package com.nik7.upgcraft.item;
 
 import com.nik7.upgcraft.reference.Names;
 import com.nik7.upgcraft.reference.Texture;
-import com.nik7.upgcraft.registry.FluidInfuser.FluidInfuserItem;
+import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
 import net.minecraft.item.ItemStack;
 
-public class ItemClayIronIngot extends ItemUpgC implements FluidInfuserItem {
+public class ItemClayIronIngot extends ItemUpgC implements CustomCraftingExperience {
 
     public ItemClayIronIngot() {
         super();
@@ -16,7 +16,7 @@ public class ItemClayIronIngot extends ItemUpgC implements FluidInfuserItem {
     }
 
     @Override
-    public float getInfusingExperience(ItemStack item) {
+    public float getCustomCraftingExperience(ItemStack item) {
         return 1F;
     }
 }

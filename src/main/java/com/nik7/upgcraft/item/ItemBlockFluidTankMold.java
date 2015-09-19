@@ -3,7 +3,7 @@ package com.nik7.upgcraft.item;
 
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.reference.Reference;
-import com.nik7.upgcraft.registry.FluidInfuser.FluidInfuserItem;
+import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -16,7 +16,7 @@ import net.minecraft.util.StatCollector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemBlockFluidTankMold extends ItemBlock implements FluidInfuserItem {
+public class ItemBlockFluidTankMold extends ItemBlock implements CustomCraftingExperience {
 
     public ItemBlockFluidTankMold(Block block) {
         super(block);
@@ -60,7 +60,7 @@ public class ItemBlockFluidTankMold extends ItemBlock implements FluidInfuserIte
     }
 
     @Override
-    public float getInfusingExperience(ItemStack item) {
+    public float getCustomCraftingExperience(ItemStack item) {
 
         float value = item.getItemDamage() / 5;
         return 0.85f * value + 0.1f;
