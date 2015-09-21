@@ -386,9 +386,9 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
 
             } else {
 
+                activeValue = tank[0].getFluid().getFluid().getTemperature();
                 fluidStack = tank[0].drain(amount * 2, true);
                 activeLava = new FluidStack(ModFluids.ActiveLava, fluidStack.amount / 2);
-                activeValue = tank[0].getFluid().getFluid().getTemperature();
             }
 
             ActiveLava fluid = (ActiveLava) tank[1].getFluid().getFluid();
