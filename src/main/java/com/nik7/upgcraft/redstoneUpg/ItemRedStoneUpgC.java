@@ -2,31 +2,25 @@ package com.nik7.upgcraft.redstoneUpg;
 
 
 import com.nik7.upgcraft.item.ItemUpgC;
-import net.minecraft.nbt.NBTTagCompound;
 
-public class ItemRedStoneUpgC extends ItemUpgC implements RedStoneUpg {
+public abstract class ItemRedStoneUpgC extends ItemUpgC implements RedStoneUpg {
 
-    protected String actionName;
-    private Short[] side = new Short[4];
-    private Short[] status = new Short[4];
+    protected RedLogicAction action;
+    protected IORedSignal[] ioRedSignals = new IORedSignal[4];
 
-    @Override
-    public Short[] acting(Short[] inputs, int tick) {
-        return new Short[0];
+
+    public ItemRedStoneUpgC(RedLogicAction action, IORedSignal[] ioRedSignals) {
+        this.action = action;
+        this.ioRedSignals = ioRedSignals;
     }
 
     @Override
-    public int getDelay() {
-        return 0;
+    public final RedLogicAction getLogicAction() {
+        return action;
     }
 
     @Override
-    public void WriteNBT(NBTTagCompound tag) {
-
-    }
-
-    @Override
-    public void ReadNBT(NBTTagCompound tag) {
-
+    public final boolean isCustomAction() {
+        return action.equals(RedLogicAction.CUSTOM);
     }
 }
