@@ -1,20 +1,40 @@
 package com.nik7.upgcraft.redstoneUpg;
 
 
+import net.minecraft.nbt.NBTTagCompound;
+
 public enum RedLogicAction {
 
-    AND     ((short) 0),
-    OR      ((short) 1),
-    DELAY   ((short) 2),
-    CUSTOM  ((short) 3);
+    AND,
+    OR,
+    NOT,
+    DELAY,
+    CABLE,
+    CUSTOM;
 
-    private short actionID;
+    public void WriteToNBT(NBTTagCompound tag) {
 
-    RedLogicAction(short actionID) {
-        this.actionID = actionID;
+        NBTTagCompound action = new NBTTagCompound();
+        int ordinal = this.ordinal();
+
+        action.setInteger("action", ordinal);
+        tag.setTag("LogicAction", action);
+
     }
 
-    short getActionID() {
-        return actionID;
+    public static RedLogicAction ReadFromNBT(NBTTagCompound tag) {
+
+        NBTTagCompound action = tag.getCompoundTag("LogicAction");
+        int ordinal = action.getInteger("action");
+
+        for (RedLogicAction redLogicAction : RedLogicAction.values()) {
+            if (redLogicAction.ordinal() == ordinal)
+                return redLogicAction;
+        }
+
+        return CUSTOM;
+
     }
+
+
 }

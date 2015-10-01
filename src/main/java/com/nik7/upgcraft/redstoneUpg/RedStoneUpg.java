@@ -4,11 +4,19 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public interface RedStoneUpg {
     /**
-     * @param inputs 4x4 matrix, each cell is a direction input: 0 0 -> 0 side; 0 1 -> 1 side; 1 0 -> 2 side; 1 1 3 side
+     * @param inputs vector, each cell is a direction input: 0 -> 0 side; 1 -> 1 side; 2 -> 2 side; 3 -> 3 side
      *               <br/>
-     * @return 4x4 matrix: the output at given input and current tick
+     * @return vector: the output at given input and current tick
      */
-    Short[] acting(Short[] inputs);
+    boolean[] acting(boolean[] inputs);
+
+    /**
+     * @param inputs   vector,, each cell is a direction input: 0 -> 0 side; 1 -> 1 side; 2 -> 2 side; 3 -> 3 side
+     *                 <br/>
+     * @param metadata the object metadata
+     * @return vector: the output at given inputs and current tick
+     */
+    boolean[] acting(boolean[] inputs, int metadata);
 
     /**
      * @return get number of tick for the competition of the operation (acting method)
@@ -29,10 +37,27 @@ public interface RedStoneUpg {
      */
     void ReadNBT(NBTTagCompound tag);
 
+    /**
+     * @return the logic function
+     */
     RedLogicAction getLogicAction();
 
+    /**
+     * @return true if it is a custom logic function
+     */
     boolean isCustomAction();
 
+    /**
+     * @param metadata object metadata, where it is stored the rotation information
+     *                 <br/>
+     * @return a new IORedSignal base on its new direction
+     */
+    IORedSignal[] getIOConfiguration(int metadata);
+
+    /**
+     * @return return inner logic function, if the object has any
+     */
+    RedStoneUpg getInnerLogicFunction();
 
 
 }
