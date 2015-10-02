@@ -12,8 +12,9 @@ public class ModItems {
     public final static Item itemDragonSword = new ItemDragonSword();
     public final static Item itemConcentratedEnderPearl = new ItemConcentratedEnderPearl();
     public final static Item itemClayeyIronIngot = new ItemClayIronIngot();
-    public final static Item itemUpgCPersonalInformation  = new ItemUpgCPersonalInformation();
+    public final static Item itemUpgCPersonalInformation = new ItemUpgCPersonalInformation();
     public final static Item itemActiveLavaBucket = new ItemActiveLavaBucket();
+    public final static Item itemUpgCRedStoneANDLogicComponent = new ItemUpgCRedStoneANDLogicComponent();
 
     public static void init() {
 
@@ -22,5 +23,6 @@ public class ModItems {
         GameRegistry.registerItem(itemClayeyIronIngot, Reference.MOD_ID + "Item" + Names.Items.CLAY_IRON_INGOT);
         GameRegistry.registerItem(itemUpgCPersonalInformation, Reference.MOD_ID + "Item" + Names.Items.PERSONAL_INFORMATION);
         GameRegistry.registerItem(itemActiveLavaBucket, Reference.MOD_ID + "Item" + Names.Items.ACTIVE_LAVA_BUCKET);
+        GameRegistry.registerItem(itemUpgCRedStoneANDLogicComponent, Reference.MOD_ID + "Item" + "AND");
     }
 }

@@ -8,8 +8,9 @@ import com.nik7.upgcraft.redstoneUpg.RedLogicAction;
 public class ItemUpgCRedStoneANDLogicComponent extends ItemRedStoneUpgC {
 
 
-    private ItemUpgCRedStoneANDLogicComponent() {
+    public ItemUpgCRedStoneANDLogicComponent() {
         super(RedLogicAction.AND, new IORedSignal[]{IORedSignal.OUTPUT, IORedSignal.INPUT, IORedSignal.INPUT, IORedSignal.INPUT});
+        this.setUnlocalizedName("AND");
     }
 
     @Override
