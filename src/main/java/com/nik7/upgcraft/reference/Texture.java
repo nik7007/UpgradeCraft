@@ -68,6 +68,7 @@ public class Texture {
         public final static String PERSONAL_INFORMATION = Reference.MOD_ID + ":" + "personalinformation";
         public final static String ACTIVE_LAVA_BUCKET = Reference.MOD_ID + ":" + "ItemActiveLavaBucket";
         public final static String AND_COMPONENT = Reference.MOD_ID + ":" + "ItemANDComponent";
+        public final static String OR_COMPONENT = Reference.MOD_ID + ":" + "ItemORComponent";
 
     }
 

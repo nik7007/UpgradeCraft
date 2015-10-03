@@ -30,6 +30,7 @@ public class Names {
         public final static String PERSONAL_INFORMATION = "PersonalInformation";
         public final static String ACTIVE_LAVA_BUCKET = "ActiveLavaBucket";
         public final static String AND_COMPONENT = "ANDComponent";
+        public final static String OR_COMPONENT = "ORComponent";
 
     }
 

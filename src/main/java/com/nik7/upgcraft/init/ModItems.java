@@ -15,6 +15,7 @@ public class ModItems {
     public final static Item itemUpgCPersonalInformation = new ItemUpgCPersonalInformation();
     public final static Item itemActiveLavaBucket = new ItemActiveLavaBucket();
     public final static Item itemUpgCRedStoneANDLogicComponent = new ItemUpgCRedStoneANDLogicComponent();
+    public final static Item itemUpgCRedStoneORLogicComponent = new ItemUpgCRedStoneORLogicComponent();
 
     public static void init() {
 
@@ -24,5 +25,6 @@ public class ModItems {
         GameRegistry.registerItem(itemUpgCPersonalInformation, Reference.MOD_ID + "Item" + Names.Items.PERSONAL_INFORMATION);
         GameRegistry.registerItem(itemActiveLavaBucket, Reference.MOD_ID + "Item" + Names.Items.ACTIVE_LAVA_BUCKET);
         GameRegistry.registerItem(itemUpgCRedStoneANDLogicComponent, Reference.MOD_ID + "Item" + Names.Items.AND_COMPONENT);
+        GameRegistry.registerItem(itemUpgCRedStoneORLogicComponent, Reference.MOD_ID + "Item" + Names.Items.OR_COMPONENT);
     }
 }
