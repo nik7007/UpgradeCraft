@@ -7,7 +7,7 @@ public enum IORedSignal {
 
     INPUT((short) 1),
     OUTPUT((short) 0),
-    IO((short) 2),
+    IO((short) 2), //only for wire
     CLOSE((short) 3);
 
     private short statusID;

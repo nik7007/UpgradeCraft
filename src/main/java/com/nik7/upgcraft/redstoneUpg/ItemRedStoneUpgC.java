@@ -9,7 +9,7 @@ public abstract class ItemRedStoneUpgC extends ItemUpgC implements RedStoneUpg {
 
     protected RedLogicAction action;
     protected IORedSignal[] ioRedSignals;
-    protected boolean[] status = new boolean[4];
+    //protected boolean[] status = new boolean[4];
 
 
     public ItemRedStoneUpgC(RedLogicAction action, IORedSignal[] ioRedSignals) {
@@ -101,19 +101,19 @@ public abstract class ItemRedStoneUpgC extends ItemUpgC implements RedStoneUpg {
     }
 
     @Override
-    public void WriteNBT(NBTTagCompound tag) {
+    public void WriteNBT(NBTTagCompound tag, boolean[] status) {
 
-        action.WriteToNBT(tag);
-        WriteIONBT(ioRedSignals, tag);
+        //action.WriteToNBT(tag);
+        //WriteIONBT(ioRedSignals, tag);
         WriteStatusNBT(status, tag);
     }
 
     @Override
-    public void ReadNBT(NBTTagCompound tag) {
+    public  boolean[] ReadNBT(NBTTagCompound tag) {
 
-        action = RedLogicAction.ReadFromNBT(tag);
-        ioRedSignals = ReadIONBT(tag);
-        status = ReadStatusNBT(tag);
+        //action = RedLogicAction.ReadFromNBT(tag);
+        //ioRedSignals = ReadIONBT(tag);
+        return ReadStatusNBT(tag);
 
     }
 

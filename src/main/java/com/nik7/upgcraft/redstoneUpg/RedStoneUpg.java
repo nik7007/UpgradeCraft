@@ -28,14 +28,14 @@ public interface RedStoneUpg {
      *
      * @param tag the TagCompound where to save;
      */
-    void WriteNBT(NBTTagCompound tag);
+    void WriteNBT(NBTTagCompound tag, boolean[] status);
 
     /**
      * Loading data from
      *
      * @param tag the TagCompound where loading data from
      */
-    void ReadNBT(NBTTagCompound tag);
+    boolean[] ReadNBT(NBTTagCompound tag);
 
     /**
      * @return the logic function

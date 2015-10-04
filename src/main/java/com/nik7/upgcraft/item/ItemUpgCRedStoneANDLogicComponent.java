@@ -19,7 +19,7 @@ public class ItemUpgCRedStoneANDLogicComponent extends ItemRedStoneUpgC {
     @Override
     public boolean[] acting(boolean[] inputs, int metadata) {
 
-        this.status = inputs.clone();
+         boolean[] status = inputs.clone();
         boolean outPut = false;
         IORedSignal[] ioRedSignal = this.getIOConfiguration(metadata);
         int i;
