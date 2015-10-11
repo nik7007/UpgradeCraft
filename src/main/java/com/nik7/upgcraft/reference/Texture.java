@@ -67,8 +67,11 @@ public class Texture {
         public final static String CLAY_IRON_INGOT = Reference.MOD_ID + ":" + "clayironIngot";
         public final static String PERSONAL_INFORMATION = Reference.MOD_ID + ":" + "personalinformation";
         public final static String ACTIVE_LAVA_BUCKET = Reference.MOD_ID + ":" + "ItemActiveLavaBucket";
+
+        //RedUpg
         public final static String AND_COMPONENT = Reference.MOD_ID + ":" + "ItemANDComponent";
         public final static String OR_COMPONENT = Reference.MOD_ID + ":" + "ItemORComponent";
+        public final static String WIRE_COMPONENT = Reference.MOD_ID + ":" + "ItemWireComponent";
 
     }
 
