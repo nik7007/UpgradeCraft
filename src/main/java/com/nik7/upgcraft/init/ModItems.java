@@ -19,6 +19,7 @@ public class ModItems {
     public final static Item itemUpgCRedStoneANDLogicComponent = new ItemUpgCRedStoneANDLogicComponent();
     public final static Item itemUpgCRedStoneORLogicComponent = new ItemUpgCRedStoneORLogicComponent();
     public final static Item itemUpgCRedStoneWireComponent = new ItemUpgCRedStoneWireComponent();
+    public final static Item itemUpgCRedStoneNOTComponent = new ItemUpgCRedStoneNOTComponent();
 
 
     public static void init() {
@@ -33,6 +34,7 @@ public class ModItems {
         GameRegistry.registerItem(itemUpgCRedStoneANDLogicComponent, Reference.MOD_ID + "Item" + Names.Items.AND_COMPONENT);
         GameRegistry.registerItem(itemUpgCRedStoneORLogicComponent, Reference.MOD_ID + "Item" + Names.Items.OR_COMPONENT);
         GameRegistry.registerItem(itemUpgCRedStoneWireComponent, Reference.MOD_ID + "Item" + Names.Items.WIRE_COMPONENT);
+        GameRegistry.registerItem(itemUpgCRedStoneNOTComponent, Reference.MOD_ID + "Item" + Names.Items.NOT_COMPONENT);
 
     }
 }

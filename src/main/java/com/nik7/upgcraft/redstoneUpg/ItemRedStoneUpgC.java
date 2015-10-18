@@ -109,7 +109,7 @@ public abstract class ItemRedStoneUpgC extends ItemUpgC implements RedStoneUpg {
     }
 
     @Override
-    public  boolean[] ReadNBT(NBTTagCompound tag) {
+    public boolean[] ReadNBT(NBTTagCompound tag) {
 
         //action = RedLogicAction.ReadFromNBT(tag);
         //ioRedSignals = ReadIONBT(tag);
@@ -137,6 +137,11 @@ public abstract class ItemRedStoneUpgC extends ItemUpgC implements RedStoneUpg {
         }
 
         return result;
+    }
+
+    @Override
+    public int getDelay(int metadata) {
+        return getDelay();
     }
 
     @Override

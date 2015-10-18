@@ -72,6 +72,7 @@ public class Texture {
         public final static String AND_COMPONENT = Reference.MOD_ID + ":" + "ItemANDComponent";
         public final static String OR_COMPONENT = Reference.MOD_ID + ":" + "ItemORComponent";
         public final static String WIRE_COMPONENT = Reference.MOD_ID + ":" + "ItemWireComponent";
+        public final static String NOT_COMPONENT = Reference.MOD_ID + ":" + "ItemNOTComponent";
 
     }
 

@@ -34,6 +34,7 @@ public class Names {
         public final static String AND_COMPONENT = "ANDComponent";
         public final static String OR_COMPONENT = "ORComponent";
         public final static String WIRE_COMPONENT = "WireComponent";
+        public final static String NOT_COMPONENT = "NOTComponent";
 
     }
 
