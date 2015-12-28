@@ -3,6 +3,8 @@ package com.nik7.upgcraft.item;
 import com.nik7.upgcraft.redstoneUpg.IORedSignal;
 import com.nik7.upgcraft.redstoneUpg.ItemRedStoneUpgC;
 import com.nik7.upgcraft.redstoneUpg.RedLogicAction;
+import com.nik7.upgcraft.reference.Names;
+import com.nik7.upgcraft.reference.Texture;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,6 +13,8 @@ public class ItemUpgCRedStoneWireComponent extends ItemRedStoneUpgC {
 
     public ItemUpgCRedStoneWireComponent() {
         super(RedLogicAction.CABLE, new IORedSignal[]{IORedSignal.IO, IORedSignal.IO, IORedSignal.IO, IORedSignal.IO});
+        this.setUnlocalizedName(Names.Items.WIRE_COMPONENT);
+        this.setTextureName(Texture.Items.WIRE_COMPONENT);
     }
 
     @Override

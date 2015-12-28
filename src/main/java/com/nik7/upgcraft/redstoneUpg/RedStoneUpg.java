@@ -24,6 +24,12 @@ public interface RedStoneUpg {
     int getDelay();
 
     /**
+     * @param metadata item metadata
+     * @return get number of tick for the competition of the operation (acting method) based on metadata
+     */
+    int getDelay(int metadata);
+
+    /**
      * Save data
      *
      * @param tag the TagCompound where to save;

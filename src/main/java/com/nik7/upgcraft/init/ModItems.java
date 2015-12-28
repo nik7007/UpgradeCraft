@@ -14,8 +14,13 @@ public class ModItems {
     public final static Item itemClayeyIronIngot = new ItemClayIronIngot();
     public final static Item itemUpgCPersonalInformation = new ItemUpgCPersonalInformation();
     public final static Item itemActiveLavaBucket = new ItemActiveLavaBucket();
+
+    //RedUpg
     public final static Item itemUpgCRedStoneANDLogicComponent = new ItemUpgCRedStoneANDLogicComponent();
     public final static Item itemUpgCRedStoneORLogicComponent = new ItemUpgCRedStoneORLogicComponent();
+    public final static Item itemUpgCRedStoneWireComponent = new ItemUpgCRedStoneWireComponent();
+    public final static Item itemUpgCRedStoneNOTComponent = new ItemUpgCRedStoneNOTComponent();
+
 
     public static void init() {
 
@@ -24,7 +29,12 @@ public class ModItems {
         GameRegistry.registerItem(itemClayeyIronIngot, Reference.MOD_ID + "Item" + Names.Items.CLAY_IRON_INGOT);
         GameRegistry.registerItem(itemUpgCPersonalInformation, Reference.MOD_ID + "Item" + Names.Items.PERSONAL_INFORMATION);
         GameRegistry.registerItem(itemActiveLavaBucket, Reference.MOD_ID + "Item" + Names.Items.ACTIVE_LAVA_BUCKET);
+
+        //RedUpg
         GameRegistry.registerItem(itemUpgCRedStoneANDLogicComponent, Reference.MOD_ID + "Item" + Names.Items.AND_COMPONENT);
         GameRegistry.registerItem(itemUpgCRedStoneORLogicComponent, Reference.MOD_ID + "Item" + Names.Items.OR_COMPONENT);
+        GameRegistry.registerItem(itemUpgCRedStoneWireComponent, Reference.MOD_ID + "Item" + Names.Items.WIRE_COMPONENT);
+        GameRegistry.registerItem(itemUpgCRedStoneNOTComponent, Reference.MOD_ID + "Item" + Names.Items.NOT_COMPONENT);
+
     }
 }
