@@ -2,21 +2,21 @@ package com.nik7.upgcraft.entity.player;
 
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Reference;
-import com.nik7.upgcraft.tank.UpgCTank;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
+import net.minecraftforge.fluids.FluidTank;
 
 public class ExtendedPlayerUpgC implements IExtendedEntityProperties {
 
     private final EntityPlayer player;
-    private UpgCTank UpgCEnderTank;
+    private FluidTank UpgCEnderTank;
 
     public ExtendedPlayerUpgC(EntityPlayer player) {
         this.player = player;
-        UpgCEnderTank = new UpgCTank(Capacity.SMALL_TANK);
+        UpgCEnderTank = new FluidTank(Capacity.SMALL_TANK);
     }
 
     public static void register(EntityPlayer player) {
@@ -43,7 +43,7 @@ public class ExtendedPlayerUpgC implements IExtendedEntityProperties {
 
     }
 
-    public static UpgCTank getUpgCEnderTank(EntityPlayer player) {
+    public static FluidTank getUpgCEnderTank(EntityPlayer player) {
 
         return ((ExtendedPlayerUpgC) player.getExtendedProperties(Reference.EXTENDED_PLAYER)).UpgCEnderTank;
 

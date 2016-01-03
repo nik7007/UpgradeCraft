@@ -61,7 +61,7 @@ public class SlotInfuser extends Slot {
             if (itemI instanceof CustomCraftingExperience) {
                 f = ((CustomCraftingExperience) item.getItem()).getCustomCraftingExperience(item);
             } else if (itemI instanceof ItemBlock) {
-                Block block = ((ItemBlock) itemI).field_150939_a;
+                Block block = ((ItemBlock) itemI).block;
                 if (block instanceof CustomCraftingExperience)
                     f = ((CustomCraftingExperience) block).getCustomCraftingExperience(item);
             }

@@ -3,7 +3,6 @@ package com.nik7.upgcraft.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockChest;
-import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -12,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -52,11 +52,11 @@ public class ItemHelper {
     }
 
     //***Methods extract from vanilla hopper***//
-
-    public static boolean inventoryIsEmpty(IInventory inventory, int side) {
-        if (inventory instanceof ISidedInventory && side > -1) {
+/*
+    public static boolean inventoryIsEmpty(IInventory inventory, EnumFacing side) {
+        if (inventory instanceof ISidedInventory) {
             ISidedInventory isidedinventory = (ISidedInventory) inventory;
-            int[] slots = isidedinventory.getAccessibleSlotsFromSide(side);
+            int[] slots = isidedinventory.getSlotsForFace(side);
 
             for (int slot : slots) {
                 if (isidedinventory.getStackInSlot(slot) != null) {
@@ -84,7 +84,7 @@ public class ItemHelper {
             return false;
         } else {
             ItemStack itemstack = entityItem.getEntityItem().copy();
-            ItemStack itemstack1 = putItemInInventory(inventory, itemstack, 1);
+            ItemStack itemstack1 = putItemInInventory(inventory, itemstack, EnumFacing.UP);
 
             if (itemstack1 != null && itemstack1.stackSize != 0) {
                 entityItem.setEntityItemStack(itemstack1);
@@ -97,10 +97,10 @@ public class ItemHelper {
         }
     }
 
-    public static ItemStack putItemInInventory(IInventory inventory, ItemStack itemStack, int side) {
-        if (inventory instanceof ISidedInventory && side > -1) {
+    public static ItemStack putItemInInventory(IInventory inventory, ItemStack itemStack, EnumFacing side) {
+        if (inventory instanceof ISidedInventory) {
             ISidedInventory isidedinventory = (ISidedInventory) inventory;
-            int[] slots = isidedinventory.getAccessibleSlotsFromSide(side);
+            int[] slots = isidedinventory.getSlotsForFace(side);
 
             for (int slot = 0; slot < slots.length && itemStack != null && itemStack.stackSize > 0; ++slot) {
                 itemStack = putItemInSlot(inventory, itemStack, slots[slot], side);
@@ -120,15 +120,15 @@ public class ItemHelper {
         return itemStack;
     }
 
-    private static boolean isItemValidForSlotInInventory(IInventory inventory, ItemStack itemStack, int slot, int side) {
+    private static boolean isItemValidForSlotInInventory(IInventory inventory, ItemStack itemStack, int slot, EnumFacing side) {
         return inventory.isItemValidForSlot(slot, itemStack) && (!(inventory instanceof ISidedInventory) || ((ISidedInventory) inventory).canInsertItem(slot, itemStack, side));
     }
 
-    public static boolean canExtractItem(IInventory inventory, ItemStack itemStack, int slot, int side) {
+    public static boolean canExtractItem(IInventory inventory, ItemStack itemStack, int slot, EnumFacing side) {
         return !(inventory instanceof ISidedInventory) || ((ISidedInventory) inventory).canExtractItem(slot, itemStack, side);
     }
 
-    private static ItemStack putItemInSlot(IInventory inventory, ItemStack itemStack, int slot, int side) {
+    private static ItemStack putItemInSlot(IInventory inventory, ItemStack itemStack, int slot, EnumFacing side) {
         ItemStack itemStack1 = inventory.getStackInSlot(slot);
 
         if (isItemValidForSlotInInventory(inventory, itemStack, slot, side)) {
@@ -232,6 +232,7 @@ public class ItemHelper {
 
         return true;
     }
+    */
 
 }
 

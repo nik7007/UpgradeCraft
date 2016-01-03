@@ -6,13 +6,13 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.SlotFurnace;
+import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 
-public class SlotTermoFurnace extends SlotFurnace {
+public class SlotTermoFurnace extends SlotFurnaceOutput {
 
     private int slotIndex;
     private EntityPlayer thePlayer;
@@ -39,7 +39,7 @@ public class SlotTermoFurnace extends SlotFurnace {
             if (itemI instanceof CustomCraftingExperience) {
                 f = ((CustomCraftingExperience) itemStack.getItem()).getCustomCraftingExperience(itemStack);
             } else if (itemI instanceof ItemBlock) {
-                Block block = ((ItemBlock) itemI).field_150939_a;
+                Block block = ((ItemBlock) itemI).block;
                 if (block instanceof CustomCraftingExperience)
                     f = ((CustomCraftingExperience) block).getCustomCraftingExperience(itemStack);
             }

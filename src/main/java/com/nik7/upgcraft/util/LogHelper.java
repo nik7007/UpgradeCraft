@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.util;
 
 import com.nik7.upgcraft.reference.Reference;
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
 public class LogHelper {

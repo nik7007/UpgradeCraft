@@ -1,25 +1,25 @@
 package com.nik7.upgcraft.util;
 
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ActiveRenderInfo;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 import java.nio.FloatBuffer;
 import java.util.Random;
 
 @SideOnly(Side.CLIENT)
-public class RenderHelper {
+public class RenderHelper {/*
 
-    private static final Tessellator tessellator = Tessellator.instance;
+    private static final Tessellator tessellator = Tessellator.getInstance();
 
 
     public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMax, float maxY, float zMax, boolean top, boolean renderDown) {
@@ -229,11 +229,11 @@ public class RenderHelper {
                 tessellator.addVertex(xMin, yMin, zMin);
             } else {
 
-                /*//up
-                tessellator.addVertex(xMax, yMax, zMax);
-                tessellator.addVertex(xMax, yMax, zMin);
-                tessellator.addVertex(xMin, yMax, zMin);
-                tessellator.addVertex(xMin, yMax, zMax);*/
+                //up
+                // tessellator.addVertex(xMax, yMax, zMax);
+                // tessellator.addVertex(xMax, yMax, zMin);
+               // tessellator.addVertex(xMin, yMax, zMin);
+               // tessellator.addVertex(xMin, yMax, zMax);
 
 
                 //down
@@ -261,7 +261,7 @@ public class RenderHelper {
         gl.put(f1).put(f2).put(f3).put(f4);
         gl.flip();
         return gl;
-    }
+    }*/
 
 
 }

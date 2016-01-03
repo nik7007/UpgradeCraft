@@ -2,10 +2,10 @@ package com.nik7.upgcraft.client.gui;
 
 import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.reference.Reference;
-import cpw.mods.fml.client.config.GuiConfig;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.config.GuiConfig;
 
 public class ModGuiConfig extends GuiConfig {
     public ModGuiConfig(GuiScreen guiScreen) {

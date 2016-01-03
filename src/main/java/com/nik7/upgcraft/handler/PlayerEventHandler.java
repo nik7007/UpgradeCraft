@@ -2,10 +2,10 @@ package com.nik7.upgcraft.handler;
 
 
 import com.nik7.upgcraft.entity.player.ExtendedPlayerUpgC;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class PlayerEventHandler {
 

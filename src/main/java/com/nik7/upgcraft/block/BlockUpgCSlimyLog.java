@@ -1,33 +1,27 @@
 package com.nik7.upgcraft.block;
 
-import com.nik7.upgcraft.reference.Names;
-import com.nik7.upgcraft.reference.Texture;
+
 import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.util.ForgeDirection;
-
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockUpgCSlimyLog extends BlockUpgC implements CustomCraftingExperience {
+
+    private static final String name = "SlimyLog";
 
     public BlockUpgCSlimyLog() {
         super(Material.wood);
         this.setHardness(2.0F);
         this.setStepSound(soundTypeWood);
         this.slipperiness = 1.05F; //0.98F ice
-        this.setBlockName(Names.Blocks.SLIMY_LOG);
-        this.setBlockTextureName(Texture.Blocks.SLIMY_LOG);
+        this.setUnlocalizedName(name);
+        GameRegistry.registerBlock(this, name);
+
     }
 
-    @Override
-    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return 7;
-    }
-
-    @Override
-    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
-        return 15;
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -35,5 +29,3 @@ public class BlockUpgCSlimyLog extends BlockUpgC implements CustomCraftingExperi
         return 0.6F;
     }
 }
-
-
