@@ -1,11 +1,16 @@
 package com.nik7.upgcraft.init;
 
 
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
 public class Recipes {
 
     public static void init() {
 
         //Crafting recipes
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCSlimyLog), "sss", "sps", "sss", 's', "slimeball", 'p', "plankWood"));
 
         /*//Fluid Infuser recipes
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 200), new ItemStack(ModBlocks.blockSlimyLog), new ItemStack(Items.slime_ball, 2), 10, new ItemStack(Blocks.planks), 200);
