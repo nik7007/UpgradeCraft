@@ -8,5 +8,4 @@ public class ModBlocks {
 
     public static final BlockUpgC blockUpgCSlimyLog = new BlockUpgCSlimyLog();
 
-
 }

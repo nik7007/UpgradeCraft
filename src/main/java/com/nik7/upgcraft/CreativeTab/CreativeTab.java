@@ -1,4 +1,4 @@
-package com.nik7.upgcraft.CreativeTab;
+package com.nik7.upgcraft.creativetab;
 
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.reference.Reference;

@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -20,7 +21,9 @@ import java.util.Random;
 
 public class ItemHelper {
 
-    public static void dropItems(World world, int x, int y, int z, ItemStack itemStack, Random rand) {
+    public static void dropItems(World world, BlockPos pos, ItemStack itemStack, Random rand) {
+
+        int x = pos.getX(),  y = pos.getY(),  z = pos.getZ();
 
         if (itemStack != null) {
             float dX = rand.nextFloat() * 0.8F + 0.1F;

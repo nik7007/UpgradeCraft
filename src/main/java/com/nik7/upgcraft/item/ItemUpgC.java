@@ -1,6 +1,6 @@
 package com.nik7.upgcraft.item;
 
-import com.nik7.upgcraft.CreativeTab.CreativeTab;
+import com.nik7.upgcraft.creativetab.CreativeTab;
 import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.util.StringHelper;
 import net.minecraft.item.Item;
