@@ -259,4 +259,16 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
             return 0;
         return tank.getFluid().getFluid().getLuminosity(tank.getFluid());
     }
+
+    public int getAdjMetadata() {
+        if (otherTank != null)
+            return otherTank.getBlockMetadata();
+        return -1;
+    }
+
+    private void updateModBlock() {
+        //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+        worldObj.markBlockForUpdate(pos);
+        this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
+    }
 }

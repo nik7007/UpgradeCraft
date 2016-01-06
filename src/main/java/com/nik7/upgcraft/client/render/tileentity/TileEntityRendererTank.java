@@ -35,9 +35,12 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
         boolean isTop = false;
 
         boolean isDouble = te.isDouble();
+        int dY = 0;
         if (isDouble) {
             isTop = te.isTop();
             modelTank = doubleModelTank;
+            if (isTop)
+                dY = 1;
         } else
             modelTank = smallModelTank;
 
@@ -52,7 +55,7 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
                 GlStateManager.matrixMode(5890);
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(4.0F, 4.0F, 1.0F);
-                GlStateManager.translate(0.0625F, 0.0625F, 0.0625F);
+                GlStateManager.translate(0.0625F, 1F, 0.0625F);
                 GlStateManager.matrixMode(5888);
 
             } else if (isGlasses) {
@@ -68,17 +71,33 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
 
             }
 
+        } else {
+
+            if (destroyStage >= 0) {
+                this.bindTexture(DESTROY_STAGES[destroyStage]);
+                GlStateManager.matrixMode(5890);
+                GlStateManager.pushMatrix();
+                GlStateManager.scale(4.0F, 4.0F, 1.0F);
+                GlStateManager.translate(0.0625F, 2F, 0.0625F);
+                GlStateManager.matrixMode(5888);
+
+            } else {
+                int adjMeta = te.getAdjMetadata();
+
+                this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_WOODEN_TANK));
+
+
+            }
+
+
         }
 
         GlStateManager.pushMatrix();
         GlStateManager.enableRescaleNormal();
 
-        if (destroyStage < 0)
-        {
+        if (destroyStage < 0) {
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         }
-
-        int dY = 0;
 
         GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F - dY, (float) z + 0.5F);
 
@@ -90,8 +109,7 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
         GlStateManager.popMatrix();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-        if (destroyStage >= 0)
-        {
+        if (destroyStage >= 0) {
             GlStateManager.matrixMode(5890);
             GlStateManager.popMatrix();
             GlStateManager.matrixMode(5888);
