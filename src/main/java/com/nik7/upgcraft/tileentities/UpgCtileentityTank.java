@@ -1,18 +1,19 @@
 package com.nik7.upgcraft.tileentities;
 
-import com.nik7.upgcraft.block.BlockUpgCTank;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
 import com.nik7.upgcraft.util.LogHelper;
 import com.nik7.upgcraft.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.TileFluidHandler;
 
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class UpgCtileentityTank extends TileFluidHandler {
+public abstract class UpgCtileentityTank extends TileFluidHandler implements ITickable {
 
     private UpgCtileentityTank otherTank;
     private boolean isTop;
@@ -21,20 +22,20 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     private int capacity;
     private final int originalCapacity;
     private Class<? extends UpgCFluidTank> TankClass = null;
+    private boolean isFirst = true;
 
-    public UpgCtileentityTank(boolean canBeDouble) {
+    public UpgCtileentityTank(int capacity, boolean canBeDouble) {
         super();
-        this.capacity = this.originalCapacity = ((BlockUpgCTank) (WorldHelper.getBlock(worldObj, pos))).getCapacity();
+        this.capacity = this.originalCapacity = capacity;
         this.tank = createTank(capacity);
         this.isTop = false;
         this.isDouble = false;
         this.canBeDouble = canBeDouble;
-
     }
 
-    public UpgCtileentityTank(boolean canBeDouble, Class<? extends UpgCFluidTank> TankClass) {
+    public UpgCtileentityTank(int capacity, boolean canBeDouble, Class<? extends UpgCFluidTank> TankClass) {
 
-        this(canBeDouble);
+        this(capacity, canBeDouble);
         this.TankClass = TankClass;
 
     }
@@ -52,20 +53,60 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
         this.isDouble = tag.getBoolean("isDouble");
         this.isTop = tag.getBoolean("isTop");
 
-
         if (isDouble) {
-
             capacity = 2 * originalCapacity;
-            this.tank.setCapacity(capacity);
+        }
+        this.tank.setCapacity(capacity);
 
-            if (isTop) {
-                otherTank = (UpgCtileentityTank) worldObj.getTileEntity(pos.up());
-            } else otherTank = (UpgCtileentityTank) worldObj.getTileEntity(pos.down());
+    }
 
-            merge(otherTank);
+    @Override
+    public void update() {
 
-        } else this.tank.setCapacity(capacity);
+        if (isFirst) {
+            isFirst = false;
+            if (isDouble) {
 
+                UpgCtileentityTank tank;
+                if (isTop) {
+                    tank = (UpgCtileentityTank) worldObj.getTileEntity(pos.down());
+                } else tank = (UpgCtileentityTank) worldObj.getTileEntity(pos.up());
+
+                merge(tank);
+            }
+        }
+
+    }
+
+    @Override
+    public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+
+        if (isDouble && isTop) {
+
+            int realContent = this.tank.getFluidAmount() - originalCapacity;
+
+            if (realContent < resource.amount)
+                return null;
+
+            else return super.drain(from, resource, doDrain);
+
+
+        } else
+            return super.drain(from, resource, doDrain);
+    }
+
+    @Override
+    public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
+
+        if (isDouble && isTop) {
+
+            int realContent = this.tank.getFluidAmount() - originalCapacity;
+            if (realContent < maxDrain)
+                return null;
+            else return super.drain(from, maxDrain, doDrain);
+
+        } else
+            return super.drain(from, maxDrain, doDrain);
     }
 
 
@@ -96,6 +137,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
         this.separateTank();
 
     }
+
 
     private void separateTank() {
 
@@ -157,9 +199,13 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
 
     }
 
+    private boolean fluidAreCompatible(FluidStack otherFluid) {
+        return otherFluid == null || this.tank.getFluid() == null || this.tank.getFluid().isFluidEqual(otherFluid);
+    }
+
     private void merge(UpgCtileentityTank otherTank) {
 
-        if (canBeDouble && canMerge(otherTank)) {
+        if (canBeDouble && canMerge(otherTank) && fluidAreCompatible(otherTank.tank.getFluid())) {
             this.otherTank = otherTank;
             isTop = this.pos.getY() > otherTank.pos.getY();
 
@@ -199,4 +245,18 @@ public abstract class UpgCtileentityTank extends TileFluidHandler {
     }
 
     protected abstract boolean canMerge(TileEntity tileEntity);
+
+    public boolean isTop() {
+        return isTop;
+    }
+
+    public boolean isDouble() {
+        return isDouble;
+    }
+
+    public int getFluidLight() {
+        if (tank.getFluid() == null)
+            return 0;
+        return tank.getFluid().getFluid().getLuminosity(tank.getFluid());
+    }
 }

@@ -5,6 +5,7 @@ import com.nik7.upgcraft.config.ConfigurableObject;
 import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.util.WorldHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -17,10 +18,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -37,14 +40,33 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     public static final PropertyEnum<TankType> TYPE = PropertyEnum.create("type", TankType.class);
     private final String name;
 
-    public BlockUpgCTank(Material material, int capacity, String name) {
+    public BlockUpgCTank(Material material, int capacity, String name, Class<? extends ItemBlock> itemBlock) {
         super(material);
         this.capacity = capacity;
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, TankType.SOLID));
         this.name = name;
+        this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
+        this.setUnlocalizedName(name);
+        if (itemBlock == null)
+            GameRegistry.registerBlock(this, name);
+        else
+            GameRegistry.registerBlock(this, itemBlock, name);
 
-        GameRegistry.registerBlock(this, name);
+    }
 
+    @Override
+    public int getRenderType() {
+        return -1;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube() {
+        return false;
     }
 
     @Override
@@ -217,8 +239,31 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         }
     }
 
-    public int getCapacity(){
+    public int getCapacity() {
         return this.capacity;
+    }
+
+    @Override
+    public int getLightValue(IBlockAccess world, BlockPos pos) {
+
+        Block block = world.getBlockState(pos).getBlock();
+        if (block != this) {
+            return block.getLightValue(world, pos);
+        }
+
+        if (world.getBlockState(pos).getValue(TYPE).equals(TankType.GLASSES)) {
+
+            UpgCtileentityTank tank = (UpgCtileentityTank) world.getTileEntity(pos);
+
+            int l = 0;
+
+            if (tank != null)
+                l = tank.getFluidLight();
+
+            if (l > 0)
+                return l;
+        }
+        return getLightValue();
     }
 
     @Override
