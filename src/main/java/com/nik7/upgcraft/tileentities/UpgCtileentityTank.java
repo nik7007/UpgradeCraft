@@ -5,6 +5,9 @@ import com.nik7.upgcraft.util.LogHelper;
 import com.nik7.upgcraft.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -61,6 +64,22 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
     }
 
     @Override
+    public Packet getDescriptionPacket() {
+        NBTTagCompound tag = new NBTTagCompound();
+        writeToNBT(tag);
+
+        return new S35PacketUpdateTileEntity(pos, -1, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+
+        readFromNBT(packet.getNbtCompound());
+        worldObj.markBlockForUpdate(pos);
+
+    }
+
+    @Override
     public void update() {
 
         if (isFirst) {
@@ -80,7 +99,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
 
     @Override
     public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-
+        FluidStack result;
         if (isDouble && isTop) {
 
             int realContent = this.tank.getFluidAmount() - originalCapacity;
@@ -88,25 +107,46 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
             if (realContent < resource.amount)
                 return null;
 
-            else return super.drain(from, resource, doDrain);
+            else result = super.drain(from, resource, doDrain);
 
 
         } else
-            return super.drain(from, resource, doDrain);
+            result = super.drain(from, resource, doDrain);
+
+        if (result != null)
+            updateModBlock();
+
+        return result;
     }
 
     @Override
     public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
+        FluidStack result;
         if (isDouble && isTop) {
 
             int realContent = this.tank.getFluidAmount() - originalCapacity;
             if (realContent < maxDrain)
                 return null;
-            else return super.drain(from, maxDrain, doDrain);
+            else result = super.drain(from, maxDrain, doDrain);
 
         } else
-            return super.drain(from, maxDrain, doDrain);
+            result = super.drain(from, maxDrain, doDrain);
+
+        if (result != null)
+            updateModBlock();
+
+        return result;
+    }
+
+    @Override
+    public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+        int result = super.fill(from, resource, doFill);
+
+        if (result > 0)
+            updateModBlock();
+
+        return result;
+
     }
 
 
@@ -171,7 +211,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
 
                 this.tank = newTank;
             }
-
+            updateModBlock();
 
         }
 
@@ -239,6 +279,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
             }
 
             isTop = isTop && isDouble;
+            updateModBlock();
 
         }
 
@@ -270,5 +311,20 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
         //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
         worldObj.markBlockForUpdate(pos);
         this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
+    }
+
+    public FluidStack getFluid() {
+        if (tank.getFluid() != null)
+            return new FluidStack(tank.getFluid(), tank.getFluidAmount());
+        else return null;
+    }
+
+    public float getFillPercentage() {
+
+        FluidStack fluidStack = tank.getFluid();
+        if (fluidStack == null)
+            return 0;
+
+        return (float) capacity / (float) tank.getFluidAmount();
     }
 }

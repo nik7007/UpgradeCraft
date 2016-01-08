@@ -5,7 +5,6 @@ import com.nik7.upgcraft.config.ConfigurableObject;
 import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.util.WorldHelper;
-import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -56,7 +55,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     @Override
     public int getRenderType() {
-        return -1;
+        return 2;
     }
 
     @Override
@@ -243,28 +242,6 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         return this.capacity;
     }
 
-    @Override
-    public int getLightValue(IBlockAccess world, BlockPos pos) {
-
-        Block block = world.getBlockState(pos).getBlock();
-        if (block != this) {
-            return block.getLightValue(world, pos);
-        }
-
-        if (world.getBlockState(pos).getValue(TYPE).equals(TankType.GLASSES)) {
-
-            UpgCtileentityTank tank = (UpgCtileentityTank) world.getTileEntity(pos);
-
-            int l = 0;
-
-            if (tank != null)
-                l = tank.getFluidLight();
-
-            if (l > 0)
-                return l;
-        }
-        return getLightValue();
-    }
 
     @Override
     public void appliedConfig(SystemConfig.ConfigValue... values) {
