@@ -36,6 +36,11 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return 10;
+    }
+
+    @Override
+    public int tickRate(World worldIn) {
         return 8;
     }
 

@@ -1,11 +1,7 @@
 package com.nik7.upgcraft;
 
-import com.nik7.upgcraft.client.render.Render;
 import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
-import com.nik7.upgcraft.init.ModBlocks;
-import com.nik7.upgcraft.init.ModFluids;
-import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.init.Recipes;
 import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.network.NetworkHandler;
@@ -55,8 +51,6 @@ public class UpgradeCraft {
         proxy.initRenderingAndTextures();
         proxy.registerEventHandlers();
         Recipes.init();
-
-        Render.render();
 
 
         //FMLInterModComms.sendMessage("Waila", "register", "com.nik7.upgcraft.waila.Waila.callbackRegister");

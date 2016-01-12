@@ -4,11 +4,9 @@ package com.nik7.upgcraft.client.render.tileentity;
 import com.nik7.upgcraft.block.BlockUpgCTank;
 import com.nik7.upgcraft.client.render.model.ModelDoubleTank;
 import com.nik7.upgcraft.client.render.model.ModelTank;
-import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenFluidTank;
-import com.nik7.upgcraft.util.RenderHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
@@ -17,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileentityTank> {
