@@ -23,9 +23,7 @@ public class ModBlocks {
 
 
     private static void registerBlock(BlockUpgC block) {
-
         ModBlocks.registerBlock(block, null);
-
     }
 
     private static void registerBlock(BlockUpgC block, Class<? extends ItemBlock> itemBlock) {
