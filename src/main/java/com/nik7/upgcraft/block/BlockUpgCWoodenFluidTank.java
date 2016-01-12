@@ -20,8 +20,9 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
 
 
     public BlockUpgCWoodenFluidTank() {
-        super(Material.wood, Capacity.SMALL_TANK, "WoodenTank", ItemBlockWoodenFluidTank.class);
+        super(Material.wood, Capacity.SMALL_TANK, "WoodenTank");
         this.setTickRandomly(true);
+        this.hasSubBlocks = true;
     }
 
     @Override

@@ -22,7 +22,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -38,18 +37,15 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     private int capacity;
     public static final PropertyEnum<TankType> TYPE = PropertyEnum.create("type", TankType.class);
     private final String name;
+    protected boolean hasSubBlocks = false;
 
-    public BlockUpgCTank(Material material, int capacity, String name, Class<? extends ItemBlock> itemBlock) {
+    public BlockUpgCTank(Material material, int capacity, String name) {
         super(material);
         this.capacity = capacity;
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, TankType.SOLID));
         this.name = name;
         this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
         this.setUnlocalizedName(name);
-        if (itemBlock == null)
-            GameRegistry.registerBlock(this, name);
-        else
-            GameRegistry.registerBlock(this, itemBlock, name);
 
     }
 
@@ -198,8 +194,10 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     @SideOnly(Side.CLIENT)
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
-        list.add(new ItemStack(this, 1, TankType.SOLID.getMeta()));
-        list.add(new ItemStack(this, 1, TankType.GLASSES.getMeta()));
+        if (this.hasSubBlocks) {
+            list.add(new ItemStack(this, 1, TankType.SOLID.getMeta()));
+            list.add(new ItemStack(this, 1, TankType.GLASSES.getMeta()));
+        }
     }
 
     @Override

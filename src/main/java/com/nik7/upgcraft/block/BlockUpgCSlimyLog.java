@@ -19,8 +19,6 @@ public class BlockUpgCSlimyLog extends BlockUpgC implements CustomCraftingExperi
         this.setStepSound(soundTypeWood);
         this.slipperiness = 1.05F; //0.98F ice
         this.setUnlocalizedName(name);
-        GameRegistry.registerBlock(this, name);
-
     }
 
     @Override
