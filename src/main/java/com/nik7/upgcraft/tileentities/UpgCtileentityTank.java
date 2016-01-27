@@ -13,10 +13,15 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.TileFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.InvocationTargetException;
 
 public abstract class UpgCtileentityTank extends TileFluidHandler implements ITickable {
+
+    @SideOnly(Side.CLIENT)
+    private int meta = 0;
 
     private UpgCtileentityTank otherTank;
     private boolean isTop;
@@ -34,6 +39,22 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
         this.isTop = false;
         this.isDouble = false;
         this.canBeDouble = canBeDouble;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setBlockType(Block blockType) {
+        if (this.blockType == null)
+            this.blockType = blockType;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBlockMetadataClient() {
+        return this.meta;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setMetadata(int metadata) {
+        this.meta = metadata;
     }
 
     public UpgCtileentityTank(int capacity, boolean canBeDouble, Class<? extends UpgCFluidTank> TankClass) {

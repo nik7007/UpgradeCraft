@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.client.render.item;
 
 
-import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.block.BlockUpgCTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenFluidTank;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
@@ -23,10 +23,13 @@ public class ItemStackRender extends TileEntityItemStackRenderer {
     public void renderByItem(ItemStack itemStack) {
         Block block = Block.getBlockFromItem(itemStack.getItem());
 
-        if (block == ModBlocks.blockUpgCWoodenFluidTank)
-            TileEntityRendererDispatcher.instance.renderTileEntityAt(tank, 0.0d, 0.0d, 0.0d, 0.0f);
+        if (block instanceof BlockUpgCTank) {
 
-        else
+            tank.setBlockType(block);
+            tank.setMetadata(itemStack.getMetadata());
+
+            TileEntityRendererDispatcher.instance.renderTileEntityAt(tank, 0.0d, 0.0d, 0.0d, 0.0f);
+        } else
             this.instance.renderByItem(itemStack);
     }
 }

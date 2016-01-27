@@ -1,0 +1,6 @@
+{
+	"variants": {
+		"type=solid":   { "model": "upgcraft:SlimyLog" },
+		"type=glasses": { "model": "upgcraft:SlimyLog" }
+	}
+}

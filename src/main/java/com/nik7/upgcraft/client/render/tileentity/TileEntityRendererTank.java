@@ -29,7 +29,13 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
         Block blockTank = te.getBlockType();
         ModelBase modelTank;
 
-        int meta = te.getBlockMetadata();
+        int meta;
+
+        try {
+            meta = te.getBlockMetadata();
+        } catch (NullPointerException e) {
+            meta = te.getBlockMetadataClient();
+        }
 
         boolean isGlasses = blockTank.getStateFromMeta(meta).getValue(BlockUpgCTank.TYPE).equals(BlockUpgCTank.TankType.GLASSES);
         boolean isAdjGlasses = false;
