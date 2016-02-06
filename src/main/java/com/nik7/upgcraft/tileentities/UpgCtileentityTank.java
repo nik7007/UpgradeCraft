@@ -79,9 +79,8 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
 
         if (isDouble) {
             capacity = 2 * originalCapacity;
-        }
+        } else capacity = originalCapacity;
         this.tank.setCapacity(capacity);
-
     }
 
     @Override
@@ -328,10 +327,25 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
         return -1;
     }
 
+    //To avoid infinite recursive calling of the "updateModBlock" method
+    private boolean isNotAlreadyUpdating = true;
+
     private void updateModBlock() {
-        //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-        worldObj.markBlockForUpdate(pos);
-        this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
+
+        if (isNotAlreadyUpdating) {
+            isNotAlreadyUpdating = false;
+            //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
+            worldObj.markBlockForUpdate(pos);
+            //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
+            this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
+
+            if (otherTank != null) {
+                otherTank.updateModBlock();
+            }
+        }
+
+
+        isNotAlreadyUpdating = true;
     }
 
     public FluidStack getFluid() {
@@ -346,6 +360,14 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
         if (fluidStack == null)
             return 0;
 
-        return (float) capacity / (float) tank.getFluidAmount();
+        return (float) tank.getFluidAmount() / (float) capacity;
+    }
+
+    public int getFluidAmount() {
+        return tank.getFluidAmount();
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }
