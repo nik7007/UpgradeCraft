@@ -11,8 +11,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -24,6 +27,19 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
         super(Material.wood, Capacity.SMALL_TANK, "WoodenTank");
         this.setTickRandomly(true);
         this.hasSubBlocks = true;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
+        if (!canBurn) return;
+
+        UpgCtileentityWoodenFluidTank entity = (UpgCtileentityWoodenFluidTank) worldIn.getTileEntity(pos);
+
+        if (entity.isFluidHot())
+            spawnParticles(worldIn, pos, rand, EnumParticleTypes.SMOKE_NORMAL);
+
+
     }
 
     @Override
