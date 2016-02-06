@@ -24,7 +24,7 @@ public class ConfigurationHandler {
 
     private static void loadConfiguration() {
 
-        SystemConfig.getInstance().basicWoodenBlockFlammability = configuration.getBoolean("basic Wooden Block Flammability", Configuration.CATEGORY_GENERAL, true, "Set to false to make fireproof Wooden Liquid Tank, and Slimy Log.");
+        SystemConfig.getInstance().basicWoodenBlockFlammability = configuration.getBoolean("basic Wooden Block Flammability", Configuration.CATEGORY_GENERAL, true, "Set to false to make fireproof Wooden Liquid Tank.");
 
         SystemConfig.getInstance().basicTankCapacity = configuration.getInt("basic tank capacity", Configuration.CATEGORY_GENERAL, 27, 24, 32, "Basic capacity Tank custom value. This will not change the capacity of the enderTanks.");
 

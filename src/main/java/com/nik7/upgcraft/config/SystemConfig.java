@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.config;
 
 
+import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.reference.Capacity;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
@@ -24,8 +25,8 @@ public class SystemConfig {
 
         ConfigValue value = new ConfigValue("basicTankCapacity", (new Integer(Capacity.SMALL_TANK)).toString());
 
-        /*((ConfigurableObject) ModBlocks.blockWoodenLiquidTank).appliedConfig(new ConfigValue("basicWoodenBlockFlammability", (Boolean.valueOf(getInstance().basicWoodenBlockFlammability)).toString()), value);
-        ((ConfigurableObject) ModBlocks.blockClayLiquidTank).appliedConfig(value);*/
+        ((ConfigurableObject) ModBlocks.blockUpgCWoodenFluidTank).appliedConfig(new ConfigValue("basicWoodenBlockFlammability", (Boolean.valueOf(getInstance().basicWoodenBlockFlammability)).toString()), value);
+        /*((ConfigurableObject) ModBlocks.blockClayLiquidTank).appliedConfig(value);*/
 
     }
 

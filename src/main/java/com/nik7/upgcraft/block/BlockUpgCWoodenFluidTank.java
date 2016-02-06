@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.block;
 
 
-import com.nik7.upgcraft.item.ItemBlockWoodenFluidTank;
+import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenFluidTank;
 import com.nik7.upgcraft.util.WorldHelper;
@@ -18,6 +18,7 @@ import java.util.Random;
 
 public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
 
+    private boolean canBurn = true;
 
     public BlockUpgCWoodenFluidTank() {
         super(Material.wood, Capacity.SMALL_TANK, "WoodenTank");
@@ -27,6 +28,10 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
 
     @Override
     public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+
+        if (!canBurn)
+            return 0;
+
         UpgCtileentityWoodenFluidTank tank = (UpgCtileentityWoodenFluidTank) world.getTileEntity(pos);
 
         if (tank != null && tank.isFluidHot())
@@ -37,6 +42,10 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
 
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+
+        if (!canBurn)
+            return 0;
+
         return 10;
     }
 
@@ -46,6 +55,9 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
     }
 
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
+        if (!canBurn)
+            return;
 
 
         UpgCtileentityWoodenFluidTank entity = (UpgCtileentityWoodenFluidTank) worldIn.getTileEntity(pos);
@@ -105,6 +117,20 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
             world.setBlockState(pos, Blocks.fire.getDefaultState(), 3);
             return true;
         } else return false;
+
+    }
+
+    @Override
+    public void appliedConfig(SystemConfig.ConfigValue... values) {
+        if (values.length >= 1) {
+            super.appliedConfig(values);
+            for (SystemConfig.ConfigValue c : values) {
+
+                if (c.configName.equals("basicWoodenBlockFlammability")) {
+                    this.canBurn = c.value.toLowerCase().equals("true");
+                }
+            }
+        }
 
     }
 

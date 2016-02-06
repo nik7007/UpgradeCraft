@@ -1,5 +1,6 @@
 package com.nik7.upgcraft.tileentities;
 
+import com.nik7.upgcraft.block.BlockUpgCTank;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
 import com.nik7.upgcraft.util.LogHelper;
 import com.nik7.upgcraft.util.WorldHelper;
@@ -28,7 +29,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
     private boolean isDouble;
     private boolean canBeDouble;
     private int capacity;
-    private final int originalCapacity;
+    private int originalCapacity;
     private Class<? extends UpgCFluidTank> TankClass = null;
     private boolean isFirst = true;
 
@@ -93,10 +94,8 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
-
         readFromNBT(packet.getNbtCompound());
         worldObj.markBlockForUpdate(pos);
-
     }
 
     @Override
@@ -104,7 +103,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
 
         if (isFirst) {
             isFirst = false;
-            if (isDouble) {
+            if (isDouble && canBeDouble) {
 
                 UpgCtileentityTank tank;
                 if (isTop) {
@@ -114,6 +113,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
                 merge(tank);
             }
         }
+        reloadOriginalCapacity();
 
     }
 
@@ -348,6 +348,18 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
         isNotAlreadyUpdating = true;
     }
 
+
+    public void reloadOriginalCapacity() {
+        this.originalCapacity = ((BlockUpgCTank) WorldHelper.getBlock(worldObj, pos)).getCapacity();
+        if (this.capacity != this.originalCapacity && this.capacity != this.originalCapacity * 2) {
+            if (isDouble)
+                this.capacity = 2 * this.originalCapacity;
+            else
+                this.capacity = this.originalCapacity;
+            updateModBlock();
+        }
+    }
+
     public FluidStack getFluid() {
         if (tank.getFluid() != null)
             return new FluidStack(tank.getFluid(), tank.getFluidAmount());
@@ -360,7 +372,11 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
         if (fluidStack == null)
             return 0;
 
-        return (float) tank.getFluidAmount() / (float) capacity;
+        float result = (float) tank.getFluidAmount() / (float) capacity;
+        if (result > 1)
+            result = 1;
+
+        return result;
     }
 
     public int getFluidAmount() {
