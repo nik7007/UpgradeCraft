@@ -34,17 +34,13 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     private int capacity;
     public static final PropertyEnum<TankType> TYPE = PropertyEnum.create("type", TankType.class);
-    private final String name;
     protected boolean hasSubBlocks = false;
 
     public BlockUpgCTank(Material material, int capacity, String name) {
-        super(material);
+        super(material, name);
         this.capacity = capacity;
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, TankType.SOLID));
-        this.name = name;
         this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
-        this.setUnlocalizedName(name);
-
     }
 
     @Override
@@ -197,12 +193,6 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
             list.add(new ItemStack(this, 1, TankType.GLASSES.getMeta()));
         }
     }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
 
     public enum TankType implements IStringSerializable {
         SOLID("solid", 0),

@@ -7,18 +7,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class BlockUpgCSlimyLog extends BlockUpgC implements CustomCraftingExperience {
 
-    private static final String name = "SlimyLog";
-
     public BlockUpgCSlimyLog() {
-        super(Material.wood);
+        super(Material.wood, "SlimyLog");
         this.setHardness(2.0F);
         this.setStepSound(soundTypeWood);
         this.slipperiness = 1.05F; //0.98F ice
-        this.setUnlocalizedName(name);
     }
 
     @Override
@@ -29,10 +25,6 @@ public class BlockUpgCSlimyLog extends BlockUpgC implements CustomCraftingExperi
     @Override
     public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
         return 15;
-    }
-
-    public String getName() {
-        return name;
     }
 
     @Override

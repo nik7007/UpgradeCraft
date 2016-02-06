@@ -14,7 +14,7 @@ public class CreativeTab {
         @Override
         @SideOnly(Side.CLIENT)
         public Item getTabIconItem() {
-            return Item.getItemFromBlock(ModBlocks.blockUpgCSlimyLog);
+            return Item.getItemFromBlock(ModBlocks.blockUpgCWoodenFluidTank);
         }
 
 

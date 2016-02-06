@@ -8,17 +8,25 @@ import net.minecraft.block.material.Material;
 
 public abstract class BlockUpgC extends Block {
 
-    public BlockUpgC() {
+    protected final String name;
+
+    public BlockUpgC(String name) {
         super(Material.rock);
+        this.name = name;
+        this.setUnlocalizedName(name);
     }
 
-    public BlockUpgC(Material material) {
+    public BlockUpgC(Material material, String name) {
         super(material);
-       this.setCreativeTab(CreativeTab.UPGC_TAB);
+        this.setCreativeTab(CreativeTab.UPGC_TAB);
+        this.name = name;
+        this.setUnlocalizedName(name);
 
     }
 
-    public abstract String getName();
+    public String getName() {
+        return name;
+    }
 
     @Override
     public String getUnlocalizedName() {
