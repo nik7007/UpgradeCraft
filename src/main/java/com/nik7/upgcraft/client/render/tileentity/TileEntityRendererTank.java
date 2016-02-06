@@ -10,16 +10,9 @@ import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenFluidTank;
 import com.nik7.upgcraft.util.RenderHelper;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
-
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -28,7 +21,6 @@ import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileentityTank> {
-
 
 
     private final static ModelBase smallModelTank = new ModelTank();
@@ -177,7 +169,7 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
                 GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
                 if (!isDouble) {
-                    this.renderFluid(level, te.getFluid(), true, false,false);
+                    this.renderFluid(level, te.getFluid(), true, false, false);
                 } else {
                     if (dY == 0) {
                         boolean top = true;
@@ -187,7 +179,7 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
                         }
                         this.renderFluid(level * 2, te.getFluid(), top, false, true);
                     } else if (level > 0.5f) {
-                        this.renderFluid((level - 0.5f) * 2f, te.getFluid(), true, true,true);
+                        this.renderFluid((level - 0.5f) * 2f, te.getFluid(), true, true, true);
                     }
                 }
 
@@ -205,10 +197,9 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
         float minHeight = Render.TankInternalDimension.yMin;
         float maxHeight = Render.TankInternalDimension.yMax;
         float size = Render.TankInternalDimension.xMaz;
-        RenderHelper.renderFluid(fluidLevel, size, maxHeight, minHeight, fluid, renderTop, isTop, false,isDouble);
+        RenderHelper.renderFluid(fluidLevel, size, maxHeight, minHeight, fluid, renderTop, isTop, false, isDouble);
 
     }
-
 
 
 }
