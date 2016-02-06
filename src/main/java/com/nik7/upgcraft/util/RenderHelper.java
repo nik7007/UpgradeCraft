@@ -15,8 +15,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderHelper {
 
-    public static void renderFluid(float fluidLevel, float size, float maxHeight, float minHeight, FluidStack fluid, boolean renderTop, boolean isTop, boolean renderDown) {
-        if (fluid == null) return;
+    public static void renderFluid(float fluidLevel, float size, float maxHeight, float minHeight, FluidStack fluid, boolean renderTop, boolean isTop, boolean renderDown, boolean isDouble) {
+        if (fluid == null || minHeight >= maxHeight) return;
+
+        if (isDouble && !isTop)
+            maxHeight = 1;
+
         GlStateManager.pushMatrix();
 
 

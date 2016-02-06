@@ -177,17 +177,17 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
                 GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
                 if (!isDouble) {
-                    this.renderFluid(level, te.getFluid(), true, false);
+                    this.renderFluid(level, te.getFluid(), true, false,false);
                 } else {
                     if (dY == 0) {
                         boolean top = true;
-                        if (level >= 0.5f) {
+                        if (level > 0.5f) {
                             level = 0.5f;
                             top = false;
                         }
-                        this.renderFluid(level * 2, te.getFluid(), top, false);
-                    } else if (level >= 0.5f) {
-                        this.renderFluid((level - 0.5f) * 2f, te.getFluid(), true, true);
+                        this.renderFluid(level * 2, te.getFluid(), top, false, true);
+                    } else if (level > 0.5f) {
+                        this.renderFluid((level - 0.5f) * 2f, te.getFluid(), true, true,true);
                     }
                 }
 
@@ -201,11 +201,11 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
         }
     }
 
-    private void renderFluid(float fluidLevel, FluidStack fluid, boolean renderTop, boolean isTop) {
+    private void renderFluid(float fluidLevel, FluidStack fluid, boolean renderTop, boolean isTop, boolean isDouble) {
         float minHeight = Render.TankInternalDimension.yMin;
         float maxHeight = Render.TankInternalDimension.yMax;
         float size = Render.TankInternalDimension.xMaz;
-        RenderHelper.renderFluid(fluidLevel, size, maxHeight, minHeight, fluid, renderTop, isTop, false);
+        RenderHelper.renderFluid(fluidLevel, size, maxHeight, minHeight, fluid, renderTop, isTop, false,isDouble);
 
     }
 
