@@ -17,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -25,7 +24,6 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -240,6 +238,26 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         return this.capacity;
     }
 
+    @Override
+    public boolean hasComparatorInputOverride() {
+        return true;
+    }
+
+    public int getComparatorInputOverride(World worldIn, BlockPos pos) {
+
+        UpgCtileentityTank tank = (UpgCtileentityTank) worldIn.getTileEntity(pos);
+        int capacity = tank.getCapacity();
+        int fluidAmount = tank.getFluidAmount();
+
+        int comparator = (int) (tank.getFillPercentage() * 15.0f);
+
+        //In this way the output is max only if is tank(s) is (are) totally full
+        if (comparator == 15 && fluidAmount < capacity)
+            comparator--;
+
+        return comparator;
+
+    }
 
     @Override
     public void appliedConfig(SystemConfig.ConfigValue... values) {
