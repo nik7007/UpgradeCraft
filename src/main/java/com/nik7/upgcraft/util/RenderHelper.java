@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -16,120 +15,44 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderHelper {
 
-    private static final Tessellator tessellator = Tessellator.getInstance();
-    private static final WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+    public static void renderFluid(float fluidLevel, float size, float maxHeight, float minHeight, FluidStack fluid, boolean renderTop, boolean isTop, boolean renderDown) {
+        if (fluid == null) return;
+        GlStateManager.pushMatrix();
 
 
-    public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMax, float maxY, float zMax, boolean top, boolean renderDown) {
+        FluidStack fluidStack = new FluidStack(fluid, 1000);
 
-        fluidRender(fillPercentage, fluid, xMin, yMin, zMin, xMax, maxY, zMax, top, renderDown, true);
-    }
+        GlStateManager.translate(0.5, 0, 0.5); // minHeight + (fluidLevel) * (maxHeight - minHeight)
 
-    public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMax, float yMax, float zMax, boolean top, boolean renderDown, boolean renderTop) {
-
-        if (fillPercentage > 0 && yMax > 0) {
-
-            FluidStack fluidStack = new FluidStack(fluid, 1);
-
-            GlStateManager.pushMatrix();
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldRenderer = tessellator.getWorldRenderer();
 
 
-            GlStateManager.disableLighting();
-            GlStateManager.color(1, 1, 1, 1);
-            GlStateManager.rotate(-180F, 0.0F, 0.0F, 1.0F);
+        TextureAtlasSprite fluidStillSprite = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill().toString());
+
+        int fluidColor = fluid.getFluid().getColor(fluidStack);
+
+        Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+        setGLColorFromInt(fluidColor);
+
+        if (fluidLevel > 1) fluidLevel = 1.05f;
+
+        float height = renderTop ? minHeight + (fluidLevel) * (maxHeight - minHeight) : 1;
+
+        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+
+        float xMax, zMax, xMin, zMin, yMin = minHeight;
+        xMax = zMax = size;
+        xMin = zMin = -size;
+
+        if (isTop) yMin = 0;
+
+        renderCuboid(worldRenderer, xMax, xMin, yMin, height, zMin, zMax, fluidStillSprite, renderTop, renderDown);
 
 
+        tessellator.draw();
 
-          if (!top)
-                GlStateManager.translate(-0.5F, -1.5F, -0.5F);
-            else
-
-                GlStateManager.translate(-0.5F, -0.5F, -0.5F);
-
-            if (fillPercentage > 1) {
-                fillPercentage = 1.05F;
-            }
-
-            float height = (yMax - yMin) * fillPercentage + yMin;
-            Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-            TextureAtlasSprite texture = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getFlowing().toString());
-
-            final int color = fluid.getColor();
-
-
-            final double uMin = texture.getMinU();
-            final double uMax = texture.getMaxU();
-            final double vMin = texture.getMinV();
-            final double vMax = texture.getMaxV();
-
-            final double vHeight = vMax - vMin;
-
-            final float r = (color >> 16 & 0xFF) / 255.0F;
-            final float g = (color >> 8 & 0xFF) / 255.0F;
-            final float b = (color & 0xFF) / 255.0F;
-
-            worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-            worldRenderer.color(r, g, b, 1);
-
-
-           /* addVertexWithUV(1, 1, 1, uMax, vMin);
-            addVertexWithUV(0, 1, 0, uMax, vMin).endVertex();*/
-
-
-            //north
-            addVertexWithUV(xMax, yMin, zMin, uMax, vMin);
-            addVertexWithUV(xMin, yMin, zMin, uMin, vMin);
-            addVertexWithUV(xMin, height, zMin, uMin, vMin + (vHeight * height));
-            addVertexWithUV(xMax, height, zMin, uMax, vMin + (vHeight * height));
-
-            //south
-            addVertexWithUV(xMax, yMin, zMax, uMin, vMin);
-            addVertexWithUV(xMax, height, zMax, uMin, vMin + (vHeight * height));
-            addVertexWithUV(xMin, height, zMax, uMax, vMin + (vHeight * height));
-            addVertexWithUV(xMin, yMin, zMax, uMax, vMin);
-
-            //east
-            addVertexWithUV(xMax, yMin, zMin, uMin, vMin);
-            addVertexWithUV(xMax, height, zMin, uMin, vMin + (vHeight * height));
-            addVertexWithUV(xMax, height, zMax, uMax, vMin + (vHeight * height));
-            addVertexWithUV(xMax, yMin, zMax, uMax, vMin);
-
-            //west
-            addVertexWithUV(xMin, yMin, zMax, uMin, vMin);
-            addVertexWithUV(xMin, height, zMax, uMin, vMin + (vHeight * height));
-            addVertexWithUV(xMin, height, zMin, uMax, vMin + (vHeight * height));
-            addVertexWithUV(xMin, yMin, zMin, uMax, vMin);
-
-            //up
-            if (renderTop && height <= yMax) {
-                addVertexWithUV(xMax, height, zMax, uMax, vMin);
-                addVertexWithUV(xMax, height, zMin, uMin, vMin);
-                addVertexWithUV(xMin, height, zMin, uMin, vMax);
-                addVertexWithUV(xMin, height, zMax, uMax, vMax);
-            }
-
-
-            //down
-            if (renderDown) {
-                addVertexWithUV(xMax, yMin, zMin, uMax, vMin);
-                addVertexWithUV(xMax, yMin, zMax, uMin, vMin);
-                addVertexWithUV(xMin, yMin, zMax, uMin, vMax);
-                addVertexWithUV(xMin, yMin, zMin, uMax, vMax);
-            }
-
-            tessellator.draw();
-            GlStateManager.enableLighting();
-
-
-            GlStateManager.popMatrix();
-        }
-
-    }
-
-    private static void addVertexWithUV(float x, float y, float z, double u, double v) {
-
-        worldRenderer.pos(x, y, z).tex(u, v).endVertex();
-
+        GlStateManager.popMatrix();
     }
 
     private static void setGLColorFromInt(int color) {
@@ -139,6 +62,63 @@ public class RenderHelper {
 
         GlStateManager.color(red, green, blue, 1.0F);
     }
+
+    private static void renderCuboid(WorldRenderer worldRenderer, float xMax, float xMin, float yMin, float height, float zMin, float zMax, TextureAtlasSprite textureAtlasSprite, boolean renderTop, boolean renderDown) {
+
+        double uMin = (double) textureAtlasSprite.getMinU();
+        double uMax = (double) textureAtlasSprite.getMaxU();
+        double vMin = (double) textureAtlasSprite.getMinV();
+        double vMax = (double) textureAtlasSprite.getMaxV();
+
+        final double vHeight = vMax - vMin;
+
+        //top
+        if (renderTop) {
+            addVertexWithUV(worldRenderer, xMax, height, zMax, uMax, vMin);
+            addVertexWithUV(worldRenderer, xMax, height, zMin, uMin, vMin);
+            addVertexWithUV(worldRenderer, xMin, height, zMin, uMin, vMax);
+            addVertexWithUV(worldRenderer, xMin, height, zMax, uMax, vMax);
+        }
+
+        //north
+        addVertexWithUV(worldRenderer, xMax, yMin, zMin, uMax, vMin);
+        addVertexWithUV(worldRenderer, xMin, yMin, zMin, uMin, vMin);
+        addVertexWithUV(worldRenderer, xMin, height, zMin, uMin, vMin + (vHeight * height));
+        addVertexWithUV(worldRenderer, xMax, height, zMin, uMax, vMin + (vHeight * height));
+
+        //south
+        addVertexWithUV(worldRenderer, xMax, yMin, zMax, uMin, vMin);
+        addVertexWithUV(worldRenderer, xMax, height, zMax, uMin, vMin + (vHeight * height));
+        addVertexWithUV(worldRenderer, xMin, height, zMax, uMax, vMin + (vHeight * height));
+        addVertexWithUV(worldRenderer, xMin, yMin, zMax, uMax, vMin);
+
+        //east
+        addVertexWithUV(worldRenderer, xMax, yMin, zMin, uMin, vMin);
+        addVertexWithUV(worldRenderer, xMax, height, zMin, uMin, vMin + (vHeight * height));
+        addVertexWithUV(worldRenderer, xMax, height, zMax, uMax, vMin + (vHeight * height));
+        addVertexWithUV(worldRenderer, xMax, yMin, zMax, uMax, vMin);
+
+        //west
+        addVertexWithUV(worldRenderer, xMin, yMin, zMax, uMin, vMin);
+        addVertexWithUV(worldRenderer, xMin, height, zMax, uMin, vMin + (vHeight * height));
+        addVertexWithUV(worldRenderer, xMin, height, zMin, uMax, vMin + (vHeight * height));
+        addVertexWithUV(worldRenderer, xMin, yMin, zMin, uMax, vMin);
+
+        if (renderDown) {
+            addVertexWithUV(worldRenderer, xMax, yMin, zMin, uMax, vMin);
+            addVertexWithUV(worldRenderer, xMax, yMin, zMax, uMin, vMin);
+            addVertexWithUV(worldRenderer, xMin, yMin, zMax, uMin, vMax);
+            addVertexWithUV(worldRenderer, xMin, yMin, zMin, uMax, vMax);
+        }
+
+    }
+
+    private static void addVertexWithUV(WorldRenderer worldRenderer, float x, float y, float z, double u, double v) {
+
+        worldRenderer.pos(x / 2f, y, z / 2f).tex(u, v).endVertex();
+
+    }
+
 
     /*public static void fluidRender(float fillPercentage, Fluid fluid, float xMin, float yMin, float zMin, float xMax, float maxY, float zMax, boolean top, boolean renderDown, boolean renderTop) {
 

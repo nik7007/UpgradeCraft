@@ -4,24 +4,35 @@ package com.nik7.upgcraft.client.render.tileentity;
 import com.nik7.upgcraft.block.BlockUpgCTank;
 import com.nik7.upgcraft.client.render.model.ModelDoubleTank;
 import com.nik7.upgcraft.client.render.model.ModelTank;
+import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenFluidTank;
+import com.nik7.upgcraft.util.RenderHelper;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
+
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileentityTank> {
 
+
+
     private final static ModelBase smallModelTank = new ModelTank();
     private final static ModelBase doubleModelTank = new ModelDoubleTank();
-
 
     @Override
     public void renderTileEntityAt(UpgCtileentityTank te, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -141,23 +152,6 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
         GlStateManager.rotate(180F, 0.0F, 0.0F, 1.0F);
         modelTank.render(null, 0.0F, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
 
-        if (isGlasses || isAdjGlasses) {
-            FluidStack fluidStack = te.getFluid();
-            if (fluidStack != null) {
-                // TODO: render fluid
-               /* GlStateManager.enableBlend();
-                GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-
-                if (!isDouble) {
-                    RenderHelper.fluidRender(te.getFillPercentage(), fluidStack.getFluid(), Render.TankInternalDimension.xMin, Render.TankInternalDimension.yMin, Render.TankInternalDimension.zMin, Render.TankInternalDimension.xMaz, Render.TankInternalDimension.yMaz, Render.TankInternalDimension.zMaz, false, false);
-                }
-
-                //GlStateManager.disableBlend();*/
-
-            }
-
-        }
-
         GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -168,6 +162,53 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
             GlStateManager.matrixMode(5888);
         }
 
+        //fluid
+        if (isGlasses || isAdjGlasses) {
+            FluidStack fluidStack = te.getFluid();
+            if (fluidStack != null) {
+                float level = te.getFillPercentage();
+
+                GlStateManager.disableLighting();
+
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(x, y, z);
+
+                GlStateManager.enableBlend();
+                GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+
+                if (!isDouble) {
+                    this.renderFluid(level, te.getFluid(), true, false);
+                } else {
+                    if (dY == 0) {
+                        boolean top = true;
+                        if (level >= 0.5f) {
+                            level = 0.5f;
+                            top = false;
+                        }
+                        this.renderFluid(level * 2, te.getFluid(), top, false);
+                    } else if (level >= 0.5f) {
+                        this.renderFluid((level - 0.5f) * 2f, te.getFluid(), true, true);
+                    }
+                }
+
+
+                GlStateManager.disableBlend();
+
+                GlStateManager.popMatrix();
+
+                GlStateManager.enableLighting();
+            }
+        }
+    }
+
+    private void renderFluid(float fluidLevel, FluidStack fluid, boolean renderTop, boolean isTop) {
+        float minHeight = Render.TankInternalDimension.yMin;
+        float maxHeight = Render.TankInternalDimension.yMax;
+        float size = Render.TankInternalDimension.xMaz;
+        RenderHelper.renderFluid(fluidLevel, size, maxHeight, minHeight, fluid, renderTop, isTop, false);
 
     }
+
+
+
 }
