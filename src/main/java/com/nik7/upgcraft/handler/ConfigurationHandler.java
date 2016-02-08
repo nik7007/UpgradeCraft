@@ -2,6 +2,8 @@ package com.nik7.upgcraft.handler;
 
 import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.reference.Reference;
+import com.nik7.upgcraft.util.LogHelper;
+
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -30,7 +32,12 @@ public class ConfigurationHandler {
 
         if (configuration.hasChanged()) {
             configuration.save();
-            SystemConfig.applyConfig();
+            try{
+            	SystemConfig.applyConfig();
+            }
+            catch(NullPointerException e){
+            	LogHelper.info("First time create Config!");
+            }
         }
     }
 

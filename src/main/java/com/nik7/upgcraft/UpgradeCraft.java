@@ -50,6 +50,8 @@ public class UpgradeCraft {
     public void Init(FMLInitializationEvent event) {
 
         //NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+    	
+    	SystemConfig.applyConfig();
 
         proxy.registerTileEntities();
         proxy.initRenderingAndTextures();
