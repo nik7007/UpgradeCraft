@@ -16,8 +16,21 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
 	
 	@Override
     public void update() {
-		IBlockState blockState = worldObj.getBlockState(pos);
-		EnumFacing enumfacing = blockState.getValue(BlockUpgCContainerOrientable.FACING);
+		
+		if(!worldObj.isRemote){
+			
+			IBlockState blockState = worldObj.getBlockState(pos);
+			EnumFacing enumfacing = blockState.getValue(BlockUpgCContainerOrientable.FACING);
+			boolean hasToWork = worldObj.isBlockIndirectlyGettingPowered(pos) == 0;
+			
+			if(hasToWork){
+				
+				
+			}
+			
+			
+		}
+		
 	}
 
 	@Override
