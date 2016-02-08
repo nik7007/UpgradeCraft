@@ -78,7 +78,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
         this.isDouble = tag.getBoolean("isDouble");
         this.isTop = tag.getBoolean("isTop");
 
-        if (isDouble) {
+        if (canBeDouble && isDouble) {
             capacity = 2 * originalCapacity;
         } else capacity = originalCapacity;
         this.tank.setCapacity(capacity);
