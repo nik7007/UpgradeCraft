@@ -84,6 +84,8 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
 
     }
 
+
+
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         EnumFacing enumfacing = facing.getOpposite();
 
@@ -107,11 +109,6 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
 
 
         return blockState.withProperty(FACING, enumfacing);
-    }
-
-    @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        worldIn.setBlockState(pos, state.withProperty(FACING, placer.getHorizontalFacing().getOpposite()), 2);
     }
 
     public int getComparatorInputOverride(World worldIn, BlockPos pos) {
