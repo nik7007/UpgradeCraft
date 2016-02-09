@@ -10,7 +10,6 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -26,6 +25,16 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
     public BlockUpgCBasicFluidHopper() {
         super(Material.iron, "BasicFluidHopper");
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN).withProperty(BURNED, false).withProperty(IS_SIDE_FACING, false));
+    }
+
+    public String getHarvestTool(IBlockState state) {
+        boolean b = state.getValue(BURNED);
+        boolean i = state.getValue(IS_SIDE_FACING);
+
+        String result = super.getHarvestTool(state.withProperty(BURNED, false).withProperty(IS_SIDE_FACING, false));
+        state.withProperty(BURNED, b).withProperty(IS_SIDE_FACING, i);
+
+        return result;
     }
 
 
@@ -83,7 +92,6 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
         }
 
     }
-
 
 
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {

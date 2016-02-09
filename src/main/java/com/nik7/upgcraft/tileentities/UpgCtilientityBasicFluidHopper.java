@@ -42,7 +42,7 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
                 fillFromUp();
 
                 if (lastFluidAmount > 0)
-                    autoDrain(facing.getOpposite());
+                    autoDrain(facing);
             }
 
             if (tick <= 0) {
