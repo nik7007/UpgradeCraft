@@ -30,6 +30,10 @@ public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileen
     public void renderTileEntityAt(UpgCtileentityTank te, double x, double y, double z, float partialTicks, int destroyStage) {
 
         Block blockTank = te.getBlockType();
+
+        if (!(blockTank instanceof BlockUpgCTank))
+            return;
+
         ModelBase modelTank;
 
         int meta;
