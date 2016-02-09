@@ -36,9 +36,10 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
 
         UpgCtileentityWoodenFluidTank entity = (UpgCtileentityWoodenFluidTank) worldIn.getTileEntity(pos);
 
-        if (entity.isFluidHot())
+        if (entity.isFluidHot()) {
             spawnParticles(worldIn, pos, rand, EnumParticleTypes.SMOKE_NORMAL);
-
+            worldIn.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), "fire.fire", 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
+        }
 
     }
 
