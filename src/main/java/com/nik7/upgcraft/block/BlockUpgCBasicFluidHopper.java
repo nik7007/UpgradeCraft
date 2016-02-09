@@ -119,6 +119,13 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
         return blockState.withProperty(FACING, enumfacing);
     }
 
+    public int damageDropped(IBlockState state)
+    {
+        int meta = this.getMetaFromState(state);
+        meta &= 24;
+        return meta;
+    }
+
     public int getComparatorInputOverride(World worldIn, BlockPos pos) {
 
         UpgCtileentityTank tank = (UpgCtileentityTank) worldIn.getTileEntity(pos);
