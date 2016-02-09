@@ -5,6 +5,7 @@ import com.nik7.upgcraft.block.BlockUpgC;
 import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.block.BlockUpgCSlimyLog;
 import com.nik7.upgcraft.block.BlockUpgCWoodenFluidTank;
+import com.nik7.upgcraft.item.ItemBlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.item.ItemBlockWoodenFluidTank;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -22,7 +23,7 @@ public class ModBlocks {
 
         ModBlocks.registerBlock(ModBlocks.blockUpgCSlimyLog);
         ModBlocks.registerBlock(ModBlocks.blockUpgCWoodenFluidTank, ItemBlockWoodenFluidTank.class);
-        ModBlocks.registerBlock(blockUpgCBasicFluidHopper);
+        ModBlocks.registerBlock(blockUpgCBasicFluidHopper, ItemBlockUpgCBasicFluidHopper.class);
     }
 
 

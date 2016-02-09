@@ -1,9 +1,11 @@
 package com.nik7.upgcraft.proxy;
 
 import com.nik7.upgcraft.client.render.item.ItemStackRender;
+import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidHopper;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRendererTank;
 import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
+import com.nik7.upgcraft.tileentities.UpgCtilientityBasicFluidHopper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
@@ -48,6 +50,7 @@ public class ClientProxy extends CommonProxy {
 
     private void registerTileEntitySpecialRender() {
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityTank.class, new TileEntityRendererTank());
+        ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityBasicFluidHopper.class, new TileEntityRenderFluidHopper());
     }
 
     @Override

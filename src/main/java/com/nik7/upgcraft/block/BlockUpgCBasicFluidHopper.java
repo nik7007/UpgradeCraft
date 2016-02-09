@@ -9,11 +9,18 @@ import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityProvider {
 
@@ -35,6 +42,21 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
         state.withProperty(BURNED, b).withProperty(IS_SIDE_FACING, i);
 
         return result;
+    }
+
+    @Override
+    public int getRenderType() {
+        return 2;
+    }
+
+    @Override
+    public boolean isOpaqueCube() {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube() {
+        return false;
     }
 
 
@@ -105,7 +127,7 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
             blockState = blockState.withProperty(BURNED, true);
             if (extraValue > 1) {
                 blockState = blockState.withProperty(IS_SIDE_FACING, true);
-                enumfacing = placer.getHorizontalFacing().getOpposite();
+                enumfacing = placer.getHorizontalFacing();
             } else {
                 enumfacing = EnumFacing.DOWN;
             }
@@ -119,11 +141,19 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
         return blockState.withProperty(FACING, enumfacing);
     }
 
-    public int damageDropped(IBlockState state)
-    {
+    public int damageDropped(IBlockState state) {
         int meta = this.getMetaFromState(state);
         meta &= 24;
         return meta;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list) {
+
+        list.add(new ItemStack(this, 1, 0));
+        list.add(new ItemStack(this, 1, 8));
+        list.add(new ItemStack(this, 1, 24));
+
     }
 
     public int getComparatorInputOverride(World worldIn, BlockPos pos) {
