@@ -2,7 +2,7 @@ package com.nik7.upgcraft.client.render.tileentity;
 
 
 import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
-import com.nik7.upgcraft.client.render.model.ModelHopper;
+import com.nik7.upgcraft.client.render.model.ModelFluidHopper;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtilientityBasicFluidHopper;
 import net.minecraft.block.Block;
@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class TileEntityRenderFluidHopper extends TileEntitySpecialRenderer<UpgCtilientityBasicFluidHopper> {
 
-    private static final ModelHopper fluidHopper = new ModelHopper();
+    private static final ModelFluidHopper fluidHopper = new ModelFluidHopper();
 
     @Override
     public void renderTileEntityAt(UpgCtilientityBasicFluidHopper te, double x, double y, double z, float partialTicks, int destroyStage) {

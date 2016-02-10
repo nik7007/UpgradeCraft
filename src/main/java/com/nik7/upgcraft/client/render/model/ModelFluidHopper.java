@@ -8,7 +8,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ModelHopper extends ModelBase {
+public class ModelFluidHopper extends ModelBase {
     //fields
     private ModelRenderer middle;
     public ModelRenderer end;
@@ -18,7 +18,7 @@ public class ModelHopper extends ModelBase {
     private ModelRenderer top_s4;
     private ModelRenderer top_b;
 
-    public ModelHopper() {
+    public ModelFluidHopper() {
         textureWidth = 128;
         textureHeight = 128;
 
@@ -34,7 +34,7 @@ public class ModelHopper extends ModelBase {
         end.setTextureSize(128, 128);
         end.mirror = true;
         setRotation(end, 0F, 0F, 0F);
-        top_s1 = new ModelRenderer(this, 0, 26);
+        top_s1 = new ModelRenderer(this, 0, 18);
         top_s1.addBox(0F, 0F, 0F, 16, 6, 2);
         top_s1.setRotationPoint(-8F, 8F, -8F);
         top_s1.setTextureSize(128, 128);
@@ -46,7 +46,7 @@ public class ModelHopper extends ModelBase {
         top_s2.setTextureSize(128, 128);
         top_s2.mirror = true;
         setRotation(top_s2, 0F, 0F, 0F);
-        top_s3 = new ModelRenderer(this, 60, 0);
+        top_s3 = new ModelRenderer(this, 32, 0);
         top_s3.addBox(0F, 0F, 0F, 2, 6, 12);
         top_s3.setRotationPoint(-8F, 8F, -6F);
         top_s3.setTextureSize(128, 128);
@@ -59,8 +59,8 @@ public class ModelHopper extends ModelBase {
         top_s4.mirror = true;
         setRotation(top_s4, 0F, 0F, 0F);
         top_b = new ModelRenderer(this, 36, 18);
-        top_b.addBox(0F, 0.2F, 0F, 14, 2, 14);
-        top_b.setRotationPoint(-7F, 12F, -7F);
+        top_b.addBox(0F, 0.2F, 0F, 14, 5, 14);
+        top_b.setRotationPoint(-7F, 9F, -7F);
         top_b.setTextureSize(128, 128);
         top_b.mirror = true;
         setRotation(top_b, 0F, 0F, 0F);
