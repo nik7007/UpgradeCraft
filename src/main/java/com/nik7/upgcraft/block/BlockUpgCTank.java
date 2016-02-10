@@ -76,28 +76,6 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         super.breakBlock(worldIn, pos, state);
     }
 
-    @SideOnly(Side.CLIENT)
-    protected void spawnParticles(World worldIn, BlockPos pos, Random rand, EnumParticleTypes... particles) {
-
-        float f = (float) pos.getX() + 0.5F;
-        float f1 = (float) pos.getY() + rand.nextFloat();
-        float f2 = (float) pos.getZ() + 0.5F;
-        float f3 = 0.52F;
-        float f4 = rand.nextFloat() * 0.6F - 0.3F;
-
-        for (EnumParticleTypes p : particles) {
-
-            worldIn.spawnParticle(p, (double) (f - f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
-            worldIn.spawnParticle(p, (double) (f + f3), (double) f1, (double) (f2 + f4), 0.0D, 0.0D, 0.0D);
-            worldIn.spawnParticle(p, (double) (f + f4), (double) f1, (double) (f2 - f3), 0.0D, 0.0D, 0.0D);
-            worldIn.spawnParticle(p, (double) (f + f4), (double) f1, (double) (f2 + f3), 0.0D, 0.0D, 0.0D);
-
-            worldIn.spawnParticle(p, pos.getX() + 0.5D - rand.nextDouble(), (double) pos.getY() + 1, pos.getZ() + 0.5D - rand.nextDouble(), 0.0D, 0.0D, 0.0D);
-        }
-
-
-    }
-
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
         UpgCtileentityTank tank = (UpgCtileentityTank) worldIn.getTileEntity(pos);

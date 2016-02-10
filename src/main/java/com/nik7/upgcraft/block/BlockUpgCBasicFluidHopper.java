@@ -16,13 +16,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+import java.util.Random;
 
 public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityProvider {
+
+    private Random random = new Random();
 
     public static final PropertyBool BURNED = PropertyBool.create("burned");
     public static final PropertyBool IS_SIDE_FACING = PropertyBool.create("isFacingSide");
@@ -110,6 +114,11 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
 
             blockState = blockState.withProperty(IS_SIDE_FACING, enumfacing != EnumFacing.NORTH);
             world.setBlockState(pos, blockState);
+
+            if (world.isRemote)
+                spawnParticles(world, pos, random, EnumParticleTypes.SMOKE_LARGE);
+
+            world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), "fire.fire", 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
 
         }
 
