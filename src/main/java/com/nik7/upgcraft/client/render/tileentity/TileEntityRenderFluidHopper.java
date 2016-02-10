@@ -6,6 +6,7 @@ import com.nik7.upgcraft.client.render.model.ModelFluidHopper;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtilientityBasicFluidHopper;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
@@ -20,12 +21,18 @@ public class TileEntityRenderFluidHopper extends TileEntitySpecialRenderer<UpgCt
 
         int meta = te.getBlockMetadata();
         Block hopperBlock = te.getBlockType();
+        IBlockState blockState = hopperBlock.getStateFromMeta(meta);
 
-        EnumFacing direction = hopperBlock.getStateFromMeta(meta).getValue(BlockUpgCBasicFluidHopper.FACING);
+        EnumFacing direction = blockState.getValue(BlockUpgCBasicFluidHopper.FACING);
+        boolean burned = blockState.getValue(BlockUpgCBasicFluidHopper.BURNED);
 
         GlStateManager.pushMatrix();
         GlStateManager.translate((float) x + 0.5F, (float) y + 1.5F, (float) z + 0.5F);
-        this.bindTexture(new ResourceLocation(Texture.MODEL_BASIC_FLUID_HOPPER));
+
+        if (!burned)
+            this.bindTexture(new ResourceLocation(Texture.MODEL_BASIC_FLUID_HOPPER));
+        else this.bindTexture(new ResourceLocation(Texture.MODEL_BASIC_FLUID_HOPPER_BURNED));
+
         GlStateManager.rotate(180F, 0.0F, 0.0F, 1.0F);
 
         float angle = (float) Math.PI / 2;

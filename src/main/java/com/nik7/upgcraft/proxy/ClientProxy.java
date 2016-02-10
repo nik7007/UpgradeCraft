@@ -16,8 +16,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import java.io.File;
 
-import static com.nik7.upgcraft.init.ModBlocks.blockUpgCSlimyLog;
-import static com.nik7.upgcraft.init.ModBlocks.blockUpgCWoodenFluidTank;
+import static com.nik7.upgcraft.init.ModBlocks.*;
 
 public class ClientProxy extends CommonProxy {
 
@@ -43,6 +42,11 @@ public class ClientProxy extends CommonProxy {
         Item twItem = Item.getItemFromBlock(blockUpgCWoodenFluidTank);
         modelMesher.register(twItem, 0, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCWoodenFluidTank.getName(), "inventory"));
         modelMesher.register(twItem, 1, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCWoodenFluidTank.getName(), "inventory"));
+
+        Item bFHItem = Item.getItemFromBlock(blockUpgCBasicFluidHopper);
+        modelMesher.register(bFHItem, 0, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName(), "inventory"));
+        modelMesher.register(bFHItem, 8, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName() /*+ "BurnedDown"*/, "inventory"));
+        modelMesher.register(bFHItem, 24, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName()/* + "BurnedSide"*/, "inventory"));
 
         TileEntityItemStackRenderer.instance = new ItemStackRender(TileEntityItemStackRenderer.instance);
 

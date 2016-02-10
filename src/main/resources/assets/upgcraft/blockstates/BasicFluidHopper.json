@@ -1,0 +1,9 @@
+{
+
+  "variants": {
+    "burned=true,facing=down,isfacingside=true":  { "model": "cobblestone" },
+    "burned=true,facing=down,isfacingside=false": { "model": "cobblestone" },
+    "burned=false,facing=down,isfacingside=false":{ "model": "cobblestone" }
+  }
+
+}

@@ -29,9 +29,11 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
     @Override
     public void update() {
 
+        IBlockState blockState = worldObj.getBlockState(pos);
+
         if (!worldObj.isRemote) {
 
-            IBlockState blockState = worldObj.getBlockState(pos);
+
             EnumFacing facing = blockState.getValue(BlockUpgCBasicFluidHopper.FACING);
             boolean hasToWork = worldObj.isBlockIndirectlyGettingPowered(pos) == 0;
 
@@ -45,16 +47,18 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
                     autoDrain(facing);
             }
 
-            if (tick <= 0) {
-                tick = random.nextInt(MAX_TICKS) + 1;
-                boolean hasToBurn = !blockState.getValue(BlockUpgCBasicFluidHopper.BURNED) && isFluidHot();
-                if (hasToBurn) {
-                    BlockUpgCBasicFluidHopper block = (BlockUpgCBasicFluidHopper) WorldHelper.getBlock(worldObj, pos);
-                    block.burnFluidHopper(worldObj, pos, blockState);
-                }
 
-            } else tick--;
         }
+
+        if (tick <= 0) {
+            tick = random.nextInt(MAX_TICKS) + 1;
+            boolean hasToBurn = !blockState.getValue(BlockUpgCBasicFluidHopper.BURNED) && isFluidHot();
+            if (hasToBurn) {
+                BlockUpgCBasicFluidHopper block = (BlockUpgCBasicFluidHopper) WorldHelper.getBlock(worldObj, pos);
+                block.burnFluidHopper(worldObj, pos, blockState);
+            }
+
+        } else tick--;
     }
 
     private boolean isFluidHot() {
@@ -94,7 +98,7 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
 
         if (getFluidAmount() > 0) {
             BlockPos newPos = pos.add(direction.getDirectionVec());
-           // BlockPos newPos = new BlockPos(this.pos.getX() + direction.getFrontOffsetX(), this.pos.getY() + direction.getFrontOffsetY(), this.pos.getZ() + direction.getFrontOffsetZ());
+            // BlockPos newPos = new BlockPos(this.pos.getX() + direction.getFrontOffsetX(), this.pos.getY() + direction.getFrontOffsetY(), this.pos.getZ() + direction.getFrontOffsetZ());
             if (worldObj.getTileEntity(newPos) instanceof IFluidHandler) {
                 IFluidHandler fluidHandler = (IFluidHandler) worldObj.getTileEntity(newPos);
 
