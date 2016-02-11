@@ -50,6 +50,12 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
 
         }
 
+        changeBlockState(blockState);
+
+
+    }
+
+    protected void changeBlockState(IBlockState blockState) {
         if (tick <= 0) {
             tick = random.nextInt(MAX_TICKS) + 1;
             boolean hasToBurn = !blockState.getValue(BlockUpgCBasicFluidHopper.BURNED) && isFluidHot();
