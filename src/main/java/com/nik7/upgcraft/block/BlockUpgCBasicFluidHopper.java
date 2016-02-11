@@ -36,6 +36,7 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
     public BlockUpgCBasicFluidHopper() {
         super(Material.iron, "BasicFluidHopper");
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN).withProperty(BURNED, false).withProperty(IS_SIDE_FACING, false));
+        this.setHardness(3f);
     }
 
     public String getHarvestTool(IBlockState state) {
@@ -112,7 +113,7 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
             EnumFacing enumfacing = state.getValue(FACING);
             IBlockState blockState = state.withProperty(BURNED, true);
 
-            blockState = blockState.withProperty(IS_SIDE_FACING, enumfacing != EnumFacing.NORTH);
+            blockState = blockState.withProperty(IS_SIDE_FACING, enumfacing != EnumFacing.DOWN);
             world.setBlockState(pos, blockState);
 
             if (world.isRemote)
