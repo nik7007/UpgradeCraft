@@ -9,6 +9,7 @@ import com.nik7.upgcraft.tileentities.UpgCtilientityBasicFluidHopper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
+import net.minecraft.client.resources.model.ModelBakery;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -44,9 +45,15 @@ public class ClientProxy extends CommonProxy {
         modelMesher.register(twItem, 1, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCWoodenFluidTank.getName(), "inventory"));
 
         Item bFHItem = Item.getItemFromBlock(blockUpgCBasicFluidHopper);
-        modelMesher.register(bFHItem, 0, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName(), "inventory"));
-        modelMesher.register(bFHItem, 8, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName() /*+ "BurnedDown"*/, "inventory"));
-        modelMesher.register(bFHItem, 24, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName()/* + "BurnedSide"*/, "inventory"));
+
+        ModelResourceLocation resLocSTD = new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName(), "inventory");
+        ModelResourceLocation res8 = new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName() + "BurnedDown", "inventory");
+        ModelResourceLocation res24 = new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName() + "BurnedSide", "inventory");
+        ModelBakery.registerItemVariants(bFHItem, resLocSTD, res8, res24);
+
+        modelMesher.register(bFHItem, 0, resLocSTD);
+        modelMesher.register(bFHItem, 8, res8);
+        modelMesher.register(bFHItem, 24, res24);
 
         TileEntityItemStackRenderer.instance = new ItemStackRender(TileEntityItemStackRenderer.instance);
 
