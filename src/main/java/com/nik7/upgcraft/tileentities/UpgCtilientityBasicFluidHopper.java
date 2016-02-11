@@ -33,12 +33,8 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
 
         if (!worldObj.isRemote) {
 
-
             EnumFacing facing = blockState.getValue(BlockUpgCBasicFluidHopper.FACING);
-            boolean hasToWork = worldObj.isBlockIndirectlyGettingPowered(pos) == 0;
-
-
-            if (hasToWork) {
+            if (hasToWork(blockState)) {
 
                 int lastFluidAmount = tank.getFluidAmount();
                 fillFromUp();
@@ -53,6 +49,11 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
         changeBlockState(blockState);
 
 
+    }
+
+    protected boolean hasToWork(IBlockState blockState) {
+        boolean isBurned = blockState.getValue(BlockUpgCBasicFluidHopper.BURNED);
+        return (worldObj.isBlockIndirectlyGettingPowered(pos) == 0) || isBurned;
     }
 
     protected void changeBlockState(IBlockState blockState) {
