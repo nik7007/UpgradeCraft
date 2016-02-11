@@ -27,6 +27,7 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
         super(Material.wood, Capacity.SMALL_TANK, "WoodenTank");
         this.setTickRandomly(true);
         this.hasSubBlocks = true;
+        this.setHardness(2.5f);
     }
 
     @SideOnly(Side.CLIENT)
