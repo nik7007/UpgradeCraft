@@ -332,7 +332,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
 
     private void updateModBlock() {
 
-        if (isNotAlreadyUpdating) {
+        if (isNotAlreadyUpdating && worldObj != null) {
             isNotAlreadyUpdating = false;
             //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
             worldObj.markBlockForUpdate(pos);
