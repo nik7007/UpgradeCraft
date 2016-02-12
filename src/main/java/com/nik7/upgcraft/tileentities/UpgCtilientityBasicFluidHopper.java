@@ -32,7 +32,7 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
         IBlockState blockState = worldObj.getBlockState(pos);
 
         if (!worldObj.isRemote) {
-
+            calculateSpeed(blockState);
             EnumFacing facing = blockState.getValue(BlockUpgCBasicFluidHopper.FACING);
             if (hasToWork(blockState)) {
 
@@ -49,6 +49,13 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
         changeBlockState(blockState);
 
 
+    }
+
+    protected void calculateSpeed(IBlockState blockState) {
+        boolean burned = blockState.getValue(BlockUpgCBasicFluidHopper.BURNED);
+        if (burned && speed == Capacity.Speed.BASIC_FLUID_HOPPER_SPEED)
+            speed += speed / 10;
+        else if (!burned) speed = Capacity.Speed.BASIC_FLUID_HOPPER_SPEED;
     }
 
     protected boolean hasToWork(IBlockState blockState) {
