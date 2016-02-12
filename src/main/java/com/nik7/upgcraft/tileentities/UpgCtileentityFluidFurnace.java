@@ -5,6 +5,8 @@ import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -27,6 +29,11 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     private static final int[] input = {INPUT};
     private static final int[] output = {OUTPUT};
 
+    private int burningTime = 0;
+    private int progress = 0;
+
+    private boolean isActive = false;
+
     public UpgCtileentityFluidFurnace() {
         super(new ItemStack[2], new FluidTank[]{new UpgCFluidTank(Capacity.INTERNAL_FLUID_TANK_TR1)}, "FluidFurnace");
         ((UpgCFluidTank) this.tanks[0]).setTileEntity(this);
@@ -46,6 +53,38 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
             FUEL_CACHE.put(LAVA, normalSpec);
         }
 
+    }
+
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+
+        super.readFromNBT(tag);
+        this.burningTime = tag.getShort("burningTime");
+        this.progress = tag.getShort("progress");
+        this.isActive = tag.getBoolean("active");
+
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        tag.setShort("burningTime", (short) this.burningTime);
+        tag.setShort("progress", (short) this.progress);
+        tag.setBoolean("active", isActive);
+    }
+
+    @Override
+    public void writeToPacket(PacketBuffer buf) {
+        buf.writeBoolean(isActive);
+        writeFluidToByteBuf(this.tanks[0], buf);
+    }
+
+    @Override
+    public void readFromPacket(PacketBuffer buf) {
+
+        this.isActive = buf.readBoolean();
+        readFluidToByteBuf(this.tanks[0], buf);
     }
 
     private FluidFuelSpecific getFluidFuelSpecific(FluidStack fluidStack) {
@@ -153,21 +192,108 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
     @Override
     public int getField(int id) {
-        return 0;
+        switch (id) {
+            case 0:
+                return this.burningTime;
+            case 1:
+                return this.progress;
+            default:
+                return 0;
+        }
     }
 
     @Override
     public void setField(int id, int value) {
+        switch (id) {
+            case 0:
+                this.burningTime = value;
+                break;
+            case 1:
+                this.progress = value;
+                break;
+        }
 
     }
 
     @Override
     public int getFieldCount() {
-        return 0;
+        return 2;
     }
 
     @Override
     public void update() {
+
+        if (!worldObj.isRemote) {
+
+            boolean toUpdate = false;
+
+            if (canSmelt()) {
+                this.isActive = true;
+                this.burning();
+
+                progress++;
+
+                if (progress == FUEL_CACHE.get(this.tanks[0].getFluid().getFluid().getName()).speed) {
+                    progress = 0;
+                    smeltItem();
+                    toUpdate = true;
+                }
+
+                if (toUpdate) {
+                    updateModBlock();
+                    this.markDirty();
+                }
+
+
+            } else {
+                this.isActive = false;
+            }
+            if (inventory[INPUT] == null) {
+                progress = 0;
+                this.isActive = false;
+            }
+
+        }
+
+
+    }
+
+    private boolean canSmelt() {
+
+        if (tanks[0] != null && tanks[0].getFluid() != null && this.inventory[INPUT] != null) {
+            if (tanks[0].getFluid().amount >= 1) {
+
+                ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.inventory[INPUT]);
+
+                if (itemstack == null) return false;
+                if (this.inventory[OUTPUT] == null) return true;
+                if (!this.inventory[OUTPUT].isItemEqual(itemstack)) return false;
+                int result = inventory[OUTPUT].stackSize + itemstack.stackSize;
+                return result <= getInventoryStackLimit() && result <= this.inventory[OUTPUT].getMaxStackSize();
+
+            }
+
+        }
+        return false;
+    }
+
+    private void burning() {
+        if (burningTime <= 0 && this.tanks[0].getFluid() != null) {
+            Fluid fluid = this.tanks[0].drain(1, true).getFluid();
+            burningTime = FUEL_CACHE.get(fluid.getName()).duration;
+        } else burningTime--;
+    }
+
+    public void smeltItem() {
+
+        ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.inventory[INPUT]);
+
+        if (this.inventory[OUTPUT] == null) {
+            this.inventory[OUTPUT] = itemstack.copy();
+        } else if (this.inventory[OUTPUT].getItem() == itemstack.getItem()) {
+            this.inventory[OUTPUT].stackSize += itemstack.stackSize; // Forge BugFix: Results may have multiple items
+        }
+        decrStackSize(INPUT, 1);
 
     }
 

@@ -170,7 +170,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     }
 
 
-    private void updateModBlock() {
+    protected void updateModBlock() {
         //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
         worldObj.markBlockForUpdate(pos);
         //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
@@ -284,8 +284,12 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     @Override
     public int fill(int tank, EnumFacing from, FluidStack resource, boolean doFill) {
 
-        if (tank < getTanksNumber() && resource != null && canFill(tank, from, resource.getFluid()))
-            return tanks[tank].fill(resource, doFill);
+        if (tank < getTanksNumber() && resource != null && canFill(tank, from, resource.getFluid())) {
+            int result = tanks[tank].fill(resource, doFill);
+            if (result != 0)
+                updateModBlock();
+            return result;
+        }
 
         return 0;
     }
@@ -308,8 +312,12 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     @Override
     public FluidStack drain(int tank, EnumFacing from, int maxDrain, boolean doDrain) {
 
-        if (tank < getTanksNumber())
-            return tanks[tank].drain(maxDrain, doDrain);
+        if (tank < getTanksNumber()) {
+            FluidStack result = tanks[tank].drain(maxDrain, doDrain);
+            if (result != null)
+                updateModBlock();
+            return result;
+        }
 
         return null;
     }
