@@ -11,4 +11,13 @@ public class UpgCFluidTank extends FluidTank {
         this.tile = tile;
     }
 
+    public UpgCFluidTank(int capacity) {
+        super(capacity);
+    }
+
+    public void setTileEntity(TileEntity tileEntity) {
+        if (tileEntity != null)
+            this.tile = tileEntity;
+    }
+
 }

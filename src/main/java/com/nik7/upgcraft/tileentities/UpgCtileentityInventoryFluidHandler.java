@@ -23,8 +23,8 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
     private final int inventorySize;
     private final int tanksNumber;
-    private ItemStack[] inventory;
-    private FluidTank[] tanks;
+    protected ItemStack[] inventory;
+    protected FluidTank[] tanks;
 
     protected String customName = null;
     private final String name;
