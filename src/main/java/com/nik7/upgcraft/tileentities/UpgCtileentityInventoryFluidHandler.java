@@ -33,7 +33,6 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     protected String customName = null;
     private final String name;
 
-    @SideOnly(Side.CLIENT)
     private int meta = 0;
 
     protected UpgCtileentityInventoryFluidHandler(ItemStack[] inventory, FluidTank[] tanks, String name) {
@@ -198,6 +197,11 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         worldObj.markBlockForUpdate(pos);
         //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
         this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
+    }
+
+    public void forceUpdate() {
+        if (!worldObj.isRemote)
+            updateModBlock();
     }
 
 

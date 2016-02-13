@@ -19,12 +19,8 @@ public class DescriptionHandler extends SimpleChannelInboundHandler<FMLProxyPack
 
     public static final String CHANNEL = Reference.MOD_ID + "Description";
 
-    static {
-        NetworkRegistry.INSTANCE.newChannel(CHANNEL, new DescriptionHandler());
-    }
-
     public static void init() {
-
+        NetworkRegistry.INSTANCE.newChannel(CHANNEL, new DescriptionHandler());
     }
 
     @Override
@@ -46,7 +42,9 @@ public class DescriptionHandler extends SimpleChannelInboundHandler<FMLProxyPack
                 ((UpgCtileentityInventoryFluidHandler) te).readFromPacket(buf);
             }/* else if (te instanceof UpgCtilientityEnderHopper) {
             ((UpgCtilientityEnderHopper) te).readFromPacket(buf);
-        }*/
+        }*/ else if (te == null) {
+                NetworkHandler.getInstance().sendToServer(new UpdateRequestMessage(pos));
+            }
 
         }
 

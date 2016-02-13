@@ -21,7 +21,6 @@ import java.lang.reflect.InvocationTargetException;
 
 public abstract class UpgCtileentityTank extends TileFluidHandler implements ITickable {
 
-    @SideOnly(Side.CLIENT)
     private int meta = 0;
 
     private UpgCtileentityTank otherTank;
