@@ -120,7 +120,7 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
                 int amount;
                 if ((amount = fluidHandler.fill(direction.getOpposite(), fluidStack, false)) > 0) {
                     fluidStack = this.drain(direction, amount, true);
-                    if (amount != fluidHandler.fill(direction.getOpposite(), fluidStack, true)) {
+                    if (fluidStack.amount != fluidHandler.fill(direction.getOpposite(), fluidStack, true)) {
                         LogHelper.error("Something wrong appends: Fluid is transferring wrong!!");
                     }
                 }
