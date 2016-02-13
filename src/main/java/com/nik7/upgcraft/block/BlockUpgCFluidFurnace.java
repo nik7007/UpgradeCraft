@@ -7,7 +7,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 public class BlockUpgCFluidFurnace extends BlockUpgCContainerOrientable {
 
@@ -30,6 +35,17 @@ public class BlockUpgCFluidFurnace extends BlockUpgCContainerOrientable {
     @Override
     public boolean isFullCube() {
         return false;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+
+        UpgCtileentityFluidFurnace fluidFurnace = (UpgCtileentityFluidFurnace) worldIn.getTileEntity(pos);
+
+        if (fluidFurnace.isActive()) {
+            spawnParticles(worldIn, pos, state, rand, EnumParticleTypes.SMOKE_NORMAL, EnumParticleTypes.FLAME);
+        }
+
     }
 
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {

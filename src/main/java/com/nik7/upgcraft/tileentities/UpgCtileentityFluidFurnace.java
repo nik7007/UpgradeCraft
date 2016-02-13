@@ -87,6 +87,10 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         readFluidToByteBuf(this.tanks[0], buf);
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
     @Override
     public int getTankToShow() {
         return 0;
@@ -229,6 +233,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     public void update() {
 
         if (!worldObj.isRemote) {
+            boolean oldIsActive = isActive;
 
             boolean toUpdate = false;
 
@@ -258,6 +263,9 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
                 this.isActive = false;
             }
 
+            if (oldIsActive != isActive)
+                updateModBlock();
+
         }
 
 
@@ -286,6 +294,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         if (burningTime <= 0 && this.tanks[0].getFluid() != null) {
             Fluid fluid = this.tanks[0].drain(1, true).getFluid();
             burningTime = FUEL_CACHE.get(fluid.getName()).duration;
+            updateModBlock();
         } else burningTime--;
     }
 
