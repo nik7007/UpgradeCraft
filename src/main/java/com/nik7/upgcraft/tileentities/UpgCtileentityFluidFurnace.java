@@ -87,6 +87,11 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         readFluidToByteBuf(this.tanks[0], buf);
     }
 
+    @Override
+    public int getTankToShow() {
+        return 0;
+    }
+
     private FluidFuelSpecific getFluidFuelSpecific(FluidStack fluidStack) {
 
         if (fluidStack == null || fluidStack.getFluid() == null || fluidStack.getFluid().getName() == null)

@@ -15,7 +15,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class RenderHelper {
 
-    public static void renderFluid(float fluidLevel, float size, float maxHeight, float minHeight, FluidStack fluid, boolean renderTop, boolean isTop, boolean renderDown, boolean isDouble) {
+    public static void renderFluid(float fluidLevel, float sizeX, float sizeZ, float maxHeight, float minHeight, FluidStack fluid, boolean renderTop, boolean isTop, boolean renderDown, boolean isDouble){
+
         if (fluid == null || minHeight >= maxHeight) return;
 
         if (isDouble && !isTop)
@@ -46,8 +47,10 @@ public class RenderHelper {
         worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
 
         float xMax, zMax, xMin, zMin, yMin = minHeight;
-        xMax = zMax = size;
-        xMin = zMin = -size;
+        xMax = sizeX;
+        zMax = sizeZ;
+        xMin = - sizeX;
+        zMin = -sizeZ;
 
         if (isTop) yMin = 0;
 
@@ -57,6 +60,11 @@ public class RenderHelper {
         tessellator.draw();
 
         GlStateManager.popMatrix();
+
+    }
+
+    public static void renderFluid(float fluidLevel, float size, float maxHeight, float minHeight, FluidStack fluid, boolean renderTop, boolean isTop, boolean renderDown, boolean isDouble) {
+        renderFluid(fluidLevel,size,size,maxHeight,minHeight,fluid,renderTop,isTop,renderDown,isDouble);
     }
 
     private static void setGLColorFromInt(int color) {

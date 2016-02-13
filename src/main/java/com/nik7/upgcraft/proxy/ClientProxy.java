@@ -2,8 +2,10 @@ package com.nik7.upgcraft.proxy;
 
 import com.nik7.upgcraft.client.render.item.ItemStackRender;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidHopper;
+import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidMachine;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRendererTank;
 import com.nik7.upgcraft.reference.Reference;
+import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
 import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
 import com.nik7.upgcraft.tileentities.UpgCtilientityBasicFluidHopper;
 import net.minecraft.client.Minecraft;
@@ -55,6 +57,8 @@ public class ClientProxy extends CommonProxy {
         modelMesher.register(bFHItem, 8, res8);
         modelMesher.register(bFHItem, 24, res24);
 
+        modelMesher.register(Item.getItemFromBlock(blockUpgCFluidFurnace),0, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCFluidFurnace.getName(), "inventory"));
+
         TileEntityItemStackRenderer.instance = new ItemStackRender(TileEntityItemStackRenderer.instance);
 
     }
@@ -62,6 +66,7 @@ public class ClientProxy extends CommonProxy {
     private void registerTileEntitySpecialRender() {
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityTank.class, new TileEntityRendererTank());
         ClientRegistry.bindTileEntitySpecialRenderer(UpgCtilientityBasicFluidHopper.class, new TileEntityRenderFluidHopper());
+        ClientRegistry.bindTileEntitySpecialRenderer(UpgCtileentityFluidFurnace.class, new TileEntityRenderFluidMachine());
     }
 
     @Override

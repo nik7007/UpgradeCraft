@@ -4,6 +4,7 @@ package com.nik7.upgcraft.tileentities;
 import com.nik7.upgcraft.fluids.IMultipleTankFluidHandler;
 import com.nik7.upgcraft.network.DescriptionHandler;
 import io.netty.buffer.Unpooled;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity implements ISidedInventory, IMultipleTankFluidHandler {
 
@@ -29,6 +32,9 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     protected String customName = null;
     private final String name;
 
+    @SideOnly(Side.CLIENT)
+    private int meta = 0;
+
     protected UpgCtileentityInventoryFluidHandler(ItemStack[] inventory, FluidTank[] tanks, String name) {
 
         this.inventorySize = inventory.length;
@@ -38,6 +44,22 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         this.inventory = inventory;
         this.tanks = tanks;
 
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setBlockType(Block blockType) {
+        if (this.blockType == null)
+            this.blockType = blockType;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void setMetadata(int metadata) {
+        this.meta = metadata;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBlockMetadataClient() {
+        return this.meta;
     }
 
     @Override
@@ -145,7 +167,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     protected void readFluidToByteBuf(FluidTank tank, PacketBuffer buf) {
 
         int fluidAmount = buf.readInt();
-        int stringL = buf.readByte();
+        int stringL = buf.readInt();
         String fluidID = buf.readStringFromBuffer(stringL);
         int extraValue = buf.readInt();
         if (fluidAmount > 0) {
@@ -335,6 +357,23 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     @Override
     public FluidTankInfo[] getTankInfo(int tank, EnumFacing from) {
         return new FluidTankInfo[]{tanks[tank].getInfo()};
+    }
+
+    public FluidStack getFluid(int tank) {
+        if (tanks[tank].getFluid() != null)
+            return new FluidStack(tanks[tank].getFluid(), tanks[tank].getFluidAmount());
+        else return null;
+    }
+
+    public abstract int getTankToShow();
+
+    public float getFillPercentage(int tank) {
+        int fluidAmount = tanks[tank].getFluidAmount();
+        if (fluidAmount > 0) {
+            return (float) fluidAmount / (float) tanks[tank].getCapacity();
+        }
+        return 0;
+
     }
 
 
