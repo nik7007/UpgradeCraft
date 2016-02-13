@@ -2,6 +2,7 @@ package com.nik7.upgcraft;
 
 import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
+import com.nik7.upgcraft.handler.GuiHandler;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.init.Recipes;
@@ -15,6 +16,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 
 @Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.VERSION, guiFactory = Reference.GUI_FACTORY_CLASS)
@@ -49,9 +51,9 @@ public class UpgradeCraft {
     @Mod.EventHandler
     public void Init(FMLInitializationEvent event) {
 
-        //NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
-    	
-    	SystemConfig.applyConfig();
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+
+        SystemConfig.applyConfig();
 
         proxy.registerTileEntities();
         proxy.initRenderingAndTextures();

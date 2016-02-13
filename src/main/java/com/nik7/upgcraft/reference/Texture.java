@@ -19,4 +19,10 @@ public class Texture {
     public final static String MODEL_BASIC_FLUID_HOPPER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_HOPPER + "BlockFluidBasicHopper.png";
     public final static String MODEL_BASIC_FLUID_HOPPER_BURNED = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_HOPPER + "BlockFluidBasicHopperBurned.png";
     public final static String MODEL_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_MACHINE + "BlockFluidFurnace.png";
+
+    public class GUI {
+        public final static String TEXTURE_GUI_LOCATION = "textures/gui/";
+        public final static String FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "fluidfurnace.png";
+
+    }
 }

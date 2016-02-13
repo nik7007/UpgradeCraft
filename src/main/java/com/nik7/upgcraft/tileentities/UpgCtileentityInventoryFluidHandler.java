@@ -3,6 +3,7 @@ package com.nik7.upgcraft.tileentities;
 
 import com.nik7.upgcraft.fluids.IMultipleTankFluidHandler;
 import com.nik7.upgcraft.network.DescriptionHandler;
+import com.nik7.upgcraft.reference.Reference;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -293,7 +294,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
     @Override
     public IChatComponent getDisplayName() {
-        return this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(this.getName());
+        return this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(Reference.MOD_ID + ":container." + this.getName().toLowerCase());
     }
 
     //fluid part

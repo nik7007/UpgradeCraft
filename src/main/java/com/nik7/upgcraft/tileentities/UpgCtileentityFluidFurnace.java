@@ -1,8 +1,14 @@
 package com.nik7.upgcraft.tileentities;
 
 
+import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.inventory.ContainerFluidFurnace;
 import com.nik7.upgcraft.reference.Capacity;
+import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -10,12 +16,15 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.fluids.*;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHandler implements ITickable {
+public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHandler implements ITickable, IInteractionObject {
 
     private static final Map<String, FluidFuelSpecific> FUEL_CACHE = new HashMap<String, FluidFuelSpecific>();
     private static final FluidFuelSpecific normalSpec = new FluidFuelSpecific(20, 200);
@@ -309,6 +318,40 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         }
         decrStackSize(INPUT, 1);
 
+    }
+
+    @Override
+    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
+        return new ContainerFluidFurnace(playerInventory, this);
+    }
+
+    @Override
+    public String getGuiID() {
+        return Reference.MOD_ID + ":" + ModBlocks.blockUpgCFluidFurnace.getName();
+    }
+
+    public int getCapacity() {
+        return tanks[0].getCapacity();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float getFluidLevelScaled(int scaleFactor) {
+        return scaleFactor * (float) (this.tanks[0].getFluid() == null ? 0 : tanks[0].getFluid().amount) / (float) getCapacity();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBurnTimeRemainingScaled(int scaleFactor) {
+        if (tanks[0].getFluidAmount() == 0)
+            return 0;
+
+        return this.burningTime * scaleFactor / (getFluidFuelSpecific(tanks[0].getFluid())).duration;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getCookProgressScaled(int scaleFactor) {
+        if (tanks[0].getFluidAmount() == 0)
+            return 0;
+        return this.progress * scaleFactor / (getFluidFuelSpecific(tanks[0].getFluid())).speed;
     }
 
     private static class FluidFuelSpecific {
