@@ -11,14 +11,11 @@ public class UpgCtileentityWoodenFluidTank extends UpgCtileentityTank {
         super(Capacity.SMALL_TANK, true);
     }
 
-    public boolean isFluidHot(){
+    public boolean isFluidHot() {
 
         FluidStack fluidStack = tank.getFluid();
 
-        if(fluidStack!=null)
-            return fluidStack.getFluid().getTemperature(fluidStack) > 300 + 273;
-
-        return false;
+        return fluidStack != null && fluidStack.getFluid().getTemperature(fluidStack) > 300 + 273;
 
     }
 
