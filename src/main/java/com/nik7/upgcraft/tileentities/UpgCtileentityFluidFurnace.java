@@ -249,7 +249,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
                     toUpdate = true;
                 }
 
-                if (toUpdate || oldIsActive != isActive) {
+                if (toUpdate) {
                     updateModBlock();
                     this.markDirty();
                 }
@@ -262,6 +262,9 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
                 progress = 0;
                 this.isActive = false;
             }
+
+            if (oldIsActive != isActive)
+                updateModBlock();
 
         }
 
