@@ -112,7 +112,6 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
 
         if (getFluidAmount() > 0) {
             BlockPos newPos = pos.add(direction.getDirectionVec());
-            // BlockPos newPos = new BlockPos(this.pos.getX() + direction.getFrontOffsetX(), this.pos.getY() + direction.getFrontOffsetY(), this.pos.getZ() + direction.getFrontOffsetZ());
             if (worldObj.getTileEntity(newPos) instanceof IFluidHandler) {
                 IFluidHandler fluidHandler = (IFluidHandler) worldObj.getTileEntity(newPos);
 
