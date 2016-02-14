@@ -5,6 +5,7 @@ import com.nik7.upgcraft.block.BlockUpgCContainerOrientable;
 import com.nik7.upgcraft.client.render.model.ModelFluidMachine;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
+import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
 import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
 import com.nik7.upgcraft.util.RenderHelper;
 import net.minecraft.block.Block;
@@ -15,8 +16,11 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer<UpgCtileentityInventoryFluidHandler> {
 
     private static final ModelBase fluidMachine = new ModelFluidMachine();
@@ -45,7 +49,8 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer<UpgC
         ResourceLocation texture = null;
         if (te instanceof UpgCtileentityFluidFurnace) {
             texture = new ResourceLocation(Texture.MODEL_FLUID_FURNACE);
-        }
+        }else if(te instanceof UpgCtileentityFluidInfuser)
+            texture = new ResourceLocation(Texture.MODEL_FLUID_INFUSER);
 
         switch (enumfacing) {
             case NORTH:

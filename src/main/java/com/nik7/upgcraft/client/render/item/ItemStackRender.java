@@ -3,7 +3,10 @@ package com.nik7.upgcraft.client.render.item;
 
 import com.nik7.upgcraft.block.BlockUpgCContainerOrientable;
 import com.nik7.upgcraft.block.BlockUpgCTank;
+import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
+import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
+import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
 import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenFluidTank;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
@@ -18,6 +21,7 @@ public class ItemStackRender extends TileEntityItemStackRenderer {
 
     private UpgCtileentityWoodenFluidTank tank = new UpgCtileentityWoodenFluidTank();
     private UpgCtileentityFluidFurnace fluidFurnace = new UpgCtileentityFluidFurnace();
+    private UpgCtileentityFluidInfuser fluidInfuser = new UpgCtileentityFluidInfuser();
     private TileEntityItemStackRenderer instance;
 
     public ItemStackRender(TileEntityItemStackRenderer instance) {
@@ -36,10 +40,22 @@ public class ItemStackRender extends TileEntityItemStackRenderer {
 
         } else if (block instanceof BlockUpgCContainerOrientable) {
 
-            fluidFurnace.setBlockType(block);
-            fluidFurnace.setMetadata(block.getMetaFromState(block.getDefaultState().withProperty(BlockUpgCContainerOrientable.FACING, EnumFacing.SOUTH)));
+            UpgCtileentityInventoryFluidHandler fluidMachine;
 
-            TileEntityRendererDispatcher.instance.renderTileEntityAt(fluidFurnace, 0.0d, 0.0d, 0.0d, 0.0f);
+            if (block == ModBlocks.blockUpgCFluidFurnace)
+                fluidMachine = new UpgCtileentityFluidFurnace();
+            else if (block == ModBlocks.blockUpgCFluidInfuser)
+                fluidMachine = new UpgCtileentityFluidInfuser();
+            else {
+                this.instance.renderByItem(itemStack);
+                return;
+            }
+
+            fluidMachine.setBlockType(block);
+            fluidMachine.setMetadata(block.getMetaFromState(block.getDefaultState().withProperty(BlockUpgCContainerOrientable.FACING, EnumFacing.SOUTH)));
+
+
+            TileEntityRendererDispatcher.instance.renderTileEntityAt(fluidMachine, 0.0d, 0.0d, 0.0d, 0.0f);
 
         } else
             this.instance.renderByItem(itemStack);
