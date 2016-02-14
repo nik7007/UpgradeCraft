@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.tileentities;
 
 import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
+import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.util.LogHelper;
 import com.nik7.upgcraft.util.WorldHelper;
@@ -64,6 +65,10 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityFluidTank {
     }
 
     protected void changeBlockState(IBlockState blockState) {
+
+        if (!SystemConfig.getInstance().basicFluidHopperCanBurn)
+            return;
+
         if (tick <= 0) {
             tick = random.nextInt(MAX_TICKS) + 1;
             boolean hasToBurn = !blockState.getValue(BlockUpgCBasicFluidHopper.BURNED) && isFluidHot();

@@ -8,8 +8,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 public class SystemConfig {
     private static SystemConfig ourInstance = new SystemConfig();
 
-    public boolean basicWoodenBlockFlammability;
-
+    public boolean basicWoodenFluidTankFlammability;
+    public boolean basicFluidHopperCanBurn;
     public int basicTankCapacity;
 
     public static SystemConfig getInstance() {
@@ -25,7 +25,7 @@ public class SystemConfig {
 
         ConfigValue value = new ConfigValue("basicTankCapacity", (new Integer(Capacity.SMALL_TANK)).toString());
 
-        ((ConfigurableObject) ModBlocks.blockUpgCWoodenFluidTank).appliedConfig(new ConfigValue("basicWoodenBlockFlammability", (Boolean.valueOf(getInstance().basicWoodenBlockFlammability)).toString()), value);
+        ((ConfigurableObject) ModBlocks.blockUpgCWoodenFluidTank).appliedConfig(new ConfigValue("basicWoodenFluidTankFlammability", (Boolean.valueOf(getInstance().basicWoodenFluidTankFlammability)).toString()), value);
         /*((ConfigurableObject) ModBlocks.blockClayLiquidTank).appliedConfig(value);*/
 
     }

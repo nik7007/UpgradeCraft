@@ -144,7 +144,7 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
             super.appliedConfig(values);
             for (SystemConfig.ConfigValue c : values) {
 
-                if (c.configName.equals("basicWoodenBlockFlammability")) {
+                if (c.configName.equals("basicWoodenFluidTankFlammability")) {
                     this.canBurn = c.value.toLowerCase().equals("true");
                 }
             }
