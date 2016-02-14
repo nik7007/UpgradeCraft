@@ -5,7 +5,7 @@ import com.nik7.upgcraft.reference.Capacity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
 
-public class UpgCtileentityWoodenFluidTank extends UpgCtileentityTank {
+public class UpgCtileentityWoodenFluidTank extends UpgCtileentityFluidTank {
 
     public UpgCtileentityWoodenFluidTank() {
         super(Capacity.SMALL_TANK, true);

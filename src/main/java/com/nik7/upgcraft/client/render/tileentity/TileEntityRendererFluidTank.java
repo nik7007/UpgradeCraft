@@ -6,7 +6,7 @@ import com.nik7.upgcraft.client.render.model.ModelDoubleTank;
 import com.nik7.upgcraft.client.render.model.ModelTank;
 import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
-import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
+import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenFluidTank;
 import com.nik7.upgcraft.util.RenderHelper;
 import net.minecraft.block.Block;
@@ -20,14 +20,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public class TileEntityRendererTank extends TileEntitySpecialRenderer<UpgCtileentityTank> {
+public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCtileentityFluidTank> {
 
 
     private final static ModelBase smallModelTank = new ModelTank();
     private final static ModelBase doubleModelTank = new ModelDoubleTank();
 
     @Override
-    public void renderTileEntityAt(UpgCtileentityTank te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void renderTileEntityAt(UpgCtileentityFluidTank te, double x, double y, double z, float partialTicks, int destroyStage) {
 
         Block blockTank = te.getBlockType();
 

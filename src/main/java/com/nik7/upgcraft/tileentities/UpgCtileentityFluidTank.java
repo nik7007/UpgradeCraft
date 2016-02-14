@@ -19,11 +19,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class UpgCtileentityTank extends TileFluidHandler implements ITickable {
+public abstract class UpgCtileentityFluidTank extends TileFluidHandler implements ITickable {
 
     private int meta = 0;
 
-    private UpgCtileentityTank otherTank;
+    private UpgCtileentityFluidTank otherTank;
     private boolean isTop;
     private boolean isDouble;
     private boolean canBeDouble;
@@ -32,7 +32,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
     private Class<? extends UpgCFluidTank> TankClass = null;
     private boolean isFirst = true;
 
-    public UpgCtileentityTank(int capacity, boolean canBeDouble) {
+    public UpgCtileentityFluidTank(int capacity, boolean canBeDouble) {
         super();
         this.capacity = this.originalCapacity = capacity;
         this.tank = createTank(capacity);
@@ -57,7 +57,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
         this.meta = metadata;
     }
 
-    public UpgCtileentityTank(int capacity, boolean canBeDouble, Class<? extends UpgCFluidTank> TankClass) {
+    public UpgCtileentityFluidTank(int capacity, boolean canBeDouble, Class<? extends UpgCFluidTank> TankClass) {
 
         this(capacity, canBeDouble);
         this.TankClass = TankClass;
@@ -104,10 +104,10 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
             isFirst = false;
             if (isDouble && canBeDouble) {
 
-                UpgCtileentityTank tank;
+                UpgCtileentityFluidTank tank;
                 if (isTop) {
-                    tank = (UpgCtileentityTank) worldObj.getTileEntity(pos.down());
-                } else tank = (UpgCtileentityTank) worldObj.getTileEntity(pos.up());
+                    tank = (UpgCtileentityFluidTank) worldObj.getTileEntity(pos.down());
+                } else tank = (UpgCtileentityFluidTank) worldObj.getTileEntity(pos.up());
 
                 merge(tank);
             }
@@ -242,13 +242,13 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
 
         if (!isDouble) {
 
-            UpgCtileentityTank otherTank = null;
+            UpgCtileentityFluidTank otherTank = null;
             Block myBlock = this.getBlockType();
 
             if (WorldHelper.getBlock(worldObj, pos.up()) == myBlock) {
-                otherTank = (UpgCtileentityTank) worldObj.getTileEntity(pos.up());
+                otherTank = (UpgCtileentityFluidTank) worldObj.getTileEntity(pos.up());
             } else if (WorldHelper.getBlock(worldObj, pos.down()) == myBlock)
-                otherTank = (UpgCtileentityTank) worldObj.getTileEntity(pos.down());
+                otherTank = (UpgCtileentityFluidTank) worldObj.getTileEntity(pos.down());
 
             if (otherTank != null) {
                 otherTank.merge(this);
@@ -262,7 +262,7 @@ public abstract class UpgCtileentityTank extends TileFluidHandler implements ITi
         return otherFluid == null || this.tank.getFluid() == null || this.tank.getFluid().isFluidEqual(otherFluid);
     }
 
-    private void merge(UpgCtileentityTank otherTank) {
+    private void merge(UpgCtileentityFluidTank otherTank) {
 
         if (canBeDouble && canMerge(otherTank) && fluidAreCompatible(otherTank.tank.getFluid())) {
             this.otherTank = otherTank;

@@ -13,7 +13,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import java.util.Random;
 
-public class UpgCtilientityBasicFluidHopper extends UpgCtileentityTank {
+public class UpgCtilientityBasicFluidHopper extends UpgCtileentityFluidTank {
 
     private final static int MAX_TICKS = 150;
 

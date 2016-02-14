@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.block;
 
 
-import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
+import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtilientityBasicFluidHopper;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -168,7 +168,7 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
 
     public int getComparatorInputOverride(World worldIn, BlockPos pos) {
 
-        UpgCtileentityTank tank = (UpgCtileentityTank) worldIn.getTileEntity(pos);
+        UpgCtileentityFluidTank tank = (UpgCtileentityFluidTank) worldIn.getTileEntity(pos);
         int capacity = tank.getCapacity();
         int fluidAmount = tank.getFluidAmount();
         int comparator = (int) (tank.getFillPercentage() * 15.0f);

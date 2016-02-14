@@ -3,7 +3,7 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.config.ConfigurableObject;
 import com.nik7.upgcraft.config.SystemConfig;
-import com.nik7.upgcraft.tileentities.UpgCtileentityTank;
+import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
 import com.nik7.upgcraft.util.WorldHelper;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -20,7 +20,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -29,7 +28,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
-import java.util.Random;
 
 public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider, ConfigurableObject {
 
@@ -63,7 +61,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 
-        UpgCtileentityTank tank = (UpgCtileentityTank) worldIn.getTileEntity(pos);
+        UpgCtileentityFluidTank tank = (UpgCtileentityFluidTank) worldIn.getTileEntity(pos);
         tank.findAdjTank();
 
     }
@@ -71,14 +69,14 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
 
-        UpgCtileentityTank tank = (UpgCtileentityTank) worldIn.getTileEntity(pos);
+        UpgCtileentityFluidTank tank = (UpgCtileentityFluidTank) worldIn.getTileEntity(pos);
         tank.separateTanks();
         super.breakBlock(worldIn, pos, state);
     }
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
-        UpgCtileentityTank tank = (UpgCtileentityTank) worldIn.getTileEntity(pos);
+        UpgCtileentityFluidTank tank = (UpgCtileentityFluidTank) worldIn.getTileEntity(pos);
         ItemStack equippedItemStack = playerIn.getCurrentEquippedItem();
 
         if (FluidContainerRegistry.isContainer(equippedItemStack)) {
@@ -94,7 +92,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         return super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
     }
 
-    private void handleContainerClick(World worldIn, BlockPos pos, EntityPlayer playerIn, UpgCtileentityTank tank, ItemStack equippedItemStack) {
+    private void handleContainerClick(World worldIn, BlockPos pos, EntityPlayer playerIn, UpgCtileentityFluidTank tank, ItemStack equippedItemStack) {
 
         if (FluidContainerRegistry.isBucket(equippedItemStack)) {
 
@@ -107,7 +105,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     }
 
-    private void fillBucketFromTank(World worldIn, BlockPos pos, EntityPlayer playerIn, UpgCtileentityTank tank, ItemStack equippedItemStack) {
+    private void fillBucketFromTank(World worldIn, BlockPos pos, EntityPlayer playerIn, UpgCtileentityFluidTank tank, ItemStack equippedItemStack) {
 
         int bucketVolume = FluidContainerRegistry.BUCKET_VOLUME;
         FluidStack drained = tank.drain(null, bucketVolume, false);
@@ -141,7 +139,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     }
 
-    protected void drainBucketIntoTank(EntityPlayer playerIn, UpgCtileentityTank tank, ItemStack equippedItemStack) {
+    protected void drainBucketIntoTank(EntityPlayer playerIn, UpgCtileentityFluidTank tank, ItemStack equippedItemStack) {
 
         FluidStack fluidFromBucket = FluidContainerRegistry.getFluidForFilledItem(equippedItemStack);
 
@@ -237,7 +235,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     public int getComparatorInputOverride(World worldIn, BlockPos pos) {
 
-        UpgCtileentityTank tank = (UpgCtileentityTank) worldIn.getTileEntity(pos);
+        UpgCtileentityFluidTank tank = (UpgCtileentityFluidTank) worldIn.getTileEntity(pos);
         int capacity = tank.getCapacity();
         int fluidAmount = tank.getFluidAmount();
 
