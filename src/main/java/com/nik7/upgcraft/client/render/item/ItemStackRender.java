@@ -43,9 +43,9 @@ public class ItemStackRender extends TileEntityItemStackRenderer {
             UpgCtileentityInventoryFluidHandler fluidMachine;
 
             if (block == ModBlocks.blockUpgCFluidFurnace)
-                fluidMachine = new UpgCtileentityFluidFurnace();
+                fluidMachine = fluidFurnace;
             else if (block == ModBlocks.blockUpgCFluidInfuser)
-                fluidMachine = new UpgCtileentityFluidInfuser();
+                fluidMachine = fluidInfuser;
             else {
                 this.instance.renderByItem(itemStack);
                 return;
