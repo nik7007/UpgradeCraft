@@ -42,7 +42,7 @@ public abstract class GuiWithFluid extends GuiContainer {
     protected void renderFluidWithToolTipEX(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level, boolean temp, boolean renderFluid) {
 
         int amount = 0;
-        String fluidName = StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluiddfname");
+        String fluidName = StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.df.name");
         int temperature = 0;
 
         if (fluid != null && fluid.amount > 0) {

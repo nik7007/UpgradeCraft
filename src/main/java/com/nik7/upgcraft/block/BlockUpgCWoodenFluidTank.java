@@ -24,7 +24,7 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
     private boolean canBurn = true;
 
     public BlockUpgCWoodenFluidTank() {
-        super(Material.wood, Capacity.SMALL_TANK, "WoodenTank");
+        super(Material.wood, Capacity.SMALL_TANK, "WoodenFluidTank");
         this.setTickRandomly(true);
         this.hasSubBlocks = true;
         this.setHardness(2.5f);

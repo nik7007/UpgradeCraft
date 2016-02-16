@@ -12,10 +12,10 @@ item.upgcraft:PersonalInformation.name=Personal Information
 item.upgcraft:ActiveLavaBucket.name=Active Lava Bucket
 
 #Bloks
-tile.upgcraft:WoodenTank.name=Wooden Tank
-tile.upgcraft:ClayTank.name=Clay Tank
+tile.upgcraft:WoodenFluidTank.name=Wooden Fluid Tank
+tile.upgcraft:ClayFluidTank.name=Clay Tank
 tile.upgcraft:IronTank.name=Iron Tank
-tile.upgcraft:ClayTank.Hardened.name=Hardened Clay Tank
+tile.upgcraft:ClayFluidTank.Hardened.name=Hardened Clay Tank
 tile.upgcraft:EnderTank.name=Ender Tank
 tile.upgcraft:EnderHopper.name=Ender Hopper [WIP]
 tile.upgcraft:SlimyLog.name=Slimy Wood Planks
@@ -35,7 +35,7 @@ tooltip.upgcraft:tank.hollow=Transparent
 tooltip.upgcraft:fluid.hopper.burned=Burned
 tooltip.upgcraft:tank.tobecooked.t=This should be cooked into something
 tooltip.upgcraft:tank.tobecooked.b=hotter than a regular furnace...
-tooltip.upgcraft:tank.fluiddfname=Empty
+tooltip.upgcraft:tank.fluid.df.name=Empty
 tooltip.upgcraft:tank.fluid.name=Fluid
 tooltip.upgcraft:tank.fluid.amount=Amount
 tooltip.upgcraft:machine.temperature=Temperature
