@@ -1,11 +1,13 @@
 package com.nik7.upgcraft.client.render.tileentity;
 
 
+import com.nik7.upgcraft.block.BlockUpgCClayFluidTank;
 import com.nik7.upgcraft.block.BlockUpgCTank;
 import com.nik7.upgcraft.client.render.model.ModelDoubleTank;
 import com.nik7.upgcraft.client.render.model.ModelTank;
 import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
+import com.nik7.upgcraft.tileentities.UpgCtileentityClayFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenFluidTank;
 import com.nik7.upgcraft.util.RenderHelper;
@@ -47,6 +49,12 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
         boolean isGlasses = blockTank.getStateFromMeta(meta).getValue(BlockUpgCTank.TYPE).equals(BlockUpgCTank.TankType.GLASSES);
         boolean isAdjGlasses = false;
 
+        boolean isHardened = false;
+
+        if (te instanceof UpgCtileentityClayFluidTank) {
+            isHardened = blockTank.getStateFromMeta(meta).getValue(BlockUpgCClayFluidTank.IS_CHOCKED);
+        }
+
         boolean isTop = false;
 
         boolean isDouble = te.isDouble();
@@ -78,11 +86,24 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                 if (te instanceof UpgCtileentityWoodenFluidTank)
                     this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_HOLLOW_WOODEN_TANK));
 
+                else if (te instanceof UpgCtileentityClayFluidTank)
+                    if (isHardened)
+                        this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_HOLLOW_HARDENED_CLAY_TANK));
+                    else
+                        this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_HOLLOW_CLAY_TANK));
+
 
             } else {
 
                 if (te instanceof UpgCtileentityWoodenFluidTank)
                     this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_WOODEN_TANK));
+
+                else if (te instanceof UpgCtileentityClayFluidTank)
+                    if (isHardened)
+                        this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_HARDENED_CLAY_TANK));
+                    else
+                        this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_CLAY_TANK));
+
 
             }
 
@@ -106,26 +127,68 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                     if (te instanceof UpgCtileentityWoodenFluidTank)
                         this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_WOODEN_TANK));
 
+                    else if (te instanceof UpgCtileentityClayFluidTank)
+                        if (isHardened)
+                            this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HARDENED_CLAY_TANK));
+                        else
+                            this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_CLAY_TANK));
+
                 } else if (isGlasses && isAdjGlasses) {
                     if (te instanceof UpgCtileentityWoodenFluidTank)
                         this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_WOODEN_TANK));
+
+                    else if (te instanceof UpgCtileentityClayFluidTank)
+                        if (isHardened)
+                            this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_HARDENED_CLAY_TANK));
+                        else
+                            this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_CLAY_TANK));
+
+
                 } else if (isGlasses) {
 
                     if (isTop) {
                         if (te instanceof UpgCtileentityWoodenFluidTank)
                             this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_WOODEN_TANK));
+
+                        else if (te instanceof UpgCtileentityClayFluidTank)
+                            if (isHardened)
+                                this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_HARDENED_CLAY_TANK));
+                            else
+                                this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_CLAY_TANK));
+
+
                     } else {
                         if (te instanceof UpgCtileentityWoodenFluidTank)
                             this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_WOODEN_TANK));
+
+                        else if (te instanceof UpgCtileentityClayFluidTank)
+                            if (isHardened)
+                                this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_HARDENED_CLAY_TANK));
+                            else
+                                this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_CLAY_TANK));
+
                     }
                 } else {
 
                     if (isTop) {
                         if (te instanceof UpgCtileentityWoodenFluidTank)
                             this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_WOODEN_TANK));
+
+                        else if (te instanceof UpgCtileentityClayFluidTank)
+                            if (isHardened)
+                                this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_HARDENED_CLAY_TANK));
+                            else
+                                this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_CLAY_TANK));
+
                     } else {
                         if (te instanceof UpgCtileentityWoodenFluidTank)
                             this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_WOODEN_TANK));
+
+                        else if (te instanceof UpgCtileentityClayFluidTank)
+                            if (isHardened)
+                                this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_HARDENED_CLAY_TANK));
+                            else
+                                this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_CLAY_TANK));
                     }
 
                 }

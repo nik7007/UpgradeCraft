@@ -2,6 +2,7 @@ package com.nik7.upgcraft.init;
 
 
 import com.nik7.upgcraft.block.*;
+import com.nik7.upgcraft.item.ItemBlockClayFluidTank;
 import com.nik7.upgcraft.item.ItemBlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.item.ItemBlockWoodenFluidTank;
 import net.minecraft.item.ItemBlock;
@@ -14,19 +15,22 @@ public class ModBlocks {
     public static BlockUpgC blockUpgCBasicFluidHopper;
     public static BlockUpgC blockUpgCFluidFurnace;
     public static BlockUpgC blockUpgCFluidInfuser;
+    public static BlockUpgC blockUpgCClayFluidTank;
 
     public static void init() {
         ModBlocks.blockUpgCSlimyLog = new BlockUpgCSlimyLog();
         ModBlocks.blockUpgCWoodenFluidTank = new BlockUpgCWoodenFluidTank();
         ModBlocks.blockUpgCBasicFluidHopper = new BlockUpgCBasicFluidHopper();
         ModBlocks.blockUpgCFluidFurnace = new BlockUpgCFluidFurnace();
-        blockUpgCFluidInfuser = new BlockUpgCFluidInfuser();
+        ModBlocks.blockUpgCFluidInfuser = new BlockUpgCFluidInfuser();
+        ModBlocks.blockUpgCClayFluidTank = new BlockUpgCClayFluidTank();
 
         ModBlocks.registerBlock(ModBlocks.blockUpgCSlimyLog);
         ModBlocks.registerBlock(ModBlocks.blockUpgCWoodenFluidTank, ItemBlockWoodenFluidTank.class);
-        ModBlocks.registerBlock(blockUpgCBasicFluidHopper, ItemBlockUpgCBasicFluidHopper.class);
+        ModBlocks.registerBlock(ModBlocks.blockUpgCBasicFluidHopper, ItemBlockUpgCBasicFluidHopper.class);
         ModBlocks.registerBlock(ModBlocks.blockUpgCFluidFurnace);
-        ModBlocks.registerBlock(blockUpgCFluidInfuser);
+        ModBlocks.registerBlock(ModBlocks.blockUpgCFluidInfuser);
+        ModBlocks.registerBlock(ModBlocks.blockUpgCClayFluidTank, ItemBlockClayFluidTank.class);
     }
 
 
