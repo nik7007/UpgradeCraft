@@ -4,67 +4,24 @@ package com.nik7.upgcraft.inventory;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerFluidFurnace extends ContainerUpgC {
 
     private static final int INPUT = UpgCtileentityFluidFurnace.INPUT;
     private static final int OUTPUT = UpgCtileentityFluidFurnace.OUTPUT;
-    private final UpgCtileentityFluidFurnace fluidFurnace;
-    private int lastBurningTime;
-    private int lastProgress;
-
 
     public ContainerFluidFurnace(InventoryPlayer playerInventory, UpgCtileentityFluidFurnace fluidFurnace) {
-        this.fluidFurnace = fluidFurnace;
+
+        super(fluidFurnace);
 
         this.addSlotToContainer(new Slot(fluidFurnace, INPUT, 56, 17));
         this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, fluidFurnace, OUTPUT, 116, 35));
 
         addPlayerSlots(playerInventory, 8, 84);
-    }
-
-    public void onCraftGuiOpened(ICrafting listener) {
-        super.onCraftGuiOpened(listener);
-        listener.sendAllWindowProperties(this, this.fluidFurnace);
-    }
-
-    public void detectAndSendChanges() {
-        super.detectAndSendChanges();
-
-        for (ICrafting icrafting : this.crafters) {
-
-            if (this.lastBurningTime != this.fluidFurnace.getField(0)) {
-                icrafting.sendProgressBarUpdate(this, 0, this.fluidFurnace.getField(0));
-            }
-
-            if (this.lastProgress != this.fluidFurnace.getField(1)) {
-                icrafting.sendProgressBarUpdate(this, 1, this.fluidFurnace.getField(1));
-            }
-
-
-        }
-
-        this.lastBurningTime = this.fluidFurnace.getField(0);
-        this.lastProgress = this.fluidFurnace.getField(0);
-
-    }
-
-
-    @SideOnly(Side.CLIENT)
-    public void updateProgressBar(int id, int data) {
-        this.fluidFurnace.setField(id, data);
-    }
-
-    @Override
-    public boolean canInteractWith(EntityPlayer playerIn) {
-        return fluidFurnace.isUseableByPlayer(playerIn);
     }
 
     @Override
