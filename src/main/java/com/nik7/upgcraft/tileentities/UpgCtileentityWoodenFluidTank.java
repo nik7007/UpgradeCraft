@@ -2,8 +2,8 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.reference.Capacity;
+import com.nik7.upgcraft.tank.UpgCFluidTank;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fluids.FluidStack;
 
 public class UpgCtileentityWoodenFluidTank extends UpgCtileentityFluidTank {
 
@@ -12,11 +12,7 @@ public class UpgCtileentityWoodenFluidTank extends UpgCtileentityFluidTank {
     }
 
     public boolean isFluidHot() {
-
-        FluidStack fluidStack = tank.getFluid();
-
-        return fluidStack != null && fluidStack.getFluid().getTemperature(fluidStack) > 300 + 273;
-
+        return ((UpgCFluidTank) tank).isFluidHot();
     }
 
     @Override

@@ -39,7 +39,7 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
 
         if (entity.isFluidHot()) {
             spawnParticles(worldIn, pos, rand, EnumParticleTypes.SMOKE_NORMAL);
-            worldIn.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), "fire.fire", 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
+            //worldIn.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), "fire.fire", 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
         }
 
     }

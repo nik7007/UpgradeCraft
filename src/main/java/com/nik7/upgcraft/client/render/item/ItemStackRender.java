@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -38,6 +39,18 @@ public class ItemStackRender extends TileEntityItemStackRenderer {
             else {
                 this.instance.renderByItem(itemStack);
                 return;
+            }
+
+            if (itemStack.hasTagCompound()) {
+                FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(itemStack.getTagCompound());
+                tank.drain(EnumFacing.NORTH, tank.getFluidAmount(), true);
+                if (fluidStack != null)
+                    tank.fill(EnumFacing.NORTH, fluidStack, true);
+                else {
+                    tank.drain(EnumFacing.NORTH, tank.getFluidAmount(), true);
+                }
+            } else {
+                tank.drain(EnumFacing.NORTH, tank.getFluidAmount(), true);
             }
 
             tank.setBlockType(block);

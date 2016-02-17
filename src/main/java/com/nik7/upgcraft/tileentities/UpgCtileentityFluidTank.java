@@ -197,6 +197,33 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
 
     }
 
+    public FluidStack getFluidFormSingleTank() {
+
+        if (tank.getFluid() == null)
+            return null;
+        else if (!canBeDouble || !isDouble) {
+            return tank.getFluid();
+        } else {
+
+            FluidStack oldFluid = this.tank.getFluid();
+            int newFluidAmount;
+            int oldFluidAmount = oldFluid.amount;
+
+            if (isTop) {
+                newFluidAmount = oldFluidAmount - capacity;
+            } else {
+                newFluidAmount = oldFluidAmount > capacity ? capacity : oldFluidAmount;
+            }
+
+            if (newFluidAmount > 0) {
+                return new FluidStack(oldFluid, newFluidAmount);
+            }
+
+        }
+        return null;
+
+    }
+
 
     private void separateTank() {
 

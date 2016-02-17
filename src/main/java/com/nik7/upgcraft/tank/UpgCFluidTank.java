@@ -11,6 +11,10 @@ public class UpgCFluidTank extends FluidTank {
         this.tile = tile;
     }
 
+    public boolean isFluidHot() {
+        return fluid != null && fluid.getFluid().getTemperature(fluid) > 300 + 273;
+    }
+
     public UpgCFluidTank(int capacity) {
         super(capacity);
     }

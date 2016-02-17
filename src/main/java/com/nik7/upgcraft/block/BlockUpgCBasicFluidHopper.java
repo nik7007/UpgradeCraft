@@ -110,6 +110,8 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
         boolean isBurned = state.getValue(BURNED);
 
         if (!isBurned) {
+            TileEntity tileentity = world.getTileEntity(pos);
+
             EnumFacing enumfacing = state.getValue(FACING);
             IBlockState blockState = state.withProperty(BURNED, true);
 
@@ -120,6 +122,11 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
                 spawnParticles(world, pos, random, EnumParticleTypes.SMOKE_LARGE);
 
             world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), "fire.fire", 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+
+            if (tileentity != null) {
+                tileentity.validate();
+                world.setTileEntity(pos, tileentity);
+            }
 
         }
 
