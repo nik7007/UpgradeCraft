@@ -1,5 +1,6 @@
 package com.nik7.upgcraft.proxy;
 
+import com.nik7.upgcraft.block.BlockUpgC;
 import com.nik7.upgcraft.client.render.item.ItemStackRender;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidHopper;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidMachine;
@@ -43,25 +44,42 @@ public class ClientProxy extends CommonProxy {
         modelMesher.register(Item.getItemFromBlock(blockUpgCSlimyLog), 0, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCSlimyLog.getName(), "inventory"));
 
         Item twItem = Item.getItemFromBlock(blockUpgCWoodenFluidTank);
-        modelMesher.register(twItem, 0, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCWoodenFluidTank.getName(), "inventory"));
-        modelMesher.register(twItem, 1, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCWoodenFluidTank.getName(), "inventory"));
+        modelMesher.register(twItem, 0, createLocation(blockUpgCWoodenFluidTank));
+        modelMesher.register(twItem, 1, createLocation(blockUpgCWoodenFluidTank));
 
         Item bFHItem = Item.getItemFromBlock(blockUpgCBasicFluidHopper);
 
-        ModelResourceLocation resLocSTD = new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName(), "inventory");
-        ModelResourceLocation res8 = new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName() + "BurnedDown", "inventory");
-        ModelResourceLocation res24 = new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCBasicFluidHopper.getName() + "BurnedSide", "inventory");
+        ModelResourceLocation resLocSTD = createLocation(blockUpgCBasicFluidHopper);
+        ModelResourceLocation res8 = createLocation(blockUpgCBasicFluidHopper, "BurnedDown");
+        ModelResourceLocation res24 = createLocation(blockUpgCBasicFluidHopper, "BurnedSide");
         ModelBakery.registerItemVariants(bFHItem, resLocSTD, res8, res24);
 
         modelMesher.register(bFHItem, 0, resLocSTD);
         modelMesher.register(bFHItem, 8, res8);
         modelMesher.register(bFHItem, 24, res24);
 
-        modelMesher.register(Item.getItemFromBlock(blockUpgCFluidFurnace), 0, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCFluidFurnace.getName(), "inventory"));
-        modelMesher.register(Item.getItemFromBlock(blockUpgCFluidInfuser), 0, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCFluidInfuser.getName(), "inventory"));
+        modelMesher.register(Item.getItemFromBlock(blockUpgCFluidFurnace), 0, createLocation(blockUpgCFluidFurnace));
+        modelMesher.register(Item.getItemFromBlock(blockUpgCFluidInfuser), 0, createLocation(blockUpgCFluidInfuser));
+
+        Item clayTank = Item.getItemFromBlock(blockUpgCClayFluidTank);
+        modelMesher.register(clayTank, 0, createLocation(blockUpgCClayFluidTank));
+        modelMesher.register(clayTank, 1, createLocation(blockUpgCClayFluidTank));
+        modelMesher.register(clayTank, 2, createLocation(blockUpgCClayFluidTank));
+        modelMesher.register(clayTank, 3, createLocation(blockUpgCClayFluidTank));
+
 
         TileEntityItemStackRenderer.instance = new ItemStackRender(TileEntityItemStackRenderer.instance);
 
+    }
+
+    private ModelResourceLocation createLocation(BlockUpgC block, String variant) {
+
+        return new ModelResourceLocation(Reference.MOD_ID + ":" + block.getName() + variant, "inventory");
+    }
+
+    private ModelResourceLocation createLocation(BlockUpgC block) {
+
+        return createLocation(block, "");
     }
 
     private void registerTileEntitySpecialRender() {

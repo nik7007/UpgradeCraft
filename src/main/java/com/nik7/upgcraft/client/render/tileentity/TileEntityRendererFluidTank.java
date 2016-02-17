@@ -52,7 +52,7 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
         boolean isHardened = false;
 
         if (te instanceof UpgCtileentityClayFluidTank) {
-            isHardened = blockTank.getStateFromMeta(meta).getValue(BlockUpgCClayFluidTank.IS_CHOCKED);
+            isHardened = blockTank.getStateFromMeta(meta).getValue(BlockUpgCClayFluidTank.IS_HARDENED);
         }
 
         boolean isTop = false;

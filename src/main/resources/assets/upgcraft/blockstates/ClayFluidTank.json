@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"ishardened=false,type=solid":		{ "model": "clay" },
+		"ishardened=false,type=glasses": 	{ "model": "clay" },
+		"ishardened=true,type=solid":   	{ "model": "hardened_clay" },
+		"ishardened=true,type=glasses": 	{ "model": "hardened_clay" }
+	}
+}

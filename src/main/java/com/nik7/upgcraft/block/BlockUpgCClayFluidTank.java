@@ -19,13 +19,13 @@ import java.util.List;
 
 public class BlockUpgCClayFluidTank extends BlockUpgCTank {
 
-    public static final PropertyBool IS_CHOCKED = PropertyBool.create("isChocked");
+    public static final PropertyBool IS_HARDENED = PropertyBool.create("isHardened");
 
     public BlockUpgCClayFluidTank() {
         super(Material.rock, Capacity.SMALL_TANK, "ClayFluidTank");
         this.setHardness(2.8f);
         this.hasSubBlocks = true;
-        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, TankType.SOLID).withProperty(IS_CHOCKED, false));
+        this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, TankType.SOLID).withProperty(IS_HARDENED, false));
     }
 
     @SideOnly(Side.CLIENT)
@@ -40,14 +40,14 @@ public class BlockUpgCClayFluidTank extends BlockUpgCTank {
 
     @Override
     protected BlockState createBlockState() {
-        return new BlockState(this, TYPE, IS_CHOCKED);
+        return new BlockState(this, TYPE, IS_HARDENED);
     }
 
     @Override
     public int damageDropped(IBlockState state) {
         int oldMeta = super.damageDropped(state);
 
-        if (state.getValue(IS_CHOCKED))
+        if (state.getValue(IS_HARDENED))
             oldMeta += 2;
         return oldMeta;
     }
@@ -59,7 +59,7 @@ public class BlockUpgCClayFluidTank extends BlockUpgCTank {
             meta -= 2;
             isCocked = true;
         }
-        return super.getStateFromMeta(meta).withProperty(IS_CHOCKED, isCocked);
+        return super.getStateFromMeta(meta).withProperty(IS_HARDENED, isCocked);
     }
 
 
