@@ -33,8 +33,8 @@ tile.upgcraft:FluidHopper.name=Fluid Hopper
 #Tooltip
 tooltip.upgcraft:tank.hollow=Transparent
 tooltip.upgcraft:fluid.hopper.burned=Burned
-tooltip.upgcraft:tank.tobecooked.t=This should be cooked into something
-tooltip.upgcraft:tank.tobecooked.b=hotter than a regular furnace...
+tooltip.upgcraft:tank.to.be.cooked.t=This should be cooked into something
+tooltip.upgcraft:tank.to.be.cooked.b=hotter than a regular furnace...
 tooltip.upgcraft:tank.fluid.df.name=Empty
 tooltip.upgcraft:tank.fluid.name=Fluid
 tooltip.upgcraft:tank.fluid.amount=Amount

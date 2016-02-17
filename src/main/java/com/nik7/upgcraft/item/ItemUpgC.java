@@ -28,8 +28,7 @@ public class ItemUpgC extends Item {
         return String.format("item.%s%s", Reference.RESOURCE_PREFIX, StringHelper.getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public static void addHiddenInformation(List list, List hiddenInformation) {
+    public static void addHiddenInformation(List<String> list, List<String> hiddenInformation) {
 
         if (!hiddenInformation.isEmpty())
             if (Keyboard.isKeyDown(Keyboard.KEY_RSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
