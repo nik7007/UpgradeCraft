@@ -3,6 +3,7 @@ package com.nik7.upgcraft.tileentities;
 import com.nik7.upgcraft.block.BlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.reference.Capacity;
+import com.nik7.upgcraft.tank.UpgCFluidTank;
 import com.nik7.upgcraft.util.LogHelper;
 import com.nik7.upgcraft.util.WorldHelper;
 import net.minecraft.block.state.IBlockState;
@@ -25,6 +26,10 @@ public class UpgCtilientityBasicFluidHopper extends UpgCtileentityFluidTank {
     public UpgCtilientityBasicFluidHopper() {
         super(Capacity.FLUID_HOPPER_TANK, false);
 
+    }
+
+    protected UpgCtilientityBasicFluidHopper(int capacity, Class<? extends UpgCFluidTank> TankClass) {
+        super(capacity, false, TankClass);
     }
 
     @Override

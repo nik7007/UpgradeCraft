@@ -16,6 +16,7 @@ public class ModBlocks {
     public static BlockUpgC blockUpgCFluidFurnace;
     public static BlockUpgC blockUpgCFluidInfuser;
     public static BlockUpgC blockUpgCClayFluidTank;
+    public static BlockUpgC blockUpgCFluidHopper;
 
     public static void init() {
         ModBlocks.blockUpgCSlimyLog = new BlockUpgCSlimyLog();
@@ -24,6 +25,7 @@ public class ModBlocks {
         ModBlocks.blockUpgCFluidFurnace = new BlockUpgCFluidFurnace();
         ModBlocks.blockUpgCFluidInfuser = new BlockUpgCFluidInfuser();
         ModBlocks.blockUpgCClayFluidTank = new BlockUpgCClayFluidTank();
+        ModBlocks.blockUpgCFluidHopper = new BlockUpgCFluidHopper();
 
         ModBlocks.registerBlock(ModBlocks.blockUpgCSlimyLog);
         ModBlocks.registerBlock(ModBlocks.blockUpgCWoodenFluidTank, ItemBlockWoodenFluidTank.class);
@@ -31,6 +33,7 @@ public class ModBlocks {
         ModBlocks.registerBlock(ModBlocks.blockUpgCFluidFurnace);
         ModBlocks.registerBlock(ModBlocks.blockUpgCFluidInfuser);
         ModBlocks.registerBlock(ModBlocks.blockUpgCClayFluidTank, ItemBlockClayFluidTank.class);
+        ModBlocks.registerBlock(ModBlocks.blockUpgCFluidHopper);
     }
 
 

@@ -71,6 +71,8 @@ public class ClientProxy extends CommonProxy {
 
         modelMesher.register(itemUpgCClayIngot, 0, createLocation(itemUpgCClayIngot));
 
+        modelMesher.register(Item.getItemFromBlock(blockUpgCFluidHopper), 0, createLocation(blockUpgCFluidHopper));
+
 
         TileEntityItemStackRenderer.instance = new ItemStackRender(TileEntityItemStackRenderer.instance);
 

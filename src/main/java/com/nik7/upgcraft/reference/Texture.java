@@ -38,6 +38,8 @@ public class Texture {
     public final static String MODEL_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_MACHINE + "BlockFluidFurnace.png";
     public final static String MODEL_FLUID_INFUSER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_MACHINE + "BlockFluidInfuser.png";
 
+    public final static String MODEL_FLUID_HOPPER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_HOPPER + "BlockFluidHopper.png";
+
     public class GUI {
         public final static String TEXTURE_GUI_LOCATION = "textures/gui/";
         public final static String FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "fluidfurnace.png";

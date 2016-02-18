@@ -39,6 +39,10 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
         this.setHardness(3f);
     }
 
+    protected BlockUpgCBasicFluidHopper(Material material, String name) {
+        super(material, name);
+    }
+
     public String getHarvestTool(IBlockState state) {
         boolean b = state.getValue(BURNED);
         boolean i = state.getValue(IS_SIDE_FACING);
@@ -47,6 +51,11 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
         state.withProperty(BURNED, b).withProperty(IS_SIDE_FACING, i);
 
         return result;
+    }
+
+
+    protected String originalGetHarvestTool(IBlockState state) {
+        return super.getHarvestTool(state);
     }
 
     @Override

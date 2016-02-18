@@ -24,6 +24,7 @@ public class Recipes {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCFluidInfuser), "iii", "i i", "ifi", 'i', "ingotIron", 'f', new ItemStack(ModBlocks.blockUpgCFluidFurnace)));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 0), "ccc", "c c", "ccc", 'c', new ItemStack(ModItems.itemUpgCClayIngot));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 1), "ccc", "cgc", "ccc", 'g', "blockGlass", 'c', new ItemStack(ModItems.itemUpgCClayIngot)));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCFluidHopper), "i i", "iti", " i ", 'i', "ingotIron", 't', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 2)));
 
         //Fluid Infuser recipes
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 200), new ItemStack(ModBlocks.blockUpgCSlimyLog), new ItemStack(Items.slime_ball, 2), 10, new ItemStack(Blocks.planks), 200);

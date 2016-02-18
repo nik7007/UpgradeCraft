@@ -14,6 +14,7 @@ public abstract class CommonProxy implements IProxy {
         GameRegistry.registerTileEntity(UpgCtileentityFluidFurnace.class, Reference.RESOURCE_PREFIX + "UpgCtileentityFluidFurnace");
         GameRegistry.registerTileEntity(UpgCtileentityFluidInfuser.class, Reference.RESOURCE_PREFIX + "UpgCtileentityFluidInfuser");
         GameRegistry.registerTileEntity(UpgCtileentityClayFluidTank.class, Reference.RESOURCE_PREFIX + "UpgCtileentityClayFluidTank");
+        GameRegistry.registerTileEntity(UpgCtilientityFluidHopper.class, Reference.RESOURCE_PREFIX + "UpgCtilientityFluidHopper");
     }
 
     public void registerEventHandlers() {
