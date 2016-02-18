@@ -4,6 +4,7 @@ package com.nik7.upgcraft.tileentities;
 import com.nik7.upgcraft.fluids.IMultipleTankFluidHandler;
 import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.reference.Reference;
+import com.nik7.upgcraft.tank.UpgCFluidTank;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,14 +29,14 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     private final int inventorySize;
     private final int tanksNumber;
     protected ItemStack[] inventory;
-    protected FluidTank[] tanks;
+    protected UpgCFluidTank[] tanks;
 
     protected String customName = null;
     private final String name;
 
     private int meta = 0;
 
-    protected UpgCtileentityInventoryFluidHandler(ItemStack[] inventory, FluidTank[] tanks, String name) {
+    protected UpgCtileentityInventoryFluidHandler(ItemStack[] inventory, UpgCFluidTank[] tanks, String name) {
 
         this.inventorySize = inventory.length;
         this.tanksNumber = tanks.length;

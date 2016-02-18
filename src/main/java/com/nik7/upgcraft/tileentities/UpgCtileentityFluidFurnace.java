@@ -44,8 +44,8 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     private boolean isActive = false;
 
     public UpgCtileentityFluidFurnace() {
-        super(new ItemStack[2], new FluidTank[]{new UpgCFluidTank(Capacity.INTERNAL_FLUID_TANK_TR1)}, "FluidFurnace");
-        ((UpgCFluidTank) this.tanks[0]).setTileEntity(this);
+        super(new ItemStack[2], new UpgCFluidTank[]{new UpgCFluidTank(Capacity.INTERNAL_FLUID_TANK_TR1)}, "FluidFurnace");
+        this.tanks[0].setTileEntity(this);
 
         if (lava_temp == -1 || lava_burning_time == -1) {
             Fluid lava = FluidRegistry.getFluid(LAVA);

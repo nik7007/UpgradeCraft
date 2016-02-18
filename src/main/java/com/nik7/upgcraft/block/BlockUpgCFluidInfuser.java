@@ -49,7 +49,9 @@ public class BlockUpgCFluidInfuser extends BlockUpgCContainerOrientable {
         UpgCtileentityFluidInfuser fluidFurnace = (UpgCtileentityFluidInfuser) worldIn.getTileEntity(pos);
 
         if (fluidFurnace.isActive()) {
-            spawnParticles(worldIn, pos, state, rand, EnumParticleTypes.SMOKE_NORMAL, EnumParticleTypes.FLAME);
+            spawnParticles(worldIn, pos, state, rand, EnumParticleTypes.SMOKE_NORMAL);
+            if (fluidFurnace.isFluidHot())
+                spawnParticles(worldIn, pos, state, rand, EnumParticleTypes.FLAME);
         }
 
     }
