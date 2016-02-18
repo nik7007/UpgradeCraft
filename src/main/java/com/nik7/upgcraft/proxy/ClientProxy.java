@@ -5,6 +5,7 @@ import com.nik7.upgcraft.client.render.item.ItemStackRender;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidHopper;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidMachine;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRendererFluidTank;
+import com.nik7.upgcraft.item.ItemUpgC;
 import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import java.io.File;
 
 import static com.nik7.upgcraft.init.ModBlocks.*;
+import static com.nik7.upgcraft.init.ModItems.itemUpgCClayIngot;
 
 public class ClientProxy extends CommonProxy {
 
@@ -67,6 +69,8 @@ public class ClientProxy extends CommonProxy {
         modelMesher.register(clayTank, 2, createLocation(blockUpgCClayFluidTank));
         modelMesher.register(clayTank, 3, createLocation(blockUpgCClayFluidTank));
 
+        modelMesher.register(itemUpgCClayIngot, 0, createLocation(itemUpgCClayIngot));
+
 
         TileEntityItemStackRenderer.instance = new ItemStackRender(TileEntityItemStackRenderer.instance);
 
@@ -74,12 +78,25 @@ public class ClientProxy extends CommonProxy {
 
     private ModelResourceLocation createLocation(BlockUpgC block, String variant) {
 
-        return new ModelResourceLocation(Reference.MOD_ID + ":" + block.getName() + variant, "inventory");
+        return createLocation(Reference.MOD_ID + ":" + block.getName() + variant);
     }
 
     private ModelResourceLocation createLocation(BlockUpgC block) {
 
         return createLocation(block, "");
+    }
+
+    private ModelResourceLocation createLocation(ItemUpgC item) {
+
+        return createLocation(item, "");
+    }
+
+    private ModelResourceLocation createLocation(ItemUpgC item, String variant) {
+        return createLocation(Reference.MOD_ID + ":" + item.getName() + variant);
+    }
+
+    private ModelResourceLocation createLocation(String location) {
+        return new ModelResourceLocation(location, "inventory");
     }
 
     private void registerTileEntitySpecialRender() {

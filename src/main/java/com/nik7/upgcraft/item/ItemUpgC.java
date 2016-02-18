@@ -10,12 +10,20 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.List;
 
-public class ItemUpgC extends Item {
+public abstract class ItemUpgC extends Item {
 
-    public ItemUpgC() {
+    protected final String name;
+
+    public ItemUpgC(String name) {
         super();
         this.setNoRepair();
         this.setCreativeTab(CreativeTab.UPGC_TAB);
+        this.setUnlocalizedName(name);
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

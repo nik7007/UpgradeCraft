@@ -7,7 +7,7 @@ fluid.upgcraft:ActiveLava=Active Lava
 #Items
 item.upgcraft:ConcentratedEnderPearl.name=Concentrated Ender Pearl
 item.upgcraft:DragonSword.name=Dragon Sword
-item.upgcraft:ClayIronIngot.name=Clay Iron Ingot
+item.upgcraft:ClayIngot.name=Clay Ingot
 item.upgcraft:PersonalInformation.name=Personal Information
 item.upgcraft:ActiveLavaBucket.name=Active Lava Bucket
 
