@@ -53,6 +53,11 @@ public class UpgCtilientityFluidHopper extends UpgCtilientityBasicFluidHopper {
 
         FluidStack fluidStack = null;
 
+        if (getFluid() != null) {
+            if (getFluid().amount + FluidContainerRegistry.BUCKET_VOLUME > getCapacity())
+                return;
+        }
+
         if (block instanceof IFluidBlock) {
             IFluidBlock fluidBlock = (IFluidBlock) block;
 
