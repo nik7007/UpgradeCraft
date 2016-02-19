@@ -31,6 +31,18 @@ dependencies {
     compile "codechicken:NotEnoughItems:1.7.10-1.0.4.105:dev"
 }*/
 
+repositories {
+
+    maven { // The repo from which to get waila
+        name "Mobius Repo"
+        url "http://mobiusstrip.eu/maven"
+    }
+}
+
+dependencies {
+    compile "mcp.mobius.waila:Waila:1.6.0-B3_1.8.8:dev"
+}
+
 
 ext.configFile = file "build.properties"
 
