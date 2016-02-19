@@ -38,7 +38,7 @@ public class WailaFluidTankHandler implements IWailaDataProvider {
 
         if (accessor.getBlock() == ModBlocks.blockUpgCBasicFluidHopper) {
             if (itemStack.getMetadata() > 7) {
-                currenttip.add(EnumChatFormatting.GRAY + "" + EnumChatFormatting.ITALIC + "(" +  StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":fluid.hopper.burned") + ")");
+                currenttip.add(EnumChatFormatting.ITALIC + "(" + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":fluid.hopper.burned") + ")");
             }
         }
 
