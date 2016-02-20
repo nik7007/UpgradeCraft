@@ -20,7 +20,6 @@ import net.minecraft.util.ITickable;
 import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -292,7 +291,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
     }
 
     public int getCapacity() {
-        return tanks[0].getCapacity();
+        return getCapacity(getTankToShow());
     }
 
     @Override

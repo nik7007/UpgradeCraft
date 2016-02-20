@@ -382,5 +382,10 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
     }
 
+    public int getCapacity(int tank)
+    {
+        return tanks[tank].getCapacity();
+    }
+
 
 }

@@ -331,7 +331,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
     }
 
     public int getCapacity() {
-        return tanks[0].getCapacity();
+        return getCapacity(getTankToShow());
     }
 
     @SideOnly(Side.CLIENT)
