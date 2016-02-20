@@ -33,16 +33,17 @@ dependencies {
 
 repositories {
 
+    maven {
+        // Required for JEI
+        name 'progwml6'
+        url 'http://dvs1.progwml6.com/files/maven'
+    }
+
     maven { // The repo from which to get waila
         name "Mobius Repo"
         url "http://mobiusstrip.eu/maven"
     }
 }
-
-dependencies {
-    compile "mcp.mobius.waila:Waila:1.6.0-B3_1.8.8:dev"
-}
-
 
 ext.configFile = file "build.properties"
 
@@ -61,14 +62,17 @@ minecraft {
     version = config.minecraft_version + "-" + config.forge_version
     runDir = "run"
 
-	mappings = "stable_20"
-	
+    mappings = "stable_20"
+
     replaceIn "reference/Reference.java"
     replace "@MOD_VERSION@", "${config.mod_version}"
 
 }
 
 dependencies {
+
+    deobfCompile "mezz.jei:jei_" + config.minecraft_version + ":" + config.jei_version
+    deobfCompile "mcp.mobius.waila:Waila:" + config.waila_version
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
