@@ -62,6 +62,8 @@ minecraft {
     version = config.minecraft_version + "-" + config.forge_version
     runDir = "run"
 
+    useDepAts = true
+
     mappings = "stable_20"
 
     replaceIn "reference/Reference.java"
