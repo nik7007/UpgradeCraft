@@ -31,11 +31,16 @@ public class FluidInfuserJEI extends BlankRecipeWrapper {
     @Override
     @Nonnull
     public List getInputs() {
-        List<Object> inputs = new ArrayList<Object>();
+        List<ItemStack> inputs = new ArrayList<ItemStack>();
         inputs.add(infuseInput);
         inputs.add(meltInput);
-        inputs.add(fluid);
         return inputs;
+    }
+
+    @Override
+    @Nonnull
+    public List<FluidStack> getFluidInputs() {
+        return Collections.singletonList(fluid);
     }
 
     @Override

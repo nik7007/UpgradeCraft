@@ -79,7 +79,7 @@ public class FluidInfuserCategory implements IRecipeCategory {
         recipeLayout.getItemStacks().init(0, true, 35, 0);
         recipeLayout.getItemStacks().init(1, true, 65, 0);
         recipeLayout.getItemStacks().init(2, false, 125, 18);
-        recipeLayout.getFluidStacks().init(3, false, 6, 8, 16, 32, Capacity.INTERNAL_FLUID_TANK_TR1, true, null);
+        recipeLayout.getFluidStacks().init(3, true, 6, 8, 16, 32, Capacity.INTERNAL_FLUID_TANK_TR1, true, null);
 
         if (recipeWrapper instanceof FluidInfuserJEI) {
 
@@ -87,7 +87,7 @@ public class FluidInfuserCategory implements IRecipeCategory {
             recipeLayout.getItemStacks().set(0, (ItemStack) fluidInfuserJEI.getInputs().get(1));
             recipeLayout.getItemStacks().set(1, (ItemStack) fluidInfuserJEI.getInputs().get(0));
             recipeLayout.getItemStacks().set(2, fluidInfuserJEI.getOutputs());
-            recipeLayout.getFluidStacks().set(3, (FluidStack) fluidInfuserJEI.getInputs().get(2));
+            recipeLayout.getFluidStacks().set(3, fluidInfuserJEI.getFluidInputs());
 
         }
 

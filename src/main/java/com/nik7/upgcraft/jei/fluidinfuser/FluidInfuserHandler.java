@@ -28,6 +28,6 @@ public class FluidInfuserHandler implements IRecipeHandler<FluidInfuserJEI> {
 
     @Override
     public boolean isRecipeValid(@Nonnull FluidInfuserJEI recipe) {
-        return recipe.getInputs().size() == 3 && recipe.getOutputs().size() == 1;
+        return recipe.getFluidInputs().size() == 1 && recipe.getInputs().size() == 2 && recipe.getOutputs().size() == 1;
     }
 }
