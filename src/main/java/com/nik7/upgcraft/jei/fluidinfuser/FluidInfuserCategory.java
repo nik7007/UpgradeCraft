@@ -14,7 +14,6 @@ import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 
@@ -26,16 +25,16 @@ public class FluidInfuserCategory implements IRecipeCategory {
     protected final IDrawableAnimated arrow;
 
     @Nonnull
-    private final IDrawable background = UpgCPlugin.jeiHelper.getGuiHelper().createDrawable(new ModelResourceLocation(Texture.GUI.FLUID_INFUSER), 10, 16, 150, 54);
+    private final IDrawable background = UpgCPlugin.jeiHelper.getGuiHelper().createDrawable(new ModelResourceLocation(Texture.GUI.FLUID_INFUSER), 11, 16, 146, 54);
 
     public FluidInfuserCategory() {
 
         ModelResourceLocation backgroundLocation = new ModelResourceLocation(Texture.GUI.FLUID_INFUSER);
 
-        IDrawableStatic bubbleDrawable = UpgCPlugin.jeiHelper.getGuiHelper().createDrawable(backgroundLocation, 176, 0, 15, 14);
+        IDrawableStatic bubbleDrawable = UpgCPlugin.jeiHelper.getGuiHelper().createDrawable(backgroundLocation, 177, 0, 15, 14);
         bubble = UpgCPlugin.jeiHelper.getGuiHelper().createAnimatedDrawable(bubbleDrawable, 60, IDrawableAnimated.StartDirection.BOTTOM, false);
 
-        IDrawableStatic arrowDrawable = UpgCPlugin.jeiHelper.getGuiHelper().createDrawable(backgroundLocation, 176, 14, 24, 17);
+        IDrawableStatic arrowDrawable = UpgCPlugin.jeiHelper.getGuiHelper().createDrawable(backgroundLocation, 177, 14, 24, 17);
         this.arrow = UpgCPlugin.jeiHelper.getGuiHelper().createAnimatedDrawable(arrowDrawable, 200, IDrawableAnimated.StartDirection.LEFT, false);
 
 
@@ -76,10 +75,10 @@ public class FluidInfuserCategory implements IRecipeCategory {
     @Override
     public void setRecipe(@Nonnull IRecipeLayout recipeLayout, @Nonnull IRecipeWrapper recipeWrapper) {
 
-        recipeLayout.getItemStacks().init(0, true, 35, 0);
-        recipeLayout.getItemStacks().init(1, true, 65, 0);
-        recipeLayout.getItemStacks().init(2, false, 125, 18);
-        recipeLayout.getFluidStacks().init(3, true, 6, 8, 16, 32, Capacity.INTERNAL_FLUID_TANK_TR1, true, null);
+        recipeLayout.getItemStacks().init(0, true, 34, 0);
+        recipeLayout.getItemStacks().init(1, true, 64, 0);
+        recipeLayout.getItemStacks().init(2, false, 124, 18);
+        recipeLayout.getFluidStacks().init(3, true, 5, 8, 16, 32, Capacity.INTERNAL_FLUID_TANK_TR1, true, null);
 
         if (recipeWrapper instanceof FluidInfuserJEI) {
 
