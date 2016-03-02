@@ -2,29 +2,23 @@ package com.nik7.upgcraft.jei.fluidinfuser;
 
 
 import com.nik7.upgcraft.init.ModBlocks;
-import mezz.jei.api.recipe.IRecipeHandler;
-import mezz.jei.api.recipe.IRecipeWrapper;
+import com.nik7.upgcraft.jei.RecipeHandler;
 
 import javax.annotation.Nonnull;
 
-public class FluidInfuserHandler implements IRecipeHandler<FluidInfuserJEI> {
+public class FluidInfuserHandler extends RecipeHandler<FluidInfuserJEI> {
+
+
+    public FluidInfuserHandler() {
+        super(ModBlocks.blockUpgCFluidInfuser);
+    }
+
     @Nonnull
     @Override
     public Class<FluidInfuserJEI> getRecipeClass() {
         return FluidInfuserJEI.class;
     }
 
-    @Nonnull
-    @Override
-    public String getRecipeCategoryUid() {
-        return ModBlocks.blockUpgCFluidInfuser.getName();
-    }
-
-    @Nonnull
-    @Override
-    public IRecipeWrapper getRecipeWrapper(@Nonnull FluidInfuserJEI recipe) {
-        return recipe;
-    }
 
     @Override
     public boolean isRecipeValid(@Nonnull FluidInfuserJEI recipe) {

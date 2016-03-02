@@ -2,20 +2,19 @@ package com.nik7.upgcraft.jei.fluidfurnace;
 
 
 import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.jei.RecipeCategory;
 import com.nik7.upgcraft.jei.UpgCPlugin;
 import com.nik7.upgcraft.reference.Texture;
-import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IRecipeLayout;
-import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 
 import javax.annotation.Nonnull;
 
-public class FluidFurnaceCategory implements IRecipeCategory {
+public class FluidFurnaceCategory extends RecipeCategory {
 
     @Nonnull
     protected final IDrawableAnimated flame;
@@ -23,11 +22,9 @@ public class FluidFurnaceCategory implements IRecipeCategory {
     protected final IDrawableAnimated arrow;
 
 
-    @Nonnull
-    private final IDrawable background = UpgCPlugin.jeiHelper.getGuiHelper().createDrawable(new ModelResourceLocation(Texture.GUI.FLUID_FURNACE), 55, 16, 82, 54);
-
-
     public FluidFurnaceCategory() {
+
+        super(ModBlocks.blockUpgCFluidFurnace, UpgCPlugin.jeiHelper.getGuiHelper().createDrawable(new ModelResourceLocation(Texture.GUI.FLUID_FURNACE), 55, 16, 82, 54));
 
         ModelResourceLocation backgroundLocation = new ModelResourceLocation(Texture.GUI.FLUID_FURNACE);
 
@@ -40,23 +37,6 @@ public class FluidFurnaceCategory implements IRecipeCategory {
 
     }
 
-    @Nonnull
-    @Override
-    public String getUid() {
-        return ModBlocks.blockUpgCFluidFurnace.getName();
-    }
-
-    @Nonnull
-    @Override
-    public String getTitle() {
-        return ModBlocks.blockUpgCFluidFurnace.getLocalizedName();
-    }
-
-    @Nonnull
-    @Override
-    public IDrawable getBackground() {
-        return background;
-    }
 
     @Override
     public void drawExtras(@Nonnull Minecraft minecraft) {
