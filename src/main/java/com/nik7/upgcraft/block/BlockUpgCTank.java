@@ -76,13 +76,15 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
-        UpgCtileentityFluidTank tank = (UpgCtileentityFluidTank) worldIn.getTileEntity(pos);
+
         ItemStack equippedItemStack = playerIn.getCurrentEquippedItem();
 
         if (FluidContainerRegistry.isContainer(equippedItemStack)) {
 
-            if (!worldIn.isRemote)
+            if (!worldIn.isRemote) {
+                UpgCtileentityFluidTank tank = (UpgCtileentityFluidTank) worldIn.getTileEntity(pos);
                 handleContainerClick(worldIn, pos, playerIn, tank, equippedItemStack);
+            }
 
             return true;
 
