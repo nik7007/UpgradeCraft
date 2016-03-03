@@ -43,7 +43,8 @@ public class ClientProxy extends CommonProxy {
 
         ItemModelMesher modelMesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 
-        modelMesher.register(Item.getItemFromBlock(blockUpgCSlimyLog), 0, new ModelResourceLocation(Reference.MOD_ID + ":" + blockUpgCSlimyLog.getName(), "inventory"));
+        modelMesher.register(Item.getItemFromBlock(blockUpgCSlimyLog), 0, createLocation(blockUpgCSlimyLog));
+        modelMesher.register(Item.getItemFromBlock(blockUpgCSlimyObsidian), 0, createLocation(blockUpgCSlimyObsidian));
 
         Item twItem = Item.getItemFromBlock(blockUpgCWoodenFluidTank);
         modelMesher.register(twItem, 0, createLocation(blockUpgCWoodenFluidTank));
