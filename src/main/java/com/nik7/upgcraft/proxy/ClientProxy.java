@@ -45,6 +45,7 @@ public class ClientProxy extends CommonProxy {
 
         modelMesher.register(Item.getItemFromBlock(blockUpgCSlimyLog), 0, createLocation(blockUpgCSlimyLog));
         modelMesher.register(Item.getItemFromBlock(blockUpgCSlimyObsidian), 0, createLocation(blockUpgCSlimyObsidian));
+        modelMesher.register(Item.getItemFromBlock(blockUpgCEnderFluidTank), 0, createLocation(blockUpgCEnderFluidTank));
 
         Item twItem = Item.getItemFromBlock(blockUpgCWoodenFluidTank);
         modelMesher.register(twItem, 0, createLocation(blockUpgCWoodenFluidTank));

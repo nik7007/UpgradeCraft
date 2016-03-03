@@ -13,10 +13,10 @@ item.upgcraft:ActiveLavaBucket.name=Active Lava Bucket
 
 #Bloks
 tile.upgcraft:WoodenFluidTank.name=Wooden Fluid Tank
-tile.upgcraft:ClayFluidTank.name=Clay Tank
-tile.upgcraft:IronTank.name=Iron Tank
-tile.upgcraft:ClayFluidTank.Hardened.name=Hardened Clay Tank
-tile.upgcraft:EnderTank.name=Ender Tank
+tile.upgcraft:ClayFluidTank.name=Clay Fluid Tank
+tile.upgcraft:IronFluidTank.name=Iron Fluid Tank
+tile.upgcraft:ClayFluidTank.Hardened.name=Hardened Clay Fluid Tank
+tile.upgcraft:EnderFluidTank.name=Ender Fluid Tank
 tile.upgcraft:EnderHopper.name=Ender Hopper [WIP]
 tile.upgcraft:SlimyLog.name=Slimy Wood Planks
 tile.upgcraft:SlimyObsidian.name=Slimy Obsidian

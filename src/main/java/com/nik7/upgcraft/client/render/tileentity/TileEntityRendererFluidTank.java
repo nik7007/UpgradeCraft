@@ -8,6 +8,7 @@ import com.nik7.upgcraft.client.render.model.ModelTank;
 import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityClayFluidTank;
+import com.nik7.upgcraft.tileentities.UpgCtileentityEnderFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenFluidTank;
 import com.nik7.upgcraft.util.RenderHelper;
@@ -103,6 +104,9 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                         this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_HARDENED_CLAY_TANK));
                     else
                         this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_CLAY_TANK));
+
+                else if (te instanceof UpgCtileentityEnderFluidTank)
+                    this.bindTexture(new ResourceLocation(Texture.MODEL_ENDER_FLUID_TANK));
 
 
             }
@@ -222,9 +226,9 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
         }
 
         //fluid
-        if (isGlasses || isAdjGlasses) {
+        if (isGlasses || isAdjGlasses || te instanceof UpgCtileentityEnderFluidTank) {
             FluidStack fluidStack = te.getFluid();
-            if (fluidStack != null) {
+            if (fluidStack != null || te instanceof UpgCtileentityEnderFluidTank) {
                 float level = te.getFillPercentage();
 
                 GlStateManager.disableLighting();
@@ -235,19 +239,24 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
-                if (!isDouble) {
-                    this.renderFluid(level, te.getFluid(), true, false, false);
-                } else {
-                    if (dY == 0) {
-                        boolean top = true;
-                        if (level > 0.5f) {
-                            level = 0.5f;
-                            top = false;
+                if (!(te instanceof UpgCtileentityEnderFluidTank))
+                    if (!isDouble) {
+                        this.renderFluid(level, te.getFluid(), true, false, false);
+                    } else {
+                        if (dY == 0) {
+                            boolean top = true;
+                            if (level > 0.5f) {
+                                level = 0.5f;
+                                top = false;
+                            }
+                            this.renderFluid(level * 2, te.getFluid(), top, false, true);
+                        } else if (level > 0.5f) {
+                            this.renderFluid((level - 0.5f) * 2f, te.getFluid(), true, true, true);
                         }
-                        this.renderFluid(level * 2, te.getFluid(), top, false, true);
-                    } else if (level > 0.5f) {
-                        this.renderFluid((level - 0.5f) * 2f, te.getFluid(), true, true, true);
                     }
+                else {
+                    GlStateManager.translate(0.5, 0, 0.5);
+                    RenderHelper.renderEndPortal(Render.TankInternalDimension.xMaz, Render.TankInternalDimension.yMin, Render.TankInternalDimension.yMax, (float) this.rendererDispatcher.entityX, (float) this.rendererDispatcher.entityY, (float) this.rendererDispatcher.entityZ);
                 }
 
 
