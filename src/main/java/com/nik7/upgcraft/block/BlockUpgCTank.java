@@ -94,7 +94,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         return super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
     }
 
-    private void handleContainerClick(World worldIn, BlockPos pos, EntityPlayer playerIn, UpgCtileentityFluidTank tank, ItemStack equippedItemStack) {
+    protected void handleContainerClick(World worldIn, BlockPos pos, EntityPlayer playerIn, UpgCtileentityFluidTank tank, ItemStack equippedItemStack) {
 
         if (FluidContainerRegistry.isBucket(equippedItemStack)) {
 
@@ -193,7 +193,8 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         if (this.hasSubBlocks) {
             list.add(new ItemStack(this, 1, TankType.SOLID.getMeta()));
             list.add(new ItemStack(this, 1, TankType.GLASSES.getMeta()));
-        }
+        } else
+            list.add(new ItemStack(itemIn, 1, 0));
     }
 
     public enum TankType implements IStringSerializable {
