@@ -33,37 +33,38 @@ public class WailaFluidTankHandler implements IWailaDataProvider {
 
     @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
-        String fluidName = StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.df.name");
-        //if (!(accessor.getBlock() instanceof BlockUpgCEnderTank)) {
+        if (accessor.getBlock() != ModBlocks.blockUpgCEnderFluidTank) {
 
-        if (accessor.getBlock() == ModBlocks.blockUpgCBasicFluidHopper) {
-            if (itemStack.getMetadata() > 7) {
-                currenttip.add(EnumChatFormatting.ITALIC + "(" + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":fluid.hopper.burned") + ")");
-            }
-        }
+            String fluidName = StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.df.name");
 
-        int capacity;
-        FluidStack fluidStack;
-        int amount = 0;
-        UpgCtileentityFluidTank tank;
-
-
-        tank = (UpgCtileentityFluidTank) accessor.getTileEntity();
-        if (tank != null) {
-            capacity = tank.getCapacity();
-            fluidStack = tank.getFluid();
-
-            if (fluidStack != null) {
-                amount = fluidStack.amount;
-                fluidName = fluidStack.getLocalizedName();
-
+            if (accessor.getBlock() == ModBlocks.blockUpgCBasicFluidHopper) {
+                if (itemStack.getMetadata() > 7) {
+                    currenttip.add(EnumChatFormatting.ITALIC + "(" + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":fluid.hopper.burned") + ")");
+                }
             }
 
-            currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.name") + ": " + EnumChatFormatting.RESET + fluidName);
-            currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.amount") + ": " + EnumChatFormatting.RESET + amount + "/" + capacity + " mB");
-        }
+            int capacity;
+            FluidStack fluidStack;
+            int amount = 0;
+            UpgCtileentityFluidTank tank;
 
-        //}
+
+            tank = (UpgCtileentityFluidTank) accessor.getTileEntity();
+            if (tank != null) {
+                capacity = tank.getCapacity();
+                fluidStack = tank.getFluid();
+
+                if (fluidStack != null) {
+                    amount = fluidStack.amount;
+                    fluidName = fluidStack.getLocalizedName();
+
+                }
+
+                currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.name") + ": " + EnumChatFormatting.RESET + fluidName);
+                currenttip.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.amount") + ": " + EnumChatFormatting.RESET + amount + "/" + capacity + " mB");
+            }
+
+        }
 
 
         return currenttip;
