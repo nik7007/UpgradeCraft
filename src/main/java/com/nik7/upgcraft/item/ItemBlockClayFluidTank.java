@@ -8,8 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,27 +42,27 @@ public class ItemBlockClayFluidTank extends ItemBlock implements IFluidContainer
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> list, boolean advanced) {
         int metaData = itemStack.getItemDamage();
         if (metaData == 1 || metaData == 3) {
-            list.add(StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.hollow"));
+            list.add(I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.hollow"));
         }
 
         List<String> hiddenInformation = new LinkedList<String>();
         if (metaData < 2) {
-            hiddenInformation.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.to.be.cooked.t"));
-            hiddenInformation.add(EnumChatFormatting.DARK_AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.to.be.cooked.b"));
+            hiddenInformation.add(TextFormatting.DARK_AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.to.be.cooked.t"));
+            hiddenInformation.add(TextFormatting.DARK_AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.to.be.cooked.b"));
         }
 
         if (metaData > 1) {
             FluidStack fluidStack = getFluid(itemStack);
             int amount = 0;
-            String fluidName = StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.df.name");
+            String fluidName = I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.df.name");
 
             if (fluidStack != null) {
                 amount = fluidStack.amount;
                 fluidName = fluidStack.getLocalizedName();
 
             }
-            hiddenInformation.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.name") + ": " + EnumChatFormatting.RESET + fluidName);
-            hiddenInformation.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.amount") + ": " + EnumChatFormatting.RESET + amount + "/" + getCapacity(itemStack) + " mB");
+            hiddenInformation.add(TextFormatting.AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.name") + ": " + TextFormatting.RESET + fluidName);
+            hiddenInformation.add(TextFormatting.AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.amount") + ": " + TextFormatting.RESET + amount + "/" + getCapacity(itemStack) + " mB");
 
         }
 

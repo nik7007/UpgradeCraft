@@ -7,8 +7,8 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.inventory.Container;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -42,7 +42,7 @@ public abstract class GuiWithFluid extends GuiContainer {
     protected void renderFluidWithToolTipEX(FluidStack fluid, int maxFluidAmount, int x, int y, int mazX, int maxY, int mouseX, int mouseY, int level, boolean temp, boolean renderFluid) {
 
         int amount = 0;
-        String fluidName = StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.df.name");
+        String fluidName = I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.df.name");
         int temperature = 0;
 
         if (fluid != null && fluid.amount > 0) {
@@ -55,11 +55,11 @@ public abstract class GuiWithFluid extends GuiContainer {
         }
 
         List<String> text = new ArrayList<String>();
-        text.add(EnumChatFormatting.RESET + fluidName);
-        text.add(EnumChatFormatting.GRAY + "" + amount + " / " + maxFluidAmount + " mB");
+        text.add(TextFormatting.RESET + fluidName);
+        text.add(TextFormatting.GRAY + "" + amount + " / " + maxFluidAmount + " mB");
 
         if (temp)
-            text.add(EnumChatFormatting.AQUA + StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":machine.temperature") + ": " + EnumChatFormatting.RESET + temperature + " K");
+            text.add(TextFormatting.AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":machine.temperature") + ": " + TextFormatting.RESET + temperature + " K");
 
         drawToolTip(text, x, y, mazX, maxY, mouseX, mouseY);
 

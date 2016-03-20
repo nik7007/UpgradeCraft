@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -28,7 +28,7 @@ public class ItemBlockUpgCBasicFluidHopper extends ItemBlock {
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> list, boolean advanced) {
         int metaData = itemStack.getItemDamage();
         if (metaData != 0) {
-            list.add(StatCollector.translateToLocal("tooltip." + Reference.MOD_ID + ":fluid.hopper.burned"));
+            list.add(I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":fluid.hopper.burned"));
         }
     }
 }

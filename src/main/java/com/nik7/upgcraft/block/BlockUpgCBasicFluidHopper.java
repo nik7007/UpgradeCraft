@@ -7,16 +7,17 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyDirection;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -29,7 +30,7 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
     private Random random = new Random();
 
     public static final PropertyBool BURNED = PropertyBool.create("burned");
-    public static final PropertyBool IS_SIDE_FACING = PropertyBool.create("isFacingSide");
+    public static final PropertyBool IS_SIDE_FACING = PropertyBool.create("isfacingside");
     public static final PropertyDirection FACING = PropertyDirection.create("facing");
 
 
@@ -59,24 +60,24 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
     }
 
     @Override
-    public int getRenderType() {
-        return 2;
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isFullCube() {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
 
     @Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, FACING, BURNED, IS_SIDE_FACING);
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, BURNED, IS_SIDE_FACING);
     }
 
     @Override
@@ -130,7 +131,7 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
             if (world.isRemote)
                 spawnParticles(world, pos, random, EnumParticleTypes.SMOKE_LARGE);
 
-            world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), "fire.fire", 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+            //world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), "fire.fire", 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
 
             if (tileentity != null) {
                 tileentity.validate();

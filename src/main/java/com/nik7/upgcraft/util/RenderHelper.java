@@ -18,7 +18,7 @@ import java.util.Random;
 public class RenderHelper {
 
     private static Tessellator tessellator = Tessellator.getInstance();
-    private static WorldRenderer worldRenderer = tessellator.getWorldRenderer();
+    private static VertexBuffer vertexBuffer = tessellator.getBuffer();
 
     public static void renderFluid(float fluidLevel, float sizeX, float sizeZ, float maxHeight, float minHeight, FluidStack fluid, boolean renderTop, boolean isTop, boolean renderDown, boolean isDouble) {
 
@@ -46,7 +46,7 @@ public class RenderHelper {
 
         float height = renderTop ? minHeight + (fluidLevel) * (maxHeight - minHeight) : 1;
 
-        worldRenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        vertexBuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
 
         float xMax, zMax, xMin, zMin, yMin = minHeight;
         xMax = sizeX;
@@ -56,7 +56,7 @@ public class RenderHelper {
 
         if (isTop) yMin = 0;
 
-        renderCuboid(worldRenderer, xMax, xMin, yMin, height, zMin, zMax, fluidStillSprite, renderTop, renderDown);
+        renderCuboid(vertexBuffer, xMax, xMin, yMin, height, zMin, zMax, fluidStillSprite, renderTop, renderDown);
 
 
         tessellator.draw();
@@ -77,7 +77,7 @@ public class RenderHelper {
         GlStateManager.color(red, green, blue, 1.0F);
     }
 
-    private static void renderCuboid(WorldRenderer worldRenderer, float xMax, float xMin, float yMin, float height, float zMin, float zMax, TextureAtlasSprite textureAtlasSprite, boolean renderTop, boolean renderDown) {
+    private static void renderCuboid(VertexBuffer vertexBuffer, float xMax, float xMin, float yMin, float height, float zMin, float zMax, TextureAtlasSprite textureAtlasSprite, boolean renderTop, boolean renderDown) {
 
         double uMin = (double) textureAtlasSprite.getMinU();
         double uMax = (double) textureAtlasSprite.getMaxU();
@@ -88,54 +88,54 @@ public class RenderHelper {
 
         //top
         if (renderTop) {
-            addVertexWithUV(worldRenderer, xMax, height, zMax, uMax, vMin);
-            addVertexWithUV(worldRenderer, xMax, height, zMin, uMin, vMin);
-            addVertexWithUV(worldRenderer, xMin, height, zMin, uMin, vMax);
-            addVertexWithUV(worldRenderer, xMin, height, zMax, uMax, vMax);
+            addVertexWithUV(vertexBuffer, xMax, height, zMax, uMax, vMin);
+            addVertexWithUV(vertexBuffer, xMax, height, zMin, uMin, vMin);
+            addVertexWithUV(vertexBuffer, xMin, height, zMin, uMin, vMax);
+            addVertexWithUV(vertexBuffer, xMin, height, zMax, uMax, vMax);
         }
 
         //north
-        addVertexWithUV(worldRenderer, xMax, yMin, zMin, uMax, vMin);
-        addVertexWithUV(worldRenderer, xMin, yMin, zMin, uMin, vMin);
-        addVertexWithUV(worldRenderer, xMin, height, zMin, uMin, vMin + (vHeight * height));
-        addVertexWithUV(worldRenderer, xMax, height, zMin, uMax, vMin + (vHeight * height));
+        addVertexWithUV(vertexBuffer, xMax, yMin, zMin, uMax, vMin);
+        addVertexWithUV(vertexBuffer, xMin, yMin, zMin, uMin, vMin);
+        addVertexWithUV(vertexBuffer, xMin, height, zMin, uMin, vMin + (vHeight * height));
+        addVertexWithUV(vertexBuffer, xMax, height, zMin, uMax, vMin + (vHeight * height));
 
         //south
-        addVertexWithUV(worldRenderer, xMax, yMin, zMax, uMin, vMin);
-        addVertexWithUV(worldRenderer, xMax, height, zMax, uMin, vMin + (vHeight * height));
-        addVertexWithUV(worldRenderer, xMin, height, zMax, uMax, vMin + (vHeight * height));
-        addVertexWithUV(worldRenderer, xMin, yMin, zMax, uMax, vMin);
+        addVertexWithUV(vertexBuffer, xMax, yMin, zMax, uMin, vMin);
+        addVertexWithUV(vertexBuffer, xMax, height, zMax, uMin, vMin + (vHeight * height));
+        addVertexWithUV(vertexBuffer, xMin, height, zMax, uMax, vMin + (vHeight * height));
+        addVertexWithUV(vertexBuffer, xMin, yMin, zMax, uMax, vMin);
 
         //east
-        addVertexWithUV(worldRenderer, xMax, yMin, zMin, uMin, vMin);
-        addVertexWithUV(worldRenderer, xMax, height, zMin, uMin, vMin + (vHeight * height));
-        addVertexWithUV(worldRenderer, xMax, height, zMax, uMax, vMin + (vHeight * height));
-        addVertexWithUV(worldRenderer, xMax, yMin, zMax, uMax, vMin);
+        addVertexWithUV(vertexBuffer, xMax, yMin, zMin, uMin, vMin);
+        addVertexWithUV(vertexBuffer, xMax, height, zMin, uMin, vMin + (vHeight * height));
+        addVertexWithUV(vertexBuffer, xMax, height, zMax, uMax, vMin + (vHeight * height));
+        addVertexWithUV(vertexBuffer, xMax, yMin, zMax, uMax, vMin);
 
         //west
-        addVertexWithUV(worldRenderer, xMin, yMin, zMax, uMin, vMin);
-        addVertexWithUV(worldRenderer, xMin, height, zMax, uMin, vMin + (vHeight * height));
-        addVertexWithUV(worldRenderer, xMin, height, zMin, uMax, vMin + (vHeight * height));
-        addVertexWithUV(worldRenderer, xMin, yMin, zMin, uMax, vMin);
+        addVertexWithUV(vertexBuffer, xMin, yMin, zMax, uMin, vMin);
+        addVertexWithUV(vertexBuffer, xMin, height, zMax, uMin, vMin + (vHeight * height));
+        addVertexWithUV(vertexBuffer, xMin, height, zMin, uMax, vMin + (vHeight * height));
+        addVertexWithUV(vertexBuffer, xMin, yMin, zMin, uMax, vMin);
 
         if (renderDown) {
-            addVertexWithUV(worldRenderer, xMax, yMin, zMin, uMax, vMin);
-            addVertexWithUV(worldRenderer, xMax, yMin, zMax, uMin, vMin);
-            addVertexWithUV(worldRenderer, xMin, yMin, zMax, uMin, vMax);
-            addVertexWithUV(worldRenderer, xMin, yMin, zMin, uMax, vMax);
+            addVertexWithUV(vertexBuffer, xMax, yMin, zMin, uMax, vMin);
+            addVertexWithUV(vertexBuffer, xMax, yMin, zMax, uMin, vMin);
+            addVertexWithUV(vertexBuffer, xMin, yMin, zMax, uMin, vMax);
+            addVertexWithUV(vertexBuffer, xMin, yMin, zMin, uMax, vMax);
         }
 
     }
 
-    private static void addVertexWithUV(WorldRenderer worldRenderer, float x, float y, float z, double u, double v) {
+    private static void addVertexWithUV(VertexBuffer vertexBuffer, float x, float y, float z, double u, double v) {
 
-        worldRenderer.pos(x / 2f, y, z / 2f).tex(u, v).endVertex();
+        vertexBuffer.pos(x / 2f, y, z / 2f).tex(u, v).endVertex();
 
     }
 
-    private static void addVertexWithColor(WorldRenderer worldRenderer, float x, float y, float z, float red, float green, float blue, float alpha) {
+    private static void addVertexWithColor(VertexBuffer vertexBuffer, float x, float y, float z, float red, float green, float blue, float alpha) {
 
-        worldRenderer.pos(x / 2f, y, z / 2f).color(red, green, blue, alpha).endVertex();
+        vertexBuffer.pos(x / 2f, y, z / 2f).color(red, green, blue, alpha).endVertex();
 
     }
 
@@ -209,8 +209,8 @@ public class RenderHelper {
             f8 = f7 + (float) ActiveRenderInfo.getPosition().yCoord;
             GlStateManager.translate((float) ActiveRenderInfo.getPosition().xCoord * f4 / f8, (float) ActiveRenderInfo.getPosition().zCoord * f4 / f8, -oldPy);
             Tessellator tessellator = Tessellator.getInstance();
-            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-            worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+            VertexBuffer vertexBuffer = tessellator.getBuffer();
+            vertexBuffer.begin(7, DefaultVertexFormats.POSITION_COLOR);
             float f11 = (RANDOM.nextFloat() * 0.5F + 0.1F) * f6;
             float f12 = (RANDOM.nextFloat() * 0.5F + 0.4F) * f6;
             float f13 = (RANDOM.nextFloat() * 0.5F + 0.5F) * f6;
@@ -225,28 +225,28 @@ public class RenderHelper {
             worldrenderer.pos(x + 1.0D, y + (double)f3, z).color(f11, f12, f13, 1.0F).endVertex();*/
 
             //north
-            addVertexWithColor(worldRenderer, xMax, yMin, zMin, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMin, yMin, zMin, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMin, yMax, zMin, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMax, yMax, zMin, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMax, yMin, zMin, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMin, yMin, zMin, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMin, yMax, zMin, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMax, yMax, zMin, f11, f12, f13, 1.0F);
 
             //south
-            addVertexWithColor(worldRenderer, xMax, yMin, zMax, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMax, yMax, zMax, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMin, yMax, zMax, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMin, yMin, zMax, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMax, yMin, zMax, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMax, yMax, zMax, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMin, yMax, zMax, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMin, yMin, zMax, f11, f12, f13, 1.0F);
 
             //east
-            addVertexWithColor(worldRenderer, xMax, yMin, zMin, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMax, yMax, zMin, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMax, yMax, zMax, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMax, yMin, zMax, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMax, yMin, zMin, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMax, yMax, zMin, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMax, yMax, zMax, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMax, yMin, zMax, f11, f12, f13, 1.0F);
 
             //west
-            addVertexWithColor(worldRenderer, xMin, yMin, zMax, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMin, yMax, zMax, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMin, yMax, zMin, f11, f12, f13, 1.0F);
-            addVertexWithColor(worldRenderer, xMin, yMin, zMin, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMin, yMin, zMax, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMin, yMax, zMax, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMin, yMax, zMin, f11, f12, f13, 1.0F);
+            addVertexWithColor(RenderHelper.vertexBuffer, xMin, yMin, zMin, f11, f12, f13, 1.0F);
 
 
             tessellator.draw();

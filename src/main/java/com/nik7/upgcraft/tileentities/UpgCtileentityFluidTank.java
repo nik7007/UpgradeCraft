@@ -8,7 +8,7 @@ import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -88,13 +88,14 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
         NBTTagCompound tag = new NBTTagCompound();
         writeToNBT(tag);
 
-        return new S35PacketUpdateTileEntity(pos, -1, tag);
+        return new SPacketUpdateTileEntity(pos, -1, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity packet) {
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         readFromNBT(packet.getNbtCompound());
-        worldObj.markBlockForUpdate(pos);
+        //// TODO: 20/03/2016 update
+        //worldObj.markBlockForUpdate(pos);
     }
 
     @Override
@@ -356,12 +357,13 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
     //To avoid infinite recursive calling of the "updateModBlock" method
     private boolean isNotAlreadyUpdating = true;
 
+    //// TODO: 20/03/2016 update
     private void updateModBlock() {
 
         if (isNotAlreadyUpdating && worldObj != null) {
             isNotAlreadyUpdating = false;
             //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-            worldObj.markBlockForUpdate(pos);
+            //worldObj.markBlockForUpdate(pos);
             //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
             this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
 

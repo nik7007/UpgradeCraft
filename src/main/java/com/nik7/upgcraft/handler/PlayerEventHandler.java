@@ -10,15 +10,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class PlayerEventHandler {
 
     @SubscribeEvent
-    public void onEntityConstructing(EntityEvent.EntityConstructing event)
-    {
-        if (event.entity instanceof EntityPlayer && ExtendedPlayerUpgC.get((EntityPlayer) event.entity) == null)
-            ExtendedPlayerUpgC.register((EntityPlayer) event.entity);
+    public void onEntityConstructing(EntityEvent.EntityConstructing event) {/*
+        if (event.entity instanceof EntityPlayer && ExtendedPlayerUpgC.get((EntityPlayer) event.entity) == null) {
+            //ExtendedPlayerUpgC.register((EntityPlayer) event.entity);
+        }*/
     }
 
-    public static void init(){
+    public static void init() {
 
-        MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
+        //MinecraftForge.EVENT_BUS.register(new PlayerEventHandler());
     }
 
 }

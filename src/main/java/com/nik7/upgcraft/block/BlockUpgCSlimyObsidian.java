@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
+import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -16,8 +17,8 @@ public class BlockUpgCSlimyObsidian extends BlockUpgC implements CustomCraftingE
     }
 
     @Override
-    public int getMobilityFlag() {
-        return 2;
+    public EnumPushReaction getMobilityFlag(IBlockState state) {
+        return EnumPushReaction.IGNORE;
     }
 
     @Override

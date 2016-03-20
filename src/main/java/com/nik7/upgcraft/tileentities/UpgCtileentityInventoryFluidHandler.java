@@ -15,10 +15,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
@@ -193,9 +192,10 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     }
 
 
+    //// TODO: 20/03/2016 mark for update
     protected void updateModBlock() {
         //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-        worldObj.markBlockForUpdate(pos);
+        //worldObj.markBlockForUpdate(pos);
         //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
         this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
     }
@@ -298,8 +298,8 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     }
 
     @Override
-    public IChatComponent getDisplayName() {
-        return this.hasCustomName() ? new ChatComponentText(this.getName()) : new ChatComponentTranslation(Reference.MOD_ID + ":container." + this.getName().toLowerCase());
+    public ITextComponent getDisplayName() {
+        return this.hasCustomName() ? new TextComponentTranslation(this.getName()) : new TextComponentTranslation(Reference.MOD_ID + ":container." + this.getName().toLowerCase());
     }
 
     //fluid part
@@ -382,8 +382,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
 
     }
 
-    public int getCapacity(int tank)
-    {
+    public int getCapacity(int tank) {
         return tanks[tank].getCapacity();
     }
 

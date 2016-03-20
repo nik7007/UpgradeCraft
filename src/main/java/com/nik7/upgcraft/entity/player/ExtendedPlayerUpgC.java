@@ -20,12 +20,12 @@ public class ExtendedPlayerUpgC implements IExtendedEntityProperties {
     }
 
     public static void register(EntityPlayer player) {
-        player.registerExtendedProperties(Reference.EXTENDED_PLAYER, new ExtendedPlayerUpgC(player));
+        //player.registerExtendedProperties(Reference.EXTENDED_PLAYER, new ExtendedPlayerUpgC(player));
     }
 
-    public static ExtendedPlayerUpgC get(EntityPlayer player) {
+    /*public static ExtendedPlayerUpgC get(EntityPlayer player) {
         return (ExtendedPlayerUpgC) player.getExtendedProperties(Reference.EXTENDED_PLAYER);
-    }
+    }*/
 
     @Override
     public void saveNBTData(NBTTagCompound compound) {
@@ -43,11 +43,11 @@ public class ExtendedPlayerUpgC implements IExtendedEntityProperties {
 
     }
 
-    public static UpgCEnderFluidTank getUpgCEnderTank(EntityPlayer player) {
+   /* public static UpgCEnderFluidTank getUpgCEnderTank(EntityPlayer player) {
 
         return ((ExtendedPlayerUpgC) player.getExtendedProperties(Reference.EXTENDED_PLAYER)).UpgCEnderTank;
 
-    }
+    }*/
 
     @Override
     public void init(Entity entity, World world) {

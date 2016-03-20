@@ -8,7 +8,7 @@ import com.nik7.upgcraft.util.WorldHelper;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -16,11 +16,16 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -35,26 +40,32 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     private int capacity;
     public static final PropertyEnum<TankType> TYPE = PropertyEnum.create("type", TankType.class);
     protected boolean hasSubBlocks = false;
+    private static final AxisAlignedBB BB = new AxisAlignedBB(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
 
     public BlockUpgCTank(Material material, int capacity, String name) {
         super(material, name);
         this.capacity = capacity;
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, TankType.SOLID));
-        this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
+        //this.setBlockBounds(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
     }
 
     @Override
-    public int getRenderType() {
-        return 2;
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return BB;
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isFullCube() {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
@@ -75,9 +86,9 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-        ItemStack equippedItemStack = playerIn.getCurrentEquippedItem();
+        ItemStack equippedItemStack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
 
         if (FluidContainerRegistry.isContainer(equippedItemStack)) {
 
@@ -91,7 +102,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
         }
 
 
-        return super.onBlockActivated(worldIn, pos, state, playerIn, side, hitX, hitY, hitZ);
+        return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
     }
 
     protected void handleContainerClick(World worldIn, BlockPos pos, EntityPlayer playerIn, UpgCtileentityFluidTank tank, ItemStack equippedItemStack) {
@@ -169,8 +180,8 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
 
 
     @Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, TYPE);
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPE);
     }
 
     @Override
@@ -232,11 +243,11 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     }
 
     @Override
-    public boolean hasComparatorInputOverride() {
+    public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
     }
 
-    public int getComparatorInputOverride(World worldIn, BlockPos pos) {
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
 
         UpgCtileentityFluidTank tank = (UpgCtileentityFluidTank) worldIn.getTileEntity(pos);
         int capacity = tank.getCapacity();

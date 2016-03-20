@@ -5,21 +5,22 @@ import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.tileentities.UpgCtileentityClayFluidTank;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.state.BlockState;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
@@ -34,7 +35,7 @@ public class BlockUpgCClayFluidTank extends BlockUpgCTank {
 
     private Random random = new Random();
 
-    public static final PropertyBool IS_HARDENED = PropertyBool.create("isHardened");
+    public static final PropertyBool IS_HARDENED = PropertyBool.create("ishardened");
 
     public BlockUpgCClayFluidTank() {
         super(Material.rock, Capacity.SMALL_TANK, "ClayFluidTank");
@@ -54,8 +55,8 @@ public class BlockUpgCClayFluidTank extends BlockUpgCTank {
     }
 
     @Override
-    protected BlockState createBlockState() {
-        return new BlockState(this, TYPE, IS_HARDENED);
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPE, IS_HARDENED);
     }
 
     public void hardenedClayTank(World world, BlockPos pos, IBlockState state) {
@@ -69,7 +70,7 @@ public class BlockUpgCClayFluidTank extends BlockUpgCTank {
             if (world.isRemote)
                 spawnParticles(world, pos, random, EnumParticleTypes.SMOKE_LARGE);
 
-            world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), "fire.fire", 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+            //world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), "fire.fire", 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
 
             if (tileentity != null) {
                 tileentity.validate();
@@ -113,11 +114,11 @@ public class BlockUpgCClayFluidTank extends BlockUpgCTank {
     }
 
     @Override
-    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te) {
-        player.triggerAchievement(StatList.mineBlockStatArray[getIdFromBlock(this)]);
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, TileEntity te, ItemStack stack) {
+        player.addStat(StatList.func_188055_a(this));
         player.addExhaustion(0.025F);
 
-        if (state.getValue(IS_HARDENED) && this.canSilkHarvest(worldIn, pos, worldIn.getBlockState(pos), player) && EnchantmentHelper.getSilkTouchModifier(player)) {
+        if (state.getValue(IS_HARDENED) && this.canSilkHarvest(worldIn, pos, worldIn.getBlockState(pos), player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.silkTouch, stack) > 0) {
             ArrayList<ItemStack> items = new ArrayList<ItemStack>();
             ItemStack itemstack = this.createStackedBlock(state);
 
@@ -133,19 +134,19 @@ public class BlockUpgCClayFluidTank extends BlockUpgCTank {
             }
 
             ForgeEventFactory.fireBlockHarvesting(items, worldIn, pos, worldIn.getBlockState(pos), 0, 1.0f, true, player);
-            for (ItemStack stack : items) {
-                spawnAsEntity(worldIn, pos, stack);
+            for (ItemStack itemStack : items) {
+                spawnAsEntity(worldIn, pos, itemStack);
             }
         } else {
             harvesters.set(player);
-            int i = EnchantmentHelper.getFortuneModifier(player);
+            int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.fortune, stack);
             this.dropBlockAsItem(worldIn, pos, state, i);
             harvesters.set(null);
         }
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, BlockPos pos, EntityPlayer player) {
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         IBlockState blockState = world.getBlockState(pos);
         ItemStack result = new ItemStack(this, 1, this.getMetaFromState(blockState));
 

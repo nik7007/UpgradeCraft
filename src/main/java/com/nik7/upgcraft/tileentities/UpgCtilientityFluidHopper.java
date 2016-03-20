@@ -7,8 +7,8 @@ import com.nik7.upgcraft.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.*;
 
 public class UpgCtilientityFluidHopper extends UpgCtilientityBasicFluidHopper {
