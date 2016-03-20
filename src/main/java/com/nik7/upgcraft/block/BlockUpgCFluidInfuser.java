@@ -46,21 +46,22 @@ public class BlockUpgCFluidInfuser extends BlockUpgCContainerOrientable {
         return false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    public void randomDisplayTick(IBlockState blockState, World world, BlockPos pos, Random rand) {
 
-        UpgCtileentityFluidInfuser fluidFurnace = (UpgCtileentityFluidInfuser) worldIn.getTileEntity(pos);
+        UpgCtileentityFluidInfuser fluidFurnace = (UpgCtileentityFluidInfuser) world.getTileEntity(pos);
 
         if (fluidFurnace.isActive()) {
-            spawnParticles(worldIn, pos, state, rand, EnumParticleTypes.SMOKE_NORMAL);
+            spawnParticles(world, pos, blockState, rand, EnumParticleTypes.SMOKE_NORMAL);
             if (fluidFurnace.isFluidHot())
-                spawnParticles(worldIn, pos, state, rand, EnumParticleTypes.FLAME);
+                spawnParticles(world, pos, blockState, rand, EnumParticleTypes.FLAME);
         }
 
     }
 
     @Override
-    public boolean  onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
             playerIn.openGui(UpgradeCraft.instance, GUIs.FLUID_INFUSER.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
 

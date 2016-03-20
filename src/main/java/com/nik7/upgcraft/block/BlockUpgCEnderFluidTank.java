@@ -1,7 +1,6 @@
 package com.nik7.upgcraft.block;
 
 
-import com.nik7.upgcraft.entity.player.ExtendedPlayerUpgC;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.tileentities.UpgCtileentityEnderFluidTank;
@@ -24,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockUpgCEnderFluidTank extends BlockUpgCTank {
+public class BlockUpgCEnderFluidTank extends BlockUpgCFluidTank {
 
 
     public BlockUpgCEnderFluidTank() {
@@ -35,9 +34,9 @@ public class BlockUpgCEnderFluidTank extends BlockUpgCTank {
         this.hasSubBlocks = false;
     }
 
-    //@Override
+    @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    public void randomDisplayTick(IBlockState blockState, World world, BlockPos pos, Random rand) {
 
         for (int l = 0; l < 3; ++l) {
             double d1 = (double) ((float) pos.getY() + rand.nextFloat());
@@ -51,7 +50,7 @@ public class BlockUpgCEnderFluidTank extends BlockUpgCTank {
             d5 = (double) (rand.nextFloat() * 1.0F * (float) j1);
             double d0 = (double) pos.getX() + 0.5D + 0.25D * (double) i1;
             d3 = (double) (rand.nextFloat() * 1.0F * (float) i1);
-            worldIn.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
+            world.spawnParticle(EnumParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5);
         }
 
     }

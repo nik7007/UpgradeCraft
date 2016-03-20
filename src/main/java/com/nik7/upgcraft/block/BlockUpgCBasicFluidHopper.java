@@ -183,7 +183,8 @@ public class BlockUpgCBasicFluidHopper extends BlockUpgC implements ITileEntityP
 
     }
 
-    public int getComparatorInputOverride(World worldIn, BlockPos pos) {
+    @Override
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
 
         UpgCtileentityFluidTank tank = (UpgCtileentityFluidTank) worldIn.getTileEntity(pos);
         int capacity = tank.getCapacity();

@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
+public class BlockUpgCWoodenFluidTank extends BlockUpgCFluidTank {
 
     private boolean canBurn = true;
 
@@ -30,15 +30,16 @@ public class BlockUpgCWoodenFluidTank extends BlockUpgCTank {
         this.setHardness(2.5f);
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    public void randomDisplayTick(IBlockState blockState, World world, BlockPos pos, Random rand) {
 
         if (!canBurn) return;
 
-        UpgCtileentityWoodenFluidTank entity = (UpgCtileentityWoodenFluidTank) worldIn.getTileEntity(pos);
+        UpgCtileentityWoodenFluidTank entity = (UpgCtileentityWoodenFluidTank) world.getTileEntity(pos);
 
         if (entity.isFluidHot()) {
-            spawnParticles(worldIn, pos, rand, EnumParticleTypes.SMOKE_NORMAL);
+            spawnParticles(world, pos, rand, EnumParticleTypes.SMOKE_NORMAL);
             //worldIn.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), "fire.fire", 1.0F + rand.nextFloat(), rand.nextFloat() * 0.7F + 0.3F, false);
         }
 

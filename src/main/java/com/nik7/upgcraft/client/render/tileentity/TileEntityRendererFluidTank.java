@@ -2,7 +2,7 @@ package com.nik7.upgcraft.client.render.tileentity;
 
 
 import com.nik7.upgcraft.block.BlockUpgCClayFluidTank;
-import com.nik7.upgcraft.block.BlockUpgCTank;
+import com.nik7.upgcraft.block.BlockUpgCFluidTank;
 import com.nik7.upgcraft.client.render.model.ModelDoubleTank;
 import com.nik7.upgcraft.client.render.model.ModelTank;
 import com.nik7.upgcraft.reference.Render;
@@ -34,7 +34,7 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
 
         Block blockTank = te.getBlockType();
 
-        if (!(blockTank instanceof BlockUpgCTank))
+        if (!(blockTank instanceof BlockUpgCFluidTank))
             return;
 
         ModelBase modelTank;
@@ -47,7 +47,7 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
             meta = te.getBlockMetadataClient();
         }
 
-        boolean isGlasses = blockTank.getStateFromMeta(meta).getValue(BlockUpgCTank.TYPE).equals(BlockUpgCTank.TankType.GLASSES);
+        boolean isGlasses = blockTank.getStateFromMeta(meta).getValue(BlockUpgCFluidTank.TYPE).equals(BlockUpgCFluidTank.TankType.GLASSES);
         boolean isAdjGlasses = false;
 
         boolean isHardened = false;
@@ -124,7 +124,7 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
             } else {
 
                 int adjMeta = te.getAdjMetadata();
-                isAdjGlasses = blockTank.getStateFromMeta(adjMeta).getValue(BlockUpgCTank.TYPE).equals(BlockUpgCTank.TankType.GLASSES);
+                isAdjGlasses = blockTank.getStateFromMeta(adjMeta).getValue(BlockUpgCFluidTank.TYPE).equals(BlockUpgCFluidTank.TankType.GLASSES);
 
 
                 if (!isGlasses && !isAdjGlasses) {

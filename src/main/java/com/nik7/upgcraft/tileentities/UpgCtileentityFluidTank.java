@@ -1,6 +1,6 @@
 package com.nik7.upgcraft.tileentities;
 
-import com.nik7.upgcraft.block.BlockUpgCTank;
+import com.nik7.upgcraft.block.BlockUpgCFluidTank;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
 import com.nik7.upgcraft.util.LogHelper;
 import com.nik7.upgcraft.util.WorldHelper;
@@ -378,7 +378,7 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
 
 
     public void reloadOriginalCapacity() {
-        this.originalCapacity = ((BlockUpgCTank) WorldHelper.getBlock(worldObj, pos)).getCapacity();
+        this.originalCapacity = ((BlockUpgCFluidTank) WorldHelper.getBlock(worldObj, pos)).getCapacity();
         if (this.capacity != this.originalCapacity && this.capacity != this.originalCapacity * 2) {
             if (isDouble)
                 this.capacity = 2 * this.originalCapacity;

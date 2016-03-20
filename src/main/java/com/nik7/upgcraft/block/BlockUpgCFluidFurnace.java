@@ -54,13 +54,14 @@ public class BlockUpgCFluidFurnace extends BlockUpgCContainerOrientable {
         return false;
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    public void randomDisplayTick(IBlockState blockState, World world, BlockPos pos, Random rand) {
 
-        UpgCtileentityFluidFurnace fluidFurnace = (UpgCtileentityFluidFurnace) worldIn.getTileEntity(pos);
+        UpgCtileentityFluidFurnace fluidFurnace = (UpgCtileentityFluidFurnace) world.getTileEntity(pos);
 
         if (fluidFurnace.isActive()) {
-            spawnParticles(worldIn, pos, state, rand, EnumParticleTypes.SMOKE_NORMAL, EnumParticleTypes.FLAME);
+            spawnParticles(world, pos, blockState, rand, EnumParticleTypes.SMOKE_NORMAL, EnumParticleTypes.FLAME);
         }
 
     }

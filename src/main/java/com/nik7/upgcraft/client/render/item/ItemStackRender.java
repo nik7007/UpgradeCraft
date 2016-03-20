@@ -2,7 +2,7 @@ package com.nik7.upgcraft.client.render.item;
 
 
 import com.nik7.upgcraft.block.BlockUpgCContainerOrientable;
-import com.nik7.upgcraft.block.BlockUpgCTank;
+import com.nik7.upgcraft.block.BlockUpgCFluidTank;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.tileentities.*;
 import net.minecraft.block.Block;
@@ -31,7 +31,7 @@ public class ItemStackRender extends TileEntityItemStackRenderer {
     public void renderByItem(ItemStack itemStack) {
         Block block = Block.getBlockFromItem(itemStack.getItem());
 
-        if (block instanceof BlockUpgCTank) {
+        if (block instanceof BlockUpgCFluidTank) {
             UpgCtileentityFluidTank tank;
             if (block == ModBlocks.blockUpgCWoodenFluidTank)
                 tank = woodenTank;

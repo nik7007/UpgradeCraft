@@ -34,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProvider, ConfigurableObject {
+public abstract class BlockUpgCFluidTank extends BlockUpgC implements ITileEntityProvider, ConfigurableObject {
 
 
     private int capacity;
@@ -42,7 +42,7 @@ public abstract class BlockUpgCTank extends BlockUpgC implements ITileEntityProv
     protected boolean hasSubBlocks = false;
     private static final AxisAlignedBB BB = new AxisAlignedBB(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
 
-    public BlockUpgCTank(Material material, int capacity, String name) {
+    public BlockUpgCFluidTank(Material material, int capacity, String name) {
         super(material, name);
         this.capacity = capacity;
         this.setDefaultState(this.blockState.getBaseState().withProperty(TYPE, TankType.SOLID));

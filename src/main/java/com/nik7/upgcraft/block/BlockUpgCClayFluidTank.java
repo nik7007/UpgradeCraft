@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BlockUpgCClayFluidTank extends BlockUpgCTank {
+public class BlockUpgCClayFluidTank extends BlockUpgCFluidTank {
 
     private Random random = new Random();
 
@@ -82,17 +82,18 @@ public class BlockUpgCClayFluidTank extends BlockUpgCTank {
 
     }
 
+    @Override
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
+    public void randomDisplayTick(IBlockState blockState, World world, BlockPos pos, Random rand) {
 
-        if (state.getValue(IS_HARDENED))
+        if (blockState.getValue(IS_HARDENED))
             return;
 
-        TileEntity tileEntity = worldIn.getTileEntity(pos);
+        TileEntity tileEntity = world.getTileEntity(pos);
 
         if (tileEntity instanceof UpgCtileentityClayFluidTank) {
             if (((UpgCtileentityClayFluidTank) tileEntity).isCooking())
-                spawnParticles(worldIn, pos, rand, EnumParticleTypes.FLAME);
+                spawnParticles(world, pos, rand, EnumParticleTypes.FLAME);
         }
     }
 
