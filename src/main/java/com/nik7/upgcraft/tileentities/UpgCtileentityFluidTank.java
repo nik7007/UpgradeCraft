@@ -5,6 +5,7 @@ import com.nik7.upgcraft.tank.UpgCFluidTank;
 import com.nik7.upgcraft.util.LogHelper;
 import com.nik7.upgcraft.util.WorldHelper;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -94,8 +95,6 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         readFromNBT(packet.getNbtCompound());
-        //// TODO: 20/03/2016 update
-        //worldObj.markBlockForUpdate(pos);
     }
 
     @Override
@@ -357,7 +356,6 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
     //To avoid infinite recursive calling of the "updateModBlock" method
     private boolean isNotAlreadyUpdating = true;
 
-    //// TODO: 20/03/2016 update
     private void updateModBlock() {
 
         if (isNotAlreadyUpdating && worldObj != null) {
@@ -365,6 +363,8 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
             //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
             //worldObj.markBlockForUpdate(pos);
             //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
+            IBlockState blockState = worldObj.getBlockState(pos);
+            worldObj.notifyBlockUpdate(pos,blockState,blockState,3);
             this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
 
             if (otherTank != null) {

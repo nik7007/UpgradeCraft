@@ -7,6 +7,7 @@ import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -192,10 +193,11 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     }
 
 
-    //// TODO: 20/03/2016 mark for update
     protected void updateModBlock() {
         //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
         //worldObj.markBlockForUpdate(pos);
+        IBlockState blockState = worldObj.getBlockState(pos);
+        worldObj.notifyBlockUpdate(pos,blockState,blockState,3);
         //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
         this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
     }
