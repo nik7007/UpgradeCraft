@@ -1,4 +1,4 @@
-package com.nik7.upgcraft.fluids;
+package com.nik7.upgcraft.fluid;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.Fluid;

@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.tileentities;
 
 
-import com.nik7.upgcraft.fluids.IMultipleTankFluidHandler;
+import com.nik7.upgcraft.fluid.IMultipleTankFluidHandler;
 import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
