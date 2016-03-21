@@ -1,6 +1,7 @@
 package com.nik7.upgcraft;
 
 import com.nik7.upgcraft.config.SystemConfig;
+import com.nik7.upgcraft.handler.CapabilityPlayerUpgCHandler;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.handler.GuiHandler;
 import com.nik7.upgcraft.init.ModBlocks;
@@ -35,6 +36,9 @@ public class UpgradeCraft {
         //config
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ConfigurationHandler());
+
+        //Capabilities
+        CapabilityPlayerUpgCHandler.register();
 
         //Network
         NetworkHandler.init();
