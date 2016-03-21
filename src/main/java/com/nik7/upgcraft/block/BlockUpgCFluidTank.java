@@ -174,7 +174,7 @@ public abstract class BlockUpgCFluidTank extends BlockUpgC implements ITileEntit
         BlockPos up = pos.up();
         BlockPos down = pos.down();
 
-        return !(WorldHelper.getBlock(worldIn, up) == this && WorldHelper.getBlock(worldIn, up.up()) == this) && !(WorldHelper.getBlock(worldIn, down) == this && WorldHelper.getBlock(worldIn, down.down()) == this) && !(WorldHelper.getBlock(worldIn, up) == this && WorldHelper.getBlock(worldIn, down) == this);
+        return (!(WorldHelper.getBlock(worldIn, up) == this && WorldHelper.getBlock(worldIn, up.up()) == this) && !(WorldHelper.getBlock(worldIn, down) == this && WorldHelper.getBlock(worldIn, down.down()) == this) && !(WorldHelper.getBlock(worldIn, up) == this && WorldHelper.getBlock(worldIn, down) == this)) && worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
 
     }
 
