@@ -46,7 +46,7 @@ minecraft {
 
     //useDepAts = true
 
-     mappings = "snapshot_20160312"
+     mappings = config.mappings
 
     replaceIn "reference/Reference.java"
     replace "@MOD_VERSION@", "${config.mod_version}"
