@@ -66,7 +66,7 @@ public class UpgradeCraft {
         Recipes.init();
 
 
-        FMLInterModComms.sendMessage("Waila", "register", "com.nik7.upgcraft.waila.Waila.callbackRegister");
+        //FMLInterModComms.sendMessage("Waila", "register", "com.nik7.upgcraft.waila.Waila.callbackRegister");
 
     }
 
