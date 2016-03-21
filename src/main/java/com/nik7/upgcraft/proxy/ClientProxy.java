@@ -1,10 +1,12 @@
 package com.nik7.upgcraft.proxy;
 
+import com.nik7.upgcraft.block.BlocFluidUpgC;
 import com.nik7.upgcraft.block.BlockUpgC;
 import com.nik7.upgcraft.client.render.item.ItemStackRender;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidHopper;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidMachine;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRendererFluidTank;
+import com.nik7.upgcraft.init.ModFluids;
 import com.nik7.upgcraft.item.ItemUpgC;
 import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
@@ -47,6 +49,8 @@ public class ClientProxy extends CommonProxy {
         modelMesher.register(Item.getItemFromBlock(blockUpgCSlimyObsidian), 0, createLocation(blockUpgCSlimyObsidian));
         modelMesher.register(Item.getItemFromBlock(blockUpgCEnderFluidTank), 0, createLocation(blockUpgCEnderFluidTank));
 
+        //modelMesher.register(Item.getItemFromBlock(ModFluids.blocFluidUpgCActiveLava), 0, createLocation(ModFluids.blocFluidUpgCActiveLava));
+
         Item twItem = Item.getItemFromBlock(blockUpgCWoodenFluidTank);
         modelMesher.register(twItem, 0, createLocation(blockUpgCWoodenFluidTank));
         modelMesher.register(twItem, 1, createLocation(blockUpgCWoodenFluidTank));
@@ -78,6 +82,10 @@ public class ClientProxy extends CommonProxy {
 
         TileEntityItemStackRenderer.instance = new ItemStackRender(TileEntityItemStackRenderer.instance);
 
+    }
+
+    private ModelResourceLocation createLocation(BlocFluidUpgC block) {
+        return createLocation(Reference.MOD_ID + ":" + block.getName());
     }
 
     private ModelResourceLocation createLocation(BlockUpgC block, String variant) {

@@ -4,6 +4,7 @@ import com.nik7.upgcraft.config.SystemConfig;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.handler.GuiHandler;
 import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.init.ModFluids;
 import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.init.Recipes;
 import com.nik7.upgcraft.network.DescriptionHandler;
@@ -43,6 +44,7 @@ public class UpgradeCraft {
         //fluid, item, block
         ModBlocks.init();
         ModItems.init();
+        ModFluids.init();
 
         //FluidContainerRegistry.registerFluidContainer(ModFluids.ActiveLava, new ItemStack(ModItems.itemActiveLavaBucket), new ItemStack(Items.bucket));
 
