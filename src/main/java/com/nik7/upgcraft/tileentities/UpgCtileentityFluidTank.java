@@ -151,7 +151,7 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
         } else
             result = super.drain(from, maxDrain, doDrain);
 
-        if (result != null)
+        if (result != null && doDrain)
             updateModBlock();
 
         return result;
@@ -161,7 +161,7 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
     public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
         int result = super.fill(from, resource, doFill);
 
-        if (result > 0)
+        if (result > 0 && doFill)
             updateModBlock();
 
         return result;
@@ -356,7 +356,7 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
     //To avoid infinite recursive calling of the "updateModBlock" method
     private boolean isNotAlreadyUpdating = true;
 
-    private void updateModBlock() {
+    protected void updateModBlock() {
 
         if (isNotAlreadyUpdating && worldObj != null) {
             isNotAlreadyUpdating = false;

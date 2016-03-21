@@ -129,6 +129,7 @@ public class UpgCtileentityClayFluidTank extends UpgCtileentityFluidTank {
             if (isBlockFluidHot(toCheck)) {
                 hotBlockPos = toCheck;
                 isCooking = true;
+                updateModBlock();
             } else isCooking = false;
         } else if (hotBlockPos != null) {
 
