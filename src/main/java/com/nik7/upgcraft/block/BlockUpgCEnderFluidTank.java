@@ -3,6 +3,7 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.reference.Capacity;
+import com.nik7.upgcraft.tank.UpgCEnderFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityEnderFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
 import net.minecraft.block.SoundType;
@@ -22,6 +23,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
+
+import static com.nik7.upgcraft.handler.CapabilityPlayerUpgCHandler.Provider.PLAYER_UPGC;
 
 public class BlockUpgCEnderFluidTank extends BlockUpgCFluidTank {
 
@@ -58,13 +61,22 @@ public class BlockUpgCEnderFluidTank extends BlockUpgCFluidTank {
     @Override
     protected void handleContainerClick(World worldIn, BlockPos pos, EntityPlayer playerIn, UpgCtileentityFluidTank tank, ItemStack equippedItemStack) {
 
-        if (FluidContainerRegistry.isBucket(equippedItemStack)) {
+        if (!worldIn.isRemote && FluidContainerRegistry.isBucket(equippedItemStack)) {
 
-            //((UpgCtileentityEnderFluidTank) tank).setFluidTank(ExtendedPlayerUpgC.getUpgCEnderTank(playerIn));
-            super.handleContainerClick(worldIn, pos, playerIn, tank, equippedItemStack);
-            ((UpgCtileentityEnderFluidTank) tank).setFluidTank(new FluidTank(0));
+            if (playerIn.hasCapability(PLAYER_UPGC, null)) {
+                UpgCEnderFluidTank upgCEnderFluidTank = playerIn.getCapability(PLAYER_UPGC, null).getEnderFluidTank();
+
+                ((UpgCtileentityEnderFluidTank) tank).setFluidTank(upgCEnderFluidTank);
+                super.handleContainerClick(worldIn, pos, playerIn, tank, equippedItemStack);
+                ((UpgCtileentityEnderFluidTank) tank).setFluidTank(new FluidTank(0));
+            }
         }
 
+    }
+
+    @Override
+    public boolean canPlaceBlockAt(World worldIn, BlockPos pos) {
+        return worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
     }
 
     @Override
