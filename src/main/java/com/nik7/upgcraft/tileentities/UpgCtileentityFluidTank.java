@@ -378,13 +378,17 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
 
 
     public void reloadOriginalCapacity() {
-        this.originalCapacity = ((BlockUpgCFluidTank) WorldHelper.getBlock(worldObj, pos)).getCapacity();
-        if (this.capacity != this.originalCapacity && this.capacity != this.originalCapacity * 2) {
-            if (isDouble)
-                this.capacity = 2 * this.originalCapacity;
-            else
-                this.capacity = this.originalCapacity;
-            updateModBlock();
+
+        Block block;
+        if((block = WorldHelper.getBlock(worldObj, pos)) instanceof BlockUpgCFluidTank) {
+            this.originalCapacity = ((BlockUpgCFluidTank) block).getCapacity();
+            if (this.capacity != this.originalCapacity && this.capacity != this.originalCapacity * 2) {
+                if (isDouble)
+                    this.capacity = 2 * this.originalCapacity;
+                else
+                    this.capacity = this.originalCapacity;
+                updateModBlock();
+            }
         }
     }
 
