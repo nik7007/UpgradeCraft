@@ -5,9 +5,9 @@ import com.nik7.upgcraft.util.StringHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 
-public class UpgFluid extends Fluid {
+public class FluidUpgC extends Fluid {
 
-    public UpgFluid(String fluidName, ResourceLocation still, ResourceLocation flowing) {
+    public FluidUpgC(String fluidName, ResourceLocation still, ResourceLocation flowing) {
         super(fluidName, still, flowing);
     }
 
