@@ -5,6 +5,7 @@ import com.nik7.upgcraft.handler.CapabilityPlayerUpgCHandler;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.handler.GuiHandler;
 import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.init.ModFluids;
 import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.init.Recipes;
 import com.nik7.upgcraft.network.DescriptionHandler;
@@ -15,7 +16,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -47,6 +47,7 @@ public class UpgradeCraft {
         //fluid, item, block
         ModBlocks.init();
         ModItems.init();
+        ModFluids.init();
 
         //FluidContainerRegistry.registerFluidContainer(ModFluids.ActiveLava, new ItemStack(ModItems.itemActiveLavaBucket), new ItemStack(Items.bucket));
 
