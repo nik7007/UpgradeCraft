@@ -13,7 +13,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public abstract class BlockUpgC extends Block {
+public abstract class BlockUpgC extends Block implements IBlockUpgC {
 
     protected final String name;
 
@@ -31,6 +31,7 @@ public abstract class BlockUpgC extends Block {
 
     }
 
+    @Override
     public String getName() {
         return name;
     }
