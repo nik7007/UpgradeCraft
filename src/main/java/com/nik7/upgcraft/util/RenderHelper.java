@@ -37,6 +37,9 @@ public class RenderHelper {
 
         TextureAtlasSprite fluidStillSprite = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getFluid().getStill().toString());
 
+        if (fluidStillSprite == null)
+            fluidStillSprite = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
+
         int fluidColor = fluid.getFluid().getColor(fluidStack);
 
         Minecraft.getMinecraft().renderEngine.bindTexture(TextureMap.locationBlocksTexture);
@@ -78,6 +81,9 @@ public class RenderHelper {
     }
 
     private static void renderCuboid(VertexBuffer vertexBuffer, float xMax, float xMin, float yMin, float height, float zMin, float zMax, TextureAtlasSprite textureAtlasSprite, boolean renderTop, boolean renderDown) {
+
+        if (textureAtlasSprite == null)
+            return;
 
         double uMin = (double) textureAtlasSprite.getMinU();
         double uMax = (double) textureAtlasSprite.getMaxU();
