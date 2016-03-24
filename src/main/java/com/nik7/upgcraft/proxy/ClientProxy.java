@@ -1,5 +1,6 @@
 package com.nik7.upgcraft.proxy;
 
+import com.nik7.upgcraft.block.BlockFluidUpgC;
 import com.nik7.upgcraft.block.BlockUpgC;
 import com.nik7.upgcraft.client.render.item.ItemStackRender;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidHopper;
@@ -10,7 +11,6 @@ import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
 import com.nik7.upgcraft.tileentities.UpgCtilientityBasicFluidHopper;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -90,21 +90,21 @@ public class ClientProxy extends CommonProxy {
     }
 
 
-    public void fluidRender(Block block) {
+    public void fluidRender(final BlockFluidUpgC block) {
 
-        final Block toRender = block;
+        //final BlockFluidUpgC toRender = block;
 
         ModelBakery.registerItemVariants(Item.getItemFromBlock(block));
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(block), new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return new ModelResourceLocation(Reference.MOD_ID + ":" + toRender.getClass().getSimpleName(), "fluid");
+                return new ModelResourceLocation(Reference.MOD_ID + ":" + block.getName(), "fluid");
             }
         });
         ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return new ModelResourceLocation(Reference.MOD_ID + ":" + toRender.getClass().getSimpleName(), "fluid");
+                return new ModelResourceLocation(Reference.MOD_ID + ":" + block.getName(), "fluid");
             }
         });
     }
