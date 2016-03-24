@@ -13,10 +13,10 @@ import net.minecraftforge.fluids.Fluid;
 
 import java.util.Random;
 
-public class BlocFluidUpgCActiveLava extends BlocFluidUpgC {
+public class BlockFluidUpgCActiveLava extends BlockFluidUpgC {
 
-    public BlocFluidUpgCActiveLava(Fluid fluid) {
-        super(fluid, Material.lava, "ActiveLava");
+    public BlockFluidUpgCActiveLava(Fluid fluid) {
+        super(fluid, Material.lava, "BlockActiveLava");
         fluid.setBlock(this);
     }
 

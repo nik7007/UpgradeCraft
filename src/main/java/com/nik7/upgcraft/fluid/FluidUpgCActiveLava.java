@@ -14,7 +14,7 @@ public class FluidUpgCActiveLava extends FluidUpgC implements FluidWithExtendedP
     public static final int MAX_ACTIVE_VALUE = 5800;
 
     public FluidUpgCActiveLava() {
-        super("ActiveLava", new ResourceLocation(Reference.MOD_ID + ":" + "blocks/active_lava_still"), new ResourceLocation(Reference.MOD_ID + ":" + "blocks/active_lava_flow"));
+        super("ActiveLava", new ResourceLocation(Reference.MOD_ID + ":" + "blocks/ActiveLava_still"), new ResourceLocation(Reference.MOD_ID + ":" + "blocks/ActiveLava_flow"));
         setLuminosity(8);
         setDensity(5000);
         setViscosity(8000);

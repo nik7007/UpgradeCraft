@@ -6,11 +6,11 @@ import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 
-public abstract class BlocFluidUpgC extends BlockFluidClassic implements IBlockUpgC {
+public abstract class BlockFluidUpgC extends BlockFluidClassic implements IBlockUpgC {
 
     protected final String name;
 
-    public BlocFluidUpgC(Fluid fluid, Material material, String name) {
+    public BlockFluidUpgC(Fluid fluid, Material material, String name) {
         super(fluid, material);
         this.name = name;
     }

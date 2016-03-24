@@ -10,18 +10,25 @@ import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
 import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
 import com.nik7.upgcraft.tileentities.UpgCtilientityBasicFluidHopper;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
 import java.io.File;
 
 import static com.nik7.upgcraft.init.ModBlocks.*;
+import static com.nik7.upgcraft.init.ModFluids.blockFluidUpgCActiveLava;
 import static com.nik7.upgcraft.init.ModItems.itemUpgCClayIngot;
 
 public class ClientProxy extends CommonProxy {
@@ -46,6 +53,8 @@ public class ClientProxy extends CommonProxy {
         modelMesher.register(Item.getItemFromBlock(blockUpgCSlimyLog), 0, createLocation(blockUpgCSlimyLog));
         modelMesher.register(Item.getItemFromBlock(blockUpgCSlimyObsidian), 0, createLocation(blockUpgCSlimyObsidian));
         modelMesher.register(Item.getItemFromBlock(blockUpgCEnderFluidTank), 0, createLocation(blockUpgCEnderFluidTank));
+
+        fluidRender(blockFluidUpgCActiveLava);
 
         Item twItem = Item.getItemFromBlock(blockUpgCWoodenFluidTank);
         modelMesher.register(twItem, 0, createLocation(blockUpgCWoodenFluidTank));
@@ -78,6 +87,26 @@ public class ClientProxy extends CommonProxy {
 
         TileEntityItemStackRenderer.instance = new ItemStackRender(TileEntityItemStackRenderer.instance);
 
+    }
+
+
+    public void fluidRender(Block block) {
+
+        final Block toRender = block;
+
+        ModelBakery.registerItemVariants(Item.getItemFromBlock(block));
+        ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(block), new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return new ModelResourceLocation(Reference.MOD_ID + ":" + toRender.getClass().getSimpleName(), "fluid");
+            }
+        });
+        ModelLoader.setCustomStateMapper(block, new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return new ModelResourceLocation(Reference.MOD_ID + ":" + toRender.getClass().getSimpleName(), "fluid");
+            }
+        });
     }
 
     private ModelResourceLocation createLocation(BlockUpgC block, String variant) {
