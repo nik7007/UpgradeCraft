@@ -84,7 +84,7 @@ public class UpgCtileentityActiveMaker extends UpgCtileentityInventoryFluidHandl
 
         super.writeToNBT(tag);
         tag.setInteger("workingTick", this.workingTick);
-        tag.setIntArray("termoOperation", this.coordinates);
+        tag.setIntArray("coordinates", this.coordinates);
         tag.setByte("searchingTick", this.searchingTick);
         tag.setInteger("coolDown", this.coolDown);
     }
