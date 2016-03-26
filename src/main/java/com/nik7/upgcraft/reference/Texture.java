@@ -40,6 +40,7 @@ public class Texture {
 
     public final static String MODEL_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_MACHINE + "BlockFluidFurnace.png";
     public final static String MODEL_FLUID_INFUSER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_MACHINE + "BlockFluidInfuser.png";
+    public final static String MODEL_ACTIVE_LAVA_MAKER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_MACHINE + "BlockActiveLavaMaker.png";
 
     public final static String MODEL_FLUID_HOPPER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_HOPPER + "BlockFluidHopper.png";
 

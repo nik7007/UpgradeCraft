@@ -73,6 +73,7 @@ public class ClientProxy extends CommonProxy {
 
         modelMesher.register(Item.getItemFromBlock(blockUpgCFluidFurnace), 0, createLocation(blockUpgCFluidFurnace));
         modelMesher.register(Item.getItemFromBlock(blockUpgCFluidInfuser), 0, createLocation(blockUpgCFluidInfuser));
+        modelMesher.register(Item.getItemFromBlock(blockUpgCActiveLavaMaker), 0, createLocation(blockUpgCActiveLavaMaker));
 
         Item clayTank = Item.getItemFromBlock(blockUpgCClayFluidTank);
         modelMesher.register(clayTank, 0, createLocation(blockUpgCClayFluidTank));
@@ -90,7 +91,7 @@ public class ClientProxy extends CommonProxy {
     }
 
 
-    public void fluidRender(final BlockFluidUpgC block) {
+    private void fluidRender(final BlockFluidUpgC block) {
 
         //final BlockFluidUpgC toRender = block;
 

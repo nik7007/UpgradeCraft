@@ -19,6 +19,7 @@ public class ModBlocks {
     public static BlockUpgC blockUpgCFluidHopper;
     public static BlockUpgC blockUpgCSlimyObsidian;
     public static BlockUpgC blockUpgCEnderFluidTank;
+    public static BlockUpgC blockUpgCActiveLavaMaker;
 
     public static void init() {
         ModBlocks.blockUpgCSlimyLog = new BlockUpgCSlimyLog();
@@ -28,8 +29,9 @@ public class ModBlocks {
         ModBlocks.blockUpgCFluidInfuser = new BlockUpgCFluidInfuser();
         ModBlocks.blockUpgCClayFluidTank = new BlockUpgCClayFluidTank();
         ModBlocks.blockUpgCFluidHopper = new BlockUpgCFluidHopper();
-        blockUpgCSlimyObsidian = new BlockUpgCSlimyObsidian();
-        blockUpgCEnderFluidTank = new BlockUpgCEnderFluidTank();
+        ModBlocks.blockUpgCSlimyObsidian = new BlockUpgCSlimyObsidian();
+        ModBlocks.blockUpgCEnderFluidTank = new BlockUpgCEnderFluidTank();
+        ModBlocks.blockUpgCActiveLavaMaker = new BlockUpgCActiveLavaMaker();
 
         ModBlocks.registerBlock(ModBlocks.blockUpgCSlimyLog);
         ModBlocks.registerBlock(ModBlocks.blockUpgCWoodenFluidTank, ItemBlockWoodenFluidTank.class);
@@ -40,21 +42,19 @@ public class ModBlocks {
         ModBlocks.registerBlock(ModBlocks.blockUpgCFluidHopper);
         ModBlocks.registerBlock(blockUpgCSlimyObsidian);
         ModBlocks.registerBlock(blockUpgCEnderFluidTank);
+        ModBlocks.registerBlock(blockUpgCActiveLavaMaker);
     }
 
 
     private static void registerBlock(BlockUpgC block) {
-        ModBlocks.registerBlock(block, null);
+        ModBlocks.registerBlock(block, ItemBlock.class);
     }
 
     private static void registerBlock(BlockUpgC block, Class<? extends ItemBlock> itemBlock) {
 
         String name = block.getName();
 
-        if (itemBlock == null)
-            GameRegistry.registerBlock(block, name);
-        else
-            GameRegistry.registerBlock(block, itemBlock, name);
+        GameRegistry.registerBlock(block, itemBlock, name);
 
     }
 

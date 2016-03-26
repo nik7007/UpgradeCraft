@@ -14,12 +14,57 @@ public class FluidUpgCActiveLava extends FluidUpgC implements FluidWithExtendedP
     public static final int MAX_ACTIVE_VALUE = 5800;
 
     public FluidUpgCActiveLava() {
-        super("ActiveLava", new ResourceLocation(Reference.MOD_ID + ":" + "blocks/ActiveLava_still"), new ResourceLocation(Reference.MOD_ID + ":" + "blocks/ActiveLava_flow"));
+        super("ActiveLava", new ResourceLocation(Reference.MOD_ID, "blocks/ActiveLava_still"), new ResourceLocation(Reference.MOD_ID, "blocks/ActiveLava_flow"));
         setLuminosity(8);
         setDensity(5000);
         setViscosity(8000);
         setTemperature(500 + 273);
         setRarity(EnumRarity.UNCOMMON);
+    }
+
+    public static int increaseActiveValue(FluidStack stack, int quantity) {
+
+        if (stack.getFluid() instanceof FluidUpgCActiveLava) {
+            FluidUpgCActiveLava activeLava = (FluidUpgCActiveLava) stack.getFluid();
+            int actualValue = activeLava.getExtendedProperties(stack);
+            int newValue = Math.min(MAX_ACTIVE_VALUE, actualValue + quantity);
+
+            activeLava.createExtendedProperties(stack, newValue);
+
+            return newValue - actualValue;
+        }
+        return 0;
+    }
+
+    public static int decreaseActiveValue(FluidStack stack, int quantity) {
+
+        if (stack.getFluid() instanceof FluidUpgCActiveLava) {
+
+            FluidUpgCActiveLava activeLava = (FluidUpgCActiveLava) stack.getFluid();
+            int actualValue = activeLava.getExtendedProperties(stack);
+
+            if (actualValue > quantity) {
+                activeLava.createExtendedProperties(stack, actualValue - quantity);
+                return quantity;
+            } else {
+                activeLava.createExtendedProperties(stack, 0);
+                return actualValue;
+            }
+        }
+
+        return 0;
+    }
+
+    public static boolean hasMaximumTemperature(FluidStack stack) {
+
+        if (stack.getFluid() instanceof FluidUpgCActiveLava) {
+
+            FluidUpgCActiveLava activeLava = (FluidUpgCActiveLava) stack.getFluid();
+
+            return activeLava.getExtendedProperties(stack) == MAX_ACTIVE_VALUE;
+        }
+
+        return true;
     }
 
     private float getScalarAcV(FluidStack stack) {
@@ -40,7 +85,7 @@ public class FluidUpgCActiveLava extends FluidUpgC implements FluidWithExtendedP
 
             if (fluidStack.tag == null)
                 fluidStack.tag = new NBTTagCompound();
-            fluidStack.tag.setInteger(ACTIVE_VALUE, properties);
+            fluidStack.tag.setInteger(ACTIVE_VALUE, Math.min(properties, MAX_ACTIVE_VALUE));
 
         }
 

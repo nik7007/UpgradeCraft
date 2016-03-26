@@ -19,6 +19,10 @@ public class UpgCFluidTank extends FluidTank {
         return fluid != null && fluid.getFluid().getTemperature(fluid) > 300 + 273;
     }
 
+    public boolean isFull() {
+        return fluid != null && fluid.amount == capacity;
+    }
+
     public void setTileEntity(TileEntity tileEntity) {
         if (tileEntity != null)
             this.tile = tileEntity;
