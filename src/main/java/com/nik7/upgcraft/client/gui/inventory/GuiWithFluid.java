@@ -82,6 +82,8 @@ public abstract class GuiWithFluid extends GuiContainer {
 
         TextureAtlasSprite fluidStillSprite = Minecraft.getMinecraft().getTextureMapBlocks().getTextureExtry(fluid.getStill().toString());
 
+        if(fluidStillSprite == null)
+            fluidStillSprite = Minecraft.getMinecraft().getTextureMapBlocks().getMissingSprite();
 
         int color = fluid.getColor();
 
