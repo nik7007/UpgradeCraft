@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.tileentities;
 
 
+import com.nik7.upgcraft.fluid.FluidWithExtendedProperties;
 import com.nik7.upgcraft.fluid.IMultipleTankFluidHandler;
 import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.reference.Reference;
@@ -151,7 +152,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         FluidStack fluidStack = tank != null ? tank.getFluid() : null;
         int fluidAmount = -1;
         String fluidID = "";
-        int extraValue = -1;
+        // int extraValue = -1;
         if (fluidStack != null) {
             fluidAmount = fluidStack.amount;
             fluidID = fluidStack.getFluid().getName();
@@ -162,7 +163,14 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         buf.writeInt(fluidAmount);
         buf.writeInt(fluidID.length());
         buf.writeString(fluidID);
-        buf.writeInt(extraValue);
+
+        if (fluidStack != null && fluidStack.getFluid() instanceof FluidWithExtendedProperties) {
+            FluidWithExtendedProperties fluidEP = (FluidWithExtendedProperties) fluidStack.getFluid();
+            fluidEP.writeToByteBuf(fluidStack, buf);
+        }
+
+
+        //buf.writeInt(extraValue);
     }
 
     protected void readFluidToByteBuf(FluidTank tank, PacketBuffer buf) {
@@ -170,12 +178,13 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         int fluidAmount = buf.readInt();
         int stringL = buf.readInt();
         String fluidID = buf.readStringFromBuffer(stringL);
-        int extraValue = buf.readInt();
+        //int extraValue = buf.readInt();
         if (fluidAmount > 0) {
             FluidStack fluidStack = new FluidStack(FluidRegistry.getFluid(fluidID), fluidAmount);
-            /*if (fluidStack.getFluid() == ModFluids.ActiveLava) {
-                ((ActiveLava) fluidStack.getFluid()).setActiveValue(fluidStack, extraValue);
-            }*/
+            if (fluidStack.getFluid() instanceof FluidWithExtendedProperties) {
+                FluidWithExtendedProperties fluidEP = (FluidWithExtendedProperties) fluidStack.getFluid();
+                fluidEP.readFromByteBuf(fluidStack, buf);
+            }
             tank.setFluid(fluidStack);
         } else tank.setFluid(null);
 
@@ -197,7 +206,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
         //worldObj.markBlockForUpdate(pos);
         IBlockState blockState = worldObj.getBlockState(pos);
-        worldObj.notifyBlockUpdate(pos,blockState,blockState,3);
+        worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
         //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
         this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
     }
