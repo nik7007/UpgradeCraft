@@ -20,7 +20,7 @@ public class UpgCEPFluidTank extends UpgCFluidTank {
 
         if (getFluid() != null && getFluid().getFluid() instanceof FluidWithExtendedProperties) {
             FluidWithExtendedProperties fluidWithEP = (FluidWithExtendedProperties) getFluid().getFluid();
-            if (fluidWithEP.hasExtendedFill(getFluid()))
+            if (fluidWithEP.hasExtendedFill(getFluid()) && fluidWithEP.hasToUseExtendedFill(getFluid()))
                 return fluidWithEP.fill(this, resource, doFill);
         }
         return super.fill(resource, doFill);
@@ -32,7 +32,7 @@ public class UpgCEPFluidTank extends UpgCFluidTank {
         if (getFluid() != null && getFluid().getFluid() instanceof FluidWithExtendedProperties) {
             FluidWithExtendedProperties fluidWithEP = (FluidWithExtendedProperties) getFluid().getFluid();
 
-            if (fluidWithEP.hasExtendedDrain(getFluid()))
+            if (fluidWithEP.hasExtendedDrain(getFluid()) && fluidWithEP.hasToUseExtendedDrain(getFluid()))
                 return fluidWithEP.drain(this, maxDrain, doDrain);
         }
         return super.drain(maxDrain, doDrain);
