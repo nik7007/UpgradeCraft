@@ -1,11 +1,14 @@
 package com.nik7.upgcraft.handler;
 
 
+import com.nik7.upgcraft.client.gui.inventory.GuiActiveLavaMaker;
 import com.nik7.upgcraft.client.gui.inventory.GuiFluidFurnace;
 import com.nik7.upgcraft.client.gui.inventory.GuiFluidInfuser;
+import com.nik7.upgcraft.inventory.ContainerActiveLavaMaker;
 import com.nik7.upgcraft.inventory.ContainerFluidFurnace;
 import com.nik7.upgcraft.inventory.ContainerFluidInfuser;
 import com.nik7.upgcraft.reference.GUIs;
+import com.nik7.upgcraft.tileentities.UpgCtileentityActiveLavaMaker;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +25,8 @@ public class GuiHandler implements IGuiHandler {
                 return new ContainerFluidFurnace(player.inventory, (UpgCtileentityFluidFurnace) world.getTileEntity(blockPos));
             case FLUID_INFUSER:
                 return new ContainerFluidInfuser(player.inventory, (UpgCtileentityFluidInfuser) world.getTileEntity(blockPos));
+            case ACTIVE_LAVA_MAKER:
+                return new ContainerActiveLavaMaker(player.inventory, (UpgCtileentityActiveLavaMaker) world.getTileEntity(blockPos));
 
         }
         throw new IllegalArgumentException("No gui with id " + ID);
@@ -35,6 +40,8 @@ public class GuiHandler implements IGuiHandler {
                 return new GuiFluidFurnace(player.inventory, (UpgCtileentityFluidFurnace) world.getTileEntity(blockPos));
             case FLUID_INFUSER:
                 return new GuiFluidInfuser(player.inventory, (UpgCtileentityFluidInfuser) world.getTileEntity(blockPos));
+            case ACTIVE_LAVA_MAKER:
+                return new GuiActiveLavaMaker(player.inventory, (UpgCtileentityActiveLavaMaker) world.getTileEntity(blockPos));
 
         }
         throw new IllegalArgumentException("No gui with id " + ID);

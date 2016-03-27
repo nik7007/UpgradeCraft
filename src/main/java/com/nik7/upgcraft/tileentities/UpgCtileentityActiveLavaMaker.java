@@ -2,7 +2,10 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.fluid.FluidUpgCActiveLava;
+import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.inventory.ContainerActiveLavaMaker;
 import com.nik7.upgcraft.reference.Capacity;
+import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tank.UpgCEPFluidTank;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +22,8 @@ import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
@@ -58,6 +63,16 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
         return 0;
     }
 
+    @SideOnly(Side.CLIENT)
+    public float getFluidLevelScaled(int scaleFactor) {
+        return scaleFactor * (float) (this.tanks[INPUT_TANK].getFluid() == null ? 0 : tanks[INPUT_TANK].getFluid().amount) / (float) tanks[INPUT_TANK].getCapacity();
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float getActiveFluidLevelScaled(int scaleFactor) {
+        return scaleFactor * (float) (this.tanks[WORKING_TANK].getFluid() == null ? 0 : tanks[WORKING_TANK].getFluid().amount) / (float) tanks[WORKING_TANK].getCapacity();
+    }
+
     @Override
     public void writeToPacket(PacketBuffer buf) {
         buf.writeBoolean(isOperating);
@@ -85,6 +100,10 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
         tag.setInteger("activeOperation", this.activeOperation);
     }
 
+    public boolean isOperating() {
+        return isOperating;
+    }
+
     @Override
     public void update() {
 
@@ -105,7 +124,10 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
 
 
             } else {
+                boolean oldOP = isOperating;
                 isOperating = false;
+                if (oldOP != isOperating)
+                    updateModBlock();
             }
 
             tick++;
@@ -160,7 +182,11 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
             if (inputFluidStack.getFluid() != fluidUpgCActiveLava) {
                 maxTransfer = inputFluidStack.amount;
                 maxTransfer /= 2;
+                if (inputFluidStack.amount > 0 && maxTransfer == 0)
+                    maxTransfer = 1;
+                int temp = inputFluidStack.getFluid().getTemperature(inputFluidStack);
                 inputFluidStack = new FluidStack(fluidUpgCActiveLava, maxTransfer);
+                FluidUpgCActiveLava.increaseActiveValue(inputFluidStack, temp);
                 activeOperation--;
             }
 
@@ -171,6 +197,9 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
 
             tanks[WORKING_SLOT].fill(inputFluidStack, true);
 
+            if (maxTransfer > 0)
+                updateModBlock();
+
         }
     }
 
@@ -180,11 +209,15 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
 
             if (!FluidUpgCActiveLava.hasMaximumTemperature(activeLava)) {
                 if (rnd.nextFloat() > 0.7) {
-                    if (FluidUpgCActiveLava.increaseActiveValue(activeLava, 100) > 0)
+                    if (FluidUpgCActiveLava.increaseActiveValue(activeLava, 100) > 0) {
                         activeOperation -= 3;
+                        updateModBlock();
+                    }
                 } else if (rnd.nextFloat() > 0.3) {
-                    if (FluidUpgCActiveLava.increaseActiveValue(activeLava, 25) > 0)
+                    if (FluidUpgCActiveLava.increaseActiveValue(activeLava, 25) > 0) {
                         activeOperation--;
+                        updateModBlock();
+                    }
                 }
             }
         }
@@ -248,15 +281,13 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
     }
 
     @Override
-    // TODO: 25/03/2016  
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-        return null;
+        return new ContainerActiveLavaMaker(playerInventory, this);
     }
 
     @Override
-    // TODO: 25/03/2016  
     public String getGuiID() {
-        return null;
+        return Reference.MOD_ID + ":" + ModBlocks.blockUpgCActiveLavaMaker.getName();
     }
 
     @Override
