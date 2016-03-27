@@ -4,6 +4,7 @@ package com.nik7.upgcraft.fluid;
 import com.nik7.upgcraft.reference.Reference;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
@@ -111,8 +112,18 @@ public class FluidUpgCActiveLava extends FluidUpgC implements FluidWithExtendedP
     }
 
     @Override
+    public boolean hasToUseExtendedDrain(FluidStack fluidStack) {
+        return fluidStack != null && fluidStack.tag != null;
+    }
+
+    @Override
     public boolean hasExtendedFill(FluidStack fluidStack) {
         return true;
+    }
+
+    @Override
+    public boolean hasToUseExtendedFill(FluidStack fluidStack) {
+        return fluidStack != null && fluidStack.tag != null;
     }
 
     @Override
@@ -140,8 +151,13 @@ public class FluidUpgCActiveLava extends FluidUpgC implements FluidWithExtendedP
                 } else {
                     int mAmount = me.amount;
                     result = fluidTank.fill(resource, true);
-                    int newActiveValue = Math.round((((float) getExtendedProperties(me) / (float) mAmount) + ((float) getExtendedProperties(resource) / (float) result)) * me.amount);
-                    createExtendedProperties(me, newActiveValue);
+                    me.tag = mTag;
+                    resource.tag = rTag;
+
+                    FluidStack actualFluid = fluidTank.getFluid();
+
+                    int newActiveValue = Math.round((((float) getExtendedProperties(me) / (float) actualFluid.amount) * mAmount + ((float) getExtendedProperties(resource) / (float) actualFluid.amount) * result));
+                    createExtendedProperties(actualFluid, newActiveValue);
                 }
                 resource.tag = rTag;
 
@@ -152,6 +168,23 @@ public class FluidUpgCActiveLava extends FluidUpgC implements FluidWithExtendedP
             }
         }
         return 0;
+    }
+
+    @Override
+    public void writeToByteBuf(FluidStack resource, PacketBuffer buf) {
+        if (checkFluidStack(resource)) {
+            int eP = getExtendedProperties(resource);
+            buf.writeInt(eP);
+        }
+    }
+
+    @Override
+    public void readFromByteBuf(FluidStack resource, PacketBuffer buf) {
+
+        if (checkFluidStack(resource)) {
+            this.createExtendedProperties(resource, buf.readInt());
+        }
+
     }
 
     @Override
