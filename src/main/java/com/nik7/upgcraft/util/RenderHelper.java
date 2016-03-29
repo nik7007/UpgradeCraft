@@ -21,6 +21,10 @@ public class RenderHelper {
     private static VertexBuffer vertexBuffer = tessellator.getBuffer();
 
     public static void renderFluid(float fluidLevel, float sizeX, float sizeZ, float maxHeight, float minHeight, FluidStack fluid, boolean renderTop, boolean isTop, boolean renderDown, boolean isDouble) {
+        renderFluid(fluidLevel, sizeX, -sizeX, sizeZ, maxHeight, minHeight, fluid, renderTop, isTop, renderDown, isDouble);
+    }
+
+    public static void renderFluid(float fluidLevel, float xMax, float xMin, float sizeZ, float maxHeight, float minHeight, FluidStack fluid, boolean renderTop, boolean isTop, boolean renderDown, boolean isDouble) {
 
         if (fluid == null || minHeight >= maxHeight) return;
 
@@ -51,10 +55,8 @@ public class RenderHelper {
 
         vertexBuffer.begin(7, DefaultVertexFormats.POSITION_TEX);
 
-        float xMax, zMax, xMin, zMin, yMin = minHeight;
-        xMax = sizeX;
+        float zMax, zMin, yMin = minHeight;
         zMax = sizeZ;
-        xMin = -sizeX;
         zMin = -sizeZ;
 
         if (isTop) yMin = 0;
