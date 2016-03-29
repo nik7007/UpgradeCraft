@@ -4,6 +4,7 @@ package com.nik7.upgcraft.tileentities;
 import com.nik7.upgcraft.fluid.FluidUpgCActiveLava;
 import com.nik7.upgcraft.fluid.ISecondaryFluidTankShow;
 import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.init.ModFluids;
 import com.nik7.upgcraft.inventory.ContainerActiveLavaMaker;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Reference;
@@ -11,6 +12,7 @@ import com.nik7.upgcraft.tank.UpgCEPFluidTank;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
@@ -20,9 +22,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.IInteractionObject;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -59,9 +59,8 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
     }
 
     @Override
-    // TODO: 25/03/2016
     public int getTankToShow() {
-        return 0;
+        return INPUT_TANK;
     }
 
     @SideOnly(Side.CLIENT)
@@ -131,10 +130,94 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
                     updateModBlock();
             }
 
+            inputLava();
+            outputActiveLava();
+
             tick++;
-            tick %= 20;
+            tick %= 40;
         }
 
+    }
+
+    private void inputLava() {
+
+        if (inventory[INPUT_TANK_SLOT] != null) {
+            Item item = inventory[INPUT_TANK_SLOT].getItem();
+
+            if (item != null) {
+                if (item == Items.lava_bucket /*|| item == ModItems.itemActiveLavaBucket*/) {
+
+                    if (tanks[INPUT_TANK].getCapacity() - tanks[INPUT_TANK].getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME) {
+                        FluidStack fluidStack = FluidContainerRegistry.getFluidForFilledItem(inventory[INPUT_TANK_SLOT]);
+
+                        int result = tanks[INPUT_TANK].fill(fluidStack, false);
+
+                        if (result == FluidContainerRegistry.BUCKET_VOLUME) {
+                            inventory[INPUT_TANK_SLOT] = new ItemStack(Items.bucket, 1);
+                            tanks[INPUT_TANK].fill(fluidStack, true);
+                            updateModBlock();
+                        }
+                    }
+
+
+                } else if (item instanceof IFluidContainerItem && (tick % 20) == 5) {
+                    IFluidContainerItem fluidContainerItem = (IFluidContainerItem) item;
+                    FluidStack fluidStack = fluidContainerItem.getFluid(inventory[INPUT_TANK_SLOT]);
+
+                    if (fluidStack != null) {
+                        fluidStack = fluidStack.copy();
+
+                        if (fluidStack.amount > FluidContainerRegistry.BUCKET_VOLUME)
+                            fluidStack.amount = FluidContainerRegistry.BUCKET_VOLUME;
+
+                        int result = tanks[INPUT_TANK].fill(fluidStack, true);
+                        if (result > 0) {
+                            fluidContainerItem.drain(inventory[INPUT_TANK_SLOT], result, true);
+                            updateModBlock();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void outputActiveLava() {
+        FluidStack fluid = tanks[WORKING_TANK].getFluid();
+        if (fluid != null) {
+            if (inventory[OUTPUT_TANK_SLOT] != null && inventory[OUTPUT_TANK_SLOT].stackSize == 1) {
+                ItemStack itemStack = inventory[OUTPUT_TANK_SLOT];
+                if (FluidContainerRegistry.isEmptyContainer(itemStack)) {
+                    if (fluid.amount >= FluidContainerRegistry.BUCKET_VOLUME) {
+                        FluidStack oneBucketOfFluid = new FluidStack(fluid, FluidContainerRegistry.BUCKET_VOLUME);
+                        ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(oneBucketOfFluid, FluidContainerRegistry.EMPTY_BUCKET);
+                        if (filledBucket != null) {
+                            inventory[OUTPUT_TANK_SLOT] = filledBucket;
+                            fluid.amount -= FluidContainerRegistry.BUCKET_VOLUME;
+                            updateModBlock();
+                        }
+                    }
+                } else if (itemStack.getItem() instanceof IFluidContainerItem && (tick % 20) == 10) {
+                    if (fluid.amount >= FluidContainerRegistry.BUCKET_VOLUME) {
+
+                        IFluidContainerItem fluidContainerItem = (IFluidContainerItem) itemStack.getItem();
+                        FluidStack fluidStack = fluid.copy();
+
+                        if (fluidStack.amount > FluidContainerRegistry.BUCKET_VOLUME)
+                            fluidStack.amount = FluidContainerRegistry.BUCKET_VOLUME;
+
+                        int amount = fluidContainerItem.fill(itemStack, fluidStack, true);
+                        if (amount > 0) {
+                            fluid.amount -= amount;
+                            updateModBlock();
+                        }
+                        if (fluid.amount == 0) {
+                            tanks[WORKING_TANK].setFluid(null);
+                            updateModBlock();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private boolean canOperate() {
@@ -293,6 +376,8 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
 
     @Override
     public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+        if (resource == null || !canFill(from, resource.getFluid()))
+            return 0;
         return super.fill(INPUT_TANK, from, resource, doFill);
     }
 
@@ -308,7 +393,12 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
 
     @Override
     public boolean canFill(EnumFacing from, Fluid fluid) {
-        return true;
+        if ((fluid == null)) {
+            return true;
+        } else if (fluid.getBlock() == Blocks.lava || fluid == ModFluids.fluidUpgCActiveLava) {
+            return true;
+        }
+        return false;
     }
 
     @Override
