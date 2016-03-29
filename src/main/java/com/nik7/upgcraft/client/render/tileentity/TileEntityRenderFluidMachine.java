@@ -3,6 +3,7 @@ package com.nik7.upgcraft.client.render.tileentity;
 
 import com.nik7.upgcraft.block.BlockUpgCContainerOrientable;
 import com.nik7.upgcraft.client.render.model.ModelFluidMachine;
+import com.nik7.upgcraft.fluid.ISecondaryFluidTankShow;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentities.UpgCtileentityActiveLavaMaker;
 import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
@@ -82,8 +83,15 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer<UpgC
         GlStateManager.popMatrix();
 
         FluidStack fluidStack = te.getFluid(te.getTankToShow());
+        FluidStack fluidStack1 = null;
+        boolean twoTank;
 
-        if (fluidStack != null) {
+        if (te instanceof ISecondaryFluidTankShow) {
+            fluidStack1 = te.getFluid(((ISecondaryFluidTankShow) te).getSecondaryFluidTankToShow());
+            twoTank = true;
+        } else twoTank = false;
+
+        if (fluidStack != null || fluidStack1 != null) {
 
             float level = te.getFillPercentage(te.getTankToShow());
 
@@ -91,32 +99,43 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer<UpgC
 
             GlStateManager.pushMatrix();
 
-            int dx = 0, dz = 0;
+            int dx = 0, dz = 0, da = 0;
 
             switch (enumfacing) {
+                case NORTH:
+                    dx = 1;
+                    dz = 1;
+                    da = 1;
+                    break;
 
                 case EAST:
                     dz = 1;
+                    da = 0;
                     break;
 
                 case WEST:
                     dx = 1;
+                    da = 0;
                     break;
 
                 case SOUTH:
-                    dx = 1;
-                    dz = 1;
+                    da = 1;
                     break;
 
             }
 
             GlStateManager.translate(x + dx, y, z + dz);
-            GlStateManager.rotate((float) angle, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate((float) angle + 180 * da, 0.0F, 1.0F, 0.0F);
 
             GlStateManager.enableBlend();
             GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
-            this.renderFluid(level, fluidStack);
+            if (twoTank) {
+                float level1 = te.getFillPercentage(((ISecondaryFluidTankShow) te).getSecondaryFluidTankToShow());
+                this.renderFluid(level, fluidStack, 0, -xMaz);
+                this.renderFluid(level1, fluidStack1, xMaz, 0);
+            } else
+                this.renderFluid(level, fluidStack);
 
             GlStateManager.disableBlend();
 
@@ -133,5 +152,10 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer<UpgC
 
         RenderHelper.renderFluid(fluidLevel, xMaz, zMaz, yMaz, yMin, fluid, true, false, false, false);
 
+    }
+
+    private void renderFluid(float fluidLevel, FluidStack fluid, float xMax, float xMin) {
+
+        RenderHelper.renderFluid(fluidLevel, xMax, xMin, zMaz, yMaz, yMin, fluid, true, false, false, false);
     }
 }

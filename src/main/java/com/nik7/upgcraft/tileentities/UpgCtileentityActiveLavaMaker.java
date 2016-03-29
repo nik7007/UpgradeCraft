@@ -2,6 +2,7 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.fluid.FluidUpgCActiveLava;
+import com.nik7.upgcraft.fluid.ISecondaryFluidTankShow;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.inventory.ContainerActiveLavaMaker;
 import com.nik7.upgcraft.reference.Capacity;
@@ -29,7 +30,7 @@ import java.util.Random;
 
 import static com.nik7.upgcraft.init.ModFluids.fluidUpgCActiveLava;
 
-public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidHandler implements ITickable, IInteractionObject {
+public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidHandler implements ITickable, IInteractionObject, ISecondaryFluidTankShow {
 
     //tank[0]: input tank - tank[1]: working tank
     //itemStacks[0]: input bucket/tank - itemStacks[1]: blaze stuff - itemStacks[2]: output bucket/tank
@@ -321,5 +322,10 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
         if (from == EnumFacing.DOWN)
             return super.getTankInfo(WORKING_TANK, from);
         return super.getTankInfo(INPUT_TANK, from);
+    }
+
+    @Override
+    public int getSecondaryFluidTankToShow() {
+        return WORKING_TANK;
     }
 }
