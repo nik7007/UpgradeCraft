@@ -40,10 +40,10 @@ public class Recipes {
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 5), new ItemStack(Blocks.iron_block), 500, new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 3), 500);
 
         //Termo Smelting recipes
-        TermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockClayLiquidTank, 1, 0), new ItemStack(ModBlocks.blockClayLiquidTank, 1, 2), 1100, 400);
-        TermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockClayLiquidTank, 1, 1), new ItemStack(ModBlocks.blockClayLiquidTank, 1, 3), 1100, 400);
-        TermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 0), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 2), 2000, 300);
-        TermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 1), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 3), 2000, 300);
+        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockClayLiquidTank, 1, 0), new ItemStack(ModBlocks.blockClayLiquidTank, 1, 2), 1100, 400);
+        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockClayLiquidTank, 1, 1), new ItemStack(ModBlocks.blockClayLiquidTank, 1, 3), 1100, 400);
+        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 0), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 2), 2000, 300);
+        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 1), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 3), 2000, 300);
     */
     }
 }
