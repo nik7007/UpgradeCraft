@@ -126,7 +126,7 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
             } else {
                 boolean oldOP = isOperating;
                 isOperating = false;
-                if (oldOP != isOperating)
+                if (oldOP)
                     updateModBlock();
             }
 
@@ -193,6 +193,8 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
                         if (filledBucket != null) {
                             inventory[OUTPUT_TANK_SLOT] = filledBucket;
                             fluid.amount -= FluidContainerRegistry.BUCKET_VOLUME;
+                            if (fluid.amount == 0)
+                                tanks[WORKING_TANK].setFluid(null);
                             updateModBlock();
                         }
                     }
