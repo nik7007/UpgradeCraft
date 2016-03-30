@@ -272,8 +272,9 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
                     maxTransfer = 1;
                 int temp = inputFluidStack.getFluid().getTemperature(inputFluidStack);
                 inputFluidStack = new FluidStack(fluidUpgCActiveLava, maxTransfer);
-                FluidUpgCActiveLava.increaseActiveValue(inputFluidStack, temp);
-                activeOperation--;
+                int i;
+                if ((i = FluidUpgCActiveLava.increaseActiveValue(inputFluidStack, temp)) > 0)
+                    activeOperation -= (int) (4f * (float) i / (float) temp);
             }
 
             if (rnd.nextFloat() > 0.6) {
@@ -295,13 +296,15 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
 
             if (!FluidUpgCActiveLava.hasMaximumTemperature(activeLava)) {
                 if (rnd.nextFloat() > 0.7) {
-                    if (FluidUpgCActiveLava.increaseActiveValue(activeLava, 100) > 0) {
-                        activeOperation -= 3;
+                    int i;
+                    if ((i = FluidUpgCActiveLava.increaseActiveValue(activeLava, 100)) > 0) {
+                        activeOperation -= 3 * i / 5;
                         updateModBlock();
                     }
                 } else if (rnd.nextFloat() > 0.3) {
-                    if (FluidUpgCActiveLava.increaseActiveValue(activeLava, 25) > 0) {
-                        activeOperation--;
+                    int i;
+                    if ((i = FluidUpgCActiveLava.increaseActiveValue(activeLava, 25)) > 0) {
+                        activeOperation -= i / 10;
                         updateModBlock();
                     }
                 }
