@@ -21,8 +21,7 @@ public class ThermoSmeltingRegister {
     public static void addRecipe(ItemStack input, ItemStack output, float temperatureKelvin, int tick) {
         if (input != null && output != null && temperatureKelvin > 273 && tick > 0) {
 
-            if (INSTANCE.inputToAll.get(new ItemOD(input)) == null) {
-
+            if (!isRegisterContainsInput(input)) {
                 ThermoSmeltingRecipe recipe = new ThermoSmeltingRecipe(input, output, temperatureKelvin, tick);
                 INSTANCE.inputToAll.put(new ItemOD(input), recipe);
 
@@ -37,6 +36,10 @@ public class ThermoSmeltingRegister {
 
     public static ThermoSmeltingRecipe getRecipeFromInput(ItemStack input) {
         return INSTANCE.inputToAll.get(new ItemOD(input));
+    }
+
+    public static boolean isRegisterContainsInput(ItemStack itemStack) {
+        return INSTANCE.inputToAll.containsKey(new ItemOD(itemStack));
     }
 
 }
