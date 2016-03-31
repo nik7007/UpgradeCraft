@@ -13,7 +13,7 @@ public abstract class RecipeHandler<T extends IRecipeWrapper> implements IRecipe
     @Nonnull
     private final BlockUpgC modBlock;
 
-    public RecipeHandler(BlockUpgC modBlock) {
+    public RecipeHandler(@Nonnull BlockUpgC modBlock) {
         this.modBlock = modBlock;
     }
 
