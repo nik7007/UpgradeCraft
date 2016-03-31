@@ -307,7 +307,7 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
         } else burningTime--;
     }
 
-    public void smeltItem() {
+    private void smeltItem() {
 
         ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(this.inventory[INPUT]);
 
