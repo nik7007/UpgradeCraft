@@ -26,9 +26,9 @@ public class PlayerEventHandler {
 
     @SubscribeEvent
     public void onPlayerDeath(PlayerEvent.Clone e) {
-        if (e.wasDeath) {
-            EntityPlayer playerOriginal = e.original;
-            EntityPlayer playerNew = e.entityPlayer;
+        if (e.isWasDeath()) {
+            EntityPlayer playerOriginal = e.getOriginal();
+            EntityPlayer playerNew = e.getEntityPlayer();
 
             if (playerOriginal.hasCapability(PLAYER_UPGC, null) && playerNew.hasCapability(PLAYER_UPGC, null)) {
 
