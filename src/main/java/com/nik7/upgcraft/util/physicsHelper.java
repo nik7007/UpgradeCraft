@@ -3,7 +3,7 @@ package com.nik7.upgcraft.util;
 
 import net.minecraftforge.fluids.FluidStack;
 
-public class physicsHelper {
+public class PhysicsHelper {
 
     public static float getFluidMass(FluidStack fluidStack) {
         if (fluidStack == null)

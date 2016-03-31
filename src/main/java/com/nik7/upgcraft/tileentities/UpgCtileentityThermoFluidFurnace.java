@@ -6,6 +6,7 @@ import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.registry.ThermoSmeltingRegister;
 import com.nik7.upgcraft.tank.UpgCEPFluidTank;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
+import com.nik7.upgcraft.util.PhysicsHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -32,8 +33,20 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
 
     public static final int MAX_TEMPERATURE = 5700;
 
+    private static final int NORMAL_TEMP = 273;
+
     private static final int DIAMOND_THERMAL_CONDUCTIVITY = 1600;
-    private float internalTemp = 273;
+    private static final float INTERNAL_MASS = 1 * 0.004f;
+
+    private float internalTemp = NORMAL_TEMP;
+    private int increaseTemperatureSpeed = 1;
+
+    private float workingTemp = 0;
+    private float oldWTemp = 1;
+    private boolean balanced;
+    private int balanceTick = 0;
+
+    private int tick = 0;
 
 
     protected UpgCtileentityThermoFluidFurnace() {
@@ -45,7 +58,57 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
 
     @Override
     public void update() {
+        if (!worldObj.isRemote) {
 
+            if (!balanced && internalTemp < MAX_TEMPERATURE && tanks[WORKING_TANK].getFluid() != null && Math.abs(workingTemp) <= Math.abs(oldWTemp) / 50)
+                tempOperation();
+            else if (balanced) {
+                if (++balanceTick > 120) {
+                    balanced = false;
+                    balanceTick = 0;
+                }
+            }
+            tick++;
+            if ((tick % 5) == 0) {
+                if (Math.abs(workingTemp) >= increaseTemperatureSpeed) {
+                    if (workingTemp > 0) {
+                        internalTemp += increaseTemperatureSpeed;
+                        workingTemp -= increaseTemperatureSpeed;
+                    } else {
+                        internalTemp -= increaseTemperatureSpeed;
+                        workingTemp += increaseTemperatureSpeed;
+                        workingTemp = Math.round(workingTemp);
+                    }
+                }
+
+                if (workingTemp > NORMAL_TEMP)
+                    workingTemp--;
+                else if (workingTemp < NORMAL_TEMP)
+                    workingTemp += 10;
+            }
+
+
+
+            tick %= 20;
+        }
+    }
+
+    private void tempOperation() {
+        this.workingTemp += PhysicsHelper.getFinalTemp(tanks[WORKING_TANK].getFluid(), internalTemp, INTERNAL_MASS, 20, heatLost());
+
+        if (((int) Math.abs(workingTemp)) <= 12) {
+            balanced = true;
+            increaseTemperatureSpeed = 1;
+        } else {
+            increaseTemperatureSpeed = Math.max(1, (int) (Math.abs(workingTemp) / 100));
+            oldWTemp = workingTemp;
+        }
+
+    }
+
+    private float heatLost() {
+        int t = tanks[INPUT_TANK].getFluid() == null ? 0 : tanks[INPUT_TANK].getFluid().getFluid().getTemperature(tanks[INPUT_TANK].getFluid());
+        return (float) (Math.abs((t - (double) internalTemp)) / DIAMOND_THERMAL_CONDUCTIVITY);
     }
 
     @Override
