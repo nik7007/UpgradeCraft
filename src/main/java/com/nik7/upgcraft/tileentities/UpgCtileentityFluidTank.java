@@ -174,13 +174,7 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
             UpgCFluidTank result = null;
             try {
                 result = TankClass.asSubclass(UpgCFluidTank.class).getConstructor(int.class, TileEntity.class).newInstance(capacity, this);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
+            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 e.printStackTrace();
             }
             return result;

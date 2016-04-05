@@ -54,7 +54,7 @@ public abstract class GuiWithFluid extends GuiContainer {
                 temperature = fluid.getFluid().getTemperature(fluid);
         }
 
-        List<String> text = new ArrayList<String>();
+        List<String> text = new ArrayList<>();
         text.add(TextFormatting.RESET + fluidName);
         text.add(TextFormatting.GRAY + "" + amount + " / " + maxFluidAmount + " mB");
 

@@ -10,7 +10,7 @@ import java.util.Map;
 public class BlockToItemHelper {
 
     private final static BlockToItemHelper ourInstance = new BlockToItemHelper();
-    private Map<String, ArrayList<ItemStack>> drops = new HashMap<String, ArrayList<ItemStack>>();
+    private Map<String, ArrayList<ItemStack>> drops = new HashMap<>();
 
     public static BlockToItemHelper getInstance() {
         return ourInstance;

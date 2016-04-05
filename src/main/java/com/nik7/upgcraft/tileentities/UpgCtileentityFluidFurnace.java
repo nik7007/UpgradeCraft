@@ -26,7 +26,7 @@ import java.util.Map;
 
 public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHandler implements ITickable, IInteractionObject {
 
-    private static final Map<String, FluidFuelSpecific> FUEL_CACHE = new HashMap<String, FluidFuelSpecific>();
+    private static final Map<String, FluidFuelSpecific> FUEL_CACHE = new HashMap<>();
     private static final FluidFuelSpecific normalSpec = new FluidFuelSpecific(20, 200);
     private final static String LAVA = "lava";
     private static int lava_temp = -1;

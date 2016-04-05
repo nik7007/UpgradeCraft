@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.jei.fluidinfuser;
 
 
-import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
+import com.nik7.upgcraft.registry.CustomCraftingExperience;
 import com.nik7.upgcraft.registry.FluidInfuser.FluidInfuserRecipe;
 import com.nik7.upgcraft.registry.FluidInfuser.InputItemStacks;
 import com.nik7.upgcraft.registry.FluidInfuserRegister;
@@ -19,7 +19,7 @@ public class FluidInfuserMaker {
     @Nonnull
     public static List<FluidInfuserJEI> getRecipes() {
 
-        ArrayList<FluidInfuserJEI> recipes = new ArrayList<FluidInfuserJEI>();
+        ArrayList<FluidInfuserJEI> recipes = new ArrayList<>();
 
         for (HashSet<FluidInfuserRecipe> fluidInfuserRecipes : FluidInfuserRegister.getRecipes()) {
             for (FluidInfuserRecipe fluidInfuserRecipe : fluidInfuserRecipes) {

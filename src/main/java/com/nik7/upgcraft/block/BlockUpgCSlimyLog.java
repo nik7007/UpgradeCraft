@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.block;
 
 
-import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
+import com.nik7.upgcraft.registry.CustomCraftingExperience;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;

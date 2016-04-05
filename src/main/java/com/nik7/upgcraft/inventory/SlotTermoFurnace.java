@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.inventory;
 
 
-import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
+import com.nik7.upgcraft.registry.CustomCraftingExperience;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;

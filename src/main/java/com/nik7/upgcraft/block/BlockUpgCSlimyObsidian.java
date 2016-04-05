@@ -1,6 +1,6 @@
 package com.nik7.upgcraft.block;
 
-import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
+import com.nik7.upgcraft.registry.CustomCraftingExperience;
 import net.minecraft.block.material.EnumPushReaction;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;

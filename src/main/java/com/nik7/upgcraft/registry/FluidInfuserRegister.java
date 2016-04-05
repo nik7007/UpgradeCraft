@@ -18,12 +18,12 @@ public class FluidInfuserRegister {
 
     private static final FluidInfuserRegister INSTANCE = new FluidInfuserRegister();
 
-    private HashMap<InputItemStacks, FluidInfuserRecipe> inputsToAll = new HashMap<InputItemStacks, FluidInfuserRecipe>();
+    private HashMap<InputItemStacks, FluidInfuserRecipe> inputsToAll = new HashMap<>();
 
-    private HashMap<ItemOD, HashSet<FluidInfuserRecipe>> resultToAll = new HashMap<ItemOD, HashSet<FluidInfuserRecipe>>();
-    private HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>> toMeltToAll = new HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>>();
-    private HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>> toInfuseToAll = new HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>>();
-    private HashSet<Fluid> fluid = new HashSet<Fluid>();
+    private HashMap<ItemOD, HashSet<FluidInfuserRecipe>> resultToAll = new HashMap<>();
+    private HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>> toMeltToAll = new HashMap<>();
+    private HashMap<ItemOD, HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>> toInfuseToAll = new HashMap<>();
+    private HashSet<Fluid> fluid = new HashSet<>();
 
     private FluidInfuserRegister() {
 
@@ -48,7 +48,7 @@ public class FluidInfuserRegister {
 
                     INSTANCE.inputsToAll.put(inputs, recipe);
 
-                    if (!INSTANCE.fluid.contains(fluidStack)) {
+                    if (!INSTANCE.fluid.contains(fluidStack.getFluid())) {
                         INSTANCE.fluid.add(fluidStack.getFluid());
                     }
                     ItemOD toCheck = new ItemOD(result);
@@ -76,7 +76,7 @@ public class FluidInfuserRegister {
 
                     } else {
 
-                        HashMap<Fluid, FluidInfuserRecipe> map = new HashMap<Fluid, FluidInfuserRecipe>();
+                        HashMap<Fluid, FluidInfuserRecipe> map = new HashMap<>();
                         map.put(fluidStack.getFluid(), recipe);
 
 
@@ -104,7 +104,7 @@ public class FluidInfuserRegister {
 
                     } else {
 
-                        HashMap<Fluid, FluidInfuserRecipe> map = new HashMap<Fluid, FluidInfuserRecipe>();
+                        HashMap<Fluid, FluidInfuserRecipe> map = new HashMap<>();
                         map.put(fluidStack.getFluid(), recipe);
 
                         INSTANCE.toInfuseToAll.put(toInfuseOD, new HashMap<ItemOD, HashMap<Fluid, FluidInfuserRecipe>>());

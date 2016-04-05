@@ -1,4 +1,4 @@
-package com.nik7.upgcraft.registry.FluidInfuser;
+package com.nik7.upgcraft.registry;
 
 
 import net.minecraft.item.ItemStack;

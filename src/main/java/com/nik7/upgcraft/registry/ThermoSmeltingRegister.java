@@ -15,7 +15,7 @@ public class ThermoSmeltingRegister {
     private Map<ItemOD, ThermoSmeltingRecipe> inputToAll;
 
     private ThermoSmeltingRegister() {
-        inputToAll = new HashMap<ItemOD, ThermoSmeltingRecipe>();
+        inputToAll = new HashMap<>();
     }
 
     public static void addRecipe(ItemStack input, ItemStack output, float temperatureKelvin, int tick) {

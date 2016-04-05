@@ -2,7 +2,7 @@ package com.nik7.upgcraft.item;
 
 import com.nik7.upgcraft.block.BlockUpgCClayFluidTank;
 import com.nik7.upgcraft.reference.Reference;
-import com.nik7.upgcraft.registry.FluidInfuser.CustomCraftingExperience;
+import com.nik7.upgcraft.registry.CustomCraftingExperience;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -45,7 +45,7 @@ public class ItemBlockClayFluidTank extends ItemBlock implements IFluidContainer
             list.add(I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.hollow"));
         }
 
-        List<String> hiddenInformation = new LinkedList<String>();
+        List<String> hiddenInformation = new LinkedList<>();
         if (metaData < 2) {
             hiddenInformation.add(TextFormatting.DARK_AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.to.be.cooked.t"));
             hiddenInformation.add(TextFormatting.DARK_AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.to.be.cooked.b"));
