@@ -313,9 +313,9 @@ public class UpgCtileentityFluidFurnace extends UpgCtileentityInventoryFluidHand
 
         if (this.inventory[OUTPUT] == null) {
             this.inventory[OUTPUT] = itemstack.copy();
-        } else if (this.inventory[OUTPUT].getItem() == itemstack.getItem()) {
-            this.inventory[OUTPUT].stackSize += itemstack.stackSize; // Forge BugFix: Results may have multiple items
-        }
+        } else if (this.inventory[OUTPUT].isItemEqual(itemstack)) {
+            this.inventory[OUTPUT].stackSize += itemstack.stackSize;
+        } else return;
         decrStackSize(INPUT, 1);
 
     }
