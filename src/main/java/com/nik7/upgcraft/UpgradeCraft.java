@@ -12,10 +12,12 @@ import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.network.NetworkHandler;
 import com.nik7.upgcraft.proxy.IProxy;
 import com.nik7.upgcraft.reference.Reference;
+import com.nik7.upgcraft.util.LogHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
@@ -67,7 +69,8 @@ public class UpgradeCraft {
         Recipes.init();
 
 
-        //FMLInterModComms.sendMessage("Waila", "register", "com.nik7.upgcraft.waila.Waila.callbackRegister");
+        if (!FMLInterModComms.sendMessage("Waila", "register", "com.nik7.upgcraft.waila.Waila.callbackRegister"))
+            LogHelper.error("Impossible to communicate with WAILA! Have you this mode?");
 
     }
 
