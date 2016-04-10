@@ -215,14 +215,15 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
                     isActive = false;
                 }
 
-
-                if (oldTemp != internalTemp)
-                    updateModBlock();
+                int oldAmount = this.tanks[INPUT_TANK].getFluidAmount();
 
                 if ((tick) % 2 == 0) {
                     internalFill();
                     wasteOperation();
                 }
+
+                if (oldTemp != internalTemp || oldAmount != this.tanks[INPUT_TANK].getFluidAmount())
+                    updateModBlock();
 
                 oldTemp = internalTemp;
 
@@ -251,7 +252,7 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
 
             if ((tick % 5) == 0) {
 
-                int wasteTemp = Math.abs(increaseTemperatureSpeed) == 1 ? 2 : 1;
+                int wasteTemp = 1;//Math.abs(increaseTemperatureSpeed) == 1 ? 2 : 1;
 
                 if (internalTemp > NORMAL_TEMP)
                     internalTemp -= wasteTemp;
@@ -338,7 +339,7 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
 
                     FluidStack activeLava = tanks[WORKING_TANK].getFluid();
 
-                    if (internalTemp < MAX_TEMPERATURE && workingTemp > 0) {
+                    if (internalTemp < MAX_TEMPERATURE && internalTemp > 0) {
 
                         int active = Math.max(1, Math.min(50, (int) (workingTemp / 10)));
                         FluidUpgCActiveLava.decreaseActiveValue(activeLava, active);
@@ -363,18 +364,22 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
                 }
 
             } else {
-                if (fuelTTL <= 0) {
-                    tanks[WORKING_TANK].drain(300, true);
+                if (tanks[WORKING_TANK].getFluid().getFluid().getTemperature(tanks[WORKING_TANK].getFluid()) <= NORMAL_TEMP + 100) {
+                    tanks[WORKING_TANK].setFluid(null);
+                } else {
+                    if (fuelTTL <= 0) {
+                        tanks[WORKING_TANK].drain(300, true);
 
-                    if (rnd.nextDouble() <= 0.32) {
-                        addObsidian();
-                    } else if (rnd.nextDouble() <= 0.81) {
-                        addCobblestone();
+                        if (rnd.nextDouble() <= 0.32) {
+                            addObsidian();
+                        } else if (rnd.nextDouble() <= 0.81) {
+                            addCobblestone();
+                        }
+                        fuelTTL = MAX_FUEL_TTL;
                     }
-                    fuelTTL = MAX_FUEL_TTL;
+
+
                 }
-
-
             }
 
 
@@ -432,7 +437,7 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
 
             } else {
                 if (isThermoSmelting()) {
-                    internalTemp -= (int) (2f * Math.random());
+                    internalTemp -= (int) (3f * Math.random());
                 } else internalTemp--;
 
                 isActive = true;
@@ -509,14 +514,17 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
     private void tempOperation() {
         this.workingTemp += PhysicsHelper.getFinalTemp(tanks[WORKING_TANK].getFluid(), internalTemp, INTERNAL_MASS, 20, heatLost());
 
-        if (((int) Math.abs(workingTemp)) <= 15 || (internalTemp > NORMAL_TEMP && workingTemp < 0)) {
+        if (((int) Math.abs(workingTemp)) <= 15 || (internalTemp > NORMAL_TEMP && internalTemp < 0)) {
             balanced = true;
             increaseTemperatureSpeed = 1;
+            if (tanks[WORKING_TANK].getFluid().getFluid() == ModFluids.fluidUpgCActiveLava)
+                fuelTTL--;
         } else {
             increaseTemperatureSpeed = Math.max(1, (int) (Math.abs(workingTemp) / 10));
             oldWTemp = workingTemp;
             fuelTTL--;
         }
+
 
     }
 
