@@ -5,10 +5,7 @@ import com.nik7.upgcraft.block.BlockUpgCContainerOrientable;
 import com.nik7.upgcraft.client.render.model.ModelFluidMachine;
 import com.nik7.upgcraft.fluid.ISecondaryFluidTankShow;
 import com.nik7.upgcraft.reference.Texture;
-import com.nik7.upgcraft.tileentities.UpgCtileentityActiveLavaMaker;
-import com.nik7.upgcraft.tileentities.UpgCtileentityFluidFurnace;
-import com.nik7.upgcraft.tileentities.UpgCtileentityFluidInfuser;
-import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
+import com.nik7.upgcraft.tileentities.*;
 import com.nik7.upgcraft.util.RenderHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -55,6 +52,8 @@ public class TileEntityRenderFluidMachine extends TileEntitySpecialRenderer<UpgC
             texture = new ResourceLocation(Texture.MODEL_FLUID_INFUSER);
         else if (te instanceof UpgCtileentityActiveLavaMaker)
             texture = new ResourceLocation(Texture.MODEL_ACTIVE_LAVA_MAKER);
+        else if (te instanceof UpgCtileentityThermoFluidFurnace)
+            texture = new ResourceLocation(Texture.MODEL_THERMO_FLUID_FURNACE);
 
         switch (enumfacing) {
             case NORTH:

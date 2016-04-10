@@ -23,6 +23,7 @@ public class ItemStackRender extends TileEntityItemStackRenderer {
     private UpgCtileentityFluidInfuser fluidInfuser = new UpgCtileentityFluidInfuser();
     private UpgCtileentityEnderFluidTank enderFluidTank = new UpgCtileentityEnderFluidTank();
     private UpgCtileentityActiveLavaMaker activeLavaMaker = new UpgCtileentityActiveLavaMaker();
+    private UpgCtileentityThermoFluidFurnace thermoFluidFurnace = new UpgCtileentityThermoFluidFurnace();
     private TileEntityItemStackRenderer instance;
 
     public ItemStackRender(TileEntityItemStackRenderer instance) {
@@ -70,8 +71,10 @@ public class ItemStackRender extends TileEntityItemStackRenderer {
                 fluidMachine = fluidFurnace;
             else if (block == ModBlocks.blockUpgCFluidInfuser)
                 fluidMachine = fluidInfuser;
-            else if(block == ModBlocks.blockUpgCActiveLavaMaker)
+            else if (block == ModBlocks.blockUpgCActiveLavaMaker)
                 fluidMachine = activeLavaMaker;
+            else if (block == ModBlocks.blockUpgCThermoFluidFurnace)
+                fluidMachine = thermoFluidFurnace;
             else {
                 this.instance.renderByItem(itemStack);
                 return;

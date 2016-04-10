@@ -41,6 +41,7 @@ public class Texture {
     public final static String MODEL_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_MACHINE + "BlockFluidFurnace.png";
     public final static String MODEL_FLUID_INFUSER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_MACHINE + "BlockFluidInfuser.png";
     public final static String MODEL_ACTIVE_LAVA_MAKER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_MACHINE + "BlockActiveLavaMaker.png";
+    public final static String MODEL_THERMO_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_MACHINE + "BlockThermoFluidFurnace.png";
 
     public final static String MODEL_FLUID_HOPPER = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_HOPPER + "BlockFluidHopper.png";
 
@@ -49,6 +50,7 @@ public class Texture {
         public final static String FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "fluidfurnace.png";
         public final static String FLUID_INFUSER = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "fluidinfuser.png";
         public final static String ACTIVE_LAVA_MAKER = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "activelavamaker.png";
+        public final static String THERMO_FLUID_FURNACE = Reference.MOD_ID + ":" + TEXTURE_GUI_LOCATION + "thermofluidfurnace.png";
 
     }
 }
