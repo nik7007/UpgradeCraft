@@ -12,12 +12,12 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
-public class SlotTermoFurnace extends SlotFurnaceOutput {
+public class SlotThermoFurnace extends SlotFurnaceOutput {
 
     private int slotIndex;
     private EntityPlayer thePlayer;
 
-    public SlotTermoFurnace(EntityPlayer player, IInventory inventory, int slotIndex, int x, int y) {
+    public SlotThermoFurnace(EntityPlayer player, IInventory inventory, int slotIndex, int x, int y) {
         super(player, inventory, slotIndex, x, y);
         this.slotIndex = slotIndex;
         this.thePlayer = player;
