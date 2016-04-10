@@ -21,6 +21,6 @@ public class FluidFurnaceHandler extends RecipeHandler<FluidFurnaceJEI> {
 
     @Override
     public boolean isRecipeValid(@Nonnull FluidFurnaceJEI recipe) {
-        return recipe.getInputs().size() == 1 && recipe.getOutputs().size() == 1;
+        return recipe.getInputs().size() == 1 && recipe.getOutputs().size() >= 1;
     }
 }

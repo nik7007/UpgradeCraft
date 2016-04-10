@@ -17,7 +17,7 @@ public class FluidFurnaceMaker {
         FurnaceRecipes furnaceRecipes = FurnaceRecipes.instance();
         Map<ItemStack, ItemStack> smeltingMap = furnaceRecipes.getSmeltingList();
 
-        List<FluidFurnaceJEI> recipes = new ArrayList<FluidFurnaceJEI>();
+        List<FluidFurnaceJEI> recipes = new ArrayList<>();
 
         for (Map.Entry<ItemStack, ItemStack> itemStackItemStackEntry : smeltingMap.entrySet()) {
             ItemStack input = itemStackItemStackEntry.getKey();
