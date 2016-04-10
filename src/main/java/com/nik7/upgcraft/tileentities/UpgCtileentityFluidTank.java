@@ -33,13 +33,19 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
     private Class<? extends UpgCFluidTank> TankClass = null;
     private boolean isFirst = true;
 
-    public UpgCtileentityFluidTank(int capacity, boolean canBeDouble) {
+    public UpgCtileentityFluidTank(int capacity, boolean canBeDouble, Class<? extends UpgCFluidTank> TankClass) {
         super();
+        this.TankClass = TankClass;
         this.capacity = this.originalCapacity = capacity;
         this.tank = createTank(capacity);
         this.isTop = false;
         this.isDouble = false;
         this.canBeDouble = canBeDouble;
+
+    }
+
+    public UpgCtileentityFluidTank(int capacity, boolean canBeDouble) {
+        this(capacity, canBeDouble, null);
     }
 
     @SideOnly(Side.CLIENT)
@@ -58,12 +64,6 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
         this.meta = metadata;
     }
 
-    public UpgCtileentityFluidTank(int capacity, boolean canBeDouble, Class<? extends UpgCFluidTank> TankClass) {
-
-        this(capacity, canBeDouble);
-        this.TankClass = TankClass;
-
-    }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
@@ -358,7 +358,7 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
             //worldObj.markBlockForUpdate(pos);
             //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
             IBlockState blockState = worldObj.getBlockState(pos);
-            worldObj.notifyBlockUpdate(pos,blockState,blockState,3);
+            worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
             this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
 
             if (otherTank != null) {
@@ -374,7 +374,7 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
     public void reloadOriginalCapacity() {
 
         Block block;
-        if((block = WorldHelper.getBlock(worldObj, pos)) instanceof BlockUpgCFluidTank) {
+        if ((block = WorldHelper.getBlock(worldObj, pos)) instanceof BlockUpgCFluidTank) {
             this.originalCapacity = ((BlockUpgCFluidTank) block).getCapacity();
             if (this.capacity != this.originalCapacity && this.capacity != this.originalCapacity * 2) {
                 if (isDouble)
