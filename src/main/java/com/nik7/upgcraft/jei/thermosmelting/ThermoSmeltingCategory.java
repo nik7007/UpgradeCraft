@@ -46,7 +46,7 @@ public class ThermoSmeltingCategory extends RecipeCategory {
 
     @Override
     public void drawAnimations(@Nonnull Minecraft minecraft) {
-        arrow.draw(minecraft, 67, 12);
+        arrow.draw(minecraft, 67, 11);
 
     }
 

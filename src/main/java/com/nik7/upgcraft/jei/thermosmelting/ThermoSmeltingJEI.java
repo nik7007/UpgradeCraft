@@ -54,7 +54,7 @@ public class ThermoSmeltingJEI extends BlankRecipeWrapper {
         if (experienceString != null) {
             FontRenderer fontRendererObj = minecraft.fontRendererObj;
             int stringWidth = fontRendererObj.getStringWidth(experienceString);
-            fontRendererObj.drawString(experienceString, recipeWidth - stringWidth - 15, 0, Color.gray.getRGB());
+            fontRendererObj.drawString(experienceString, recipeWidth - stringWidth - 15, -1, Color.gray.getRGB());
         }
 
     }
