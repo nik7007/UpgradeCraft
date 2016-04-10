@@ -2,6 +2,7 @@ package com.nik7.upgcraft.init;
 
 
 import com.nik7.upgcraft.registry.FluidInfuserRegister;
+import com.nik7.upgcraft.registry.ThermoSmeltingRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -39,12 +40,12 @@ public class Recipes {
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 1), new ItemStack(Blocks.clay), 4 * 50, new ItemStack(ModBlocks.blockWoodenLiquidTank, 1, 1), 250);
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 4), new ItemStack(Blocks.iron_block), 500, new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 2), 500);
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 5), new ItemStack(Blocks.iron_block), 500, new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 3), 500);
+        */
+        //Thermo Smelting recipes
+        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 0), new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 2), 1100, 400);
+        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 1), new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 3), 1100, 400);
+        //ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 0), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 2), 2000, 300);
+        //ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 1), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 3), 2000, 300);
 
-        //Termo Smelting recipes
-        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockClayLiquidTank, 1, 0), new ItemStack(ModBlocks.blockClayLiquidTank, 1, 2), 1100, 400);
-        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockClayLiquidTank, 1, 1), new ItemStack(ModBlocks.blockClayLiquidTank, 1, 3), 1100, 400);
-        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 0), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 2), 2000, 300);
-        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 1), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 3), 2000, 300);
-    */
     }
 }
