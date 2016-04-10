@@ -204,9 +204,9 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
             int oldFluidAmount = oldFluid.amount;
 
             if (isTop) {
-                newFluidAmount = oldFluidAmount - capacity;
+                newFluidAmount = oldFluidAmount - originalCapacity;
             } else {
-                newFluidAmount = oldFluidAmount > capacity ? capacity : oldFluidAmount;
+                newFluidAmount = oldFluidAmount > originalCapacity ? originalCapacity : oldFluidAmount;
             }
 
             if (newFluidAmount > 0) {
