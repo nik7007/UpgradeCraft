@@ -27,7 +27,9 @@ public class Recipes {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 1), "ccc", "cgc", "ccc", 'g', "blockGlass", 'c', new ItemStack(ModItems.itemUpgCClayIngot)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCFluidHopper), "i i", "iti", " i ", 'i', "ingotIron", 't', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 2)));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockUpgCEnderFluidTank), "ooo", "oeo", "ooo", 'o', new ItemStack(ModBlocks.blockUpgCSlimyObsidian), 'e', new ItemStack(Items.ender_eye));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCActiveLavaMaker), "sts", "odo", "bgb", 's', new ItemStack(ModBlocks.blockUpgCSlimyObsidian), 't', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 2), 'g', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 3), 'o', new ItemStack(Blocks.obsidian), 'd', "gemDiamond", 'b', new ItemStack(Items.blaze_rod)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCActiveLavaMaker), "sts", "odo", "btb", 's', new ItemStack(ModBlocks.blockUpgCSlimyObsidian), 't', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 3), 'o', new ItemStack(Blocks.obsidian), 'd', "gemDiamond", 'b', new ItemStack(Items.blaze_rod)));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCThermoFluidFurnace), "ooo", "tdf", "ooo", 'o', new ItemStack(ModBlocks.blockUpgCSlimyObsidian), 't', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 2), 'f', new ItemStack(ModBlocks.blockUpgCFluidFurnace), 'd', "gemDiamond"));
 
         //Fluid Infuser recipes
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 200), new ItemStack(ModBlocks.blockUpgCSlimyLog), new ItemStack(Items.slime_ball, 2), 10, new ItemStack(Blocks.planks), 200);
