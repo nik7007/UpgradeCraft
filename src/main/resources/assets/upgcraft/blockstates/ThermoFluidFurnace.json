@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": { "model": "upgcraft:SlimyObsidian" },
+    "facing=south": { "model": "upgcraft:SlimyObsidian" },
+    "facing=west":  { "model": "upgcraft:SlimyObsidian" },
+    "facing=east":  { "model": "upgcraft:SlimyObsidian" }
+  }
+}

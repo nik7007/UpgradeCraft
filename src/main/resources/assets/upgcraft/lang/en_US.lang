@@ -24,7 +24,7 @@ tile.upgcraft:BasicFluidHopper.name=Basic Fluid Hopper
 tile.upgcraft:FluidFurnace.name=Fluid Furnace
 tile.upgcraft:FluidInfuser.name=Fluid Infuser
 tile.upgcraft:ActiveLava.name=Active Lava
-tile.upgcraft:TermoFluidFurnace.name=Termo Fluid Furnace
+tile.upgcraft:ThermoFluidFurnace.name=Thermo Fluid Furnace
 tile.upgcraft:ActiveLavaMaker.name=Active Lava Maker
 tile.upgcraft:FluidTankMold.name=Fluid Tank Mold
 tile.upgcraft:FluidTankMold.Hardened.name=Hardened Fluid Tank Mold
@@ -47,10 +47,10 @@ tooltip.upgcraft:fluidtankmold.empty=Empty
 upgcraft:container.fluidfurnace=Fluid Furnace
 upgcraft:container.fluidinfuser=Fluid Infuser
 upgcraft:container.enderhopper=Ender Hopper
-upgcraft:container.termofurnace=Termo Fluid Furnace
+upgcraft:container.thermofluidfurnace=Thermo Fluid Furnace
 upgcraft:container.activelavamaker=Active Lava Maker
 
 #NEI
 gui.nei.upgcraft:FluidInfuser=Fluid Infuser
 gui.nei.upgcraft:FluidFurnace=Fluid Furnace
-gui.nei.upgcraft:TermoFluidFurnace=Termo Fluid Furnace
+gui.nei.upgcraft:ThermoFluidFurnace=Thermo Fluid Furnace
