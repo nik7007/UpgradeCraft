@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "upgcraft:blocks/FluidTankMold",
+    "side": "upgcraft:blocks/FluidTankMold_side"
+  }
+}

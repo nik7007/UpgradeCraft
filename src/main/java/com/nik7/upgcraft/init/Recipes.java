@@ -38,16 +38,16 @@ public class Recipes {
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 4 * 250), new ItemStack(ModItems.itemUpgCClayIngot, 4), new ItemStack(Blocks.clay), 4 * 50, new ItemStack(Items.brick, 4), 400);
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 400), new ItemStack(ModBlocks.blockUpgCSlimyObsidian), new ItemStack(Items.slime_ball, 4), 20, new ItemStack(Blocks.obsidian), 400);
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 2 * 400), new ItemStack(ModBlocks.blockUpgCSlimyObsidian, 2), new ItemStack(Blocks.slime_block), 2 * 20, new ItemStack(Blocks.obsidian, 2), 400);
-        /*FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 0), new ItemStack(Blocks.clay), 4 * 50, new ItemStack(ModBlocks.blockWoodenLiquidTank, 1, 0), 250);
-        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 1), new ItemStack(Blocks.clay), 4 * 50, new ItemStack(ModBlocks.blockWoodenLiquidTank, 1, 1), 250);
-        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 4), new ItemStack(Blocks.iron_block), 500, new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 2), 500);
-        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 5), new ItemStack(Blocks.iron_block), 500, new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 3), 500);
-        */
+        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 0), new ItemStack(Blocks.clay), 4 * 50, new ItemStack(ModBlocks.blockUpgCWoodenFluidTank, 1, 0), 250);
+        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 1), new ItemStack(Blocks.clay), 4 * 50, new ItemStack(ModBlocks.blockUpgCWoodenFluidTank, 1, 1), 250);
+        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 6), new ItemStack(Blocks.iron_block), 500, new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 4), 500);
+        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 4 * 250), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 7), new ItemStack(Blocks.iron_block), 500, new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 5), 500);
+
         //Thermo Smelting recipes
         ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 0), new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 2), 1100, 400);
         ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 1), new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 3), 1100, 400);
-        //ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 0), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 2), 2000, 300);
-        //ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 1), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 3), 2000, 300);
+        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 0), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 4), 2000, 300);
+        ThermoSmeltingRegister.addRecipe(new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 1), new ItemStack(ModBlocks.blockUpgCFluidTankMold, 1, 5), 2000, 300);
 
     }
 }
