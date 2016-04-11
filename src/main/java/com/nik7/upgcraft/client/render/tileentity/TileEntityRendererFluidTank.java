@@ -7,10 +7,7 @@ import com.nik7.upgcraft.client.render.model.ModelDoubleTank;
 import com.nik7.upgcraft.client.render.model.ModelTank;
 import com.nik7.upgcraft.reference.Render;
 import com.nik7.upgcraft.reference.Texture;
-import com.nik7.upgcraft.tileentities.UpgCtileentityClayFluidTank;
-import com.nik7.upgcraft.tileentities.UpgCtileentityEnderFluidTank;
-import com.nik7.upgcraft.tileentities.UpgCtileentityFluidTank;
-import com.nik7.upgcraft.tileentities.UpgCtileentityWoodenFluidTank;
+import com.nik7.upgcraft.tileentities.*;
 import com.nik7.upgcraft.util.RenderHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.model.ModelBase;
@@ -92,6 +89,8 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                         this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_HOLLOW_HARDENED_CLAY_TANK));
                     else
                         this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_HOLLOW_CLAY_TANK));
+                else if (te instanceof UpgCtileentityIronFluidTank)
+                    this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_HOLLOW_IRON_TANK));
 
 
             } else {
@@ -107,6 +106,9 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
 
                 else if (te instanceof UpgCtileentityEnderFluidTank)
                     this.bindTexture(new ResourceLocation(Texture.MODEL_ENDER_FLUID_TANK));
+
+                else if (te instanceof UpgCtileentityIronFluidTank)
+                    this.bindTexture(new ResourceLocation(Texture.MODEL_SMALL_IRON_TANK));
 
 
             }
@@ -136,6 +138,8 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                             this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HARDENED_CLAY_TANK));
                         else
                             this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_CLAY_TANK));
+                    else if (te instanceof UpgCtileentityIronFluidTank)
+                        this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_IRON_TANK));
 
                 } else if (isGlasses && isAdjGlasses) {
                     if (te instanceof UpgCtileentityWoodenFluidTank)
@@ -146,6 +150,8 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                             this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_HARDENED_CLAY_TANK));
                         else
                             this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_CLAY_TANK));
+                    else if (te instanceof UpgCtileentityIronFluidTank)
+                        this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_IRON_TANK));
 
 
                 } else if (isGlasses) {
@@ -159,6 +165,8 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                                 this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_HARDENED_CLAY_TANK));
                             else
                                 this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_CLAY_TANK));
+                        else if (te instanceof UpgCtileentityIronFluidTank)
+                            this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_IRON_TANK));
 
 
                     } else {
@@ -170,6 +178,8 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                                 this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_HARDENED_CLAY_TANK));
                             else
                                 this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_CLAY_TANK));
+                        else if (te instanceof UpgCtileentityIronFluidTank)
+                            this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_IRON_TANK));
 
                     }
                 } else {
@@ -183,6 +193,8 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                                 this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_HARDENED_CLAY_TANK));
                             else
                                 this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_CLAY_TANK));
+                        if (te instanceof UpgCtileentityIronFluidTank)
+                            this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_DOWN_IRON_TANK));
 
                     } else {
                         if (te instanceof UpgCtileentityWoodenFluidTank)
@@ -193,6 +205,8 @@ public class TileEntityRendererFluidTank extends TileEntitySpecialRenderer<UpgCt
                                 this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_HARDENED_CLAY_TANK));
                             else
                                 this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_CLAY_TANK));
+                        else if (te instanceof UpgCtileentityIronFluidTank)
+                            this.bindTexture(new ResourceLocation(Texture.MODEL_DOUBLE_HOLLOW_TOP_IRON_TANK));
                     }
 
                 }

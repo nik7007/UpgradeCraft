@@ -19,6 +19,7 @@ public class ItemStackRender extends TileEntityItemStackRenderer {
 
     private UpgCtileentityWoodenFluidTank woodenTank = new UpgCtileentityWoodenFluidTank();
     private UpgCtileentityClayFluidTank clayTank = new UpgCtileentityClayFluidTank();
+    private UpgCtileentityIronFluidTank ironTank = new UpgCtileentityIronFluidTank();
     private UpgCtileentityFluidFurnace fluidFurnace = new UpgCtileentityFluidFurnace();
     private UpgCtileentityFluidInfuser fluidInfuser = new UpgCtileentityFluidInfuser();
     private UpgCtileentityEnderFluidTank enderFluidTank = new UpgCtileentityEnderFluidTank();
@@ -41,6 +42,8 @@ public class ItemStackRender extends TileEntityItemStackRenderer {
                 tank = clayTank;
             else if (block == ModBlocks.blockUpgCEnderFluidTank)
                 tank = enderFluidTank;
+            else if (block == ModBlocks.blockUpgCIronFluidTank)
+                tank = ironTank;
             else {
                 this.instance.renderByItem(itemStack);
                 return;

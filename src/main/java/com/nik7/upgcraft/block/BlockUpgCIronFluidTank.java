@@ -27,6 +27,7 @@ public class BlockUpgCIronFluidTank extends BlockUpgCFluidTank {
     public BlockUpgCIronFluidTank() {
         super(Material.iron, Capacity.SMALL_TANK * 2, "IronFluidTank");
         this.hasSubBlocks = true;
+        this.setHardness(3.4f);
     }
 
     @Override

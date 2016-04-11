@@ -8,6 +8,7 @@ public class Texture {
     public final static String FLUID_TANK = "fluidtank/";
     public final static String WOODEN = "wooden/";
     public final static String CLAY = "clay/";
+    public final static String IRON = "iron/";
     public final static String ENDER = "ender/";
     public final static String FLUID_HOPPER = "fluidhopper/";
     public final static String FLUID_MACHINE = "fluidmachine/";
@@ -32,6 +33,13 @@ public class Texture {
     public final static String MODEL_DOUBLE_HOLLOW_HARDENED_CLAY_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_TANK + CLAY + "BlockDoubleHardenedClayHollowTank.png";
     public final static String MODEL_DOUBLE_HOLLOW_TOP_HARDENED_CLAY_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_TANK + CLAY + "BlockDoubleHardenedClayHollowTopTank.png";
     public final static String MODEL_DOUBLE_HOLLOW_DOWN_HARDENED_CLAY_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_TANK + CLAY + "BlockDoubleHardenedClayHollowDownTank.png";
+
+    public final static String MODEL_SMALL_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_TANK + IRON + "BlockIronTank.png";
+    public final static String MODEL_SMALL_HOLLOW_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_TANK + IRON + "BlockIronHollowTank.png";
+    public final static String MODEL_DOUBLE_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_TANK + IRON + "BlockDoubleIronTank.png";
+    public final static String MODEL_DOUBLE_HOLLOW_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_TANK + IRON + "BlockDoubleIronHollowTank.png";
+    public final static String MODEL_DOUBLE_HOLLOW_TOP_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_TANK + IRON + "BlockDoubleIronHollowTopTank.png";
+    public final static String MODEL_DOUBLE_HOLLOW_DOWN_IRON_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_TANK + IRON + "BlockDoubleIronHollowDownTank.png";
 
     public final static String MODEL_ENDER_FLUID_TANK = Reference.MOD_ID + ":" + TEXTURE_MODEL_LOCATION + FLUID_TANK + ENDER + "BlockEnderFluidTank.png";
 

@@ -46,15 +46,15 @@ public class ItemBlockIronFluidTank extends ItemBlock implements IFluidContainer
 
         FluidStack fluidStack = getFluid(itemStack);
         int amount = 0;
-        String fluidName = I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluiddfname");
+        String fluidName = I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.df.name");
 
         if (fluidStack != null) {
             amount = fluidStack.amount;
             fluidName = fluidStack.getLocalizedName();
 
         }
-        hiddenInformation.add(TextFormatting.AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidname") + ": " + TextFormatting.RESET + fluidName);
-        hiddenInformation.add(TextFormatting.AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluidamount") + ": " + TextFormatting.RESET + amount + "/" + getCapacity(itemStack) + " mB");
+        hiddenInformation.add(TextFormatting.AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.name") + ": " + TextFormatting.RESET + fluidName);
+        hiddenInformation.add(TextFormatting.AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.amount") + ": " + TextFormatting.RESET + amount + "/" + getCapacity(itemStack) + " mB");
 
         ItemUpgC.addHiddenInformation(list, hiddenInformation);
     }
