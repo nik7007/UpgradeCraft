@@ -27,6 +27,7 @@ public class BlockUpgCThermoFluidFurnace extends BlockUpgCContainerOrientable {
 
     public BlockUpgCThermoFluidFurnace() {
         super(Material.iron, "ThermoFluidFurnace");
+        this.setHardness(25.0F);
     }
 
     @Override
