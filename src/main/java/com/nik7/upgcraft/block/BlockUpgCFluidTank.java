@@ -37,7 +37,7 @@ import java.util.List;
 public abstract class BlockUpgCFluidTank extends BlockUpgC implements ITileEntityProvider, ConfigurableObject {
 
 
-    private int capacity;
+    protected int capacity;
     public static final PropertyEnum<TankType> TYPE = PropertyEnum.create("type", TankType.class);
     protected boolean hasSubBlocks = false;
     private static final AxisAlignedBB BB = new AxisAlignedBB(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
