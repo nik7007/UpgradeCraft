@@ -122,7 +122,7 @@ public class BlockUpgCClayFluidTank extends BlockUpgCFluidTank {
         player.addExhaustion(0.025F);
 
         if (state.getValue(IS_HARDENED) && this.canSilkHarvest(worldIn, pos, worldIn.getBlockState(pos), player) && EnchantmentHelper.getEnchantmentLevel(Enchantments.silkTouch, stack) > 0) {
-            ArrayList<ItemStack> items = new ArrayList<ItemStack>();
+            ArrayList<ItemStack> items = new ArrayList<>();
             ItemStack itemstack = this.createStackedBlock(state);
 
             if (itemstack != null) {
