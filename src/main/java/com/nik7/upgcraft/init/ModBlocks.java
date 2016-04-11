@@ -3,6 +3,7 @@ package com.nik7.upgcraft.init;
 
 import com.nik7.upgcraft.block.*;
 import com.nik7.upgcraft.item.ItemBlockClayFluidTank;
+import com.nik7.upgcraft.item.ItemBlockIronFluidTank;
 import com.nik7.upgcraft.item.ItemBlockUpgCBasicFluidHopper;
 import com.nik7.upgcraft.item.ItemBlockWoodenFluidTank;
 import net.minecraft.item.ItemBlock;
@@ -21,6 +22,7 @@ public class ModBlocks {
     public static BlockUpgC blockUpgCEnderFluidTank;
     public static BlockUpgC blockUpgCActiveLavaMaker;
     public static BlockUpgC blockUpgCThermoFluidFurnace;
+    public static BlockUpgC blockUpgCIronFluidTank;
 
     public static void init() {
         ModBlocks.blockUpgCSlimyLog = new BlockUpgCSlimyLog();
@@ -34,6 +36,7 @@ public class ModBlocks {
         ModBlocks.blockUpgCEnderFluidTank = new BlockUpgCEnderFluidTank();
         ModBlocks.blockUpgCActiveLavaMaker = new BlockUpgCActiveLavaMaker();
         ModBlocks.blockUpgCThermoFluidFurnace = new BlockUpgCThermoFluidFurnace();
+        ModBlocks.blockUpgCIronFluidTank = new BlockUpgCIronFluidTank();
 
         ModBlocks.registerBlock(ModBlocks.blockUpgCSlimyLog);
         ModBlocks.registerBlock(ModBlocks.blockUpgCWoodenFluidTank, ItemBlockWoodenFluidTank.class);
@@ -46,6 +49,7 @@ public class ModBlocks {
         ModBlocks.registerBlock(blockUpgCEnderFluidTank);
         ModBlocks.registerBlock(blockUpgCActiveLavaMaker);
         ModBlocks.registerBlock(blockUpgCThermoFluidFurnace);
+        ModBlocks.registerBlock(ModBlocks.blockUpgCIronFluidTank, ItemBlockIronFluidTank.class);
     }
 
 
