@@ -63,21 +63,21 @@ public class BlockUpgCClayFluidTank extends BlockUpgCFluidTank {
 
     public void hardenedClayTank(World world, BlockPos pos, IBlockState state) {
 
-        if (!state.getValue(IS_HARDENED) || world.isRemote) {
+        if (!world.isRemote) {
+            if (!state.getValue(IS_HARDENED)) {
 
-            TileEntity tileentity = world.getTileEntity(pos);
+                TileEntity tileentity = world.getTileEntity(pos);
 
-            world.setBlockState(pos, state.withProperty(IS_HARDENED, true));
+                world.setBlockState(pos, state.withProperty(IS_HARDENED, true));
+                if (tileentity != null) {
+                    tileentity.validate();
+                    world.setTileEntity(pos, tileentity);
+                }
 
-            if (world.isRemote)
-                spawnParticles(world, pos, random, EnumParticleTypes.SMOKE_LARGE);
-
-            world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), SoundEvents.block_fire_ambient, SoundCategory.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
-
-            if (tileentity != null) {
-                tileentity.validate();
-                world.setTileEntity(pos, tileentity);
             }
+        } else {
+            spawnParticles(world, pos, random, EnumParticleTypes.SMOKE_LARGE);
+            world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), SoundEvents.block_fire_ambient, SoundCategory.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
 
         }
 
