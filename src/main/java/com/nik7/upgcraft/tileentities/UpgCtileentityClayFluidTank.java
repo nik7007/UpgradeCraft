@@ -2,6 +2,8 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.block.BlockUpgCClayFluidTank;
+import com.nik7.upgcraft.network.NetworkHandler;
+import com.nik7.upgcraft.network.UpdateRequestMessage;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
 import com.nik7.upgcraft.util.WorldHelper;
@@ -72,8 +74,10 @@ public class UpgCtileentityClayFluidTank extends UpgCtileentityFluidTank {
                     progress = 0;
 
                     Block block = blockType;
-                    if (block instanceof BlockUpgCClayFluidTank)
+                    if (block instanceof BlockUpgCClayFluidTank) {
+                        NetworkHandler.getInstance().sendToAll(new UpdateRequestMessage(pos));
                         ((BlockUpgCClayFluidTank) block).hardenedClayTank(worldObj, pos, worldObj.getBlockState(pos));
+                    }
 
                     markDirty();
                     if (isDouble()) {

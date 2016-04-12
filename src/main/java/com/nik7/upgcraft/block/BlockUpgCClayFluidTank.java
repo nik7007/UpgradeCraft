@@ -63,7 +63,7 @@ public class BlockUpgCClayFluidTank extends BlockUpgCFluidTank {
 
     public void hardenedClayTank(World world, BlockPos pos, IBlockState state) {
 
-        if (!state.getValue(IS_HARDENED)) {
+        if (!state.getValue(IS_HARDENED) || world.isRemote) {
 
             TileEntity tileentity = world.getTileEntity(pos);
 
