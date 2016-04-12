@@ -32,8 +32,8 @@ public class Recipes {
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 0), "ii", "ii", 'i', new ItemStack(ModItems.itemUpgCClayIngot));
 
         //Smelting recipes
-        GameRegistry.addSmelting(new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 0), new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 1), 4f);
-        GameRegistry.addSmelting(new ItemStack(ModItems.itemUpgCClayIngot), new ItemStack(Items.brick, 1, 1), 1f);
+        GameRegistry.addSmelting(new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 0), new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 1), 0.6f);
+        GameRegistry.addSmelting(new ItemStack(ModItems.itemUpgCClayIngot), new ItemStack(Items.brick), 0.1f);
 
         //Fluid Infuser recipes
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 200), new ItemStack(ModBlocks.blockUpgCSlimyLog), new ItemStack(Items.slime_ball, 2), 10, new ItemStack(Blocks.planks), 200);
