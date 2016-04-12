@@ -19,6 +19,8 @@ public class BlockUpgCClayBrick extends BlockUpgC {
 
     public BlockUpgCClayBrick() {
         super(Material.clay, "ClayBrick");
+        setHardness(3.0F);
+        setResistance(12.0F);
         this.setDefaultState(this.blockState.getBaseState().withProperty(IS_COOKED, false));
     }
 
