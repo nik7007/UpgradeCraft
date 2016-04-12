@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.proxy;
 
 import com.nik7.upgcraft.block.BlockFluidUpgC;
-import com.nik7.upgcraft.block.BlockUpgC;
+import com.nik7.upgcraft.block.IBlockUpgC;
 import com.nik7.upgcraft.client.render.item.ItemStackRender;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidHopper;
 import com.nik7.upgcraft.client.render.tileentity.TileEntityRenderFluidMachine;
@@ -109,6 +109,9 @@ public class ClientProxy extends CommonProxy {
         modelMesher.register(clayBrick, 0, clayBrickRL);
         modelMesher.register(clayBrick, 1, clayBrickCookedRL);
 
+        modelMesher.register(Item.getItemFromBlock(blockUpgCStairsClayBrick), 0, createLocation(blockUpgCStairsClayBrick));
+        modelMesher.register(Item.getItemFromBlock(blockUpgCStairsCookedClayBrick), 0, createLocation(blockUpgCStairsCookedClayBrick));
+
         TileEntityItemStackRenderer.instance = new ItemStackRender(TileEntityItemStackRenderer.instance);
 
     }
@@ -133,12 +136,12 @@ public class ClientProxy extends CommonProxy {
         });
     }
 
-    private ModelResourceLocation createLocation(BlockUpgC block, String variant) {
+    private ModelResourceLocation createLocation(IBlockUpgC block, String variant) {
 
         return createLocation(Reference.MOD_ID + ":" + block.getName() + variant);
     }
 
-    private ModelResourceLocation createLocation(BlockUpgC block) {
+    private ModelResourceLocation createLocation(IBlockUpgC block) {
 
         return createLocation(block, "");
     }
