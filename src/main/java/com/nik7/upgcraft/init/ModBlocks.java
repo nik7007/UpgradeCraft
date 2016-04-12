@@ -21,6 +21,7 @@ public class ModBlocks {
     public static BlockUpgC blockUpgCThermoFluidFurnace;
     public static BlockUpgC blockUpgCIronFluidTank;
     public static BlockUpgC blockUpgCFluidTankMold;
+    public static BlockUpgC blockUpgCClayBrick;
 
     public static void init() {
         ModBlocks.blockUpgCSlimyLog = new BlockUpgCSlimyLog();
@@ -36,6 +37,7 @@ public class ModBlocks {
         ModBlocks.blockUpgCThermoFluidFurnace = new BlockUpgCThermoFluidFurnace();
         ModBlocks.blockUpgCIronFluidTank = new BlockUpgCIronFluidTank();
         ModBlocks.blockUpgCFluidTankMold = new BlockUpgCFluidTankMold();
+        ModBlocks.blockUpgCClayBrick = new BlockUpgCClayBrick();
 
         ModBlocks.registerBlock(ModBlocks.blockUpgCSlimyLog);
         ModBlocks.registerBlock(ModBlocks.blockUpgCWoodenFluidTank, ItemBlockWoodenFluidTank.class);
@@ -50,6 +52,7 @@ public class ModBlocks {
         ModBlocks.registerBlock(blockUpgCThermoFluidFurnace);
         ModBlocks.registerBlock(ModBlocks.blockUpgCIronFluidTank, ItemBlockIronFluidTank.class);
         ModBlocks.registerBlock(blockUpgCFluidTankMold, ItemBlockFluidTankMold.class);
+        ModBlocks.registerBlock(blockUpgCClayBrick, ItemBlockClayBrick.class);
     }
 
 

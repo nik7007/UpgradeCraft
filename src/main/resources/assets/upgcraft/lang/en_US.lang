@@ -29,6 +29,8 @@ tile.upgcraft:ActiveLavaMaker.name=Active Lava Maker
 tile.upgcraft:FluidTankMold.name=Fluid Tank Mold
 tile.upgcraft:FluidTankMold.Hardened.name=Hardened Fluid Tank Mold
 tile.upgcraft:FluidHopper.name=Fluid Hopper
+tile.upgcraft:ClayBrick.name=Clay Brick
+tile.upgcraft:ClayBrick.Cooked.name=Cooked Clay Brick
 
 #Tooltip
 tooltip.upgcraft:tank.hollow=Transparent

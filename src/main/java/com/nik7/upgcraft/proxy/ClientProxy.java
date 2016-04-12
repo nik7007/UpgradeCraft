@@ -102,6 +102,12 @@ public class ClientProxy extends CommonProxy {
         modelMesher.register(mold, 6, moldCookedRL);
         modelMesher.register(mold, 7, moldCookedRL);
 
+        Item clayBrick = Item.getItemFromBlock(blockUpgCClayBrick);
+        ModelResourceLocation clayBrickRL = createLocation(blockUpgCClayBrick);
+        ModelResourceLocation clayBrickCookedRL = createLocation(blockUpgCClayBrick, "Cooked");
+        ModelBakery.registerItemVariants(clayBrick, clayBrickRL, clayBrickCookedRL);
+        modelMesher.register(clayBrick, 0, clayBrickRL);
+        modelMesher.register(clayBrick, 1, clayBrickCookedRL);
 
         TileEntityItemStackRenderer.instance = new ItemStackRender(TileEntityItemStackRenderer.instance);
 

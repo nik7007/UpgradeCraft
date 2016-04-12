@@ -17,7 +17,6 @@ public class Recipes {
 
         //Crafting recipes
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCSlimyLog), "sss", "sps", "sss", 's', "slimeball", 'p', "plankWood"));
-
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockUpgCWoodenFluidTank, 1, 0), "sss", "s s", "sss", 's', new ItemStack(ModBlocks.blockUpgCSlimyLog));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCWoodenFluidTank, 1, 1), "sss", "sgs", "sss", 'g', "blockGlass", 's', new ItemStack(ModBlocks.blockUpgCSlimyLog)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCBasicFluidHopper), "i i", "iti", " i ", 'i', "ingotIron", 't', new ItemStack(ModBlocks.blockUpgCWoodenFluidTank)));
@@ -30,6 +29,11 @@ public class Recipes {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCActiveLavaMaker), "sts", "odo", "bgb", 's', new ItemStack(ModBlocks.blockUpgCSlimyObsidian), 't', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 2), 'g', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 3), 'o', new ItemStack(Blocks.obsidian), 'd', "gemDiamond", 'b', new ItemStack(Items.blaze_rod)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCActiveLavaMaker), "sts", "odo", "btb", 's', new ItemStack(ModBlocks.blockUpgCSlimyObsidian), 't', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 3), 'o', new ItemStack(Blocks.obsidian), 'd', "gemDiamond", 'b', new ItemStack(Items.blaze_rod)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCThermoFluidFurnace), "ooo", "tdf", "ooo", 'o', new ItemStack(ModBlocks.blockUpgCSlimyObsidian), 't', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 2), 'f', new ItemStack(ModBlocks.blockUpgCFluidFurnace), 'd', "gemDiamond"));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 0), "ii", "ii", 'i', new ItemStack(ModItems.itemUpgCClayIngot));
+
+        //Smelting recipes
+        GameRegistry.addSmelting(new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 0), new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 1), 4f);
+        GameRegistry.addSmelting(new ItemStack(ModItems.itemUpgCClayIngot), new ItemStack(Items.brick, 1, 1), 1f);
 
         //Fluid Infuser recipes
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 200), new ItemStack(ModBlocks.blockUpgCSlimyLog), new ItemStack(Items.slime_ball, 2), 10, new ItemStack(Blocks.planks), 200);

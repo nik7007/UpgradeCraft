@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "iscooked=true":		{ "model": "upgcraft:ClayBrickCooked" },
+    "iscooked=false": 	    { "model": "upgcraft:ClayBrick" }
+  }
+}
