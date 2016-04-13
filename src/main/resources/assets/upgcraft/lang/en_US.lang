@@ -31,8 +31,11 @@ tile.upgcraft:FluidTankMold.Hardened.name=Hardened Fluid Tank Mold
 tile.upgcraft:FluidHopper.name=Fluid Hopper
 tile.upgcraft:ClayBrick.name=Clay Brick
 tile.upgcraft:ClayBrick.Cooked.name=Cooked Clay Brick
+tile.upgcraft:ClayBrick.Squared.name=Clay Squared Brick
+tile.upgcraft:ClayBrick.Cooked.Squared.name=Cooked Clay Squared Brick
 tile.upgcraft:StairsClayBrick.name=Clay Brick Stairs
 tile.upgcraft:StairsCookedClayBrick.name=Cooked Clay Brick Stairs
+
 
 #Tooltip
 tooltip.upgcraft:tank.hollow=Transparent

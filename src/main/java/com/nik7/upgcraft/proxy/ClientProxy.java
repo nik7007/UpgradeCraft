@@ -105,9 +105,13 @@ public class ClientProxy extends CommonProxy {
         Item clayBrick = Item.getItemFromBlock(blockUpgCClayBrick);
         ModelResourceLocation clayBrickRL = createLocation(blockUpgCClayBrick);
         ModelResourceLocation clayBrickCookedRL = createLocation(blockUpgCClayBrick, "Cooked");
-        ModelBakery.registerItemVariants(clayBrick, clayBrickRL, clayBrickCookedRL);
+        ModelResourceLocation claySquaredBrickRL = createLocation(blockUpgCClayBrick, "Squared");
+        ModelResourceLocation claySquaredBrickCookedRL = createLocation(blockUpgCClayBrick, "CookedSquared");
+        ModelBakery.registerItemVariants(clayBrick, clayBrickRL, clayBrickCookedRL,claySquaredBrickRL,claySquaredBrickCookedRL);
         modelMesher.register(clayBrick, 0, clayBrickRL);
         modelMesher.register(clayBrick, 1, clayBrickCookedRL);
+        modelMesher.register(clayBrick, 2, claySquaredBrickRL);
+        modelMesher.register(clayBrick, 3, claySquaredBrickCookedRL);
 
         modelMesher.register(Item.getItemFromBlock(blockUpgCStairsClayBrick), 0, createLocation(blockUpgCStairsClayBrick));
         modelMesher.register(Item.getItemFromBlock(blockUpgCStairsCookedClayBrick), 0, createLocation(blockUpgCStairsCookedClayBrick));

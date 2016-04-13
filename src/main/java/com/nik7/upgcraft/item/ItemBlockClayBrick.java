@@ -19,9 +19,11 @@ public class ItemBlockClayBrick extends ItemBlock {
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        String c = "Cooked";
-        if (stack.getItemDamage() == 1)
-            return this.getUnlocalizedName() + "." + c;
-        else return this.getUnlocalizedName();
+        String c = "";
+        if ((stack.getItemDamage() % 2) == 1)
+            c = ".Cooked";
+        if (stack.getItemDamage() >= 2)
+            c = c + ".Squared";
+        return this.getUnlocalizedName() + c;
     }
 }

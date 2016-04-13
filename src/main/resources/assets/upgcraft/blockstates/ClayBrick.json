@@ -1,6 +1,8 @@
 {
   "variants": {
-    "iscooked=true":		{ "model": "upgcraft:ClayBrickCooked" },
-    "iscooked=false": 	    { "model": "upgcraft:ClayBrick" }
+    "iscooked=true,issquared=false":		{ "model": "upgcraft:ClayBrickCooked" },
+    "iscooked=false,issquared=false": 	    { "model": "upgcraft:ClayBrick" },
+    "iscooked=true,issquared=true":		    { "model": "upgcraft:ClaySquaredBrickCooked" },
+    "iscooked=false,issquared=true": 	    { "model": "upgcraft:ClaySquaredBrick" }
   }
 }

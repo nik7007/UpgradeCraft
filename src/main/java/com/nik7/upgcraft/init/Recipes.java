@@ -30,11 +30,13 @@ public class Recipes {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCActiveLavaMaker), "sts", "odo", "btb", 's', new ItemStack(ModBlocks.blockUpgCSlimyObsidian), 't', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 3), 'o', new ItemStack(Blocks.obsidian), 'd', "gemDiamond", 'b', new ItemStack(Items.blaze_rod)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockUpgCThermoFluidFurnace), "ooo", "tdf", "ooo", 'o', new ItemStack(ModBlocks.blockUpgCSlimyObsidian), 't', new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 2), 'f', new ItemStack(ModBlocks.blockUpgCFluidFurnace), 'd', "gemDiamond"));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 0), "ii", "ii", 'i', new ItemStack(ModItems.itemUpgCClayIngot));
-        GameRegistry.addRecipe(new ItemStack(ModBlocks.blockUpgCStairsClayBrick, 4, 0), "b  ", "bb ", "bbb", 'b', new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.blockUpgCClayBrick, 4, 2), "bb", "bb", 'b', new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.blockUpgCStairsClayBrick, 4, 0), "b  ", "bb ", "bbb", 'b', new ItemStack(ModItems.itemUpgCClayIngot, 1, 0));
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockUpgCStairsCookedClayBrick, 4, 0), "b  ", "bb ", "bbb", 'b', new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 1));
 
         //Smelting recipes
         GameRegistry.addSmelting(new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 0), new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 1), 0.6f);
+        GameRegistry.addSmelting(new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 2), new ItemStack(ModBlocks.blockUpgCClayBrick, 1, 3), 0.6f);
         GameRegistry.addSmelting(new ItemStack(ModItems.itemUpgCClayIngot), new ItemStack(Items.brick), 0.1f);
         GameRegistry.addSmelting(new ItemStack(ModBlocks.blockUpgCStairsClayBrick), new ItemStack(ModBlocks.blockUpgCStairsCookedClayBrick), 08f);
 
