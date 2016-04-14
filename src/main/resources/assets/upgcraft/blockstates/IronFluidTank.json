@@ -1,6 +1,5 @@
 {
-	"variants": {
-		"type=solid":		{ "model": "iron_block" },
-		"type=glasses": 	{ "model": "iron_block" }
-	}
+	"multipart": [
+		{   "apply": { "model": "iron_block" }}
+	]
 }

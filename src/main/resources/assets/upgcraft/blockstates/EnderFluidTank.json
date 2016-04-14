@@ -1,6 +1,5 @@
 {
-  "variants": {
-    "type=solid":   { "model": "upgcraft:SlimyObsidian" },
-    "type=glasses": { "model": "upgcraft:SlimyObsidian" }
-  }
+  "multipart": [
+    {   "apply": { "model": "upgcraft:SlimyObsidian" }}
+  ]
 }
