@@ -14,6 +14,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class UpgCtileentityClayFluidTank extends UpgCtileentityFluidTank {
 
@@ -75,7 +76,7 @@ public class UpgCtileentityClayFluidTank extends UpgCtileentityFluidTank {
 
                     Block block = blockType;
                     if (block instanceof BlockUpgCClayFluidTank) {
-                        NetworkHandler.getInstance().sendToAll(new UpdateRequestMessage(pos));
+                        NetworkHandler.getInstance().sendToAllAround(new UpdateRequestMessage(pos), new NetworkRegistry.TargetPoint(worldObj.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 16));
                         ((BlockUpgCClayFluidTank) block).hardenedClayTank(worldObj, pos, worldObj.getBlockState(pos));
                     }
 
