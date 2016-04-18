@@ -7,6 +7,7 @@ import com.nik7.upgcraft.util.WorldHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.IThreadListener;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
@@ -17,16 +18,25 @@ public class MessageHardenedFluidTankHandler implements IMessageHandler<UpdateRe
 
 
     @Override
-    public UpdateRequestMessage onMessage(UpdateRequestMessage message, MessageContext ctx) {
+    public UpdateRequestMessage onMessage(final UpdateRequestMessage message, MessageContext ctx) {
 
         if (ctx.side == Side.CLIENT) {
-            World clientWorld = Minecraft.getMinecraft().theWorld;
-            BlockPos pos = message.getBlockPos();
-            Block block = WorldHelper.getBlock(clientWorld, pos);
-            if (block == ModBlocks.blockUpgCClayFluidTank) {
-                IBlockState state = clientWorld.getBlockState(pos);
-                ((BlockUpgCClayFluidTank) block).hardenedClayTank(clientWorld, pos, state);
-            }
+            IThreadListener mainThread = Minecraft.getMinecraft();
+
+            mainThread.addScheduledTask(new Runnable() {
+                @Override
+                public void run() {
+                    World clientWorld = Minecraft.getMinecraft().theWorld;
+                    BlockPos pos = message.getBlockPos();
+                    Block block = WorldHelper.getBlock(clientWorld, pos);
+                    if (block == ModBlocks.blockUpgCClayFluidTank) {
+                        IBlockState state = clientWorld.getBlockState(pos);
+                        ((BlockUpgCClayFluidTank) block).hardenedClayTank(clientWorld, pos, state);
+                    }
+
+                }
+            });
+
 
         }
 

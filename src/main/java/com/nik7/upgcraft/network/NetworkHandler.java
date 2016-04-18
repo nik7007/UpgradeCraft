@@ -13,7 +13,7 @@ public class NetworkHandler {
     public static void init() {
         INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
         INSTANCE.registerMessage(new MessageUpdateRequestHandler(), UpdateRequestMessage.class, 0, Side.SERVER);
-        INSTANCE.registerMessage(new MessageHardenedFluidTankHandler(), UpdateRequestMessage.class, 0, Side.CLIENT);
+        INSTANCE.registerMessage(new MessageHardenedFluidTankHandler(), UpdateRequestMessage.class, 1, Side.CLIENT);
     }
 
     public static SimpleNetworkWrapper getInstance() {
