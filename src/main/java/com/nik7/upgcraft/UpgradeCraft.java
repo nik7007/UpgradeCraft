@@ -1,9 +1,7 @@
 package com.nik7.upgcraft;
 
 import com.nik7.upgcraft.config.SystemConfig;
-import com.nik7.upgcraft.handler.CapabilityPlayerUpgCHandler;
-import com.nik7.upgcraft.handler.ConfigurationHandler;
-import com.nik7.upgcraft.handler.GuiHandler;
+import com.nik7.upgcraft.handler.*;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.init.ModFluids;
 import com.nik7.upgcraft.init.ModItems;
@@ -39,6 +37,8 @@ public class UpgradeCraft {
         ConfigurationHandler.init(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ConfigurationHandler());
 
+        EventHandler.init();
+
         //Capabilities
         CapabilityPlayerUpgCHandler.register();
 
@@ -67,6 +67,8 @@ public class UpgradeCraft {
         proxy.initRenderingAndTextures();
         proxy.registerEventHandlers();
         Recipes.init();
+
+        AchievementHandler.init();
 
 
         if (!FMLInterModComms.sendMessage("Waila", "register", "com.nik7.upgcraft.waila.Waila.callbackRegister"))

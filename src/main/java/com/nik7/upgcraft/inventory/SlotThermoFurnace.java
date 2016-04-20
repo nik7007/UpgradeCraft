@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.inventory;
 
 
+import com.nik7.upgcraft.handler.AchievementHandler;
 import com.nik7.upgcraft.registry.CustomCraftingExperience;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -21,6 +22,13 @@ public class SlotThermoFurnace extends SlotFurnaceOutput {
         super(player, inventory, slotIndex, x, y);
         this.slotIndex = slotIndex;
         this.thePlayer = player;
+    }
+
+    @Override
+    public void onPickupFromSlot(EntityPlayer playerIn, ItemStack stack) {
+        this.onCrafting(stack);
+        super.onPickupFromSlot(playerIn, stack);
+        AchievementHandler.craftAchievement(playerIn, stack);
     }
 
     @Override

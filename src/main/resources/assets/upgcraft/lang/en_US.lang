@@ -61,3 +61,11 @@ upgcraft:container.activelavamaker=Active Lava Maker
 gui.nei.upgcraft:FluidInfuser=Fluid Infuser
 gui.nei.upgcraft:FluidFurnace=Fluid Furnace
 gui.nei.upgcraft:ThermoFluidFurnace=Thermo Fluid Furnace
+
+#Achievements
+achievement.upgcraft:get.slime=It's waterproof!
+achievement.upgcraft:get.slime.desc=Try to combine some Slime Balls with Wood Planks...
+achievement.upgcraft:wooden.tank=A Basic Fluid Container
+achievement.upgcraft:wooden.tank.desc=It's better not to store hot fluids...
+achievement.upgcraft:fluid.infusion=Infusion Time!
+achievement.upgcraft:fluid.infusion.desc=Fluids are useful to craft new items and blocks

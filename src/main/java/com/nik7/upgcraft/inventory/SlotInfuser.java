@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.inventory;
 
 
+import com.nik7.upgcraft.handler.AchievementHandler;
 import com.nik7.upgcraft.registry.CustomCraftingExperience;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -39,6 +40,7 @@ public class SlotInfuser extends Slot {
     public void onPickupFromSlot(EntityPlayer player, ItemStack item) {
         this.onCrafting(item);
         super.onPickupFromSlot(player, item);
+        AchievementHandler.craftAchievement(player, item);
     }
 
     protected void onCrafting(ItemStack item, int size) {
