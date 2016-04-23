@@ -18,7 +18,6 @@ import java.util.List;
 import static com.nik7.upgcraft.handler.AchievementHandler.AchievementList.*;
 import static com.nik7.upgcraft.reference.Reference.MOD_ID;
 import static com.nik7.upgcraft.reference.Reference.MOD_NAME;
-import static net.minecraft.stats.AchievementList.bookcase;
 import static net.minecraft.stats.AchievementList.mineWood;
 
 
