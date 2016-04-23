@@ -18,6 +18,7 @@ import java.util.List;
 import static com.nik7.upgcraft.handler.AchievementHandler.AchievementList.*;
 import static com.nik7.upgcraft.reference.Reference.MOD_ID;
 import static com.nik7.upgcraft.reference.Reference.MOD_NAME;
+import static net.minecraft.stats.AchievementList.bookcase;
 import static net.minecraft.stats.AchievementList.mineWood;
 
 
@@ -33,19 +34,20 @@ public class AchievementHandler {
     }*/
 
     public static void init() {
-
+        ACHIEVEMENT_HANDLER.achievementList = new LinkedList<>();
+        ACHIEVEMENT_HANDLER.addAchievement(GET_SLIME);
+        ACHIEVEMENT_HANDLER.addAchievement(WOODEN_TANK);
+        ACHIEVEMENT_HANDLER.addAchievement(FLUID_INFUSION);
+        ACHIEVEMENT_HANDLER.addAchievement(CLAY_INGOT);
+        ACHIEVEMENT_HANDLER.addAchievement(CLAY_TANK);
+        ACHIEVEMENT_HANDLER.addAchievement(SLIME_OBSIDIAN);
+        ACHIEVEMENT_HANDLER.addAchievement(ENDER_TANK);
+        ACHIEVEMENT_HANDLER.achievementPage = new AchievementPage(MOD_NAME, ACHIEVEMENT_HANDLER.achievementList.toArray(new Achievement[ACHIEVEMENT_HANDLER.achievementList.size()]));
+        AchievementPage.registerAchievementPage(ACHIEVEMENT_HANDLER.achievementPage);
     }
 
     private AchievementHandler() {
-        this.achievementList = new LinkedList<>();
-        this.addAchievement(GET_SLIME);
-        this.addAchievement(WOODEN_TANK);
-        this.addAchievement(FLUID_INFUSION);
-        this.addAchievement(CLAY_TANK);
-        this.addAchievement(SLIME_OBSIDIAN);
-        this.addAchievement(ENDER_TANK);
-        this.achievementPage = new AchievementPage(MOD_NAME, achievementList.toArray(new Achievement[achievementList.size()]));
-        AchievementPage.registerAchievementPage(achievementPage);
+
     }
 
     private void addAchievement(Achievement achievement) {
@@ -57,7 +59,14 @@ public class AchievementHandler {
 
         if (player != null && itemStack != null) {
             Item item = itemStack.getItem();
-            if (item == Items.slime_ball)
+            if (item instanceof ItemBlock) {
+                Block block = ((ItemBlock) item).getBlock();
+                if (block == ModBlocks.blockUpgCClayFluidTank) {
+                    if (item.getDamage(itemStack) > 1)
+                        player.addStat(CLAY_TANK);
+                }
+
+            } else if (item == Items.slime_ball)
                 player.addStat(GET_SLIME);
 
         }
@@ -80,7 +89,7 @@ public class AchievementHandler {
                     player.addStat(ENDER_TANK);
             } else {
                 if (item == ModItems.itemUpgCClayIngot)
-                    player.addStat(CLAY_TANK);
+                    player.addStat(CLAY_INGOT);
             }
         }
 
@@ -91,7 +100,8 @@ public class AchievementHandler {
         public static final Achievement GET_SLIME = createAchievement("get.slime", 0, 0, new ItemStack(ModBlocks.blockUpgCSlimyLog), mineWood, false, false);
         public static final Achievement WOODEN_TANK = createAchievement("wooden.tank", -2, 0, new ItemStack(ModBlocks.blockUpgCWoodenFluidTank, 1, 0), GET_SLIME, false, false);
         public static final Achievement FLUID_INFUSION = createAchievement("fluid.infusion", 0, -2, new ItemStack(ModBlocks.blockUpgCFluidInfuser), WOODEN_TANK, false, true);
-        public static final Achievement CLAY_TANK = createAchievement("clay.tank", 0, -4, new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 1), FLUID_INFUSION, false, false);
+        public static final Achievement CLAY_INGOT = createAchievement("clay.ingot", 0, -4, new ItemStack(ModItems.itemUpgCClayIngot), FLUID_INFUSION, false, false);
+        public static final Achievement CLAY_TANK = createAchievement("clay.tank", 0, -7, new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 3), CLAY_INGOT, false, true);
         public static final Achievement SLIME_OBSIDIAN = createAchievement("slime.obsidian", 2, -2, new ItemStack(ModBlocks.blockUpgCSlimyObsidian), FLUID_INFUSION, false, false);
         public static final Achievement ENDER_TANK = createAchievement("ender.tank", 3, -3, new ItemStack(ModBlocks.blockUpgCEnderFluidTank), SLIME_OBSIDIAN, false, true);
 
