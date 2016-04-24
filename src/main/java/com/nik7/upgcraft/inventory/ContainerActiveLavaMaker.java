@@ -1,6 +1,9 @@
 package com.nik7.upgcraft.inventory;
 
 
+import com.nik7.upgcraft.handler.AchievementHandler;
+import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.init.ModFluids;
 import com.nik7.upgcraft.tileentities.UpgCtileentityActiveLavaMaker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,6 +13,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
+import static com.nik7.upgcraft.handler.AchievementHandler.AchievementList.ACTIVE_LAVA;
 import static com.nik7.upgcraft.tileentities.UpgCtileentityActiveLavaMaker.*;
 
 public class ContainerActiveLavaMaker extends ContainerUpgC {
@@ -23,6 +27,11 @@ public class ContainerActiveLavaMaker extends ContainerUpgC {
         this.addSlotToContainer(new Slot(activeLavaMaker, OUTPUT_TANK_SLOT, 114, 40));
         addPlayerSlots(playerInventory, 8, 84);
         this.activeLavaMaker = activeLavaMaker;
+
+        if (activeLavaMaker != null && !playerInventory.player.hasAchievement(ACTIVE_LAVA)) {
+            if (activeLavaMaker.getFluid(WORKING_TANK).getFluid() == ModFluids.fluidUpgCActiveLava)
+                AchievementHandler.craftAchievement(playerInventory.player, new ItemStack(ModBlocks.blockUpgCActiveLavaMaker));
+        }
 
     }
 
