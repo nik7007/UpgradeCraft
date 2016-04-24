@@ -29,7 +29,7 @@ public class ContainerActiveLavaMaker extends ContainerUpgC {
         this.activeLavaMaker = activeLavaMaker;
 
         if (activeLavaMaker != null && !playerInventory.player.hasAchievement(ACTIVE_LAVA)) {
-            if (activeLavaMaker.getFluid(WORKING_TANK).getFluid() == ModFluids.fluidUpgCActiveLava)
+            if (activeLavaMaker.getFluid(WORKING_TANK) != null && activeLavaMaker.getFluid(WORKING_TANK).getFluid() == ModFluids.fluidUpgCActiveLava)
                 AchievementHandler.craftAchievement(playerInventory.player, new ItemStack(ModBlocks.blockUpgCActiveLavaMaker));
         }
 
