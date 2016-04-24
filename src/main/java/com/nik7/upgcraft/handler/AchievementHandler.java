@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import static com.nik7.upgcraft.handler.AchievementHandler.AchievementList.*;
@@ -26,32 +25,31 @@ public class AchievementHandler {
     private final static AchievementHandler ACHIEVEMENT_HANDLER = new AchievementHandler();
 
     private List<Achievement> achievementList;
-    private AchievementPage achievementPage;
 
     /*public static AchievementHandler getInstance() {
         return ACHIEVEMENT_HANDLER;
     }*/
 
     public static void init() {
-        ACHIEVEMENT_HANDLER.achievementList = new LinkedList<>();
-        ACHIEVEMENT_HANDLER.addAchievement(GET_SLIME);
-        ACHIEVEMENT_HANDLER.addAchievement(WOODEN_TANK);
-        ACHIEVEMENT_HANDLER.addAchievement(FLUID_INFUSION);
-        ACHIEVEMENT_HANDLER.addAchievement(CLAY_INGOT);
-        ACHIEVEMENT_HANDLER.addAchievement(CLAY_TANK);
-        ACHIEVEMENT_HANDLER.addAchievement(SLIME_OBSIDIAN);
-        ACHIEVEMENT_HANDLER.addAchievement(ENDER_TANK);
-        ACHIEVEMENT_HANDLER.achievementPage = new AchievementPage(MOD_NAME, ACHIEVEMENT_HANDLER.achievementList.toArray(new Achievement[ACHIEVEMENT_HANDLER.achievementList.size()]));
-        AchievementPage.registerAchievementPage(ACHIEVEMENT_HANDLER.achievementPage);
+        addAchievement(GET_SLIME);
+        addAchievement(WOODEN_TANK);
+        addAchievement(FLUID_INFUSION);
+        addAchievement(CLAY_INGOT);
+        addAchievement(CLAY_TANK);
+        addAchievement(SLIME_OBSIDIAN);
+        addAchievement(ENDER_TANK);
+
     }
 
     private AchievementHandler() {
-
+        AchievementPage achievementPage = new AchievementPage(MOD_NAME);
+        AchievementPage.registerAchievementPage(achievementPage);
+        achievementList = achievementPage.getAchievements();
     }
 
-    private void addAchievement(Achievement achievement) {
-        if (!achievementList.contains(achievement))
-            this.achievementList.add(achievement);
+    private static void addAchievement(Achievement achievement) {
+        if (!ACHIEVEMENT_HANDLER.achievementList.contains(achievement))
+            ACHIEVEMENT_HANDLER.achievementList.add(achievement);
     }
 
     public static void pickupAchievement(EntityPlayer player, ItemStack itemStack) {
@@ -100,7 +98,7 @@ public class AchievementHandler {
         public static final Achievement WOODEN_TANK = createAchievement("wooden.tank", -2, 0, new ItemStack(ModBlocks.blockUpgCWoodenFluidTank, 1, 0), GET_SLIME, false, false);
         public static final Achievement FLUID_INFUSION = createAchievement("fluid.infusion", 0, -2, new ItemStack(ModBlocks.blockUpgCFluidInfuser), WOODEN_TANK, false, true);
         public static final Achievement CLAY_INGOT = createAchievement("clay.ingot", 0, -4, new ItemStack(ModItems.itemUpgCClayIngot), FLUID_INFUSION, false, false);
-        public static final Achievement CLAY_TANK = createAchievement("clay.tank", 0, -7, new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 3), CLAY_INGOT, false, true);
+        public static final Achievement CLAY_TANK = createAchievement("clay.tank", 0, -6, new ItemStack(ModBlocks.blockUpgCClayFluidTank, 1, 3), CLAY_INGOT, false, true);
         public static final Achievement SLIME_OBSIDIAN = createAchievement("slime.obsidian", 2, -2, new ItemStack(ModBlocks.blockUpgCSlimyObsidian), FLUID_INFUSION, false, false);
         public static final Achievement ENDER_TANK = createAchievement("ender.tank", 3, -3, new ItemStack(ModBlocks.blockUpgCEnderFluidTank), SLIME_OBSIDIAN, false, true);
 
