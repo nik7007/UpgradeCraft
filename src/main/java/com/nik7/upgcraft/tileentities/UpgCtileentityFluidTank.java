@@ -104,16 +104,31 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
             isFirst = false;
             if (isDouble && canBeDouble) {
 
-                UpgCtileentityFluidTank tank;
+                UpgCtileentityFluidTank tank = null;
+                TileEntity te;
                 if (isTop) {
-                    tank = (UpgCtileentityFluidTank) worldObj.getTileEntity(pos.down());
-                } else tank = (UpgCtileentityFluidTank) worldObj.getTileEntity(pos.up());
+                    te = worldObj.getTileEntity(pos.down());
+                } else te = worldObj.getTileEntity(pos.up());
 
-                merge(tank);
+                if (te != null && te instanceof UpgCtileentityFluidTank)
+                    tank = (UpgCtileentityFluidTank) te;
+
+                if (tank != null)
+                    merge(tank);
             }
         }
         reloadOriginalCapacity();
 
+    }
+
+    /*@Override
+    public void onLoad() {
+
+    }*/
+
+    @Override
+    public boolean canRenderBreaking() {
+        return true;
     }
 
     @Override
@@ -358,8 +373,9 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
             //worldObj.markBlockForUpdate(pos);
             //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
             IBlockState blockState = worldObj.getBlockState(pos);
-            worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
-            this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
+            if (blockState != null)
+                worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
+            markDirty();
 
             if (otherTank != null) {
                 otherTank.updateModBlock();

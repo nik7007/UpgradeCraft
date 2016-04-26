@@ -19,6 +19,7 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -262,6 +263,15 @@ public abstract class BlockUpgCFluidTank extends BlockUpgC implements ITileEntit
         return comparator;
 
     }
+
+    /*@Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity te = world.getTileEntity(pos);
+
+        if (te instanceof UpgCtileentityFluidTank)
+            return ((UpgCtileentityFluidTank) te).getFluidLight();
+        else return super.getLightValue(state, world, pos);
+    }*/
 
     @Override
     public void appliedConfig(SystemConfig.ConfigValue... values) {
