@@ -216,6 +216,11 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
             updateModBlock();
     }
 
+    @Override
+    public boolean canRenderBreaking() {
+        return true;
+    }
+
 
     @Override
     public int getSizeInventory() {
