@@ -95,6 +95,10 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         readFromNBT(packet.getNbtCompound());
+
+        IBlockState blockState = worldObj.getBlockState(pos);
+        if (blockState != null)
+            worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
     }
 
     @Override
