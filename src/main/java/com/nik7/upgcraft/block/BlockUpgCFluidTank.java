@@ -264,14 +264,16 @@ public abstract class BlockUpgCFluidTank extends BlockUpgC implements ITileEntit
 
     }
 
-    /*@Override
+    @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity te = world.getTileEntity(pos);
+        if (state.getValue(TYPE) == TankType.GLASSES) {
+            TileEntity te = world.getTileEntity(pos);
 
-        if (te instanceof UpgCtileentityFluidTank)
-            return ((UpgCtileentityFluidTank) te).getFluidLight();
-        else return super.getLightValue(state, world, pos);
-    }*/
+            if (te instanceof UpgCtileentityFluidTank)
+                return ((UpgCtileentityFluidTank) te).getFluidLight();
+        }
+        return super.getLightValue(state, world, pos);
+    }
 
     @Override
     public void appliedConfig(SystemConfig.ConfigValue... values) {
