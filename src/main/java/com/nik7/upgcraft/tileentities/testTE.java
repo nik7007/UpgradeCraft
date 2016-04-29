@@ -8,6 +8,9 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.chunk.Chunk;
 
 public class TestTE extends TileEntity implements ITickable {
 
@@ -46,11 +49,29 @@ public class TestTE extends TileEntity implements ITickable {
         IBlockState blockState = worldObj.getBlockState(pos);
         if (blockState != null) {
             worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
+            worldObj.setBlockState(pos, blockState, 3);
+           /* Chunk chunk = worldObj.getChunkFromChunkCoords(pos.getX(), pos.getY());
+            //chunk.setBlockState(pos,blockState);
+            chunk.setLightFor(EnumSkyBlock.BLOCK, pos, l);
+            chunk.checkLight();*/
         }
-        worldObj.notifyNeighborsOfStateChange(pos, blockType);
-        worldObj.notifyBlockOfStateChange(pos, blockType);
+       /* worldObj.notifyNeighborsOfStateChange(pos, blockType);
+        worldObj.notifyBlockOfStateChange(pos, blockType);*/
+        /*BlockPos minPos = pos.add(-20, -20, -20);
+        BlockPos maxPos = pos.add(20, 20, 20);
+        worldObj.markBlockRangeForRenderUpdate(minPos, maxPos);*/
 
     }
+
+    @Override
+    public void onLoad() {
+        //if (worldObj.isRemote) {
+        BlockPos minPos = pos.add(-20, -20, -20);
+        BlockPos maxPos = pos.add(20, 20, 20);
+        worldObj.markBlockRangeForRenderUpdate(minPos, maxPos);
+        //}
+    }
+
 
     @Override
     public void update() {
@@ -67,6 +88,11 @@ public class TestTE extends TileEntity implements ITickable {
             IBlockState blockState = worldObj.getBlockState(pos);
             if (blockState != null)
                 worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
+
+            BlockPos minPos = pos.add(-20, -20, -20);
+            BlockPos maxPos = pos.add(20, 20, 20);
+            worldObj.markBlockRangeForRenderUpdate(minPos, maxPos);
+
             markDirty();
 
         }
