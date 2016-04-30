@@ -10,7 +10,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.EnumSkyBlock;
-import net.minecraft.world.chunk.Chunk;
 
 public class TestTE extends TileEntity implements ITickable {
 
@@ -49,7 +48,7 @@ public class TestTE extends TileEntity implements ITickable {
         IBlockState blockState = worldObj.getBlockState(pos);
         if (blockState != null) {
             worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
-            worldObj.setBlockState(pos, blockState, 3);
+            //worldObj.setBlockState(pos, blockState, 3);
            /* Chunk chunk = worldObj.getChunkFromChunkCoords(pos.getX(), pos.getY());
             //chunk.setBlockState(pos,blockState);
             chunk.setLightFor(EnumSkyBlock.BLOCK, pos, l);
@@ -66,10 +65,20 @@ public class TestTE extends TileEntity implements ITickable {
     @Override
     public void onLoad() {
         //if (worldObj.isRemote) {
-        BlockPos minPos = pos.add(-20, -20, -20);
+        /*BlockPos minPos = pos.add(-20, -20, -20);
         BlockPos maxPos = pos.add(20, 20, 20);
-        worldObj.markBlockRangeForRenderUpdate(minPos, maxPos);
+        worldObj.markBlockRangeForRenderUpdate(minPos, maxPos);*/
         //}
+    }
+
+    private void updateLight() {
+
+        if (worldObj.isRemote) {
+            IBlockState blockState = worldObj.getBlockState(pos);
+            if (blockState != null)
+                worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
+        }
+        worldObj.checkLightFor(EnumSkyBlock.BLOCK,pos);
     }
 
 
@@ -85,15 +94,16 @@ public class TestTE extends TileEntity implements ITickable {
                     l--;
                 else up = true;
             }
-            IBlockState blockState = worldObj.getBlockState(pos);
+            /*IBlockState blockState = worldObj.getBlockState(pos);
             if (blockState != null)
                 worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
 
             BlockPos minPos = pos.add(-20, -20, -20);
             BlockPos maxPos = pos.add(20, 20, 20);
-            worldObj.markBlockRangeForRenderUpdate(minPos, maxPos);
+            worldObj.markBlockRangeForRenderUpdate(minPos, maxPos);*/
 
             markDirty();
+            updateLight();
 
         }
         tick++;

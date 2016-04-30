@@ -13,6 +13,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.TileFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,6 +33,9 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
     private int originalCapacity;
     private Class<? extends UpgCFluidTank> TankClass = null;
     private boolean isFirst = true;
+    private int oldLight = 0;
+    private boolean wasEmpty = true;
+    private boolean shouldLightChange = false;
 
     public UpgCtileentityFluidTank(int capacity, boolean canBeDouble, Class<? extends UpgCFluidTank> TankClass) {
         super();
@@ -70,6 +74,7 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
         super.writeToNBT(tag);
         tag.setBoolean("isDouble", this.isDouble);
         tag.setBoolean("isTop", this.isTop);
+        tag.setBoolean("shouldLightChange", this.shouldLightChange);
     }
 
     @Override
@@ -77,6 +82,7 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
         super.readFromNBT(tag);
         this.isDouble = tag.getBoolean("isDouble");
         this.isTop = tag.getBoolean("isTop");
+        this.shouldLightChange = tag.getBoolean("shouldLightChange");
 
         if (canBeDouble && isDouble) {
             capacity = 2 * originalCapacity;
@@ -87,6 +93,11 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
+
+        if (wasEmpty != (getFluid() == null)) {
+            wasEmpty = !wasEmpty;
+            shouldLightChange = true;
+        }
         writeToNBT(tag);
 
         return new SPacketUpdateTileEntity(pos, -1, tag);
@@ -99,6 +110,22 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
         IBlockState blockState = worldObj.getBlockState(pos);
         if (blockState != null)
             worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
+    }
+
+
+    private void updateLight() {
+        if (shouldLightChange) {
+            int light = getFluidLight();
+            if (oldLight != light) {
+                oldLight = light;
+                if (worldObj.isRemote) {
+                    IBlockState blockState = worldObj.getBlockState(pos);
+                    if (blockState != null)
+                        worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
+                }
+                worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
+            }
+        }
     }
 
     @Override
@@ -122,6 +149,7 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
             }
         }
         reloadOriginalCapacity();
+        updateLight();
 
     }
 
@@ -376,11 +404,10 @@ public abstract class UpgCtileentityFluidTank extends TileFluidHandler implement
             //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
             //worldObj.markBlockForUpdate(pos);
             //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
+            markDirty();
             IBlockState blockState = worldObj.getBlockState(pos);
             if (blockState != null)
                 worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
-            markDirty();
-
             if (otherTank != null) {
                 otherTank.updateModBlock();
             }
