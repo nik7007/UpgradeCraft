@@ -14,6 +14,7 @@ public abstract class BlockFluidUpgC extends BlockFluidClassic implements IBlock
         super(fluid, material);
         this.name = name;
         this.setUnlocalizedName(name);
+        this.setRegistryName("fluid." + fluid.getName());
     }
 
     @Override

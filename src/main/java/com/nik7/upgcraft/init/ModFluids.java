@@ -19,11 +19,12 @@ public class ModFluids {
         //
         blockFluidUpgCActiveLava = new BlockFluidUpgCActiveLava(fluidUpgCActiveLava);
         registerBlock(blockFluidUpgCActiveLava);
+        FluidRegistry.addBucketForFluid(fluidUpgCActiveLava);
 
     }
 
     private static void registerBlock(BlockFluidUpgC block) {
-        GameRegistry.registerBlock(block, block.getName());
+        GameRegistry.registerBlock(block);
     }
 
 
