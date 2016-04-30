@@ -107,7 +107,7 @@ public class ClientProxy extends CommonProxy {
         ModelResourceLocation clayBrickCookedRL = createLocation(blockUpgCClayBrick, "Cooked");
         ModelResourceLocation claySquaredBrickRL = createLocation(blockUpgCClayBrick, "Squared");
         ModelResourceLocation claySquaredBrickCookedRL = createLocation(blockUpgCClayBrick, "CookedSquared");
-        ModelBakery.registerItemVariants(clayBrick, clayBrickRL, clayBrickCookedRL,claySquaredBrickRL,claySquaredBrickCookedRL);
+        ModelBakery.registerItemVariants(clayBrick, clayBrickRL, clayBrickCookedRL, claySquaredBrickRL, claySquaredBrickCookedRL);
         modelMesher.register(clayBrick, 0, clayBrickRL);
         modelMesher.register(clayBrick, 1, clayBrickCookedRL);
         modelMesher.register(clayBrick, 2, claySquaredBrickRL);
@@ -121,9 +121,8 @@ public class ClientProxy extends CommonProxy {
     }
 
 
-    private void fluidRender(final BlockFluidUpgC block) {
+    private void fluidRender(BlockFluidUpgC block) {
 
-        //final BlockFluidUpgC toRender = block;
         Item item = Item.getItemFromBlock(block);
         ModelBakery.registerItemVariants(item);
         final ModelResourceLocation location = new ModelResourceLocation(Reference.MOD_ID + ":" + block.getName(), "fluid");
