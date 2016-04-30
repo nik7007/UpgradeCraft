@@ -28,8 +28,10 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeModContainer;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.UniversalBucket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -91,7 +93,7 @@ public abstract class BlockUpgCFluidTank extends BlockUpgC implements ITileEntit
 
         ItemStack equippedItemStack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
 
-        if (FluidContainerRegistry.isContainer(equippedItemStack)) {
+        if (FluidContainerRegistry.isContainer(equippedItemStack) || equippedItemStack.getItem() instanceof UniversalBucket) {
 
             if (!worldIn.isRemote) {
                 UpgCtileentityFluidTank tank = (UpgCtileentityFluidTank) worldIn.getTileEntity(pos);
@@ -108,7 +110,7 @@ public abstract class BlockUpgCFluidTank extends BlockUpgC implements ITileEntit
 
     protected void handleContainerClick(World worldIn, BlockPos pos, EntityPlayer playerIn, UpgCtileentityFluidTank tank, ItemStack equippedItemStack) {
 
-        if (FluidContainerRegistry.isBucket(equippedItemStack)) {
+        if (FluidContainerRegistry.isBucket(equippedItemStack) || equippedItemStack.getItem() instanceof UniversalBucket) {
 
             if (FluidContainerRegistry.isEmptyContainer(equippedItemStack)) {
                 fillBucketFromTank(worldIn, pos, playerIn, tank, equippedItemStack);
@@ -127,6 +129,9 @@ public abstract class BlockUpgCFluidTank extends BlockUpgC implements ITileEntit
         if (drained != null && drained.amount == bucketVolume) {
 
             ItemStack filledBucket = FluidContainerRegistry.fillFluidContainer(drained, FluidContainerRegistry.EMPTY_BUCKET);
+
+            if (filledBucket == null)
+                filledBucket = UniversalBucket.getFilledBucket(ForgeModContainer.getInstance().universalBucket, drained.getFluid());
 
             if (filledBucket != null) {
                 tank.drain(null, bucketVolume, true);
@@ -155,7 +160,12 @@ public abstract class BlockUpgCFluidTank extends BlockUpgC implements ITileEntit
 
     protected void drainBucketIntoTank(EntityPlayer playerIn, UpgCtileentityFluidTank tank, ItemStack equippedItemStack) {
 
-        FluidStack fluidFromBucket = FluidContainerRegistry.getFluidForFilledItem(equippedItemStack);
+
+        FluidStack fluidFromBucket;
+        if (equippedItemStack.getItem() instanceof UniversalBucket) {
+            fluidFromBucket = ((UniversalBucket) equippedItemStack.getItem()).getFluid(equippedItemStack);
+        } else fluidFromBucket = FluidContainerRegistry.getFluidForFilledItem(equippedItemStack);
+
 
         if (tank.fill(null, fluidFromBucket, false) == FluidContainerRegistry.BUCKET_VOLUME) {
 
