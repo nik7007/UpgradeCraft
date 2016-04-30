@@ -60,6 +60,13 @@ public class ItemBlockIronFluidTank extends ItemBlock implements IFluidContainer
     }
 
     @Override
+    public int getItemStackLimit(ItemStack stack) {
+        if (getFluid(stack) != null)
+            return 1;
+        else return super.getItemStackLimit(stack);
+    }
+
+    @Override
     public FluidStack getFluid(ItemStack container) {
         if (container == null)
             return null;

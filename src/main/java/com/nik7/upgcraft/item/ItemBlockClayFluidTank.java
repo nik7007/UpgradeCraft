@@ -69,6 +69,13 @@ public class ItemBlockClayFluidTank extends ItemBlock implements IFluidContainer
         ItemUpgC.addHiddenInformation(list, hiddenInformation);
     }
 
+    @Override
+    public int getItemStackLimit(ItemStack stack) {
+        if (getFluid(stack) != null)
+            return 1;
+        else return super.getItemStackLimit(stack);
+    }
+
     public FluidStack getFluid(ItemStack itemStack) {
         if (itemStack == null)
             return null;
