@@ -22,6 +22,7 @@ import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
+import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 
@@ -46,6 +47,11 @@ public class UpgCPlugin extends BlankModPlugin {
         recipeTransferRegistry.addRecipeTransferHandler(ContainerFluidInfuser.class, ModBlocks.blockUpgCFluidInfuser.getUnlocalizedName(), 0, 2, 3, 36);
         recipeTransferRegistry.addRecipeTransferHandler(ContainerFluidFurnace.class, ModBlocks.blockUpgCFluidFurnace.getUnlocalizedName(), 0, 1, 2, 36);
         recipeTransferRegistry.addRecipeTransferHandler(ContainerThermoFluidFurnace.class, ModBlocks.blockUpgCThermoFluidFurnace.getUnlocalizedName(), 0, 1, 2, 36);
+
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.blockUpgCFluidInfuser),ModBlocks.blockUpgCFluidInfuser.getUnlocalizedName());
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.blockUpgCFluidFurnace),ModBlocks.blockUpgCFluidFurnace.getUnlocalizedName());
+        registry.addRecipeCategoryCraftingItem(new ItemStack(ModBlocks.blockUpgCThermoFluidFurnace),ModBlocks.blockUpgCThermoFluidFurnace.getUnlocalizedName());
+
 
         registry.addRecipes(FluidInfuserMaker.getRecipes());
         registry.addRecipes(FluidFurnaceMaker.getRecipes());
