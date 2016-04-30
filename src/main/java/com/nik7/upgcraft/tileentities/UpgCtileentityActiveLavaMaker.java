@@ -20,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,7 +29,7 @@ import java.util.Random;
 
 import static com.nik7.upgcraft.init.ModFluids.fluidUpgCActiveLava;
 
-public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidHandler implements ITickable, IInteractionObject, ISecondaryFluidTankShow {
+public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidHandler implements IInteractionObject, ISecondaryFluidTankShow {
 
     //tank[0]: input tank - tank[1]: working tank
     //itemStacks[0]: input bucket/tank - itemStacks[1]: blaze stuff - itemStacks[2]: output bucket/tank
@@ -63,6 +62,23 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
         return INPUT_TANK;
     }
 
+    @Override
+    public int getFluidLight() {
+        int light = getFluidLight(getTankToShow());
+        if (light == 0) {
+            light = getFluidLight(getSecondaryFluidTankToShow());
+        }
+        return light;
+    }
+
+    @Override
+    public FluidStack getFluid() {
+        FluidStack fluidStack = getFluid(getTankToShow());
+        if (fluidStack == null)
+            fluidStack = getFluid(getSecondaryFluidTankToShow());
+        return fluidStack;
+    }
+
     @SideOnly(Side.CLIENT)
     public float getFluidLevelScaled(int scaleFactor) {
         return scaleFactor * (float) (this.tanks[INPUT_TANK].getFluid() == null ? 0 : tanks[INPUT_TANK].getFluid().amount) / (float) tanks[INPUT_TANK].getCapacity();
@@ -82,6 +98,7 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
 
     @Override
     public void readFromPacket(PacketBuffer buf) {
+        super.readFromPacket(buf);
         this.isOperating = buf.readBoolean();
         readFluidToByteBuf(this.tanks[INPUT_TANK], buf);
         readFluidToByteBuf(this.tanks[WORKING_TANK], buf);
@@ -107,6 +124,7 @@ public class UpgCtileentityActiveLavaMaker extends UpgCtileentityInventoryFluidH
     @Override
     public void update() {
 
+        super.update();
         if (!worldObj.isRemote) {
             if (canOperate()) {
                 consumeItem();

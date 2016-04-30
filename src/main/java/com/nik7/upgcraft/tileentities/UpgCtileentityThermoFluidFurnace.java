@@ -23,7 +23,6 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.relauncher.Side;
@@ -31,7 +30,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFluidHandler implements ITickable, IInteractionObject, ISecondaryFluidTankShow {
+public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFluidHandler implements IInteractionObject, ISecondaryFluidTankShow {
 
     public static final int INTERNAL_CAPACITY_WORKING_TANK = 10 * FluidContainerRegistry.BUCKET_VOLUME;
 
@@ -100,6 +99,7 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
 
     @Override
     public void readFromPacket(PacketBuffer buf) {
+        super.readFromPacket(buf);
         this.isActive = buf.readBoolean();
         readFluidToByteBuf(this.tanks[INPUT_TANK], buf);
         readFluidToByteBuf(this.tanks[WASTE_TANK], buf);
@@ -176,6 +176,7 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
 
     @Override
     public void update() {
+        super.update();
         if (!worldObj.isRemote) {
             tick++;
             if (canOperate) {
@@ -564,6 +565,23 @@ public class UpgCtileentityThermoFluidFurnace extends UpgCtileentityInventoryFlu
     @Override
     public int getTankToShow() {
         return INPUT_TANK;
+    }
+
+    @Override
+    public int getFluidLight() {
+        int light = getFluidLight(getTankToShow());
+        if (light == 0) {
+            light = getFluidLight(getSecondaryFluidTankToShow());
+        }
+        return light;
+    }
+
+    @Override
+    public FluidStack getFluid() {
+        FluidStack fluidStack = getFluid(getTankToShow());
+        if (fluidStack == null)
+            fluidStack = getFluid(getSecondaryFluidTankToShow());
+        return fluidStack;
     }
 
     @Override

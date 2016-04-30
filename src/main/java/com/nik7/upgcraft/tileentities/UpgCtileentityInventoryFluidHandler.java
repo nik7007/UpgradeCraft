@@ -18,14 +18,16 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity implements ISidedInventory, IMultipleTankFluidHandler {
+public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity implements ISidedInventory, IMultipleTankFluidHandler, ITickable {
 
     private final int inventorySize;
     private final int tanksNumber;
@@ -36,6 +38,10 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     private final String name;
 
     private int meta = 0;
+
+    private int oldLight = 0;
+    private boolean wasEmpty = true;
+    private boolean shouldLightChange = false;
 
     protected UpgCtileentityInventoryFluidHandler(ItemStack[] inventory, UpgCFluidTank[] tanks, String name) {
 
@@ -143,7 +149,15 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         buf.writeInt(pos.getX());
         buf.writeInt(pos.getY());
         buf.writeInt(pos.getZ());
+
+
+        if (wasEmpty != (getFluid() == null)) {
+            wasEmpty = !wasEmpty;
+            shouldLightChange = true;
+        }
+        buf.writeBoolean(shouldLightChange);
         writeToPacket(buf);
+
         return new FMLProxyPacket(buf, DescriptionHandler.CHANNEL);
     }
 
@@ -198,22 +212,40 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
     }
 
     public void readFromPacket(PacketBuffer buf) {
+        this.shouldLightChange = buf.readBoolean();
+    }
 
+    private void updateLight() {
+        if (shouldLightChange) {
+            int light = getFluidLight();
+            if (oldLight != light) {
+                oldLight = light;
+                if (worldObj.isRemote) {
+                    IBlockState blockState = worldObj.getBlockState(pos);
+                    if (blockState != null)
+                        worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
+                }
+                worldObj.checkLightFor(EnumSkyBlock.BLOCK, pos);
+            }
+        }
     }
 
 
     protected void updateModBlock() {
-        //worldObj.markTileEntityChunkModified(xCoord, yCoord, zCoord, this);
-        //worldObj.markBlockForUpdate(pos);
+        markDirty();
         IBlockState blockState = worldObj.getBlockState(pos);
         worldObj.notifyBlockUpdate(pos, blockState, blockState, 3);
-        //this.worldObj.notifyBlockOfStateChange(pos, getBlockType());
         this.worldObj.updateComparatorOutputLevel(this.pos, this.getBlockType());
     }
 
     public void forceUpdate() {
         if (!worldObj.isRemote)
             updateModBlock();
+    }
+
+    @Override
+    public void update() {
+        updateLight();
     }
 
     @Override
@@ -396,6 +428,18 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         }
         return 0;
 
+    }
+
+    public abstract int getFluidLight();
+
+    public abstract FluidStack getFluid();
+
+    public int getFluidLight(int tank) {
+        if (tank < 0 && tank > tanks.length)
+            return 0;
+        if (tanks[tank].getFluid() == null)
+            return 0;
+        return tanks[tank].getFluid().getFluid().getLuminosity(tanks[tank].getFluid());
     }
 
     public int getCapacity(int tank) {

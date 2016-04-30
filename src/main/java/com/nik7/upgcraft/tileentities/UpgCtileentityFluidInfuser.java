@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
 import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -24,7 +23,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHandler implements ITickable, IInteractionObject {
+public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHandler implements IInteractionObject {
 
     public static final int MELT = 0;
     public static final int INFUSE = 1;
@@ -59,6 +58,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     @Override
     public void readFromPacket(PacketBuffer buf) {
+        super.readFromPacket(buf);
         this.isActive = buf.readBoolean();
         readFluidToByteBuf(this.tanks[0], buf);
     }
@@ -138,6 +138,16 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
     @Override
     public int getTankToShow() {
         return 0;
+    }
+
+    @Override
+    public int getFluidLight() {
+        return getFluidLight(getTankToShow());
+    }
+
+    @Override
+    public FluidStack getFluid() {
+        return getFluid(getTankToShow());
     }
 
     @Override
@@ -296,7 +306,7 @@ public class UpgCtileentityFluidInfuser extends UpgCtileentityInventoryFluidHand
 
     @Override
     public void update() {
-
+        super.update();
         if (!worldObj.isRemote) {
             boolean oldIsActive = isActive;
 

@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.block;
 
 
+import com.nik7.upgcraft.tileentities.UpgCtileentityInventoryFluidHandler;
 import com.nik7.upgcraft.util.ItemHelper;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -10,11 +11,13 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -109,6 +112,15 @@ public abstract class BlockUpgCContainerOrientable extends BlockUpgC implements 
 
     public IBlockState withMirror(IBlockState state, Mirror mirrorIn) {
         return state.withRotation(mirrorIn.toRotation(state.getValue(FACING)));
+    }
+
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity te = world.getTileEntity(pos);
+
+        if (te instanceof UpgCtileentityInventoryFluidHandler)
+            return ((UpgCtileentityInventoryFluidHandler) te).getFluidLight();
+        return super.getLightValue(state, world, pos);
     }
 
     @Override
