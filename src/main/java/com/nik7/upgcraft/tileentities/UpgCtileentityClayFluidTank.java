@@ -102,6 +102,7 @@ public class UpgCtileentityClayFluidTank extends UpgCtileentityFluidTank {
     }
 
     private void foundHotFluid(int tick) {
+        boolean oldIsCooking = isCooking;
         if (hotBlockPos == null && tick >= 0) {
             int choice = tick % 6;
             BlockPos toCheck;
@@ -145,6 +146,9 @@ public class UpgCtileentityClayFluidTank extends UpgCtileentityFluidTank {
                 isCooking = false;
             }
         }
+
+        if (oldIsCooking != isCooking)
+            updateModBlock();
 
     }
 
