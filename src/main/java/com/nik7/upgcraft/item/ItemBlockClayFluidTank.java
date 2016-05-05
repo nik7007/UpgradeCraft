@@ -1,28 +1,25 @@
 package com.nik7.upgcraft.item;
 
-import com.nik7.upgcraft.block.BlockUpgCClayFluidTank;
+import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.registry.CustomCraftingExperience;
+import com.nik7.upgcraft.tank.UpgCFluidTank;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class ItemBlockClayFluidTank extends ItemBlock implements IFluidContainerItem, CustomCraftingExperience {
+public class ItemBlockClayFluidTank extends ItemBlockFluidTank implements CustomCraftingExperience {
 
     public ItemBlockClayFluidTank(Block block) {
-        super(block);
-        this.setHasSubtypes(true);
+        super(block, new UpgCFluidTank(Capacity.SMALL_TANK));
     }
 
     @Override
@@ -31,11 +28,6 @@ public class ItemBlockClayFluidTank extends ItemBlock implements IFluidContainer
         if (stack.getItemDamage() >= 2)
             return this.getUnlocalizedName() + "." + s;
         else return this.getUnlocalizedName();
-    }
-
-    @Override
-    public int getMetadata(int damage) {
-        return damage;
     }
 
     @SideOnly(Side.CLIENT)
@@ -52,29 +44,12 @@ public class ItemBlockClayFluidTank extends ItemBlock implements IFluidContainer
         }
 
         if (metaData > 1) {
-            FluidStack fluidStack = getFluid(itemStack);
-            int amount = 0;
-            String fluidName = I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.df.name");
-
-            if (fluidStack != null) {
-                amount = fluidStack.amount;
-                fluidName = fluidStack.getLocalizedName();
-
-            }
-            hiddenInformation.add(TextFormatting.AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.name") + ": " + TextFormatting.RESET + fluidName);
-            hiddenInformation.add(TextFormatting.AQUA + I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.fluid.amount") + ": " + TextFormatting.RESET + amount + "/" + getCapacity(itemStack) + " mB");
-
+            addFluidInformation(hiddenInformation, itemStack);
         }
 
         ItemUpgC.addHiddenInformation(list, hiddenInformation);
     }
 
-    @Override
-    public int getItemStackLimit(ItemStack stack) {
-        if (getFluid(stack) != null)
-            return 1;
-        else return super.getItemStackLimit(stack);
-    }
 
     public FluidStack getFluid(ItemStack itemStack) {
         if (itemStack == null)
@@ -82,7 +57,7 @@ public class ItemBlockClayFluidTank extends ItemBlock implements IFluidContainer
         if (itemStack.getMetadata() < 2 || !itemStack.hasTagCompound()) {
             return null;
         } else {
-            return FluidStack.loadFluidStackFromNBT(itemStack.getTagCompound());
+            return super.getFluid(itemStack);
 
         }
     }
@@ -95,9 +70,7 @@ public class ItemBlockClayFluidTank extends ItemBlock implements IFluidContainer
         if (itemStack.getMetadata() < 2) {
             return 0;
         }
-        Block block = this.getBlock();
-
-        return ((BlockUpgCClayFluidTank) block).getCapacity();
+        return super.getCapacity(itemStack);
     }
 
     @Override
@@ -110,29 +83,7 @@ public class ItemBlockClayFluidTank extends ItemBlock implements IFluidContainer
             return 0;
         if (resource.amount <= 0)
             return 0;
-        FluidStack fluidInside = null;
-        int amount = 0;
-
-        if (container.hasTagCompound())
-            fluidInside = FluidStack.loadFluidStackFromNBT(container.getTagCompound());
-
-        if (fluidInside != null) {
-            if (!fluidInside.equals(resource)) return 0;
-            amount = fluidInside.amount;
-            if (amount >= getCapacity(container))
-                return 0;
-
-        }
-        int oldAmount = amount;
-        amount += resource.amount;
-
-        amount = Math.min(amount, getCapacity(container));
-        FluidStack fluidStack = new FluidStack(resource, amount);
-
-        if (doFill)
-            container.setTagCompound(fluidStack.writeToNBT(new NBTTagCompound()));
-
-        return fluidStack.amount - oldAmount;
+        return super.fill(container, resource, doFill);
     }
 
     @Override
@@ -145,27 +96,8 @@ public class ItemBlockClayFluidTank extends ItemBlock implements IFluidContainer
             return null;
         if (!container.hasTagCompound())
             return null;
-        FluidStack fluidStack = FluidStack.loadFluidStackFromNBT(container.getTagCompound());
 
-        if (fluidStack == null)
-            return null;
-
-        int amount = fluidStack.amount;
-        int drained;
-        if (amount < maxDrain)
-            drained = amount;
-        else drained = maxDrain;
-
-        if (doDrain) {
-            if (drained == amount)
-                container.setTagCompound(null);
-            else {
-                FluidStack fluid = new FluidStack(fluidStack, amount - drained);
-                container.setTagCompound(fluid.writeToNBT(new NBTTagCompound()));
-            }
-        }
-
-        return new FluidStack(fluidStack, drained);
+        return super.drain(container, maxDrain, doDrain);
     }
 
     @Override
