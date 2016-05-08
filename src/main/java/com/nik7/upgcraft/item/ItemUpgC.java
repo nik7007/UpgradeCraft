@@ -20,6 +20,7 @@ public abstract class ItemUpgC extends Item {
         this.setCreativeTab(CreativeTab.UPGC_TAB);
         this.setUnlocalizedName(name);
         this.name = name;
+        this.setRegistryName(name);
     }
 
     public String getName() {

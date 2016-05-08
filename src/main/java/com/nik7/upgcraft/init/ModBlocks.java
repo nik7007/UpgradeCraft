@@ -3,9 +3,14 @@ package com.nik7.upgcraft.init;
 
 import com.nik7.upgcraft.block.*;
 import com.nik7.upgcraft.item.*;
+import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 public class ModBlocks {
 
@@ -63,15 +68,27 @@ public class ModBlocks {
     }
 
 
-    private static void registerBlock(IBlockUpgC block) {
+    private static <B extends Block & IBlockUpgC> void registerBlock(B block) {
         ModBlocks.registerBlock(block, ItemBlock.class);
     }
 
-    private static void registerBlock(IBlockUpgC block, Class<? extends ItemBlock> itemBlock) {
+    private static <B extends Block & IBlockUpgC> void registerBlock(B block, Class<? extends ItemBlock> itemBlock) {
 
         String name = block.getName();
+        if (itemBlock != null) {
+            try {
+                Class<?> blockClass = Block.class;
+                Constructor<? extends ItemBlock> itemCtor = itemBlock.getConstructor(blockClass);
+                ItemBlock i = itemCtor.newInstance(block);
 
-        GameRegistry.registerBlock((Block) block, itemBlock, name);
+                GameRegistry.register(i.setRegistryName(name));
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                LogHelper.error(e, "Caught an exception during block registration");
+                throw new LoaderException(e);
+            }
+
+        }
+        GameRegistry.register(block.getRegistryName() == null ? block.setRegistryName(name) : block);
 
     }
 

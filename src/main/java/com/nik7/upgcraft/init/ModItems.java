@@ -18,7 +18,7 @@ public class ModItems {
     }
 
     private static void registerItem(ItemUpgC item) {
-        GameRegistry.registerItem(item, item.getName());
+        GameRegistry.register(item.getRegistryName() == null ? item.setRegistryName(item.getName()) : item);
     }
 
 

@@ -20,6 +20,7 @@ public abstract class BlockUpgC extends Block implements IBlockUpgC {
     public BlockUpgC(String name) {
         super(Material.rock);
         this.name = name;
+        this.setRegistryName(name);
         this.setUnlocalizedName(name);
     }
 
