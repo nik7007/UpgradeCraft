@@ -56,9 +56,6 @@ public class UpgradeCraft {
         ModItems.init();
         ModFluids.init();
 
-        //FluidContainerRegistry.registerFluidContainer(ModFluids.ActiveLava, new ItemStack(ModItems.itemActiveLavaBucket), new ItemStack(Items.bucket));
-
-
     }
 
     @Mod.EventHandler
