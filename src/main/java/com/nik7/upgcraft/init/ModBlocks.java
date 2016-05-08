@@ -72,9 +72,20 @@ public class ModBlocks {
         ModBlocks.registerBlock(block, ItemBlock.class);
     }
 
+    static void registerBlock(Block block, String name){
+        ModBlocks.registerBlock(block, ItemBlock.class,name);
+
+    }
+
     private static <B extends Block & IBlockUpgC> void registerBlock(B block, Class<? extends ItemBlock> itemBlock) {
 
         String name = block.getName();
+        registerBlock(block, itemBlock, name);
+
+    }
+
+    private static void registerBlock(Block block, Class<? extends ItemBlock> itemBlock, String name) {
+
         if (itemBlock != null) {
             try {
                 Class<?> blockClass = Block.class;

@@ -5,7 +5,6 @@ import com.nik7.upgcraft.block.BlockFluidUpgCActiveLava;
 import com.nik7.upgcraft.fluid.FluidUpgC;
 import com.nik7.upgcraft.fluid.FluidUpgCActiveLava;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModFluids {
 
@@ -24,7 +23,7 @@ public class ModFluids {
     }
 
     private static void registerBlock(BlockFluidUpgC block) {
-        GameRegistry.registerBlock(block);
+        ModBlocks.registerBlock(block, "fluid." + block.getFluid().getName());
     }
 
 
