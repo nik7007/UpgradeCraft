@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockUpgCFluidInfuser extends BlockUpgCContainerOrientable {
+public class BlockUpgCFluidInfuser extends BlockUpgCMachineOrientable {
 
     private final static Random rand = new Random();
 

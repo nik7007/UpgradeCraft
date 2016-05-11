@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockUpgCFluidFurnace extends BlockUpgCContainerOrientable {
+public class BlockUpgCFluidFurnace extends BlockUpgCMachineOrientable {
 
     public BlockUpgCFluidFurnace() {
         super(Material.iron, "FluidFurnace");

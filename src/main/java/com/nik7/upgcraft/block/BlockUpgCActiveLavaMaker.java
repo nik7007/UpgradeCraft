@@ -23,7 +23,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockUpgCActiveLavaMaker extends BlockUpgCContainerOrientable {
+public class BlockUpgCActiveLavaMaker extends BlockUpgCMachineOrientable {
     public BlockUpgCActiveLavaMaker() {
         super(Material.iron, "ActiveLavaMaker");
         setStepSound(SoundType.STONE);

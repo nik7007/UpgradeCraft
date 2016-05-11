@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-public class BlockUpgCThermoFluidFurnace extends BlockUpgCContainerOrientable {
+public class BlockUpgCThermoFluidFurnace extends BlockUpgCMachineOrientable {
 
 
     public BlockUpgCThermoFluidFurnace() {
