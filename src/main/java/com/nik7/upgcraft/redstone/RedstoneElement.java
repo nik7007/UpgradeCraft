@@ -20,7 +20,6 @@ public abstract class RedstoneElement implements IRedstoneElement {
         this.connections = connections;
         this.tickTocomplete = tickTocomplete;
         this.ID = INVALID_ID;
-        RedstoneUpgC.addRedstoneElemet(this);
     }
 
     @Override
@@ -46,6 +45,7 @@ public abstract class RedstoneElement implements IRedstoneElement {
     @Override
     public IRedstoneElement getFomNBT(NBTTagCompound nbt) {
         this.ID = nbt.getInteger("ID");
+        RedstoneUpgC.addRedstoneElemet(this);
 
         for (int i = 0; i < connections.length; i++) {
             NBTTagCompound cNBT = nbt.getCompoundTag("connection" + i);
@@ -64,6 +64,7 @@ public abstract class RedstoneElement implements IRedstoneElement {
         if (this.ID == INVALID_ID) {
             this.ID = RedstoneUpgC.globalID;
             RedstoneUpgC.globalID++;
+            RedstoneUpgC.addRedstoneElemet(this);
         }
     }
 
