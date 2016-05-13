@@ -7,5 +7,6 @@ public class EventHandler {
 
     public static void init() {
         MinecraftForge.EVENT_BUS.register(new AchievementEventHandler());
+        MinecraftForge.EVENT_BUS.register(new TextureHandler());
     }
 }
