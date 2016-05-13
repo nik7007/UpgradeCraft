@@ -3,6 +3,8 @@ package com.nik7.upgcraft.redstone;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import static com.nik7.upgcraft.redstone.RedstoneUpgC.INVALID_ID;
+
 public abstract class RedstoneElement implements IRedstoneElement {
 
     private int ID;
@@ -17,26 +19,52 @@ public abstract class RedstoneElement implements IRedstoneElement {
         this.type = type;
         this.connections = connections;
         this.tickTocomplete = tickTocomplete;
-        this.ID = -1;
+        this.ID = INVALID_ID;
         RedstoneUpgC.addRedstoneElemet(this);
     }
 
-    // TODO: 11/05/2016  
     @Override
     public void writeToNBT(NBTTagCompound tag) {
 
+        if (this.ID == INVALID_ID)
+            initID();
+        tag.setInteger("ID", this.ID);
+
+        for (int i = 0; i < connections.length; i++) {
+            NBTTagCompound cNBT = new NBTTagCompound();
+            connections[i].writeToNBT(cNBT);
+            tag.setTag("connection" + i, cNBT);
+        }
+
+        tag.setInteger("tick", this.tick);
+        tag.setShort("position", this.position);
+        tag.setBoolean("output", this.output);
+
     }
 
-    // TODO: 11/05/2016  
+
     @Override
     public IRedstoneElement getFomNBT(NBTTagCompound nbt) {
-        return null;
+        this.ID = nbt.getInteger("ID");
+
+        for (int i = 0; i < connections.length; i++) {
+            NBTTagCompound cNBT = nbt.getCompoundTag("connection" + i);
+            connections[i].getFomNBT(cNBT);
+        }
+
+        this.tick = nbt.getInteger("tick");
+        this.position = nbt.getShort("position");
+        this.output = nbt.getBoolean("output");
+
+        return this;
     }
 
     @Override
-    public void initID(){
-        this.ID = RedstoneUpgC.globalID;
-        RedstoneUpgC.globalID++;
+    public void initID() {
+        if (this.ID == INVALID_ID) {
+            this.ID = RedstoneUpgC.globalID;
+            RedstoneUpgC.globalID++;
+        }
     }
 
     protected final void increaseTick() {

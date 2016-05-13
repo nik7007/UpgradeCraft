@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RedstoneUpgC {
+    public static final int INVALID_ID = -1;
     static int globalID = 0;
     private static final ScriptEngineManager sem = new ScriptEngineManager();
     private static final ScriptEngine se = sem.getEngineByName("JavaScript");

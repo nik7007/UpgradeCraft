@@ -1,10 +1,7 @@
 package com.nik7.upgcraft.redstone;
 
 
-import com.nik7.upgcraft.util.INBTTagProvider;
-import net.minecraft.nbt.NBTTagCompound;
-
-public enum ExpressionType implements INBTTagProvider<ExpressionType> {
+public enum ExpressionType {
     AND("&&"),
     OR("||"),
     NOT("!"),
@@ -14,17 +11,6 @@ public enum ExpressionType implements INBTTagProvider<ExpressionType> {
 
     ExpressionType(String expression) {
         this.expression = expression;
-    }
-
-
-    @Override
-    public void writeToNBT(NBTTagCompound tag) {
-        tag.setString("ExpressionType", expression);
-    }
-
-    @Override
-    public ExpressionType getFomNBT(NBTTagCompound nbt) {
-        return getType(nbt.getString("ExpressionType"));
     }
 
     @Override

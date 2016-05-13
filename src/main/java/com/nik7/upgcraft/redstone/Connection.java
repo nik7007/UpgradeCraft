@@ -19,21 +19,21 @@ public class Connection implements INBTTagProvider<Connection> {
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
-        NBTTagCompound newTag = new NBTTagCompound();
-        newTag.setBoolean("value", value);
+        //NBTTagCompound newTag = new NBTTagCompound();
+        tag.setBoolean("value", value);
         int[] IDs = new int[connectedToMe.size()];
         for (int i = 0; i < connectedToMe.size(); i++) {
             IDs[i] = connectedToMe.get(i).getID();
         }
-        newTag.setIntArray("connectedToMe", IDs);
+        tag.setIntArray("connectedToMe", IDs);
 
-        tag.setTag("Connection", newTag);
+        //tag.setTag("Connection", newTag);
 
     }
 
     @Override
-    public Connection getFomNBT(NBTTagCompound nbt) {
-        NBTTagCompound tag = nbt.getCompoundTag("Connection");
+    public Connection getFomNBT(NBTTagCompound tag) {
+        //NBTTagCompound tag = nbt.getCompoundTag("Connection");
         this.value = tag.getBoolean("value");
         int[] IDs = tag.getIntArray("connectedToMe");
         for (int id : IDs) {
@@ -76,8 +76,7 @@ public class Connection implements INBTTagProvider<Connection> {
 
         CLOSE,
 
-        IO;
-
+        IO
 
     }
 }
