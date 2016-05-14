@@ -43,18 +43,18 @@ public abstract class RedstoneElement implements IRedstoneElement {
 
 
     @Override
-    public IRedstoneElement getFomNBT(NBTTagCompound nbt) {
-        this.ID = nbt.getInteger("ID");
+    public IRedstoneElement readFomNBT(NBTTagCompound tag) {
+        this.ID = tag.getInteger("ID");
         RedstoneUpgC.addRedstoneElemet(this);
 
         for (int i = 0; i < connections.length; i++) {
-            NBTTagCompound cNBT = nbt.getCompoundTag("connection" + i);
-            connections[i].getFomNBT(cNBT);
+            NBTTagCompound cNBT = tag.getCompoundTag("connection" + i);
+            connections[i].readFomNBT(cNBT);
         }
 
-        this.tick = nbt.getInteger("tick");
-        this.position = nbt.getShort("position");
-        this.output = nbt.getBoolean("output");
+        this.tick = tag.getInteger("tick");
+        this.position = tag.getShort("position");
+        this.output = tag.getBoolean("output");
 
         return this;
     }
@@ -133,7 +133,7 @@ public abstract class RedstoneElement implements IRedstoneElement {
                     if (getCurrentTik() == 0) {
                         rE.setInput(ID, getOutput());
                     }
-                    rE.exec();
+                    //rE.exec();
                 }
         }
         increaseTick();

@@ -5,8 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public interface INBTTagProvider<T> {
 
-    public void writeToNBT(NBTTagCompound tag);
+    void writeToNBT(NBTTagCompound tag);
 
-    public T getFomNBT(NBTTagCompound nbt);
+    T readFomNBT(NBTTagCompound tag);
 
 }
