@@ -9,15 +9,16 @@ public interface IRedstoneElement extends INBTTagProvider<IRedstoneElement> {
 
     int getID();
 
-    short getPosition();
-
-    void setPosition(short position);
 
     boolean getOutput();
 
-    Connection[] getConnections();
+    void setConnection(IConnection connection, short port);
 
-    void setInput(int ID, boolean value);
+    IConnection[] getConnections();
+
+    short[] getInputsPort();
+
+    short getOutputPort();
 
     void exec();
 }

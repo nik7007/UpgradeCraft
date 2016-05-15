@@ -9,17 +9,46 @@ public abstract class RedstoneElement implements IRedstoneElement {
 
     private int ID;
     protected final ExpressionType type;
-    protected final Connection[] connections;
+    protected IConnection[] connections;
     private final int tickTocomplete;
     private int tick = 0;
-    protected short position;
     protected boolean output;
 
-    public RedstoneElement(ExpressionType type, Connection[] connections, int tickTocomplete) {
+    private final short[] inputsPort;
+    private final short outputPort;
+
+    protected RedstoneElement(ExpressionType type, int tickTocomplete) {
+        short[] inputsPort;
+        short outputPort;
+
+        if (type == ExpressionType.NOT) {
+            inputsPort = new short[]{0};
+            outputPort = 1;
+        } else {
+            inputsPort = new short[]{0, 1, 2};
+            outputPort = 3;
+        }
         this.type = type;
-        this.connections = connections;
-        this.tickTocomplete = tickTocomplete;
+        this.inputsPort = inputsPort;
+        this.outputPort = outputPort;
+        this.connections = new Connection[inputsPort.length + 1];
+        this.tickTocomplete = tickTocomplete + 1;
         this.ID = INVALID_ID;
+    }
+
+    protected RedstoneElement(ExpressionType type, int tickTocomplete, short[] inputsPort, short outputPort) {
+        this.type = type;
+        this.inputsPort = inputsPort;
+        this.outputPort = outputPort;
+        this.connections = new Connection[inputsPort.length + 1];
+        this.tickTocomplete = tickTocomplete + 1;
+        this.ID = INVALID_ID;
+    }
+
+
+    public RedstoneElement(ExpressionType type, int tickTocomplete, short[] inputsPort, short outputPort, IConnection[] connections) {
+        this(type, tickTocomplete, inputsPort, outputPort);
+        System.arraycopy(connections, 0, this.connections, 0, 4);
     }
 
     @Override
@@ -36,7 +65,6 @@ public abstract class RedstoneElement implements IRedstoneElement {
         }
 
         tag.setInteger("tick", this.tick);
-        tag.setShort("position", this.position);
         tag.setBoolean("output", this.output);
 
     }
@@ -53,7 +81,6 @@ public abstract class RedstoneElement implements IRedstoneElement {
         }
 
         this.tick = tag.getInteger("tick");
-        this.position = tag.getShort("position");
         this.output = tag.getBoolean("output");
 
         return this;
@@ -82,15 +109,6 @@ public abstract class RedstoneElement implements IRedstoneElement {
         return this.ID;
     }
 
-    @Override
-    public short getPosition() {
-        return this.position;
-    }
-
-    @Override
-    public void setPosition(short position) {
-        this.position = position;
-    }
 
     public ExpressionType getBooleanType() {
         return this.type;
@@ -103,50 +121,43 @@ public abstract class RedstoneElement implements IRedstoneElement {
     }
 
     @Override
-    public Connection[] getConnections() {
+    public void setConnection(IConnection connection, short port) {
+        if (port >= 0 && port < inputsPort.length + 1)
+            this.connections[port] = connection;
+    }
+
+    @Override
+    public IConnection[] getConnections() {
         return connections;
+    }
+
+
+    @Override
+    public short[] getInputsPort() {
+
+        return inputsPort;
+    }
+
+    @Override
+    public short getOutputPort() {
+        return outputPort;
     }
 
     protected abstract void myExec();
 
-    @Override
-    public void setInput(int ID, boolean value) {
-        for (Connection c : connections) {
-            if (c.getConnectionType() == Connection.ConnectionType.INPUT) {
-                for (IRedstoneElement re : c.getConnection()) {
-                    if (re.getID() == ID)
-                        c.setValue(value);
-                }
-            }
-        }
-
-    }
 
     @Override
     public void exec() {
         if (getCurrentTik() == 0)
             setOutputToConnection();
         myExec();
-        for (Connection c : connections) {
-            if (c.getConnectionType() == Connection.ConnectionType.OUTPUT)
-                for (IRedstoneElement rE : c.getConnection()) {
-                    if (getCurrentTik() == 0) {
-                        rE.setInput(ID, getOutput());
-                    }
-                    //rE.exec();
-                }
-        }
+        //this.connections[getOutputPort()].setInputValue(this, getOutputPort(), getOutput());
         increaseTick();
 
     }
 
     protected void setOutputToConnection() {
-        for (Connection c : connections) {
-            if (c.getConnectionType() == Connection.ConnectionType.OUTPUT) {
-                c.setValue(output);
-                break;
-            }
-        }
+        this.connections[getOutputPort()].setInputValue(this, getOutputPort(), getOutput());
 
     }
 }
