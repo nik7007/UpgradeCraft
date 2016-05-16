@@ -15,7 +15,7 @@ public final class RedstoneUpgC implements INBTTagProvider<Integer> {
     static int globalID = 0;
     private static final ScriptEngineManager sem = new ScriptEngineManager();
     private static final ScriptEngine se = sem.getEngineByName("JavaScript");
-    private static final Map<Integer, IRedstoneElement> REDSTONE_ELEMENT_MAP = new HashMap<>();
+    private static final Map<Integer, IRedstoneLogicElement> REDSTONE_ELEMENT_MAP = new HashMap<>();
 
     private final static RedstoneUpgC INSTANCE = new RedstoneUpgC();
 
@@ -29,7 +29,7 @@ public final class RedstoneUpgC implements INBTTagProvider<Integer> {
     }
 
 
-    static boolean addRedstoneElemet(IRedstoneElement element) {
+    static boolean addRedstoneElemet(IRedstoneLogicElement element) {
         if (!REDSTONE_ELEMENT_MAP.containsKey(element.getID())) {
             REDSTONE_ELEMENT_MAP.put(element.getID(), element);
             return true;
@@ -37,7 +37,7 @@ public final class RedstoneUpgC implements INBTTagProvider<Integer> {
             return false;
     }
 
-    static IRedstoneElement getRedstoneElemet(int ID) {
+    static IRedstoneLogicElement getRedstoneElemet(int ID) {
         return REDSTONE_ELEMENT_MAP.get(ID);
     }
 

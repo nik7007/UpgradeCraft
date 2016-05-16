@@ -7,17 +7,17 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class Connection implements IConnection {
+public final class RedstoneConnectionElement implements IRedstoneConnectionElement {
 
     private final List<ConnectionElement> inputs = new ArrayList<>();
     private final List<ConnectionElement> outputs = new ArrayList<>();
 
-    private static boolean addConnectionToList(List<ConnectionElement> list, IRedstoneElement redstoneElement, short port) {
+    private static boolean addConnectionToList(List<ConnectionElement> list, IRedstoneLogicElement redstoneElement, short port) {
         ConnectionElement element = new ConnectionElement(redstoneElement, port);
         return list.add(element);
     }
 
-    private static boolean removeConnectionToList(List<ConnectionElement> list, IRedstoneElement redstoneElement, short port) {
+    private static boolean removeConnectionToList(List<ConnectionElement> list, IRedstoneLogicElement redstoneElement, short port) {
         for (ConnectionElement e : list) {
             if (e.getRedstoneElement().getID() == redstoneElement.getID() && e.getPort() == port) {
                 return list.remove(e);
@@ -30,17 +30,17 @@ public final class Connection implements IConnection {
 
 
     @Override
-    public boolean addInput(IRedstoneElement redstoneElement, short port) {
+    public boolean addInput(IRedstoneLogicElement redstoneElement, short port) {
         return addConnectionToList(inputs, redstoneElement, port);
     }
 
     @Override
-    public boolean removeInput(IRedstoneElement redstoneElement, short port) {
+    public boolean removeInput(IRedstoneLogicElement redstoneElement, short port) {
         return removeConnectionToList(inputs, redstoneElement, port);
     }
 
     @Override
-    public void setInputValue(IRedstoneElement redstoneElement, short port, boolean value) {
+    public void setInputValue(IRedstoneLogicElement redstoneElement, short port, boolean value) {
 
         for (ConnectionElement e : inputs) {
             if (e.getRedstoneElement().getID() == redstoneElement.getID() && e.getPort() == port) {
@@ -54,7 +54,7 @@ public final class Connection implements IConnection {
     }
 
     @Override
-    public boolean getOutputValue(IRedstoneElement redstoneElement, short port) {
+    public boolean getOutputValue(IRedstoneLogicElement redstoneElement, short port) {
 
         for (ConnectionElement e : outputs) {
             if (e.getRedstoneElement().getID() == redstoneElement.getID() && e.getPort() == port) {
@@ -66,12 +66,12 @@ public final class Connection implements IConnection {
     }
 
     @Override
-    public boolean addOutput(IRedstoneElement redstoneElement, short port) {
+    public boolean addOutput(IRedstoneLogicElement redstoneElement, short port) {
         return addConnectionToList(outputs, redstoneElement, port);
     }
 
     @Override
-    public boolean removeOutput(IRedstoneElement redstoneElement, short port) {
+    public boolean removeOutput(IRedstoneLogicElement redstoneElement, short port) {
         return removeConnectionToList(outputs, redstoneElement, port);
     }
 
@@ -115,7 +115,7 @@ public final class Connection implements IConnection {
     }
 
     @Override
-    public IConnection readFomNBT(NBTTagCompound tag) {
+    public IRedstoneConnectionElement readFomNBT(NBTTagCompound tag) {
 
         int inputsNumber = tag.getInteger("inputsNumber");
 
@@ -140,11 +140,11 @@ public final class Connection implements IConnection {
     }
 
     private static final class ConnectionElement implements INBTTagProvider<ConnectionElement> {
-        private IRedstoneElement redstoneElement;
+        private IRedstoneLogicElement redstoneElement;
         private short port;
         private boolean value;
 
-        public ConnectionElement(IRedstoneElement redstoneElement, short port) {
+        public ConnectionElement(IRedstoneLogicElement redstoneElement, short port) {
             this.redstoneElement = redstoneElement;
             this.port = port;
         }
@@ -152,11 +152,11 @@ public final class Connection implements IConnection {
         public ConnectionElement() {
         }
 
-        public IRedstoneElement getRedstoneElement() {
+        public IRedstoneLogicElement getRedstoneElement() {
             return redstoneElement;
         }
 
-        public void setRedstoneElement(IRedstoneElement redstoneElement) {
+        public void setRedstoneElement(IRedstoneLogicElement redstoneElement) {
             this.redstoneElement = redstoneElement;
         }
 

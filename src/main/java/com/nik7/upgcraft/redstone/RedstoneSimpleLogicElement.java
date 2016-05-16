@@ -1,15 +1,15 @@
 package com.nik7.upgcraft.redstone;
 
 
-public class RedstoneSimpleElement extends RedstoneElement {
+public class RedstoneSimpleLogicElement extends RedstoneLogicElement {
 
 
-    public RedstoneSimpleElement(ExpressionType type, int tickToComplete, boolean defaultOutput) {
+    public RedstoneSimpleLogicElement(ExpressionType type, int tickToComplete, boolean defaultOutput) {
         this(type, tickToComplete);
         this.output = defaultOutput;
     }
 
-    public RedstoneSimpleElement(ExpressionType type, int tickToComplete) {
+    public RedstoneSimpleLogicElement(ExpressionType type, int tickToComplete) {
         super(type, tickToComplete);
     }
 

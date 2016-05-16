@@ -1,10 +1,10 @@
 package com.nik7.upgcraft.redstone;
 
 
-public class RedstoneComplexElement extends RedstoneElement {
+public class RedstoneComplexLogicElement extends RedstoneLogicElement {
 
 
-    public RedstoneComplexElement(int tickTocomplete) {
+    public RedstoneComplexLogicElement(int tickTocomplete) {
         super(ExpressionType.CUSTOM, tickTocomplete);
     }
 

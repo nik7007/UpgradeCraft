@@ -5,11 +5,11 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import static com.nik7.upgcraft.redstone.RedstoneUpgC.INVALID_ID;
 
-public abstract class RedstoneElement implements IRedstoneElement {
+public abstract class RedstoneLogicElement implements IRedstoneLogicElement {
 
     private int ID;
     protected final ExpressionType type;
-    protected IConnection[] connections;
+    protected IRedstoneConnectionElement[] connections;
     private final int tickTocomplete;
     private int tick = 0;
     protected boolean output;
@@ -17,7 +17,7 @@ public abstract class RedstoneElement implements IRedstoneElement {
     private final short[] inputsPort;
     private final short outputPort;
 
-    protected RedstoneElement(ExpressionType type, int tickTocomplete) {
+    protected RedstoneLogicElement(ExpressionType type, int tickTocomplete) {
         short[] inputsPort;
         short outputPort;
 
@@ -31,22 +31,22 @@ public abstract class RedstoneElement implements IRedstoneElement {
         this.type = type;
         this.inputsPort = inputsPort;
         this.outputPort = outputPort;
-        this.connections = new Connection[inputsPort.length + 1];
+        this.connections = new RedstoneConnectionElement[inputsPort.length + 1];
         this.tickTocomplete = tickTocomplete + 1;
         this.ID = INVALID_ID;
     }
 
-    protected RedstoneElement(ExpressionType type, int tickTocomplete, short[] inputsPort, short outputPort) {
+    protected RedstoneLogicElement(ExpressionType type, int tickTocomplete, short[] inputsPort, short outputPort) {
         this.type = type;
         this.inputsPort = inputsPort;
         this.outputPort = outputPort;
-        this.connections = new Connection[inputsPort.length + 1];
+        this.connections = new RedstoneConnectionElement[inputsPort.length + 1];
         this.tickTocomplete = tickTocomplete + 1;
         this.ID = INVALID_ID;
     }
 
 
-    public RedstoneElement(ExpressionType type, int tickTocomplete, short[] inputsPort, short outputPort, IConnection[] connections) {
+    public RedstoneLogicElement(ExpressionType type, int tickTocomplete, short[] inputsPort, short outputPort, IRedstoneConnectionElement[] connections) {
         this(type, tickTocomplete, inputsPort, outputPort);
         System.arraycopy(connections, 0, this.connections, 0, 4);
     }
@@ -71,7 +71,7 @@ public abstract class RedstoneElement implements IRedstoneElement {
 
 
     @Override
-    public IRedstoneElement readFomNBT(NBTTagCompound tag) {
+    public IRedstoneLogicElement readFomNBT(NBTTagCompound tag) {
         this.ID = tag.getInteger("ID");
         RedstoneUpgC.addRedstoneElemet(this);
 
@@ -121,13 +121,13 @@ public abstract class RedstoneElement implements IRedstoneElement {
     }
 
     @Override
-    public void setConnection(IConnection connection, short port) {
+    public void setConnection(IRedstoneConnectionElement connection, short port) {
         if (port >= 0 && port < inputsPort.length + 1)
             this.connections[port] = connection;
     }
 
     @Override
-    public IConnection[] getConnections() {
+    public IRedstoneConnectionElement[] getConnections() {
         return connections;
     }
 
