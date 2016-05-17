@@ -18,4 +18,8 @@ public interface IRedstoneLogicElement extends IRedstoneElement {
 
     short getOutputPort();
 
+    ExpressionType getExpressionType();
+
+    int getTickTocomplete();
+
 }

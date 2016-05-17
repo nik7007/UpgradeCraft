@@ -58,12 +58,6 @@ public abstract class RedstoneLogicElement implements IRedstoneLogicElement {
             initID();
         tag.setInteger("ID", this.ID);
 
-        for (int i = 0; i < connections.length; i++) {
-            NBTTagCompound cNBT = new NBTTagCompound();
-            connections[i].writeToNBT(cNBT);
-            tag.setTag("connection" + i, cNBT);
-        }
-
         tag.setInteger("tick", this.tick);
         tag.setBoolean("output", this.output);
 
@@ -74,11 +68,6 @@ public abstract class RedstoneLogicElement implements IRedstoneLogicElement {
     public IRedstoneLogicElement readFomNBT(NBTTagCompound tag) {
         this.ID = tag.getInteger("ID");
         RedstoneUpgC.addRedstoneElemet(this);
-
-        for (int i = 0; i < connections.length; i++) {
-            NBTTagCompound cNBT = tag.getCompoundTag("connection" + i);
-            connections[i].readFomNBT(cNBT);
-        }
 
         this.tick = tag.getInteger("tick");
         this.output = tag.getBoolean("output");
@@ -159,5 +148,15 @@ public abstract class RedstoneLogicElement implements IRedstoneLogicElement {
     protected void setOutputToConnection() {
         this.connections[getOutputPort()].setInputValue(this, getOutputPort(), getOutput());
 
+    }
+
+    @Override
+    public ExpressionType getExpressionType() {
+        return this.type;
+    }
+
+    @Override
+    public int getTickTocomplete() {
+        return this.tickTocomplete - 1;
     }
 }

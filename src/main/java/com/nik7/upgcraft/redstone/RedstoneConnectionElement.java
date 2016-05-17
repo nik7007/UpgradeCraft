@@ -124,6 +124,7 @@ public final class RedstoneConnectionElement implements IRedstoneConnectionEleme
             ConnectionElement e = new ConnectionElement();
             e.readFomNBT(tagCompound);
             inputs.add(e);
+            e.getRedstoneElement().setConnection(this, e.getPort());
         }
 
         int outpusNumber = tag.getInteger("outpusNumber");
@@ -132,6 +133,7 @@ public final class RedstoneConnectionElement implements IRedstoneConnectionEleme
             ConnectionElement e = new ConnectionElement();
             e.readFomNBT(tagCompound);
             outputs.add(e);
+            e.getRedstoneElement().setConnection(this, e.getPort());
         }
 
         exec();
