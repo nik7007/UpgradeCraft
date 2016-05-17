@@ -7,26 +7,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.nik7.upgcraft.redstone.RedstoneConnectionElement.ConnectionElement.addConnectionToList;
+import static com.nik7.upgcraft.redstone.RedstoneConnectionElement.ConnectionElement.removeConnectionToList;
+
 public final class RedstoneConnectionElement implements IRedstoneConnectionElement {
 
     private final List<ConnectionElement> inputs = new ArrayList<>();
     private final List<ConnectionElement> outputs = new ArrayList<>();
-
-    private static boolean addConnectionToList(List<ConnectionElement> list, IRedstoneLogicElement redstoneElement, short port) {
-        ConnectionElement element = new ConnectionElement(redstoneElement, port);
-        return list.add(element);
-    }
-
-    private static boolean removeConnectionToList(List<ConnectionElement> list, IRedstoneLogicElement redstoneElement, short port) {
-        for (ConnectionElement e : list) {
-            if (e.getRedstoneElement().getID() == redstoneElement.getID() && e.getPort() == port) {
-                return list.remove(e);
-            }
-
-        }
-        return false;
-
-    }
 
 
     @Override
@@ -141,7 +128,7 @@ public final class RedstoneConnectionElement implements IRedstoneConnectionEleme
         return this;
     }
 
-    private static final class ConnectionElement implements INBTTagProvider<ConnectionElement> {
+    static final class ConnectionElement implements INBTTagProvider<ConnectionElement> {
         private IRedstoneLogicElement redstoneElement;
         private short port;
         private boolean value;
@@ -178,6 +165,21 @@ public final class RedstoneConnectionElement implements IRedstoneConnectionEleme
             this.value = value;
         }
 
+        public static boolean addConnectionToList(List<ConnectionElement> list, IRedstoneLogicElement redstoneElement, short port) {
+            ConnectionElement element = new ConnectionElement(redstoneElement, port);
+            return list.add(element);
+        }
+
+        public static boolean removeConnectionToList(List<ConnectionElement> list, IRedstoneLogicElement redstoneElement, short port) {
+            for (ConnectionElement e : list) {
+                if (e.getRedstoneElement().getID() == redstoneElement.getID() && e.getPort() == port) {
+                    return list.remove(e);
+                }
+
+            }
+            return false;
+
+        }
 
         @Override
         public void writeToNBT(NBTTagCompound tag) {
