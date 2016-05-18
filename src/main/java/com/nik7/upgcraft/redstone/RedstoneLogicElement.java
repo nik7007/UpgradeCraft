@@ -156,7 +156,7 @@ public abstract class RedstoneLogicElement implements IRedstoneLogicElement {
     }
 
     @Override
-    public int getTickTocomplete() {
+    public int getTickToComplete() {
         return this.tickTocomplete - 1;
     }
 }
