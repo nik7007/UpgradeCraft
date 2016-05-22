@@ -6,7 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,19 +41,21 @@ public final class RedstoneUpgC implements INBTTagProvider<Integer> {
     }
 
     static boolean evaluateBooleanExpression(boolean input1, boolean input2, boolean input3, ExpressionType expressionType) {
-        Boolean result = false;
-        String myExpression;
-        if (expressionType != ExpressionType.NOT)
-            myExpression = String.format("%b" + expressionType + "%b" + expressionType + "%b", input1, input2, input3);
-        else myExpression = String.format(expressionType + "%b", input1);
 
-        try {
-            result = (Boolean) se.eval(myExpression);
-        } catch (ScriptException e) {
-            e.printStackTrace();
+        switch (expressionType) {
+            case AND:
+                return input1 && input2 && input3;
+
+            case OR:
+                return input1 || input2 || input3;
+
+            case NOT:
+                return !input1;
+
+            default:
+                throw new RuntimeException("Invalid expression type: '" + expressionType + "'!");
         }
 
-        return result;
     }
 
     public void writeToNBT(NBTTagCompound tag) {
