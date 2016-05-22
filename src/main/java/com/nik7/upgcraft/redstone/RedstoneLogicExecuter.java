@@ -17,18 +17,50 @@ public class RedstoneLogicExecuter implements IRedstoneLogicGeneralElement {
     private final IRedstoneElement[][] REDSTONE_ELEMENT; //[r][c]
     private int tickToComplete = 0;
 
-    public RedstoneLogicExecuter(IRedstoneElement[][] redstoneElements) {
+    private final RedstoneIOConnectionElement[] ioConnectionElements;
+    private final short[] inputsPort;
+    private final short outputPort;
+
+    public RedstoneLogicExecuter(IRedstoneElement[][] redstoneElements, RedstoneIOConnectionElement[] ioConnectionElements, short[] inputsPort, short outputPort) {
         this.REDSTONE_ELEMENT = redstoneElements;
         this.ROW_DIMENSION = (short) redstoneElements.length;
         if (this.ROW_DIMENSION > 0)
             this.COLUMN_DIMENSION = (short) redstoneElements[0].length;
         else this.COLUMN_DIMENSION = 0;
+
+        this.ioConnectionElements = ioConnectionElements;
+        this.inputsPort = inputsPort;
+        this.outputPort = outputPort;
+
+        int tTC = findMinTick(REDSTONE_ELEMENT);
+        tickToComplete = tTC == Integer.MAX_VALUE ? 0 : tTC;
     }
 
-    public RedstoneLogicExecuter(short row_dimension, short column_dimension) {
+    public RedstoneLogicExecuter(short row_dimension, short column_dimension, short[] inputsPort, short outputPort) {
         ROW_DIMENSION = row_dimension;
         COLUMN_DIMENSION = column_dimension;
         REDSTONE_ELEMENT = new IRedstoneElement[ROW_DIMENSION][COLUMN_DIMENSION];
+        this.inputsPort = inputsPort;
+        this.outputPort = outputPort;
+        this.ioConnectionElements = new RedstoneIOConnectionElement[inputsPort.length + 1];
+    }
+
+    private static int findMinTick(IRedstoneElement[][] redstoneElements) {
+
+        int min = Integer.MAX_VALUE;
+
+        for (IRedstoneElement[] eV : redstoneElements)
+            for (IRedstoneElement e : eV) {
+                if (e instanceof IRedstoneLogicGeneralElement) {
+                    IRedstoneLogicGeneralElement gE = (IRedstoneLogicGeneralElement) e;
+                    if (min < gE.getTickToComplete())
+                        min = gE.getTickToComplete();
+                }
+
+            }
+
+        return min;
+
     }
 
     @Override
@@ -61,6 +93,13 @@ public class RedstoneLogicExecuter implements IRedstoneLogicGeneralElement {
                     tag.setTag("REDSTONE_ELEMENT" + r + c, tagCompound);
                 }
             }
+
+        for (int i = 0; i < ioConnectionElements.length + 1; i++) {
+            NBTTagCompound tagCompound = new NBTTagCompound();
+            ioConnectionElements[i].writeToNBT(tagCompound);
+            tag.setTag("ioConnectionElements" + i, tagCompound);
+        }
+
 
     }
 
@@ -99,6 +138,11 @@ public class RedstoneLogicExecuter implements IRedstoneLogicGeneralElement {
             REDSTONE_ELEMENT[r][c] = e;
         }
 
+        for (int i = 0; i < ioConnectionElements.length + 1; i++) {
+            NBTTagCompound tagCompound = tag.getCompoundTag("ioConnectionElements" + i);
+            ioConnectionElements[i].readFomNBT(tagCompound);
+        }
+
         return this;
     }
 
@@ -116,7 +160,7 @@ public class RedstoneLogicExecuter implements IRedstoneLogicGeneralElement {
     // TODO: 18/05/2016
     @Override
     public boolean getOutput() {
-        return false;
+        return this.ioConnectionElements[outputPort].getOutput();
     }
 
     // TODO: 18/05/2016
@@ -128,24 +172,24 @@ public class RedstoneLogicExecuter implements IRedstoneLogicGeneralElement {
     // TODO: 18/05/2016
     @Override
     public IRedstoneConnectionElement[] getConnections() {
-        return new IRedstoneConnectionElement[0];
+        return this.ioConnectionElements;
     }
 
     // TODO: 18/05/2016
     @Override
     public short[] getInputsPort() {
-        return new short[0];
+        return this.inputsPort;
     }
 
     // TODO: 18/05/2016
     @Override
     public short getOutputPort() {
-        return 0;
+        return this.outputPort;
     }
 
     // TODO: 18/05/2016
     @Override
     public int getTickToComplete() {
-        return 0;
+        return this.tickToComplete;
     }
 }
