@@ -4,16 +4,12 @@ package com.nik7.upgcraft.redstone;
 import com.nik7.upgcraft.util.INBTTagProvider;
 import net.minecraft.nbt.NBTTagCompound;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class RedstoneUpgC implements INBTTagProvider<Integer> {
     public static final int INVALID_ID = Integer.MIN_VALUE;
     static int globalID = 0;
-    private static final ScriptEngineManager sem = new ScriptEngineManager();
-    private static final ScriptEngine se = sem.getEngineByName("JavaScript");
     private static final Map<Integer, IRedstoneLogicElement> REDSTONE_ELEMENT_MAP = new HashMap<>();
 
     private final static RedstoneUpgC INSTANCE = new RedstoneUpgC();
