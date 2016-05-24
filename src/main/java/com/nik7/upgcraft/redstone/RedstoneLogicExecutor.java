@@ -45,6 +45,14 @@ public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
         this.ioConnectionElements = new RedstoneIOConnectionElement[inputsPort.length + 1];
     }
 
+    public short getRowDimension() {
+        return this.ROW_DIMENSION;
+    }
+
+    public short getColumnDimension() {
+        return this.COLUMN_DIMENSION;
+    }
+
     private static int findMinTick(IRedstoneElement[][] redstoneElements) {
 
         int min = Integer.MAX_VALUE;
@@ -119,8 +127,10 @@ public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
                     IRedstoneLogicElement e;
                     if (redstoneElement == REDSTONE_LOGIC_ELEMENT_S)
                         e = new RedstoneSimpleLogicElement(type, tickTocomplete);
-                    else
+                    else {
+                        // TODO: 24/05/2016  
                         e = new RedstoneComplexLogicElement(tickTocomplete);
+                    }
 
                     e.readFomNBT(tagCompound);
 
@@ -177,7 +187,7 @@ public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
     }
 
     @Override
-    public IRedstoneConnectionElement[] getConnections() {
+    public RedstoneIOConnectionElement[] getConnections() {
         return this.ioConnectionElements;
     }
 
