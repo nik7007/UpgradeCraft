@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RedstoneLogicExecuter implements IRedstoneLogicGeneralElement {
+public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
 
     private final static short REDSTONE_LOGIC_ELEMENT_S = 0;
     private final static short REDSTONE_LOGIC_ELEMENT_C = 1;
@@ -21,7 +21,7 @@ public class RedstoneLogicExecuter implements IRedstoneLogicGeneralElement {
     private final short[] inputsPort;
     private final short outputPort;
 
-    public RedstoneLogicExecuter(IRedstoneElement[][] redstoneElements, RedstoneIOConnectionElement[] ioConnectionElements, short[] inputsPort, short outputPort) {
+    public RedstoneLogicExecutor(IRedstoneElement[][] redstoneElements, RedstoneIOConnectionElement[] ioConnectionElements, short[] inputsPort, short outputPort) {
         this.REDSTONE_ELEMENT = redstoneElements;
         this.ROW_DIMENSION = (short) redstoneElements.length;
         if (this.ROW_DIMENSION > 0)
@@ -36,7 +36,7 @@ public class RedstoneLogicExecuter implements IRedstoneLogicGeneralElement {
         tickToComplete = tTC == Integer.MAX_VALUE ? 0 : tTC;
     }
 
-    public RedstoneLogicExecuter(short row_dimension, short column_dimension, short[] inputsPort, short outputPort) {
+    public RedstoneLogicExecutor(short row_dimension, short column_dimension, short[] inputsPort, short outputPort) {
         ROW_DIMENSION = row_dimension;
         COLUMN_DIMENSION = column_dimension;
         REDSTONE_ELEMENT = new IRedstoneElement[ROW_DIMENSION][COLUMN_DIMENSION];
@@ -105,7 +105,7 @@ public class RedstoneLogicExecuter implements IRedstoneLogicGeneralElement {
 
 
     @Override
-    public RedstoneLogicExecuter readFomNBT(NBTTagCompound tag) {
+    public RedstoneLogicExecutor readFomNBT(NBTTagCompound tag) {
 
         List<NBTTagCompound> connections = new LinkedList<>();
         this.tickToComplete = tag.getInteger("tickToComplete");
@@ -157,37 +157,40 @@ public class RedstoneLogicExecuter implements IRedstoneLogicGeneralElement {
 
     }
 
-    // TODO: 18/05/2016
     @Override
     public boolean getOutput() {
         return this.ioConnectionElements[outputPort].getOutput();
     }
 
-    // TODO: 18/05/2016
+
     @Override
     public void setConnection(IRedstoneConnectionElement connection, short port) {
+        throw new RuntimeException("You cannot change connection inside this class!!");
+    }
+
+    public void setInput(boolean value, short port) {
+
+        if (port <= inputsPort.length - 1) {
+            this.ioConnectionElements[port].setInput(value);
+        }
 
     }
 
-    // TODO: 18/05/2016
     @Override
     public IRedstoneConnectionElement[] getConnections() {
         return this.ioConnectionElements;
     }
 
-    // TODO: 18/05/2016
     @Override
     public short[] getInputsPort() {
         return this.inputsPort;
     }
 
-    // TODO: 18/05/2016
     @Override
     public short getOutputPort() {
         return this.outputPort;
     }
 
-    // TODO: 18/05/2016
     @Override
     public int getTickToComplete() {
         return this.tickToComplete;
