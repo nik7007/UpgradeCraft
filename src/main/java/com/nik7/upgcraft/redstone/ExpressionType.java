@@ -5,6 +5,7 @@ public enum ExpressionType {
     AND("&&"),
     OR("||"),
     NOT("!"),
+    WIRE("w"),
     CUSTOM("custom");
 
     private final String expression;

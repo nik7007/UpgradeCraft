@@ -6,6 +6,8 @@ import com.nik7.upgcraft.item.ItemUpgCRedLogicComponent;
 import com.nik7.upgcraft.reference.Reference;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import static com.nik7.upgcraft.redstone.ExpressionType.*;
+
 @GameRegistry.ObjectHolder(Reference.MOD_ID)
 public class ModItems {
 
@@ -17,10 +19,10 @@ public class ModItems {
 
     public static void init() {
         itemUpgCClayIngot = new ItemUpgCClayIngot();
-        itemUpgCANDComponent = new ItemUpgCRedLogicComponent("ANDComponent");
-        itemUpgCORComponent = new ItemUpgCRedLogicComponent("ORComponent");
-        itemUpgCNOTComponent = new ItemUpgCRedLogicComponent("NOTComponent");
-        itemUpgCWireComponent = new ItemUpgCRedLogicComponent("WireComponent");
+        itemUpgCANDComponent = new ItemUpgCRedLogicComponent("ANDComponent", AND);
+        itemUpgCORComponent = new ItemUpgCRedLogicComponent("ORComponent", OR);
+        itemUpgCNOTComponent = new ItemUpgCRedLogicComponent("NOTComponent", NOT);
+        itemUpgCWireComponent = new ItemUpgCRedLogicComponent("WireComponent", WIRE);
 
         registerItem(itemUpgCClayIngot);
 

@@ -1,8 +1,17 @@
 package com.nik7.upgcraft.item;
 
-public class ItemUpgCRedLogicComponent extends ItemUpgC{
+import com.nik7.upgcraft.redstone.ExpressionType;
 
-    public ItemUpgCRedLogicComponent(String name) {
+public class ItemUpgCRedLogicComponent extends ItemUpgC {
+
+    private ExpressionType expressionType;
+
+    public ItemUpgCRedLogicComponent(String name, ExpressionType expressionType) {
         super(name);
+        this.expressionType = expressionType;
+    }
+
+    public ExpressionType getExpressionType() {
+        return this.expressionType;
     }
 }
