@@ -71,6 +71,25 @@ public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
 
     }
 
+    private void setShortArray(NBTTagCompound tag, short[] array) {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        tagCompound.setShort("length", (short) array.length);
+        for (int i = 0; i < array.length; i++) {
+            tagCompound.setShort("v" + i, array[i]);
+        }
+        tag.setTag("shortArray", tagCompound);
+    }
+
+    private short[] getShortArray(NBTTagCompound tag) {
+        NBTTagCompound tagCompound = tag.getCompoundTag("shortArray");
+        short l = tagCompound.getShort("length");
+        short[] array = new short[l];
+        for (short i = 0; i < l; i++) {
+            array[i] = tagCompound.getShort("v" + i);
+        }
+        return array;
+    }
+
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         IRedstoneElement rE;
@@ -86,8 +105,13 @@ public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
 
                         if (e instanceof RedstoneSimpleLogicElement)
                             tagCompound.setShort("RedstoneElement", REDSTONE_LOGIC_ELEMENT_S);
-                        else if (e instanceof RedstoneComplexLogicElement)
+                        else if (e instanceof RedstoneComplexLogicElement) {
                             tagCompound.setShort("RedstoneElement", REDSTONE_LOGIC_ELEMENT_C);
+                            setShortArray(tagCompound, e.getInputsPort());
+                            tagCompound.setShort("outputPort", e.getOutputPort());
+                            tagCompound.setShort("row_dimension", ((RedstoneComplexLogicElement) e).getRowDimension());
+                            tagCompound.setShort("column_dimension", ((RedstoneComplexLogicElement) e).getColumnDimension());
+                        }
 
                         tagCompound.setString("ExpressionType", e.getExpressionType().toString());
                         tagCompound.setInteger("TickTocomplete", e.getTickToComplete());
@@ -124,12 +148,19 @@ public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
                 if (redstoneElement == REDSTONE_LOGIC_ELEMENT_S || redstoneElement == REDSTONE_LOGIC_ELEMENT_C) {
                     ExpressionType type = ExpressionType.getType(tagCompound.getString("ExpressionType"));
                     int tickTocomplete = tagCompound.getInteger("TickTocomplete");
+
                     IRedstoneLogicElement e;
+
                     if (redstoneElement == REDSTONE_LOGIC_ELEMENT_S)
                         e = new RedstoneSimpleLogicElement(type, tickTocomplete);
                     else {
-                        // TODO: 24/05/2016  
-                        e = new RedstoneComplexLogicElement(tickTocomplete);
+                        short[] inputs = getShortArray(tagCompound);
+                        short output = tagCompound.getShort("outputPort");
+
+                        short rD = tagCompound.getShort("row_dimension");
+                        short cD = tagCompound.getShort("column_dimension");
+                        e = new RedstoneComplexLogicElement(tickTocomplete, inputs, output, rD, cD);
+
                     }
 
                     e.readFomNBT(tagCompound);
