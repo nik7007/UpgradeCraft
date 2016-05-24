@@ -29,7 +29,7 @@ import java.io.File;
 
 import static com.nik7.upgcraft.init.ModBlocks.*;
 import static com.nik7.upgcraft.init.ModFluids.blockFluidUpgCActiveLava;
-import static com.nik7.upgcraft.init.ModItems.itemUpgCClayIngot;
+import static com.nik7.upgcraft.init.ModItems.*;
 
 public class ClientProxy extends CommonProxy {
 
@@ -88,6 +88,10 @@ public class ClientProxy extends CommonProxy {
 
 
         modelMesher.register(itemUpgCClayIngot, 0, createLocation(itemUpgCClayIngot));
+        modelMesher.register(itemUpgCANDComponent,0,createLocation(itemUpgCANDComponent));
+        modelMesher.register(itemUpgCORComponent,0,createLocation(itemUpgCORComponent));
+        modelMesher.register(itemUpgCNOTComponent,0,createLocation(itemUpgCNOTComponent));
+        modelMesher.register(itemUpgCWireComponent,0,createLocation(itemUpgCWireComponent));
 
         modelMesher.register(Item.getItemFromBlock(blockUpgCFluidHopper), 0, createLocation(blockUpgCFluidHopper));
 
