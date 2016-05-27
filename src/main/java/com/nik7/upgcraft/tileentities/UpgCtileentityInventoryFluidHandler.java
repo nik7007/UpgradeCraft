@@ -6,6 +6,7 @@ import com.nik7.upgcraft.fluid.IMultipleTankFluidHandler;
 import com.nik7.upgcraft.network.DescriptionHandler;
 import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
+import com.nik7.upgcraft.util.NBTTagHelper;
 import io.netty.buffer.Unpooled;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -86,17 +87,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         }
 
         //itemStack
-        NBTTagList nbttaglist = tag.getTagList("Items", 10);
-        this.inventory = new ItemStack[this.getSizeInventory()];
-
-        for (int i = 0; i < nbttaglist.tagCount(); ++i) {
-            NBTTagCompound nbtTagCompound = nbttaglist.getCompoundTagAt(i);
-            byte b0 = nbtTagCompound.getByte("Slot");
-
-            if (b0 >= 0 && b0 < this.inventory.length) {
-                this.inventory[b0] = ItemStack.loadItemStackFromNBT(nbtTagCompound);
-            }
-        }
+        NBTTagHelper.readInventoryFromNBT(this.inventory, tag);
 
         if (tag.hasKey("CustomName")) {
             this.customName = tag.getString("CustomName");
@@ -124,18 +115,7 @@ public abstract class UpgCtileentityInventoryFluidHandler extends TileEntity imp
         tag.setTag("Tanks", nbtTagList);
 
         //itemStack
-        NBTTagList nbttaglist = new NBTTagList();
-
-        for (int i = 0; i < this.inventory.length; ++i) {
-            if (this.inventory[i] != null) {
-                NBTTagCompound nbtTagCompound = new NBTTagCompound();
-                nbtTagCompound.setByte("Slot", (byte) i);
-                this.inventory[i].writeToNBT(nbtTagCompound);
-                nbttaglist.appendTag(nbtTagCompound);
-            }
-        }
-
-        tag.setTag("Items", nbttaglist);
+        NBTTagHelper.writeInventoryToNBT(this.inventory, tag);
 
         if (this.hasCustomName()) {
             tag.setString("CustomName", this.customName);

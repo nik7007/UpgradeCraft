@@ -4,12 +4,12 @@ package com.nik7.upgcraft.redstone;
 public class RedstoneSimpleLogicElement extends RedstoneLogicElement {
 
 
-    public RedstoneSimpleLogicElement(ExpressionType type, int tickToComplete, boolean defaultOutput) {
+    protected RedstoneSimpleLogicElement(ExpressionType type, int tickToComplete, boolean defaultOutput) {
         this(type, tickToComplete);
         this.output = defaultOutput;
     }
 
-    public RedstoneSimpleLogicElement(ExpressionType type, int tickToComplete) {
+    protected RedstoneSimpleLogicElement(ExpressionType type, int tickToComplete) {
         super(type, tickToComplete);
     }
 
@@ -29,6 +29,25 @@ public class RedstoneSimpleLogicElement extends RedstoneLogicElement {
             output = RedstoneUpgC.evaluateBooleanExpression(inputs[0], inputs[1], inputs[2], type);
         }
 
+    }
+
+    public static final class AND extends RedstoneSimpleLogicElement {
+        public AND() {
+            super(ExpressionType.AND, 1);
+        }
+    }
+
+    public static final class OR extends RedstoneSimpleLogicElement {
+
+        public OR() {
+            super(ExpressionType.OR, 1);
+        }
+    }
+
+    public static final class NOT extends RedstoneSimpleLogicElement {
+        protected NOT() {
+            super(ExpressionType.NOT, 1, true);
+        }
     }
 
 }
