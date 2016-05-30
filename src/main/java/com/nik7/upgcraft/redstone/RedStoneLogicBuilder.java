@@ -95,12 +95,14 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
         @Override
         public void writeToNBT(NBTTagCompound tag) {
+            tag.setInteger("index", this.i);
 
         }
 
         @Override
         public TempElement readFomNBT(NBTTagCompound tag) {
-            return null;
+            this.i = tag.getInteger("index");
+            return this;
         }
     }
 

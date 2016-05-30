@@ -9,7 +9,7 @@ import java.util.Map;
 
 public final class RedstoneUpgC implements INBTTagProvider<Integer> {
     public static final int INVALID_ID = Integer.MIN_VALUE;
-    static int globalID = 0;
+    private static int globalID = 0;
     private static final Map<Integer, IRedstoneLogicElement> REDSTONE_ELEMENT_MAP = new HashMap<>();
 
     private final static RedstoneUpgC INSTANCE = new RedstoneUpgC();
@@ -21,6 +21,12 @@ public final class RedstoneUpgC implements INBTTagProvider<Integer> {
 
     public static RedstoneUpgC getInstance() {
         return INSTANCE;
+    }
+
+    public static int getID() {
+        int result = globalID;
+        globalID++;
+        return result;
     }
 
 

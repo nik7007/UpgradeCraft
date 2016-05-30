@@ -31,22 +31,21 @@ public class RedstoneSimpleLogicElement extends RedstoneLogicElement {
 
     }
 
-    public static final class AND extends RedstoneSimpleLogicElement {
-        public AND() {
-            super(ExpressionType.AND, 1);
+    public static final class AND {
+        public static RedstoneSimpleLogicElement getNewComponent() {
+            return new RedstoneSimpleLogicElement(ExpressionType.AND, 1);
         }
     }
 
-    public static final class OR extends RedstoneSimpleLogicElement {
-
-        public OR() {
-            super(ExpressionType.OR, 1);
+    public static final class OR {
+        public static RedstoneSimpleLogicElement getNewComponent() {
+            return new RedstoneSimpleLogicElement(ExpressionType.OR, 1);
         }
     }
 
-    public static final class NOT extends RedstoneSimpleLogicElement {
-        protected NOT() {
-            super(ExpressionType.NOT, 1, true);
+    public static final class NOT {
+        public static RedstoneSimpleLogicElement getNewComponent() {
+            return new RedstoneSimpleLogicElement(ExpressionType.NOT, 1, true);
         }
     }
 

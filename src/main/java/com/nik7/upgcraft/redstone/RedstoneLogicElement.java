@@ -78,8 +78,7 @@ public abstract class RedstoneLogicElement implements IRedstoneLogicElement {
     @Override
     public void initID() {
         if (this.ID == INVALID_ID) {
-            this.ID = RedstoneUpgC.globalID;
-            RedstoneUpgC.globalID++;
+            this.ID = RedstoneUpgC.getID();
             RedstoneUpgC.addRedstoneElemet(this);
         }
     }
