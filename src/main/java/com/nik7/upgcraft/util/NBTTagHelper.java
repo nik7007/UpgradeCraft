@@ -38,4 +38,22 @@ public class NBTTagHelper {
 
     }
 
+    public static void setShortArray(NBTTagCompound tag, short[] array) {
+        NBTTagCompound tagCompound = new NBTTagCompound();
+        tagCompound.setShort("length", (short) array.length);
+        for (int i = 0; i < array.length; i++) {
+            tagCompound.setShort("v" + i, array[i]);
+        }
+        tag.setTag("shortArray", tagCompound);
+    }
+
+    public static short[] getShortArray(NBTTagCompound tag) {
+        NBTTagCompound tagCompound = tag.getCompoundTag("shortArray");
+        short l = tagCompound.getShort("length");
+        short[] array = new short[l];
+        for (short i = 0; i < l; i++) {
+            array[i] = tagCompound.getShort("v" + i);
+        }
+        return array;
+    }
 }

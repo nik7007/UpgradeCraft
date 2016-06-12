@@ -30,7 +30,26 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
         NBTTagHelper.writeInventoryToNBT(this.inventory, tag);
         tag.setInteger("index", this.index);
+        if (this.redstoneLogicExecutor != null) {
+            NBTTagCompound executorTagCompound = new NBTTagCompound();
+            short rowDimension = this.redstoneLogicExecutor.getRowDimension();
+            short columnDimension = this.redstoneLogicExecutor.getColumnDimension();
+            short[] inputsPort = this.redstoneLogicExecutor.getInputsPort();
+            short outputPort = this.redstoneLogicExecutor.getOutputPort();
 
+            executorTagCompound.setShort("rowDimension", rowDimension);
+            executorTagCompound.setShort("columnDimension", columnDimension);
+            NBTTagHelper.setShortArray(executorTagCompound, inputsPort);
+            executorTagCompound.setShort("outputPort", outputPort);
+
+            NBTTagCompound executorTag = new NBTTagCompound();
+            this.redstoneLogicExecutor.writeToNBT(executorTag);
+            executorTagCompound.setTag("executorTag", executorTag);
+
+            tag.setTag("executorTagCompound", executorTagCompound);
+
+
+        }
     }
 
     @Override
@@ -38,6 +57,17 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
         NBTTagHelper.readInventoryFromNBT(this.inventory, tag);
         this.index = tag.getInteger("index");
+
+        if (tag.hasKey("executorTagCompound")) {
+            NBTTagCompound executorTagCompound = tag.getCompoundTag("executorTagCompound");
+
+            short rowDimension = executorTagCompound.getShort("rowDimension");
+            short columnDimension = executorTagCompound.getShort("columnDimension");
+            short[] inputsPort = NBTTagHelper.getShortArray(executorTagCompound);
+            short outputPort = executorTagCompound.getShort("outputPort");
+            RedstoneLogicExecutor redstoneLogicExecutor = new RedstoneLogicExecutor(rowDimension, columnDimension, inputsPort, outputPort);
+            this.redstoneLogicExecutor = redstoneLogicExecutor.readFomNBT(executorTagCompound.getCompoundTag("executorTag"));
+        }
 
         return this;
     }
@@ -77,6 +107,30 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
     }
 
+    private ItemStack getLeftElemnt(int index) {
+
+        int i = index - 1;
+        if (i > 0) {
+            if (index % column != 0) {
+                return this.inventory[i];
+            }
+        }
+        return null;
+
+    }
+
+    private ItemStack getRightElement(int index) {
+
+        int i = index + 1;
+        if (i < column * row) {
+            if (i % column != 0) {
+                return this.inventory[i];
+            }
+        }
+        return null;
+
+    }
+
     public RedstoneLogicExecutor getRedstoneLogicExecutor() {
 
         if (this.redstoneLogicExecutor != null) {
@@ -88,7 +142,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
     }
 
-    private class TempElement implements INBTTagProvider<TempElement>{
+    private class TempElement implements INBTTagProvider<TempElement> {
 
         int i;
         RedstoneLogicElement element;
