@@ -1,10 +1,17 @@
 package com.nik7.upgcraft.redstone;
 
 
+import com.nik7.upgcraft.item.ItemBlockRedLogicComponent;
 import com.nik7.upgcraft.util.INBTTagProvider;
 import com.nik7.upgcraft.util.NBTTagHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.nik7.upgcraft.init.ModItems.*;
 
 public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilder> {
 
@@ -13,6 +20,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     private final short row;
     private final short column;
     private RedstoneLogicExecutor redstoneLogicExecutor;
+    private Map<Integer, TempElement> tempElementMap = new HashMap<>();
 
     public RedStoneLogicBuilder(short row, short column) {
 
@@ -83,6 +91,26 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
     public void exec() {
 
+        for (; this.index < this.inventory.length; this.index++) {
+
+            ItemStack itemStack = this.inventory[index];
+
+            if (itemStack != null) {
+                Item redElemnt = itemStack.getItem();
+
+                // TODO: 13/06/2016
+                if (redElemnt == itemUpgCANDComponent) {
+
+                } else if (redElemnt == itemUpgCORComponent) {
+
+                } else if (redElemnt == itemUpgCNOTComponent) {
+
+                } else if (redElemnt instanceof ItemBlockRedLogicComponent) {
+
+                }
+
+            }
+        }
 
     }
 
@@ -145,17 +173,19 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     private class TempElement implements INBTTagProvider<TempElement> {
 
         int i;
-        RedstoneLogicElement element;
+        IRedstoneLogicElement element;
 
         @Override
         public void writeToNBT(NBTTagCompound tag) {
             tag.setInteger("index", this.i);
+            NBTTagHelper.writeRedstoneLogicElement(this.element, tag);
 
         }
 
         @Override
         public TempElement readFomNBT(NBTTagCompound tag) {
             this.i = tag.getInteger("index");
+            this.element = NBTTagHelper.readRedstoneLogicElement(tag);
             return this;
         }
     }

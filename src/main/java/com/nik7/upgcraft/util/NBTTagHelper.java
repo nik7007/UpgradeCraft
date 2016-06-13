@@ -1,13 +1,17 @@
 package com.nik7.upgcraft.util;
 
 
+import com.nik7.upgcraft.redstone.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class NBTTagHelper {
 
-    public static void writeInventoryToNBT(ItemStack[] inventory, NBTTagCompound tag){
+    public final static short REDSTONE_LOGIC_ELEMENT_S = 0;
+    public final static short REDSTONE_LOGIC_ELEMENT_C = 1;
+
+    public static void writeInventoryToNBT(ItemStack[] inventory, NBTTagCompound tag) {
 
         NBTTagList nbttaglist = new NBTTagList();
 
@@ -23,7 +27,7 @@ public class NBTTagHelper {
         tag.setTag("Items", nbttaglist);
     }
 
-    public static void readInventoryFromNBT(ItemStack[] inventory, NBTTagCompound tag){
+    public static void readInventoryFromNBT(ItemStack[] inventory, NBTTagCompound tag) {
 
         NBTTagList nbttaglist = tag.getTagList("Items", 10);
 
@@ -55,5 +59,47 @@ public class NBTTagHelper {
             array[i] = tagCompound.getShort("v" + i);
         }
         return array;
+    }
+
+    public static void writeRedstoneLogicElement(IRedstoneLogicElement e, NBTTagCompound tag) {
+
+        if (e instanceof RedstoneSimpleLogicElement)
+            tag.setShort("RedstoneElement", REDSTONE_LOGIC_ELEMENT_S);
+        else if (e instanceof RedstoneComplexLogicElement) {
+            tag.setShort("RedstoneElement", REDSTONE_LOGIC_ELEMENT_C);
+            NBTTagHelper.setShortArray(tag, e.getInputsPort());
+            tag.setShort("outputPort", e.getOutputPort());
+            tag.setShort("row_dimension", ((RedstoneComplexLogicElement) e).getRowDimension());
+            tag.setShort("column_dimension", ((RedstoneComplexLogicElement) e).getColumnDimension());
+        }
+
+        tag.setString("ExpressionType", e.getExpressionType().toString());
+        tag.setInteger("TickTocomplete", e.getTickToComplete());
+        e.writeToNBT(tag);
+
+    }
+
+    public static IRedstoneLogicElement readRedstoneLogicElement(NBTTagCompound tagCompound) {
+        ExpressionType type = ExpressionType.getType(tagCompound.getString("ExpressionType"));
+        int tickTocomplete = tagCompound.getInteger("TickTocomplete");
+        short redstoneElement = tagCompound.getShort("RedstoneElement");
+
+        IRedstoneLogicElement e;
+
+        if (redstoneElement == REDSTONE_LOGIC_ELEMENT_S)
+            e = new RedstoneSimpleLogicElement(type, tickTocomplete);
+        else {
+            short[] inputs = NBTTagHelper.getShortArray(tagCompound);
+            short output = tagCompound.getShort("outputPort");
+
+            short rD = tagCompound.getShort("row_dimension");
+            short cD = tagCompound.getShort("column_dimension");
+            e = new RedstoneComplexLogicElement(tickTocomplete, inputs, output, rD, cD);
+
+        }
+
+        e.readFomNBT(tagCompound);
+
+        return e;
     }
 }

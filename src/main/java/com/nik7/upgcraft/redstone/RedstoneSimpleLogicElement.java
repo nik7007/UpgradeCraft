@@ -9,7 +9,7 @@ public class RedstoneSimpleLogicElement extends RedstoneLogicElement {
         this.output = defaultOutput;
     }
 
-    protected RedstoneSimpleLogicElement(ExpressionType type, int tickToComplete) {
+    public RedstoneSimpleLogicElement(ExpressionType type, int tickToComplete) {
         super(type, tickToComplete);
     }
 
