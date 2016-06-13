@@ -9,7 +9,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import static com.nik7.upgcraft.init.ModItems.*;
 
@@ -97,16 +99,62 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
             if (itemStack != null) {
                 Item redElemnt = itemStack.getItem();
+                int roataion = 0;
 
-                // TODO: 13/06/2016
-                if (redElemnt == itemUpgCANDComponent) {
+                if (itemStack.hasTagCompound()) {
+                    NBTTagCompound tagCompound = itemStack.getTagCompound();
+                    if (tagCompound.hasKey("roataion")) {
+                        roataion = tagCompound.getInteger("roataion");
 
-                } else if (redElemnt == itemUpgCORComponent) {
+                        if (roataion < 0)
+                            roataion = 0;
+                        else if (roataion > 3)
+                            roataion %= 4;
+                    }
+                }
 
-                } else if (redElemnt == itemUpgCNOTComponent) {
+                boolean usefulElement = false;
 
-                } else if (redElemnt instanceof ItemBlockRedLogicComponent) {
+                /*cleaning: - if the output points to nowhere remove the element - */
+                switch (roataion) {
+                    case 0:
+                        usefulElement = getUpElement(index) != null;
+                        break;
+                    case 1:
+                        usefulElement = getRightElement(index) != null;
+                        break;
+                    case 2:
+                        usefulElement = getDownElement(index) != null;
+                        break;
+                    case 3:
+                        usefulElement = getLeftElemnt(index) != null;
+                        break;
+                }
 
+                if (usefulElement) {
+                    TempElement tempElement = null;
+
+                    if (redElemnt == itemUpgCANDComponent) {
+
+                        tempElement = new TempElement().setContent(this.index, RedstoneSimpleLogicElement.AND.getNewComponent());
+
+                    } else if (redElemnt == itemUpgCORComponent) {
+
+                        tempElement = new TempElement().setContent(this.index, RedstoneSimpleLogicElement.OR.getNewComponent());
+
+                    } else if (redElemnt == itemUpgCNOTComponent) {
+                        tempElement = new TempElement().setContent(this.index, RedstoneSimpleLogicElement.NOT.getNewComponent());
+
+                    } else if (redElemnt instanceof ItemBlockRedLogicComponent) {
+                        ItemBlockRedLogicComponent complexElement = (ItemBlockRedLogicComponent) redElemnt;
+                        tempElement = new TempElement().setContent(this.index, complexElement.getRedstoneComplexLogicElement(itemStack));
+                    }
+
+                    if (tempElement != null) {
+
+                        tempElement.setRoataion(roataion);
+                        this.tempElementMap.put(this.index, tempElement);
+                    }
                 }
 
             }
@@ -173,6 +221,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     private class TempElement implements INBTTagProvider<TempElement> {
 
         int i;
+        int rotation = 0;
         IRedstoneLogicElement element;
 
         @Override
@@ -180,6 +229,22 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
             tag.setInteger("index", this.i);
             NBTTagHelper.writeRedstoneLogicElement(this.element, tag);
 
+        }
+
+        public TempElement setContent(int i, IRedstoneLogicElement element) {
+
+            if (element == null)
+                return null;
+
+            this.i = i;
+            this.element = element;
+
+            return this;
+        }
+
+        public TempElement setRoataion(int rotation) {
+            this.rotation = rotation;
+            return this;
         }
 
         @Override
