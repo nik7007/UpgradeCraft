@@ -113,25 +113,25 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
                     }
                 }
 
-                boolean usefulElement = false;
+                ItemStack usefulElement = null;
 
                 /*cleaning: - if the output points to nowhere remove the element - */
                 switch (roataion) {
                     case 0:
-                        usefulElement = getUpElement(index) != null;
+                        usefulElement = getUpElement(index);
                         break;
                     case 1:
-                        usefulElement = getRightElement(index) != null;
+                        usefulElement = getRightElement(index);
                         break;
                     case 2:
-                        usefulElement = getDownElement(index) != null;
+                        usefulElement = getDownElement(index);
                         break;
                     case 3:
-                        usefulElement = getLeftElemnt(index) != null;
+                        usefulElement = getLeftElemnt(index);
                         break;
                 }
 
-                if (usefulElement) {
+                if (usefulElement != null) {
                     TempElement tempElement = null;
 
                     if (redElemnt == itemUpgCANDComponent) {
@@ -153,6 +153,8 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
                     if (tempElement != null) {
 
                         tempElement.setRoataion(roataion);
+                        if (usefulElement.getItem() != itemUpgCWireComponent)
+                            tempElement.needsExtraConnection();
                         this.tempElementMap.put(this.index, tempElement);
                     }
                 }
@@ -223,12 +225,22 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         int i;
         int rotation = 0;
         IRedstoneLogicElement element;
+        boolean needsExtraConnection = false;
 
         @Override
         public void writeToNBT(NBTTagCompound tag) {
             tag.setInteger("index", this.i);
             NBTTagHelper.writeRedstoneLogicElement(this.element, tag);
+            tag.setBoolean("needsExtraConnection", this.needsExtraConnection);
 
+        }
+
+        @Override
+        public TempElement readFomNBT(NBTTagCompound tag) {
+            this.i = tag.getInteger("index");
+            this.element = NBTTagHelper.readRedstoneLogicElement(tag);
+            this.needsExtraConnection = tag.getBoolean("needsExtraConnection");
+            return this;
         }
 
         public TempElement setContent(int i, IRedstoneLogicElement element) {
@@ -247,12 +259,11 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
             return this;
         }
 
-        @Override
-        public TempElement readFomNBT(NBTTagCompound tag) {
-            this.i = tag.getInteger("index");
-            this.element = NBTTagHelper.readRedstoneLogicElement(tag);
-            return this;
+        public void needsExtraConnection() {
+            this.needsExtraConnection = true;
         }
+
+
     }
 
 }
