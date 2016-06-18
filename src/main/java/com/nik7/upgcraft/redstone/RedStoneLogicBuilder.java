@@ -7,11 +7,9 @@ import com.nik7.upgcraft.util.NBTTagHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.nik7.upgcraft.init.ModItems.*;
 
@@ -19,6 +17,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
     private ItemStack[] inventory;
     private int index = 0;
+    private int phase = 0;
     private final short row;
     private final short column;
     private RedstoneLogicExecutor redstoneLogicExecutor;
@@ -40,6 +39,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
         NBTTagHelper.writeInventoryToNBT(this.inventory, tag);
         tag.setInteger("index", this.index);
+        tag.setInteger("phase", this.phase);
         if (this.redstoneLogicExecutor != null) {
             NBTTagCompound executorTagCompound = new NBTTagCompound();
             short rowDimension = this.redstoneLogicExecutor.getRowDimension();
@@ -57,9 +57,20 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
             executorTagCompound.setTag("executorTag", executorTag);
 
             tag.setTag("executorTagCompound", executorTagCompound);
+        }
 
+        if (!this.tempElementMap.isEmpty()) {
+            NBTTagList tagList = new NBTTagList();
+            for (Map.Entry<Integer, TempElement> entry : this.tempElementMap.entrySet()) {
+                NBTTagCompound elementTag = new NBTTagCompound();
+                entry.getValue().writeToNBT(elementTag);
+                tagList.appendTag(elementTag);
+            }
+
+            tag.setTag("tempElementMap", tagList);
 
         }
+
     }
 
     @Override
@@ -67,6 +78,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
         NBTTagHelper.readInventoryFromNBT(this.inventory, tag);
         this.index = tag.getInteger("index");
+        this.phase = tag.getInteger("phase");
 
         if (tag.hasKey("executorTagCompound")) {
             NBTTagCompound executorTagCompound = tag.getCompoundTag("executorTagCompound");
@@ -77,6 +89,17 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
             short outputPort = executorTagCompound.getShort("outputPort");
             RedstoneLogicExecutor redstoneLogicExecutor = new RedstoneLogicExecutor(rowDimension, columnDimension, inputsPort, outputPort);
             this.redstoneLogicExecutor = redstoneLogicExecutor.readFomNBT(executorTagCompound.getCompoundTag("executorTag"));
+        }
+
+        if (tag.hasKey("tempElementMap")) {
+            NBTTagList tagList = tag.getTagList("tempElementMap", 10);
+            for (int i = 0; i < tagList.tagCount(); i++) {
+                NBTTagCompound elementTag = tagList.getCompoundTagAt(i);
+                TempElement tempElement = new TempElement();
+                tempElement.readFomNBT(elementTag);
+                this.tempElementMap.put(tempElement.i, tempElement);
+            }
+
         }
 
         return this;
@@ -91,77 +114,100 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
     }
 
-    public void exec() {
+    /**
+     * First phase: find all the logic component.
+     */
+    private void phase0() {
+        if (this.index < this.inventory.length) {
+            try {
+                ItemStack itemStack = this.inventory[index];
 
-        for (; this.index < this.inventory.length; this.index++) {
+                if (itemStack != null) {
+                    Item redElemnt = itemStack.getItem();
+                    int roataion = 0;
 
-            ItemStack itemStack = this.inventory[index];
+                    if (itemStack.hasTagCompound()) {
+                        NBTTagCompound tagCompound = itemStack.getTagCompound();
+                        if (tagCompound.hasKey("roataion")) {
+                            roataion = tagCompound.getInteger("roataion");
 
-            if (itemStack != null) {
-                Item redElemnt = itemStack.getItem();
-                int roataion = 0;
-
-                if (itemStack.hasTagCompound()) {
-                    NBTTagCompound tagCompound = itemStack.getTagCompound();
-                    if (tagCompound.hasKey("roataion")) {
-                        roataion = tagCompound.getInteger("roataion");
-
-                        if (roataion < 0)
-                            roataion = 0;
-                        else if (roataion > 3)
-                            roataion %= 4;
+                            if (roataion < 0)
+                                roataion = 0;
+                            else if (roataion > 3)
+                                roataion %= 4;
+                        }
                     }
-                }
 
-                ItemStack usefulElement = null;
+                    ItemStack usefulElement = null;
 
                 /*cleaning: - if the output points to nowhere remove the element - */
-                switch (roataion) {
-                    case 0:
-                        usefulElement = getUpElement(index);
-                        break;
-                    case 1:
-                        usefulElement = getRightElement(index);
-                        break;
-                    case 2:
-                        usefulElement = getDownElement(index);
-                        break;
-                    case 3:
-                        usefulElement = getLeftElemnt(index);
-                        break;
-                }
-
-                if (usefulElement != null) {
-                    TempElement tempElement = null;
-
-                    if (redElemnt == itemUpgCANDComponent) {
-
-                        tempElement = new TempElement().setContent(this.index, RedstoneSimpleLogicElement.AND.getNewComponent());
-
-                    } else if (redElemnt == itemUpgCORComponent) {
-
-                        tempElement = new TempElement().setContent(this.index, RedstoneSimpleLogicElement.OR.getNewComponent());
-
-                    } else if (redElemnt == itemUpgCNOTComponent) {
-                        tempElement = new TempElement().setContent(this.index, RedstoneSimpleLogicElement.NOT.getNewComponent());
-
-                    } else if (redElemnt instanceof ItemBlockRedLogicComponent) {
-                        ItemBlockRedLogicComponent complexElement = (ItemBlockRedLogicComponent) redElemnt;
-                        tempElement = new TempElement().setContent(this.index, complexElement.getRedstoneComplexLogicElement(itemStack));
+                    switch (roataion) {
+                        case 0:
+                            usefulElement = getUpElement(index);
+                            break;
+                        case 1:
+                            usefulElement = getRightElement(index);
+                            break;
+                        case 2:
+                            usefulElement = getDownElement(index);
+                            break;
+                        case 3:
+                            usefulElement = getLeftElemnt(index);
+                            break;
                     }
 
-                    if (tempElement != null) {
+                    if (usefulElement != null) {
+                        TempElement tempElement = null;
 
-                        tempElement.setRoataion(roataion);
-                        if (usefulElement.getItem() != itemUpgCWireComponent)
-                            tempElement.needsExtraConnection();
-                        this.tempElementMap.put(this.index, tempElement);
+                        if (redElemnt == itemUpgCANDComponent) {
+
+                            tempElement = new TempElement().setContent(this.index, RedstoneSimpleLogicElement.AND.getNewComponent());
+
+                        } else if (redElemnt == itemUpgCORComponent) {
+
+                            tempElement = new TempElement().setContent(this.index, RedstoneSimpleLogicElement.OR.getNewComponent());
+
+                        } else if (redElemnt == itemUpgCNOTComponent) {
+                            tempElement = new TempElement().setContent(this.index, RedstoneSimpleLogicElement.NOT.getNewComponent());
+
+                        } else if (redElemnt instanceof ItemBlockRedLogicComponent) {
+                            ItemBlockRedLogicComponent complexElement = (ItemBlockRedLogicComponent) redElemnt;
+                            tempElement = new TempElement().setContent(this.index, complexElement.getRedstoneComplexLogicElement(itemStack));
+                        }
+
+                        if (tempElement != null) {
+
+                            tempElement.setRoataion(roataion);
+                            if (usefulElement.getItem() != itemUpgCWireComponent)
+                                tempElement.needsExtraConnection();
+                            this.tempElementMap.put(this.index, tempElement);
+                        }
                     }
-                }
 
+                }
+            } finally {
+                this.index++;
             }
+        } else {
+            this.phase++;
+            this.index = 0;
         }
 
+
+    }
+
+    /**
+     * Call it every tick to build the logic function starting from the Itemstacks.
+     * <p>
+     * return: the current phase of the process.
+     */
+    public int exec() {
+        switch (this.phase) {
+            case 0:
+                phase0();
+                break;
+        }
+        return this.phase;
     }
 
     public int getIndex() {
