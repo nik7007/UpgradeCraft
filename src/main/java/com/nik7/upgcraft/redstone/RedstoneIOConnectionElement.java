@@ -48,7 +48,10 @@ public final class RedstoneIOConnectionElement extends RedstoneConnectionElement
 
         boolean value = this.input;
 
-        if (super.inputs.size() > 0) {
+        if (super.outputs.isEmpty())
+            return;
+
+        if (!super.inputs.isEmpty()) {
             //OR behavior
             for (ConnectionElement e : super.inputs) {
                 if (value) {

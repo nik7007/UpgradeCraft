@@ -145,6 +145,11 @@ public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
     @Override
     public void exec() {
         IRedstoneElement rE;
+
+        for (IRedstoneElement e : ioConnectionElements) {
+            e.exec();
+        }
+
         for (int c = 0; c < COLUMN_DIMENSION; c++)
             for (int r = 0; r < ROW_DIMENSION; r++) {
                 if ((rE = REDSTONE_ELEMENT[r][c]) != null)
