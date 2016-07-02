@@ -10,10 +10,10 @@ import java.util.List;
 import static com.nik7.upgcraft.redstone.RedstoneConnectionElement.ConnectionElement.addConnectionToList;
 import static com.nik7.upgcraft.redstone.RedstoneConnectionElement.ConnectionElement.removeConnectionToList;
 
-public final class RedstoneConnectionElement implements IRedstoneConnectionElement {
+public class RedstoneConnectionElement implements IRedstoneConnectionElement {
 
-    private final List<ConnectionElement> inputs = new ArrayList<>();
-    private final List<ConnectionElement> outputs = new ArrayList<>();
+    protected final List<ConnectionElement> inputs = new ArrayList<>();
+    protected final List<ConnectionElement> outputs = new ArrayList<>();
 
 
     @Override
