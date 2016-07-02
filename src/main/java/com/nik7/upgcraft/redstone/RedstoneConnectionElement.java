@@ -67,9 +67,12 @@ public class RedstoneConnectionElement implements IRedstoneConnectionElement {
 
         boolean value = false;
 
-        if (inputs.size() > 0) {
+        if (this.outputs.isEmpty())
+            return;
+
+        if (!this.inputs.isEmpty()) {
             //OR behavior
-            for (ConnectionElement e : inputs) {
+            for (ConnectionElement e : this.inputs) {
                 value = e.getValue();
                 if (value) {
                     break;
@@ -77,7 +80,7 @@ public class RedstoneConnectionElement implements IRedstoneConnectionElement {
             }
         }
 
-        for (ConnectionElement cE : outputs) {
+        for (ConnectionElement cE : this.outputs) {
             cE.setValue(value);
         }
     }
