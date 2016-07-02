@@ -9,7 +9,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.nik7.upgcraft.init.ModItems.*;
 
@@ -20,6 +21,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     private int phase = 0;
     private final short row;
     private final short column;
+    private final int IOup, IOdow, IOleft, IOright;
     private RedstoneLogicExecutor redstoneLogicExecutor;
     private Map<Integer, TempElement> tempElementMap = new HashMap<>();
 
@@ -30,6 +32,12 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
         this.row = row;
         this.column = column;
+
+        this.IOup = (column - 1) / 2;
+        this.IOdow = (row - 1) * column + this.IOup;
+        this.IOleft = row / 2 * column;
+        this.IOright = this.IOleft + column - 1;
+
         inventory = new ItemStack[row * column];
     }
 
@@ -197,6 +205,15 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     }
 
     /**
+     * Second phase: find IO connection
+     */
+    private void phase1() {
+
+
+
+    }
+
+    /**
      * Call it every tick to build the logic function starting from the Itemstacks.
      * <p>
      * return: the current phase of the process.
@@ -205,6 +222,9 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         switch (this.phase) {
             case 0:
                 phase0();
+                break;
+            case 1:
+                phase1();
                 break;
         }
         return this.phase;
