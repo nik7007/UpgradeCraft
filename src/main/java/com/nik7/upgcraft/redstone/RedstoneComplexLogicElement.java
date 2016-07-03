@@ -21,13 +21,15 @@ public class RedstoneComplexLogicElement extends RedstoneLogicElement {
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        this.logicExecutor.writeToNBT(tag);
+        NBTTagCompound lEtag = new NBTTagCompound();
+        this.logicExecutor.writeToNBT(lEtag);
+        tag.setTag("logicExecutor", lEtag);
     }
 
     @Override
     public IRedstoneLogicElement readFomNBT(NBTTagCompound tag) {
         super.readFomNBT(tag);
-        this.logicExecutor.readFomNBT(tag);
+        this.logicExecutor.readFomNBT(tag.getCompoundTag("logicExecutor"));
         return this;
     }
 
