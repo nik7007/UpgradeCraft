@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.redstone;
 
 
+import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.item.ItemBlockRedLogicComponent;
 import com.nik7.upgcraft.util.INBTTagProvider;
 import com.nik7.upgcraft.util.NBTTagHelper;
@@ -25,6 +26,8 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     private RedstoneLogicExecutor redstoneLogicExecutor;
     private Map<Integer, TempElement> tempElementMap = new HashMap<>();
 
+    private final RedstoneIOConnectionElement IOConnections[];
+
     public RedStoneLogicBuilder(short row, short column) {
 
         if (row % 2 != 1 || column % 2 != 1)
@@ -38,7 +41,9 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         this.IOleft = row / 2 * column;
         this.IOright = this.IOleft + column - 1;
 
-        inventory = new ItemStack[row * column];
+        this.inventory = new ItemStack[row * column];
+
+        this.IOConnections = new RedstoneIOConnectionElement[4];
     }
 
 
@@ -132,24 +137,13 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
                 if (itemStack != null) {
                     Item redElemnt = itemStack.getItem();
-                    int roataion = 0;
+                    int rotation = getRotation(itemStack);
 
-                    if (itemStack.hasTagCompound()) {
-                        NBTTagCompound tagCompound = itemStack.getTagCompound();
-                        if (tagCompound.hasKey("roataion")) {
-                            roataion = tagCompound.getInteger("roataion");
-
-                            if (roataion < 0)
-                                roataion = 0;
-                            else if (roataion > 3)
-                                roataion %= 4;
-                        }
-                    }
 
                     ItemStack usefulElement = null;
 
                 /*cleaning: - if the output points to nowhere remove the element - */
-                    switch (roataion) {
+                    switch (rotation) {
                         case 0:
                             usefulElement = getUpElement(index);
                             break;
@@ -164,7 +158,8 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
                             break;
                     }
 
-                    if (usefulElement != null) {
+                /* ... but the last element could point to nowhere */
+                    if (usefulElement != null || this.index == this.IOright) {
                         TempElement tempElement = null;
 
                         if (redElemnt == itemUpgCANDComponent) {
@@ -185,9 +180,11 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
                         if (tempElement != null) {
 
-                            tempElement.setRoataion(roataion);
-                            if (usefulElement.getItem() != itemUpgCWireComponent)
-                                tempElement.needsExtraConnection();
+                            tempElement.setRoataion(rotation);
+                            if (usefulElement != null)
+                                if (usefulElement.getItem() != itemUpgCWireComponent)
+                                    tempElement.needsExtraConnection();
+
                             this.tempElementMap.put(this.index, tempElement);
                         }
                     }
@@ -204,11 +201,142 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
     }
 
+    private int getRotation(ItemStack itemStack) {
+        if (itemStack != null) {
+            int roataion = 0;
+
+            if (itemStack.hasTagCompound()) {
+                NBTTagCompound tagCompound = itemStack.getTagCompound();
+                if (tagCompound.hasKey("roataion")) {
+                    roataion = tagCompound.getInteger("roataion");
+
+                    if (roataion < 0)
+                        roataion = 0;
+                    else if (roataion > 3)
+                        roataion %= 4;
+                }
+            }
+            return roataion;
+        }
+        return -1;
+    }
+
     /**
      * Second phase: find IO connection
      */
     private void phase1() {
 
+
+        if (this.index < 4) {
+            try {
+
+                int IOPosition = 0;
+                ItemStack element;
+                switch (this.index) {
+                    case 0:
+                        IOPosition = this.IOdow;
+                        break;
+                    case 1:
+                        IOPosition = this.IOleft;
+                        break;
+                    case 2:
+                        IOPosition = this.IOup;
+                        break;
+                    case 3:
+                        IOPosition = this.IOright;
+                        break;
+                }
+
+                element = this.inventory[IOPosition];
+                if (element != null) {
+                    RedstoneIOConnectionElement ioConnectionElement = new RedstoneIOConnectionElement();
+                    if (element.getItem() != ModItems.itemUpgCWireComponent) {
+                        int rotation = getRotation(element);
+                        short port;
+                        IRedstoneLogicElement e = tempElementMap.get(IOPosition).element;
+                        if (this.index != 3) {
+                            if ((port = getInputPort(IOPosition, rotation, e.getExpressionType())) >= 0) {
+
+                                ioConnectionElement.addInput(tempElementMap.get(IOPosition).element, port);
+
+                            } else ioConnectionElement = null;
+
+                        } else {
+                            if ((port = getOutPutPort(IOPosition, rotation, e.getExpressionType())) >= 0)
+                                ioConnectionElement.addInput(tempElementMap.get(IOPosition).element, port);
+                            else ioConnectionElement = null;
+                        }
+
+                    } else {
+                        findConnection(ioConnectionElement, IOPosition);
+                    }
+
+                    this.IOConnections[this.index] = ioConnectionElement;
+
+                }
+
+
+            } finally {
+                this.index++;
+            }
+
+        } else {
+            this.phase++;
+            this.index = 0;
+        }
+    }
+
+    private short getInputPort(int posistion, int rotation, ExpressionType type) {
+
+        if (type == ExpressionType.NOT) {
+
+            if (posistion == this.IOup && rotation == 2)
+                return 0;
+            else if (posistion == this.IOdow && rotation == 0)
+                return 0;
+            else if (posistion == this.IOleft && rotation == 1)
+                return 0;
+
+        } else {
+            if (posistion == this.IOup) {
+                if (rotation != 0) {
+                    return (short) Math.abs(3 - rotation);
+                }
+            } else if (posistion == this.IOdow) {
+                if (rotation != 2) {
+                    return (short) Math.abs(1 - rotation);
+                }
+
+            } else if (posistion == this.IOleft) {
+                if (rotation != 3) {
+
+                    return (short) Math.abs(2 - rotation);
+                }
+            }
+
+        }
+
+        return -1;
+    }
+
+    private short getOutPutPort(int posistion, int rotation, ExpressionType type) {
+
+        if (posistion == this.IOright && rotation == 1)
+            if (type == ExpressionType.NOT) {
+                return 1;
+            } else {
+                return 3;
+            }
+
+        return -1;
+    }
+
+    private void findConnection(IRedstoneConnectionElement connection, int start) {
+        ItemStack elemet = getUpElement(start);
+
+        if (elemet != null) {
+            int i = getUpindex(start);
+        }
 
 
     }
@@ -234,21 +362,48 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         return this.index;
     }
 
-    private ItemStack getUpElement(int index) {
+    private int getUpindex(int index) {
+
         int i = index - column;
+        if (i >= 0)
+            return i;
+        return -1;
+    }
+
+    private ItemStack getUpElement(int index) {
+        int i = getUpindex(index);
         if (i >= 0) {
             return this.inventory[i];
         } else return null;
     }
 
-    private ItemStack getDownElement(int index) {
+    private int getDownindex(int index) {
         int i = index + column;
 
-        if (i < this.inventory.length) {
+        if (i < this.inventory.length)
+            return i;
+        return -1;
+    }
+
+    private ItemStack getDownElement(int index) {
+        int i = getDownindex(index);
+
+        if (i >= 0 && i < this.inventory.length) {
             return this.inventory[i];
         }
         return null;
 
+    }
+
+    private int getLeftIndex(int index) {
+
+        int i = index - 1;
+        if (i > 0) {
+            if (index % column != 0)
+                return i;
+        }
+
+        return -1;
     }
 
     private ItemStack getLeftElemnt(int index) {
@@ -261,6 +416,17 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         }
         return null;
 
+    }
+
+    private int getRightIndex(int index) {
+
+        int i = index + 1;
+        if (i < column * row) {
+            if (i % column != 0) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private ItemStack getRightElement(int index) {
