@@ -7,9 +7,9 @@ import static com.nik7.upgcraft.redstone.RedstoneUpgC.INVALID_ID;
 
 /**
  *       _______             ___2___
- *      |       |           |       |
- *    0 |  NOT  | 1       1 |  RLE  | 3
- *      |_______|           |_______|
+ *      |       |           |   i   |
+ *    0 |i NOT o| 1       1 |i RLE o| 3
+ *      |_______|           |___i___|
  *                              0
  *
  */
