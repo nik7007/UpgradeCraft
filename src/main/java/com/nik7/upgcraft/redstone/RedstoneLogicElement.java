@@ -5,6 +5,15 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import static com.nik7.upgcraft.redstone.RedstoneUpgC.INVALID_ID;
 
+/**
+ *       _______             ___2___
+ *      |       |           |       |
+ *    0 |  NOT  | 1       1 |  RLE  | 3
+ *      |_______|           |_______|
+ *                              0
+ *
+ */
+
 public abstract class RedstoneLogicElement implements IRedstoneLogicElement {
 
     private int ID;
