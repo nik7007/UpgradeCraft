@@ -79,11 +79,26 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
                 entry.getValue().writeToNBT(elementTag);
                 tagList.appendTag(elementTag);
             }
-
             tag.setTag("tempElementMap", tagList);
-
         }
 
+        NBTTagList tagList = new NBTTagList();
+        int length = this.IOConnections.length;
+        boolean needToWrite = false;
+        for (int i = 0; i < length; i++) {
+            RedstoneIOConnectionElement io = this.IOConnections[i];
+            if (io != null) {
+                NBTTagCompound elementTag = new NBTTagCompound();
+                NBTTagCompound content = new NBTTagCompound();
+                elementTag.setInteger("index", i);
+                io.writeToNBT(content);
+                elementTag.setTag("content", content);
+                tagList.appendTag(elementTag);
+                needToWrite = true;
+            }
+        }
+        if (needToWrite)
+            tag.setTag("IOConnections", tagList);
     }
 
     @Override
@@ -112,7 +127,17 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
                 tempElement.readFomNBT(elementTag);
                 this.tempElementMap.put(tempElement.i, tempElement);
             }
+        }
 
+        if (tag.hasKey("IOConnections")) {
+            NBTTagList tagList = tag.getTagList("IOConnections", 10);
+            for (int i = 0; i < tagList.tagCount(); i++) {
+                NBTTagCompound elementTag = tagList.getCompoundTagAt(i);
+                NBTTagCompound content = elementTag.getCompoundTag("content");
+                int index = elementTag.getInteger("index");
+                this.IOConnections[index] = new RedstoneIOConnectionElement();
+                this.IOConnections[index].readFomNBT(content);
+            }
         }
 
         return this;
@@ -225,7 +250,6 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
      * Second phase: find IO connection
      */
     private void phase1() {
-
 
         if (this.index < 4) {
             try {
