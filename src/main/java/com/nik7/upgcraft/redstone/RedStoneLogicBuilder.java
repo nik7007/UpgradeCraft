@@ -333,7 +333,6 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
             } else if (posistion == this.IOleft) {
                 if (rotation != 3) {
-
                     return (short) Math.abs(2 - rotation);
                 }
             }
@@ -355,13 +354,99 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         return -1;
     }
 
+    // TODO: 05/07/2016 consider the case two or more IO directly connected together
     private void findConnection(IRedstoneConnectionElement connection, int start) {
-        ItemStack elemet = getUpElement(start);
 
+        this.inventory[start] = null;
+
+        ItemStack elemet = getUpElement(start);
         if (elemet != null) {
             int i = getUpindex(start);
+            if (elemet.getItem() == ModItems.itemUpgCWireComponent)
+                findConnection(connection, i);
+            else {
+                int rotation = getRotation(elemet);
+
+                if (elemet.getItem() == ModItems.itemUpgCNOTComponent) {
+                    if (rotation == 0) {
+                        connection.addInput(tempElementMap.get(i).element, (short) 0);
+                    } else if (rotation == 2)
+                        connection.addOutput(tempElementMap.get(i).element, (short) 1);
+                } else {
+                    if (rotation != 2) {
+                        connection.addInput(tempElementMap.get(i).element, (short) Math.abs(1 - rotation));
+                    } else connection.addOutput(tempElementMap.get(i).element, (short) 3);
+
+                }
+            }
         }
 
+        elemet = getRightElement(start);
+        if (elemet != null) {
+            int i = getRightIndex(start);
+            if (elemet.getItem() == ModItems.itemUpgCWireComponent)
+                findConnection(connection, i);
+            else {
+                int rotation = getRotation(elemet);
+
+                if (elemet.getItem() == ModItems.itemUpgCNOTComponent) {
+                    if (rotation == 1)
+                        connection.addInput(tempElementMap.get(i).element, (short) 0);
+                    else if (rotation == 3)
+                        connection.addOutput(tempElementMap.get(i).element, (short) 1);
+                } else {
+
+                    if (rotation != 3) {
+                        connection.addInput(tempElementMap.get(i).element, (short) Math.abs(2 - rotation));
+                    } else connection.addOutput(tempElementMap.get(i).element, (short) 3);
+                }
+            }
+        }
+
+        elemet = getDownElement(start);
+        if (elemet != null) {
+            int i = getDownindex(start);
+            if (elemet.getItem() == ModItems.itemUpgCWireComponent)
+                findConnection(connection, i);
+            else {
+                int rotation = getRotation(elemet);
+
+                if (elemet.getItem() == ModItems.itemUpgCNOTComponent) {
+                    if (rotation == 2)
+                        connection.addInput(tempElementMap.get(i).element, (short) 0);
+                    else if (rotation == 0)
+                        connection.addOutput(tempElementMap.get(i).element, (short) 1);
+                } else {
+
+                    if (rotation != 0) {
+                        connection.addInput(tempElementMap.get(i).element, (short) Math.abs(3 - rotation));
+                    } else connection.addOutput(tempElementMap.get(i).element, (short) 3);
+                }
+            }
+        }
+
+        elemet = getLeftElemnt(start);
+        if (elemet != null) {
+            int i = getLeftIndex(start);
+            if (elemet.getItem() == ModItems.itemUpgCWireComponent)
+                findConnection(connection, i);
+            else {
+                int rotation = getRotation(elemet);
+
+                if (elemet.getItem() == ModItems.itemUpgCNOTComponent) {
+                    if (rotation == 3)
+                        connection.addInput(tempElementMap.get(i).element, (short) 0);
+                    else if (rotation == 1)
+                        connection.addOutput(tempElementMap.get(i).element, (short) 1);
+
+                } else {
+                    if (rotation != 1) {
+                        connection.addInput(tempElementMap.get(i).element, (short) (Math.abs(4 - rotation) % 4));
+
+                    } else connection.addOutput(tempElementMap.get(i).element, (short) 3);
+                }
+            }
+        }
 
     }
 
