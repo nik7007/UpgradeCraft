@@ -10,11 +10,8 @@ import static com.nik7.upgcraft.util.NBTTagHelper.REDSTONE_LOGIC_ELEMENT_S;
 
 public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
 
-    private final static short REDSTONE_CONNECTION_ELEMENT = (short) (Math.max(REDSTONE_LOGIC_ELEMENT_C, REDSTONE_LOGIC_ELEMENT_S) + 1);
-
     private final int ELEMENTS_NUMBER;
     private final int CONNECTIONS_NUMBER;
-    //private final IRedstoneElement[][] REDSTONE_ELEMENT; //[r][c]
 
     private final IRedstoneLogicElement[] elements;
     private final IRedstoneConnectionElement[] connections;
