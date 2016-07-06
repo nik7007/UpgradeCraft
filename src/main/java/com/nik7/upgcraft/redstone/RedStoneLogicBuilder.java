@@ -27,7 +27,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     private int keysMap[];
 
     private final RedstoneIOConnectionElement IOConnections[];
-    private final boolean IOConnectionFound[];
+    private boolean IOConnectionFound[];
 
     private final List<RedstoneConnectionElement> connections;
 
@@ -61,13 +61,13 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         tag.setInteger("phase", this.phase);
         if (this.redstoneLogicExecutor != null) {
             NBTTagCompound executorTagCompound = new NBTTagCompound();
-            short rowDimension = this.redstoneLogicExecutor.getRowDimension();
-            short columnDimension = this.redstoneLogicExecutor.getColumnDimension();
+            int elementsNumber = this.redstoneLogicExecutor.getElementsNumber();
+            int connectionsNumber = this.redstoneLogicExecutor.getConnectionsNumber();
             short[] inputsPort = this.redstoneLogicExecutor.getInputsPort();
             short outputPort = this.redstoneLogicExecutor.getOutputPort();
 
-            executorTagCompound.setShort("rowDimension", rowDimension);
-            executorTagCompound.setShort("columnDimension", columnDimension);
+            executorTagCompound.setInteger("elementsNumber", elementsNumber);
+            executorTagCompound.setInteger("connectionsNumber", connectionsNumber);
             NBTTagHelper.setShortArray(executorTagCompound, inputsPort);
             executorTagCompound.setShort("outputPort", outputPort);
 
@@ -117,7 +117,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
             tag.setTag("connections", tagList);
         }
 
-        if (this.keysMap != null && (length = this.keysMap.length) > 0) {
+        if (this.keysMap != null && this.keysMap.length > 0) {
             tag.setIntArray("keysMap", this.keysMap);
         }
 
@@ -133,11 +133,11 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         if (tag.hasKey("executorTagCompound")) {
             NBTTagCompound executorTagCompound = tag.getCompoundTag("executorTagCompound");
 
-            short rowDimension = executorTagCompound.getShort("rowDimension");
-            short columnDimension = executorTagCompound.getShort("columnDimension");
+            int elementsNumber = executorTagCompound.getInteger("elementsNumber");
+            int connectionsNumber = executorTagCompound.getInteger("connectionsNumber");
             short[] inputsPort = NBTTagHelper.getShortArray(executorTagCompound);
             short outputPort = executorTagCompound.getShort("outputPort");
-            RedstoneLogicExecutor redstoneLogicExecutor = new RedstoneLogicExecutor(rowDimension, columnDimension, inputsPort, outputPort);
+            RedstoneLogicExecutor redstoneLogicExecutor = new RedstoneLogicExecutor(elementsNumber, connectionsNumber, inputsPort, outputPort);
             this.redstoneLogicExecutor = redstoneLogicExecutor.readFomNBT(executorTagCompound.getCompoundTag("executorTag"));
         }
 
@@ -183,6 +183,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
         if (this.inventory.length == inventory.length) {
             System.arraycopy(inventory, 0, this.inventory, 0, this.inventory.length);
+            this.phase = 0;
         }
 
 
@@ -615,6 +616,38 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     }
 
     /**
+     * Fourth phase:  finally create the Executor Object and cleanup
+     */
+    private void phase4() {
+
+        try {
+            this.inventory = null;
+            this.IOConnectionFound = null;
+
+            IRedstoneLogicElement[] elements;
+            IRedstoneConnectionElement[] connections;
+
+            Collection<TempElement> collection = this.tempElementMap.values();
+            elements = new IRedstoneLogicElement[collection.size()];
+            int i = 0;
+            for (TempElement e : collection) {
+                elements[i] = e.element;
+                i++;
+            }
+            this.tempElementMap = null;
+
+            connections = new IRedstoneConnectionElement[this.connections.size()];
+            connections = this.connections.toArray(connections);
+
+            this.redstoneLogicExecutor = new RedstoneLogicExecutor(elements, connections, this.IOConnections, new short[]{(short) 0, (short) 1, (short) 2}, (short) 3);
+
+        } finally {
+            this.phase = -1;
+        }
+
+    }
+
+    /**
      * Call it every tick to build the logic function starting from the Itemstacks.
      * <p>
      * return: the current phase of the process.
@@ -632,6 +665,9 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
                 break;
             case 3:
                 phase3();
+                break;
+            case 4:
+                phase4();
                 break;
         }
         return this.phase;
