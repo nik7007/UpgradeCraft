@@ -172,7 +172,7 @@ public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
     public void setInput(boolean value, short port) {
 
         if (port <= inputsPort.length - 1) {
-            this.ioConnectionElements[port].setInput(value);
+            this.ioConnectionElements[port].setInput(value, port);
         }
 
     }

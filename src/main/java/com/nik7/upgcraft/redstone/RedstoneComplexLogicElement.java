@@ -51,7 +51,7 @@ public class RedstoneComplexLogicElement extends RedstoneLogicElement {
 
             for (short p : ports) {
                 boolean vale = connections[p].getOutputValue(this, p);
-                ioConnections[p].setInput(vale);
+                ioConnections[p].setInput(vale, p);
             }
 
             this.logicExecutor.exec();
