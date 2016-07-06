@@ -12,9 +12,9 @@ public class RedstoneComplexLogicElement extends RedstoneLogicElement {
         this.logicExecutor = logicExecutor;
     }
 
-    public RedstoneComplexLogicElement(int tickToComplete, short[] inputsPort, short outputPort, short row_dimension, short column_dimension) {
+    public RedstoneComplexLogicElement(int tickToComplete, short[] inputsPort, short outputPort, int elementsNumber, int connectionsNumber) {
         super(ExpressionType.CUSTOM, tickToComplete, inputsPort, outputPort);
-        logicExecutor = new RedstoneLogicExecutor(row_dimension, column_dimension, inputsPort, outputPort);
+        logicExecutor = new RedstoneLogicExecutor(elementsNumber, connectionsNumber, inputsPort, outputPort);
 
     }
 
@@ -33,12 +33,12 @@ public class RedstoneComplexLogicElement extends RedstoneLogicElement {
         return this;
     }
 
-    public short getRowDimension() {
-        return this.logicExecutor.getRowDimension();
+    public int getElementsNumber() {
+        return this.logicExecutor.getElementsNumber();
     }
 
-    public short getColumnDimension() {
-        return this.logicExecutor.getColumnDimension();
+    public int getConnectionsNumber() {
+        return this.logicExecutor.getConnectionsNumber();
     }
 
     @Override

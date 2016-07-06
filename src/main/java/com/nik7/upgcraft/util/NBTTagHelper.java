@@ -69,8 +69,8 @@ public class NBTTagHelper {
             tag.setShort("RedstoneElement", REDSTONE_LOGIC_ELEMENT_C);
             NBTTagHelper.setShortArray(tag, e.getInputsPort());
             tag.setShort("outputPort", e.getOutputPort());
-            tag.setShort("row_dimension", ((RedstoneComplexLogicElement) e).getRowDimension());
-            tag.setShort("column_dimension", ((RedstoneComplexLogicElement) e).getColumnDimension());
+            tag.setInteger("elements_number", ((RedstoneComplexLogicElement) e).getElementsNumber());
+            tag.setInteger("connections_number", ((RedstoneComplexLogicElement) e).getConnectionsNumber());
         }
 
         tag.setString("ExpressionType", e.getExpressionType().toString());
@@ -92,9 +92,9 @@ public class NBTTagHelper {
             short[] inputs = NBTTagHelper.getShortArray(tagCompound);
             short output = tagCompound.getShort("outputPort");
 
-            short rD = tagCompound.getShort("row_dimension");
-            short cD = tagCompound.getShort("column_dimension");
-            e = new RedstoneComplexLogicElement(tickTocomplete, inputs, output, rD, cD);
+            int eN = tagCompound.getInteger("elements_number");
+            int cN = tagCompound.getInteger("column_dimension");
+            e = new RedstoneComplexLogicElement(tickTocomplete, inputs, output, eN, cN);
 
         }
 
