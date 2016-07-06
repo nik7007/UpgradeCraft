@@ -27,6 +27,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     private Map<Integer, TempElement> tempElementMap = new HashMap<>();
 
     private final RedstoneIOConnectionElement IOConnections[];
+    private final boolean IOConnectionFound[];
 
     public RedStoneLogicBuilder(short row, short column) {
 
@@ -44,6 +45,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         this.inventory = new ItemStack[row * column];
 
         this.IOConnections = new RedstoneIOConnectionElement[4];
+        this.IOConnectionFound = new boolean[4];
     }
 
 
@@ -292,10 +294,16 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
                         }
 
                     } else {
+                        for (int i = 0; i < this.IOConnectionFound.length; i++)
+                            this.IOConnectionFound[i] = false;
+
                         findConnection(ioConnectionElement, IOPosition);
                     }
 
-                    this.IOConnections[this.index] = ioConnectionElement;
+                    for (int i = 0; i < this.IOConnectionFound.length; i++) {
+                        if (this.IOConnectionFound[i])
+                            this.IOConnections[i] = ioConnectionElement;
+                    }
 
                 }
 
@@ -354,8 +362,18 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         return -1;
     }
 
-    // TODO: 05/07/2016 consider the case two or more IO directly connected together
     private void findConnection(IRedstoneConnectionElement connection, int start) {
+
+        if (this.inventory[start] != null) {
+            if (start == this.IOdow)
+                this.IOConnectionFound[0] = true;
+            else if (start == this.IOleft)
+                this.IOConnectionFound[1] = true;
+            else if (start == this.IOup)
+                this.IOConnectionFound[2] = true;
+            else if (start == this.IOright)
+                this.IOConnectionFound[3] = true;
+        }
 
         this.inventory[start] = null;
 
