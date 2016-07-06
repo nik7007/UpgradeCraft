@@ -10,8 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static com.nik7.upgcraft.init.ModItems.*;
 
@@ -25,9 +24,12 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     private final int IOup, IOdow, IOleft, IOright;
     private RedstoneLogicExecutor redstoneLogicExecutor;
     private Map<Integer, TempElement> tempElementMap = new HashMap<>();
+    private int keysMap[];
 
     private final RedstoneIOConnectionElement IOConnections[];
     private final boolean IOConnectionFound[];
+
+    private final List<RedstoneConnectionElement> connections;
 
     public RedStoneLogicBuilder(short row, short column) {
 
@@ -46,6 +48,8 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
         this.IOConnections = new RedstoneIOConnectionElement[4];
         this.IOConnectionFound = new boolean[4];
+
+        connections = new LinkedList<>();
     }
 
 
@@ -101,6 +105,22 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         }
         if (needToWrite)
             tag.setTag("IOConnections", tagList);
+
+        if (!this.connections.isEmpty()) {
+            tagList = new NBTTagList();
+            for (RedstoneConnectionElement c : this.connections) {
+                NBTTagCompound tagCompound = new NBTTagCompound();
+                c.writeToNBT(tagCompound);
+                tagList.appendTag(tagCompound);
+
+            }
+            tag.setTag("connections", tagList);
+        }
+
+        if (this.keysMap != null && (length = this.keysMap.length) > 0) {
+            tag.setIntArray("keysMap", this.keysMap);
+        }
+
     }
 
     @Override
@@ -142,6 +162,20 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
             }
         }
 
+        if (tag.hasKey("connections")) {
+            NBTTagList tagList = tag.getTagList("connections", 10);
+            for (int i = 0; i < tagList.tagCount(); i++) {
+                NBTTagCompound elementTag = tagList.getCompoundTagAt(i);
+                RedstoneConnectionElement c = new RedstoneConnectionElement();
+                c.readFomNBT(elementTag);
+                this.connections.add(c);
+            }
+        }
+
+        if (tag.hasKey("keysMap")) {
+            this.keysMap = tag.getIntArray("keysMap");
+        }
+
         return this;
     }
 
@@ -168,20 +202,25 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
 
                     ItemStack usefulElement = null;
+                    int usefulIndex = 0;
 
                 /*cleaning: - if the output points to nowhere remove the element - */
                     switch (rotation) {
                         case 0:
                             usefulElement = getUpElement(index);
+                            usefulIndex = getUpIndex(index);
                             break;
                         case 1:
                             usefulElement = getRightElement(index);
+                            usefulIndex = getRightIndex(index);
                             break;
                         case 2:
                             usefulElement = getDownElement(index);
+                            usefulIndex = getDownIndex(index);
                             break;
                         case 3:
-                            usefulElement = getLeftElemnt(index);
+                            usefulElement = getLeftElement(index);
+                            usefulIndex = getLeftIndex(index);
                             break;
                     }
 
@@ -209,8 +248,10 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
                             tempElement.setRoataion(rotation);
                             if (usefulElement != null)
-                                if (usefulElement.getItem() != itemUpgCWireComponent)
+                                if (usefulElement.getItem() != itemUpgCWireComponent) {
                                     tempElement.needsExtraConnection();
+                                    tempElement.needsConnectionTo = usefulIndex;
+                                }
 
                             this.tempElementMap.put(this.index, tempElement);
                         }
@@ -379,23 +420,12 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
         ItemStack elemet = getUpElement(start);
         if (elemet != null) {
-            int i = getUpindex(start);
+            int i = getUpIndex(start);
             if (elemet.getItem() == ModItems.itemUpgCWireComponent)
                 findConnection(connection, i);
             else {
                 int rotation = getRotation(elemet);
-
-                if (elemet.getItem() == ModItems.itemUpgCNOTComponent) {
-                    if (rotation == 0) {
-                        connection.addInput(tempElementMap.get(i).element, (short) 0);
-                    } else if (rotation == 2)
-                        connection.addOutput(tempElementMap.get(i).element, (short) 1);
-                } else {
-                    if (rotation != 2) {
-                        connection.addInput(tempElementMap.get(i).element, (short) Math.abs(1 - rotation));
-                    } else connection.addOutput(tempElementMap.get(i).element, (short) 3);
-
-                }
+                connectToUp(connection, elemet, i, rotation);
             }
         }
 
@@ -406,64 +436,180 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
                 findConnection(connection, i);
             else {
                 int rotation = getRotation(elemet);
-
-                if (elemet.getItem() == ModItems.itemUpgCNOTComponent) {
-                    if (rotation == 1)
-                        connection.addInput(tempElementMap.get(i).element, (short) 0);
-                    else if (rotation == 3)
-                        connection.addOutput(tempElementMap.get(i).element, (short) 1);
-                } else {
-
-                    if (rotation != 3) {
-                        connection.addInput(tempElementMap.get(i).element, (short) Math.abs(2 - rotation));
-                    } else connection.addOutput(tempElementMap.get(i).element, (short) 3);
-                }
+                connectToRight(connection, elemet, i, rotation);
             }
         }
 
         elemet = getDownElement(start);
         if (elemet != null) {
-            int i = getDownindex(start);
+            int i = getDownIndex(start);
             if (elemet.getItem() == ModItems.itemUpgCWireComponent)
                 findConnection(connection, i);
             else {
                 int rotation = getRotation(elemet);
-
-                if (elemet.getItem() == ModItems.itemUpgCNOTComponent) {
-                    if (rotation == 2)
-                        connection.addInput(tempElementMap.get(i).element, (short) 0);
-                    else if (rotation == 0)
-                        connection.addOutput(tempElementMap.get(i).element, (short) 1);
-                } else {
-
-                    if (rotation != 0) {
-                        connection.addInput(tempElementMap.get(i).element, (short) Math.abs(3 - rotation));
-                    } else connection.addOutput(tempElementMap.get(i).element, (short) 3);
-                }
+                connectToDown(connection, elemet, i, rotation);
             }
         }
 
-        elemet = getLeftElemnt(start);
+        elemet = getLeftElement(start);
         if (elemet != null) {
             int i = getLeftIndex(start);
             if (elemet.getItem() == ModItems.itemUpgCWireComponent)
                 findConnection(connection, i);
             else {
                 int rotation = getRotation(elemet);
-
-                if (elemet.getItem() == ModItems.itemUpgCNOTComponent) {
-                    if (rotation == 3)
-                        connection.addInput(tempElementMap.get(i).element, (short) 0);
-                    else if (rotation == 1)
-                        connection.addOutput(tempElementMap.get(i).element, (short) 1);
-
-                } else {
-                    if (rotation != 1) {
-                        connection.addInput(tempElementMap.get(i).element, (short) (Math.abs(4 - rotation) % 4));
-
-                    } else connection.addOutput(tempElementMap.get(i).element, (short) 3);
-                }
+                connectToLeft(connection, elemet, i, rotation);
             }
+        }
+
+    }
+
+    private void connectToUp(IRedstoneConnectionElement connection, ItemStack element, int elementIndex, int elementRotation) {
+
+        if (element.getItem() == ModItems.itemUpgCNOTComponent) {
+            if (elementRotation == 0) {
+                connection.addInput(tempElementMap.get(elementIndex).element, (short) 0);
+            } else if (elementRotation == 2)
+                connection.addOutput(tempElementMap.get(elementIndex).element, (short) 1);
+        } else {
+            if (elementRotation != 2) {
+                connection.addInput(tempElementMap.get(elementIndex).element, (short) Math.abs(1 - elementRotation));
+            } else connection.addOutput(tempElementMap.get(elementIndex).element, (short) 3);
+        }
+    }
+
+    private void connectToRight(IRedstoneConnectionElement connection, ItemStack element, int elementIndex, int elementRotation) {
+
+        if (element.getItem() == ModItems.itemUpgCNOTComponent) {
+            if (elementRotation == 1)
+                connection.addInput(tempElementMap.get(elementIndex).element, (short) 0);
+            else if (elementRotation == 3)
+                connection.addOutput(tempElementMap.get(elementIndex).element, (short) 1);
+        } else {
+
+            if (elementRotation != 3) {
+                connection.addInput(tempElementMap.get(elementIndex).element, (short) Math.abs(2 - elementRotation));
+            } else connection.addOutput(tempElementMap.get(elementIndex).element, (short) 3);
+        }
+    }
+
+    private void connectToDown(IRedstoneConnectionElement connection, ItemStack element, int elementIndex, int elementRotation) {
+
+        if (element.getItem() == ModItems.itemUpgCNOTComponent) {
+            if (elementRotation == 2)
+                connection.addInput(tempElementMap.get(elementIndex).element, (short) 0);
+            else if (elementRotation == 0)
+                connection.addOutput(tempElementMap.get(elementIndex).element, (short) 1);
+        } else {
+
+            if (elementRotation != 0) {
+                connection.addInput(tempElementMap.get(elementIndex).element, (short) Math.abs(3 - elementRotation));
+            } else connection.addOutput(tempElementMap.get(elementIndex).element, (short) 3);
+        }
+    }
+
+    private void connectToLeft(IRedstoneConnectionElement connection, ItemStack element, int elementIndex, int elementRotation) {
+
+        if (element.getItem() == ModItems.itemUpgCNOTComponent) {
+            if (elementRotation == 3)
+                connection.addInput(tempElementMap.get(elementIndex).element, (short) 0);
+            else if (elementRotation == 1)
+                connection.addOutput(tempElementMap.get(elementIndex).element, (short) 1);
+
+        } else {
+            if (elementRotation != 1) {
+                connection.addInput(tempElementMap.get(elementIndex).element, (short) (Math.abs(4 - elementRotation) % 4));
+
+            } else connection.addOutput(tempElementMap.get(elementIndex).element, (short) 3);
+        }
+    }
+
+    /**
+     * Third phase: find all the extra connection
+     */
+    private void phase2() {
+
+        if (this.index < this.tempElementMap.size()) {
+
+            try {
+                if (this.index == 0) {
+                    this.keysMap = new int[this.tempElementMap.size()];
+                    int i = 0;
+                    for (Map.Entry<Integer, TempElement> entry : this.tempElementMap.entrySet()) {
+                        this.keysMap[i] = entry.getKey();
+                        i++;
+                    }
+                }
+
+                TempElement tmpElement = this.tempElementMap.get(this.keysMap[this.index]);
+                if (tmpElement.needsExtraConnection) {
+                    RedstoneConnectionElement connectionElement = new RedstoneConnectionElement();
+                    connectionElement.addOutput(tmpElement.element, (short) 3);
+
+                    int elementIndex = tmpElement.i;
+                    int connectIndex = tmpElement.needsConnectionTo;
+                    int rotation = getRotation(this.inventory[connectIndex]);
+
+                    if (connectIndex < elementIndex) {
+
+                        if (connectIndex == getUpIndex(elementIndex)) {
+                            connectToUp(connectionElement, this.inventory[connectIndex], connectIndex, rotation);
+
+                        } else {
+                            connectToLeft(connectionElement, this.inventory[connectIndex], connectIndex, rotation);
+                        }
+
+                    } else {
+
+                        if (connectIndex == getRightIndex(elementIndex)) {
+                            connectToRight(connectionElement, this.inventory[connectIndex], connectIndex, rotation);
+
+                        } else {
+                            connectToDown(connectionElement, this.inventory[connectIndex], connectIndex, rotation);
+                        }
+                    }
+                    this.connections.add(connectionElement);
+                }
+
+            } finally {
+                this.index++;
+            }
+
+
+        } else {
+            this.phase++;
+            this.index = 0;
+            this.keysMap = null;
+        }
+
+    }
+
+    /**
+     * Fourth phase: find all the last connections
+     */
+    private void phase3() {
+        if (this.index < this.inventory.length) {
+
+            try {
+
+                ItemStack element = this.inventory[this.index];
+
+                if (element != null && element.getItem() == ModItems.itemUpgCWireComponent) {
+                    RedstoneConnectionElement connection = new RedstoneConnectionElement();
+                    findConnection(connection, this.index);
+                    this.connections.add(connection);
+                }
+
+
+            } finally {
+                this.index++;
+            }
+
+
+        } else {
+            this.phase++;
+            this.index = 0;
+            this.inventory = null;
         }
 
     }
@@ -481,6 +627,12 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
             case 1:
                 phase1();
                 break;
+            case 2:
+                phase2();
+                break;
+            case 3:
+                phase3();
+                break;
         }
         return this.phase;
     }
@@ -489,7 +641,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         return this.index;
     }
 
-    private int getUpindex(int index) {
+    private int getUpIndex(int index) {
 
         int i = index - column;
         if (i >= 0)
@@ -498,13 +650,13 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     }
 
     private ItemStack getUpElement(int index) {
-        int i = getUpindex(index);
+        int i = getUpIndex(index);
         if (i >= 0) {
             return this.inventory[i];
         } else return null;
     }
 
-    private int getDownindex(int index) {
+    private int getDownIndex(int index) {
         int i = index + column;
 
         if (i < this.inventory.length)
@@ -513,7 +665,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
     }
 
     private ItemStack getDownElement(int index) {
-        int i = getDownindex(index);
+        int i = getDownIndex(index);
 
         if (i >= 0 && i < this.inventory.length) {
             return this.inventory[i];
@@ -533,7 +685,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         return -1;
     }
 
-    private ItemStack getLeftElemnt(int index) {
+    private ItemStack getLeftElement(int index) {
 
         int i = index - 1;
         if (i > 0) {
@@ -585,12 +737,15 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         int rotation = 0;
         IRedstoneLogicElement element;
         boolean needsExtraConnection = false;
+        int needsConnectionTo;
 
         @Override
         public void writeToNBT(NBTTagCompound tag) {
             tag.setInteger("index", this.i);
             NBTTagHelper.writeRedstoneLogicElement(this.element, tag);
             tag.setBoolean("needsExtraConnection", this.needsExtraConnection);
+            if (needsExtraConnection)
+                tag.setInteger("needsConnectionTo", this.needsConnectionTo);
 
         }
 
@@ -599,6 +754,8 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
             this.i = tag.getInteger("index");
             this.element = NBTTagHelper.readRedstoneLogicElement(tag);
             this.needsExtraConnection = tag.getBoolean("needsExtraConnection");
+            if (tag.hasKey("needsConnectionTo"))
+                this.needsConnectionTo = tag.getInteger("needsConnectionTo");
             return this;
         }
 
