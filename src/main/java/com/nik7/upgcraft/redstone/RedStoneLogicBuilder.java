@@ -61,20 +61,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
         tag.setInteger("phase", this.phase);
         if (this.redstoneLogicExecutor != null) {
             NBTTagCompound executorTagCompound = new NBTTagCompound();
-            int elementsNumber = this.redstoneLogicExecutor.getElementsNumber();
-            int connectionsNumber = this.redstoneLogicExecutor.getConnectionsNumber();
-            short[] inputsPort = this.redstoneLogicExecutor.getInputsPort();
-            short outputPort = this.redstoneLogicExecutor.getOutputPort();
-
-            executorTagCompound.setInteger("elementsNumber", elementsNumber);
-            executorTagCompound.setInteger("connectionsNumber", connectionsNumber);
-            NBTTagHelper.setShortArray(executorTagCompound, inputsPort);
-            executorTagCompound.setShort("outputPort", outputPort);
-
-            NBTTagCompound executorTag = new NBTTagCompound();
-            this.redstoneLogicExecutor.writeToNBT(executorTag);
-            executorTagCompound.setTag("executorTag", executorTag);
-
+            NBTTagHelper.writeRedstoneLogicExecutor(this.redstoneLogicExecutor, executorTagCompound);
             tag.setTag("executorTagCompound", executorTagCompound);
         }
 
@@ -132,13 +119,7 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
 
         if (tag.hasKey("executorTagCompound")) {
             NBTTagCompound executorTagCompound = tag.getCompoundTag("executorTagCompound");
-
-            int elementsNumber = executorTagCompound.getInteger("elementsNumber");
-            int connectionsNumber = executorTagCompound.getInteger("connectionsNumber");
-            short[] inputsPort = NBTTagHelper.getShortArray(executorTagCompound);
-            short outputPort = executorTagCompound.getShort("outputPort");
-            RedstoneLogicExecutor redstoneLogicExecutor = new RedstoneLogicExecutor(elementsNumber, connectionsNumber, inputsPort, outputPort);
-            this.redstoneLogicExecutor = redstoneLogicExecutor.readFomNBT(executorTagCompound.getCompoundTag("executorTag"));
+            this.redstoneLogicExecutor = NBTTagHelper.readRedstoneLogicExecutor(executorTagCompound);
         }
 
         if (tag.hasKey("tempElementMap")) {
@@ -671,6 +652,25 @@ public class RedStoneLogicBuilder implements INBTTagProvider<RedStoneLogicBuilde
                 break;
         }
         return this.phase;
+    }
+
+    public int getPhaseMaxIndexValue() {
+
+        switch ((this.phase)) {
+            case 0:
+                return this.inventory.length;
+            case 1:
+                return 4;
+            case 2:
+                return this.tempElementMap.size();
+            case 3:
+                return this.inventory.length;
+            case 4:
+                return 0;
+            default:
+                return 0;
+        }
+
     }
 
     public int getIndex() {

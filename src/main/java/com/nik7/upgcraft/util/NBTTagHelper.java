@@ -8,8 +8,8 @@ import net.minecraft.nbt.NBTTagList;
 
 public class NBTTagHelper {
 
-    public final static short REDSTONE_LOGIC_ELEMENT_S = 0;
-    public final static short REDSTONE_LOGIC_ELEMENT_C = 1;
+    private final static short REDSTONE_LOGIC_ELEMENT_S = 0;
+    private final static short REDSTONE_LOGIC_ELEMENT_C = 1;
 
     public static void writeInventoryToNBT(ItemStack[] inventory, NBTTagCompound tag) {
 
@@ -101,5 +101,33 @@ public class NBTTagHelper {
         e.readFomNBT(tagCompound);
 
         return e;
+    }
+
+
+    public static void writeRedstoneLogicExecutor(RedstoneLogicExecutor logicExecutor, NBTTagCompound tagCompound){
+
+        int elementsNumber = logicExecutor.getElementsNumber();
+        int connectionsNumber = logicExecutor.getConnectionsNumber();
+        short[] inputsPort = logicExecutor.getInputsPort();
+        short outputPort = logicExecutor.getOutputPort();
+
+        tagCompound.setInteger("elementsNumber", elementsNumber);
+        tagCompound.setInteger("connectionsNumber", connectionsNumber);
+        NBTTagHelper.setShortArray(tagCompound, inputsPort);
+        tagCompound.setShort("outputPort", outputPort);
+
+        NBTTagCompound executorTag = new NBTTagCompound();
+        logicExecutor.writeToNBT(executorTag);
+        tagCompound.setTag("executorTag", executorTag);
+    }
+
+    public static RedstoneLogicExecutor readRedstoneLogicExecutor(NBTTagCompound tagCompound){
+
+        int elementsNumber = tagCompound.getInteger("elementsNumber");
+        int connectionsNumber = tagCompound.getInteger("connectionsNumber");
+        short[] inputsPort = NBTTagHelper.getShortArray(tagCompound);
+        short outputPort = tagCompound.getShort("outputPort");
+        RedstoneLogicExecutor redstoneLogicExecutor = new RedstoneLogicExecutor(elementsNumber, connectionsNumber, inputsPort, outputPort);
+        return redstoneLogicExecutor.readFomNBT(tagCompound.getCompoundTag("executorTag"));
     }
 }
