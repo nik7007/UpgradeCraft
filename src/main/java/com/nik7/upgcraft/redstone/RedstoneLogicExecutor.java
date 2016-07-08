@@ -5,9 +5,6 @@ import com.nik7.upgcraft.util.NBTTagHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-import static com.nik7.upgcraft.util.NBTTagHelper.REDSTONE_LOGIC_ELEMENT_C;
-import static com.nik7.upgcraft.util.NBTTagHelper.REDSTONE_LOGIC_ELEMENT_S;
-
 public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
 
     private final int ELEMENTS_NUMBER;
