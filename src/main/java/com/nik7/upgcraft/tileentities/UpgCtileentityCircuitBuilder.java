@@ -2,6 +2,7 @@ package com.nik7.upgcraft.tileentities;
 
 
 import com.nik7.upgcraft.redstone.RedStoneLogicBuilder;
+import com.nik7.upgcraft.redstone.RedstoneLogicExecutor;
 import com.nik7.upgcraft.reference.Capacity;
 import com.nik7.upgcraft.tank.UpgCEPFluidTank;
 import com.nik7.upgcraft.tank.UpgCFluidTank;
@@ -19,10 +20,22 @@ public class UpgCtileentityCircuitBuilder extends UpgCtileentityInventoryFluidHa
 
     private RedStoneLogicBuilder logicBuilder;
     private int phase;
-    //private int
+    private int progress;
+    private int maxProgressValue;
 
     protected UpgCtileentityCircuitBuilder() {
         super(new ItemStack[9 * 9 + 2], new UpgCFluidTank[]{new UpgCEPFluidTank(Capacity.INTERNAL_FLUID_TANK_TR1)}, "CircuitBuilder");
+    }
+
+    private void initLogicBuilder(){
+
+        this.logicBuilder = new RedStoneLogicBuilder((short) 9, (short) 9);
+        ItemStack[] redLogicItems = new ItemStack[9 * 9];
+        for (int i = 0; i < redLogicItems.length; i++) {
+            redLogicItems[i] = super.getStackInSlot(i);
+            super.inventory[i] = null;
+        }
+        this.logicBuilder.setInventory(redLogicItems);
     }
 
 
@@ -30,10 +43,19 @@ public class UpgCtileentityCircuitBuilder extends UpgCtileentityInventoryFluidHa
     public void update() {
         super.update();
 
-        if(logicBuilder!=null){
+        if (logicBuilder != null) {
 
+            this.phase = this.logicBuilder.exec();
 
+            if (this.phase > 0) {
+                this.progress = this.logicBuilder.getIndex();
+                this.maxProgressValue = this.logicBuilder.getPhaseMaxIndexValue();
+            }else {
 
+                RedstoneLogicExecutor logicExecutor = this.logicBuilder.getRedstoneLogicExecutor();
+                this.logicBuilder = null;
+
+            }
 
         }
 
