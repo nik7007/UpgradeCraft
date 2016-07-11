@@ -6,12 +6,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import static com.nik7.upgcraft.redstone.RedstoneUpgC.INVALID_ID;
 
 /**
- *       _______             ___2___
- *      |       |           |   i   |
- *    0 |i NOT o| 1       1 |i RLE o| 3
- *      |_______|           |___i___|
- *                              0
- *
+ * _______             ___2___
+ * |       |           |   i   |
+ * 0 |i NOT o| 1       1 |i RLE o| 3
+ * |_______|           |___i___|
+ * 0
  */
 
 public abstract class RedstoneLogicElement implements IRedstoneLogicElement {
@@ -152,6 +151,20 @@ public abstract class RedstoneLogicElement implements IRedstoneLogicElement {
         increaseTick();
 
     }
+
+    @Override
+    public void reSet() {
+
+        for (IRedstoneConnectionElement c : connections)
+            c.reSet();
+        this.tick = 0;
+        this.output = false;
+
+        myReSet();
+
+    }
+
+    protected abstract void myReSet();
 
     protected void setOutputToConnection() {
         this.connections[getOutputPort()].setInputValue(this, getOutputPort(), getOutput());

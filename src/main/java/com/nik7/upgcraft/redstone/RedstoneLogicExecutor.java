@@ -127,16 +127,28 @@ public class RedstoneLogicExecutor implements IRedstoneLogicGeneralElement {
     @Override
     public void exec() {
 
-        for (IRedstoneElement e : ioConnectionElements) {
+        for (IRedstoneElement e : this.ioConnectionElements) {
             e.exec();
         }
 
-        for (IRedstoneConnectionElement c : connections)
+        for (IRedstoneConnectionElement c : this.connections)
             c.exec();
 
-        for (IRedstoneLogicElement e : elements)
+        for (IRedstoneLogicElement e : this.elements)
             e.exec();
 
+
+    }
+
+    @Override
+    public void reSet() {
+
+        for (IRedstoneLogicElement e : this.elements)
+            e.reSet();
+        for (IRedstoneConnectionElement c : this.connections)
+            c.reSet();
+        for (RedstoneIOConnectionElement io : this.ioConnectionElements)
+            io.reSet();
 
     }
 

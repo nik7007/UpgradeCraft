@@ -78,4 +78,12 @@ public final class RedstoneIOConnectionElement extends RedstoneConnectionElement
             cE.setValue(value);
         }
     }
+
+    @Override
+    public void reSet() {
+        super.reSet();
+        for (int i = 0; i < this.inputs.length; i++)
+            this.inputs[i] = false;
+    }
+
 }

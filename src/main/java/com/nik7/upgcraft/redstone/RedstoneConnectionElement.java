@@ -86,6 +86,14 @@ public class RedstoneConnectionElement implements IRedstoneConnectionElement {
     }
 
     @Override
+    public void reSet() {
+        for (ConnectionElement i : this.inputs)
+            i.reSet();
+        for (ConnectionElement o : this.outputs)
+            o.reSet();
+    }
+
+    @Override
     public void writeToNBT(NBTTagCompound tag) {
 
         tag.setInteger("inputsNumber", inputs.size());
@@ -182,6 +190,10 @@ public class RedstoneConnectionElement implements IRedstoneConnectionElement {
             }
             return false;
 
+        }
+
+        public void reSet() {
+            this.value = false;
         }
 
         @Override

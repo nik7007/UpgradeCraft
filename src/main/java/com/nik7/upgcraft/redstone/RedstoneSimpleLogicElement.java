@@ -3,14 +3,20 @@ package com.nik7.upgcraft.redstone;
 
 public class RedstoneSimpleLogicElement extends RedstoneLogicElement {
 
+    private boolean hasDefaultOutput;
+    private boolean defaultOutput;
+
 
     protected RedstoneSimpleLogicElement(ExpressionType type, int tickToComplete, boolean defaultOutput) {
         this(type, tickToComplete);
         this.output = defaultOutput;
+        this.hasDefaultOutput = true;
+        this.defaultOutput = defaultOutput;
     }
 
     public RedstoneSimpleLogicElement(ExpressionType type, int tickToComplete) {
         super(type, tickToComplete);
+        this.hasDefaultOutput = false;
     }
 
     @Override
@@ -29,6 +35,12 @@ public class RedstoneSimpleLogicElement extends RedstoneLogicElement {
             output = RedstoneUpgC.evaluateBooleanExpression(inputs[0], inputs[1], inputs[2], type);
         }
 
+    }
+
+    @Override
+    protected void myReSet() {
+        if (this.hasDefaultOutput)
+            this.output = this.defaultOutput;
     }
 
     public static final class AND {

@@ -60,4 +60,9 @@ public class RedstoneComplexLogicElement extends RedstoneLogicElement {
 
         }
     }
+
+    @Override
+    protected void myReSet() {
+        this.logicExecutor.reSet();
+    }
 }
