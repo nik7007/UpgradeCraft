@@ -1,8 +1,0 @@
-{
-  "parent": "block/outer_stairs",
-  "textures": {
-    "bottom": "upgcraft:blocks/ClayBrick",
-    "top": "upgcraft:blocks/ClayBrick",
-    "side": "upgcraft:blocks/ClayBrick"
-  }
-}

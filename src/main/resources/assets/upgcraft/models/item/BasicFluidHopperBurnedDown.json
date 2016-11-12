@@ -1,7 +1,0 @@
-{
-  "parent": "upgcraft:item/BasicFluidHopper",
-  "textures": {
-    "layer0": "upgcraft:items/BlockFluidBasicHopper_iconBurnedDown"
-  }
-
-}

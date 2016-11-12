@@ -1,8 +1,0 @@
-{
-  "variants": {
-    "facing=north": { "model": "cobblestone" },
-    "facing=south": { "model": "cobblestone" },
-    "facing=west":  { "model": "cobblestone" },
-    "facing=east":  { "model": "cobblestone" }
-  }
-}
