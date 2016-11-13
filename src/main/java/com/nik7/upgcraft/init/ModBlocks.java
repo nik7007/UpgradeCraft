@@ -1,0 +1,56 @@
+package com.nik7.upgcraft.init;
+
+import com.nik7.upgcraft.block.BlockUpgC;
+import com.nik7.upgcraft.block.SlimyLog;
+import com.nik7.upgcraft.util.LogHelper;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.LoaderException;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+public class ModBlocks {
+
+
+    public static  BlockUpgC slimyLog;
+
+    public static void init(){
+        slimyLog = new SlimyLog();
+    }
+
+    public static void register() {
+        ModBlocks.registerBlock(slimyLog);
+    }
+
+    private static void registerBlock(BlockUpgC block) {
+        ModBlocks.registerBlock(block, ItemBlock.class);
+    }
+
+    private static void registerBlock(BlockUpgC block, Class<? extends ItemBlock> itemBlock) {
+
+        String name = block.getName();
+        registerBlock(block, itemBlock, name);
+
+    }
+
+    private static void registerBlock(Block block, Class<? extends ItemBlock> itemBlock, String name) {
+
+        if (itemBlock != null) {
+            try {
+                Class<?> blockClass = Block.class;
+                Constructor<? extends ItemBlock> itemCtor = itemBlock.getConstructor(blockClass);
+                ItemBlock i = itemCtor.newInstance(block);
+
+                GameRegistry.register(i.setRegistryName(name));
+            } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                LogHelper.error(e, "Caught an exception during block registration");
+                throw new LoaderException(e);
+            }
+
+        }
+        GameRegistry.register(block.getRegistryName() == null ? block.setRegistryName(name) : block);
+
+    }
+}
