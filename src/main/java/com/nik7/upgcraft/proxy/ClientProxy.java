@@ -1,21 +1,18 @@
 package com.nik7.upgcraft.proxy;
 
 
-import com.nik7.upgcraft.init.IUpgC;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import com.nik7.upgcraft.client.renderer.RenderUpgC;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 public class ClientProxy extends CommonProxy {
 
+
     @Override
-    public void initRenderingAndTextures() {
-
+    public void init(FMLInitializationEvent event) {
+        super.init(event);
+        //texture
+        RenderUpgC.initRenderingAndTextures();
     }
 
-    private ModelResourceLocation createLocation(IUpgC upgC) {
-        return createLocation(upgC.getName());
-    }
 
-    private ModelResourceLocation createLocation(String location) {
-        return new ModelResourceLocation(location, "inventory");
-    }
 }

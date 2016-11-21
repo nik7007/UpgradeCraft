@@ -1,6 +1,5 @@
 package com.nik7.upgcraft;
 
-import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.proxy.IProxy;
 import com.nik7.upgcraft.reference.Reference;
 import net.minecraftforge.fml.common.Mod;
@@ -20,28 +19,19 @@ public class UpgradeCraft {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        //read config
-        //init blocks
-        ModBlocks.init();
-        //init Items
-        //register
+        proxy.preInit(event);
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        proxy.init(event);
 
-        //register block
-        ModBlocks.register();
-        //recipes
-        //tileEntity
-        proxy.registerTileEntities();
-        //interModComm
 
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-
+        proxy.postInit(event);
     }
 }
 
