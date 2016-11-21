@@ -5,6 +5,7 @@ import com.nik7.upgcraft.reference.Reference;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -14,8 +15,8 @@ public class CreativeTab {
 
         @Override
         @SideOnly(Side.CLIENT)
-        public Item getTabIconItem() {
-            return Item.getItemFromBlock(Blocks.SLIME_BLOCK);
+        public ItemStack getTabIconItem() {
+            return new ItemStack(Blocks.SLIME_BLOCK);
         }
 
 
