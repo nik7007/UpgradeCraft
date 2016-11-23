@@ -5,11 +5,13 @@ import com.nik7.upgcraft.block.SlimyLog;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.LoaderException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+
 
 public class ModBlocks {
 
@@ -18,9 +20,11 @@ public class ModBlocks {
 
     public static void init(){
         slimyLog = new SlimyLog();
+
+        register();
     }
 
-    public static void register() {
+    private static void register() {
         ModBlocks.registerBlock(slimyLog);
     }
 
@@ -30,12 +34,11 @@ public class ModBlocks {
 
     private static void registerBlock(BlockUpgC block, Class<? extends ItemBlock> itemBlock) {
 
-        String name = block.getName();
-        registerBlock(block, itemBlock, name);
+        registerBlock(block, itemBlock, block.getRegistryName());
 
     }
 
-    private static void registerBlock(Block block, Class<? extends ItemBlock> itemBlock, String name) {
+    private static void registerBlock(Block block, Class<? extends ItemBlock> itemBlock, ResourceLocation name) {
 
         if (itemBlock != null) {
             try {
@@ -50,7 +53,7 @@ public class ModBlocks {
             }
 
         }
-        GameRegistry.register(block.getRegistryName() == null ? block.setRegistryName(name) : block);
+        GameRegistry.register(block);
 
     }
 }

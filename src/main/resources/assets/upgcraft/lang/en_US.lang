@@ -2,7 +2,7 @@
 itemGroup.UpgradeCraft=UpgradeCraft
 
 # Blocks
-tile.upgcraft:SlimyLog.name=Slimy Wood Planks
+tile.upgcraft.slimylog.name=Slimy Wood Planks
 
 # Items
 

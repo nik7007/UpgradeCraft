@@ -21,8 +21,7 @@ public abstract class CommonProxy implements IProxy{
 
     @Override
     public void init(FMLInitializationEvent event) {
-        //register block
-        ModBlocks.register();
+
         //recipes
         //tileEntity
         //interModComm

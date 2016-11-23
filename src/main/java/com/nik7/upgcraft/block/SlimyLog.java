@@ -9,7 +9,7 @@ import net.minecraft.world.IBlockAccess;
 public class SlimyLog extends BlockUpgC {
 
     public SlimyLog() {
-        super(Material.WOOD, "SlimyLog");
+        super(Material.WOOD, "slimylog");
         this.setHardness(2.0F);
         this.slipperiness = 1.05F;
     }
