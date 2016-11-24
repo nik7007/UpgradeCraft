@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -17,11 +18,18 @@ import javax.annotation.Nullable;
 
 public class FluidTank extends BlockUpgC /*implements ITileEntityProvider */ {
 
+    private static final AxisAlignedBB BB = new AxisAlignedBB(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
+
     public FluidTank() {
         super(Material.WOOD, "fluidtank");
     }
 
-    public boolean isOpaqueCube(IBlockState state) {
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return BB;
+    }
+
+   public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
@@ -29,10 +37,6 @@ public class FluidTank extends BlockUpgC /*implements ITileEntityProvider */ {
         return false;
     }
 
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return true;
-    }
 
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
