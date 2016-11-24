@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "upgcraft:fluidtank"
+    "model": "upgcraft:woodenfluidtank"
   },
   "variants": {
     "normal": [{}],
