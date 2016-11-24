@@ -13,9 +13,7 @@ public abstract class BlockUpgC extends Block {
         setUnlocalizedName(Reference.MOD_ID + "." + blockName);
         this.setCreativeTab(CreativeTab.UPGC_TAB);
         this.setRegistryName(blockName);
-        /*GameRegistry.register(this);
-        GameRegistry.register(new ItemBlock(this), getRegistryName());*/
-    }
 
+    }
 
  }
