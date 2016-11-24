@@ -13,17 +13,19 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderUpgC {
 
     public static void initRenderingAndTextures() {
-        initModel(ModBlocks.slimyLog);
+        RenderUpgC.initModel(ModBlocks.slimyLog);
+        RenderUpgC.initModel(ModBlocks.fluidTank);
     }
 
     private static void initModel(Block block) {
         initModel(Item.getItemFromBlock(block));
     }
-    private static void initModel(Item item){
+
+    private static void initModel(Item item) {
         ModelLoader.setCustomModelResourceLocation(item, 0, createModelResourceLocation(item));
     }
 
-    private static ModelResourceLocation createModelResourceLocation(IForgeRegistryEntry forgeRegistryEntry){
+    private static ModelResourceLocation createModelResourceLocation(IForgeRegistryEntry forgeRegistryEntry) {
         return new ModelResourceLocation(forgeRegistryEntry.getRegistryName(), "inventory");
     }
 

@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.init;
 
 import com.nik7.upgcraft.block.BlockUpgC;
+import com.nik7.upgcraft.block.FluidTank;
 import com.nik7.upgcraft.block.SlimyLog;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
@@ -16,16 +17,19 @@ import java.lang.reflect.InvocationTargetException;
 public class ModBlocks {
 
 
-    public static  BlockUpgC slimyLog;
+    public static BlockUpgC slimyLog;
+    public static BlockUpgC fluidTank;
 
-    public static void init(){
+    public static void init() {
         slimyLog = new SlimyLog();
+        fluidTank = new FluidTank();
 
         register();
     }
 
     private static void register() {
         ModBlocks.registerBlock(slimyLog);
+        ModBlocks.registerBlock(fluidTank);
     }
 
     private static void registerBlock(BlockUpgC block) {

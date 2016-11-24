@@ -1,0 +1,10 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "upgcraft:fluidtank"
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}
