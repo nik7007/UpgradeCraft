@@ -16,4 +16,4 @@ public abstract class BlockUpgC extends Block {
 
     }
 
- }
+}
