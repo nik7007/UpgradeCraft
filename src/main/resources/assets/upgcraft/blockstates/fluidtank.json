@@ -1,10 +1,25 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "upgcraft:woodenfluidtank"
+    "model": "upgcraft:fluidtank",
+    "textures":{
+      "all":"upgcraft:blocks/woodenfluidtank"
+    }
   },
   "variants": {
     "normal": [{}],
-    "inventory": [{}]
+    "inventory": [{}],
+    "glassed" : {
+      "true" : {
+        "textures":{
+          "all":"upgcraft:blocks/woodenfluidtank_glassed"
+        }
+      },
+      "false" :{
+        "textures":{
+          "all":"upgcraft:blocks/woodenfluidtank"
+        }
+      }
+    }
   }
 }

@@ -1,6 +1,0 @@
-{
-  "parent": "upgcraft:block/fluidtank",
-  "textures":{
-    "all":"upgcraft:blocks/woodenfluidtank"
-  }
-}
