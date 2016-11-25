@@ -3,6 +3,7 @@ package com.nik7.upgcraft.init;
 import com.nik7.upgcraft.block.BlockUpgC;
 import com.nik7.upgcraft.block.FluidTank;
 import com.nik7.upgcraft.block.SlimyLog;
+import com.nik7.upgcraft.item.ItemBlockFluidTank;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -29,7 +30,7 @@ public class ModBlocks {
 
     private static void register() {
         ModBlocks.registerBlock(slimyLog);
-        ModBlocks.registerBlock(fluidTank);
+        ModBlocks.registerBlock(fluidTank, ItemBlockFluidTank.class);
     }
 
     private static void registerBlock(BlockUpgC block) {
