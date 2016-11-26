@@ -1,5 +1,6 @@
 package com.nik7.upgcraft.proxy;
 
+import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.init.Recipes;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -13,6 +14,7 @@ public abstract class CommonProxy implements IProxy{
     public void preInit(FMLPreInitializationEvent event) {
 
         //read config
+        ConfigurationHandler.init(event.getSuggestedConfigurationFile());
         //init blocks
         ModBlocks.init();
         //init Items
