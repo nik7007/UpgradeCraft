@@ -10,7 +10,7 @@ public abstract class BlockUpgC extends Block {
 
     public BlockUpgC(Material blockMaterial, String blockName) {
         super(blockMaterial);
-        setUnlocalizedName(Reference.MOD_ID + "." + blockName);
+        setUnlocalizedName(Reference.RESOURCE_PREFIX + blockName);
         this.setCreativeTab(CreativeTab.UPGC_TAB);
         this.setRegistryName(blockName);
 
