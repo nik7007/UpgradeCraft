@@ -6,3 +6,6 @@ tile.upgcraft:slimylog.name=Slimy Wood Planks
 
 # Items
 
+#Tooltip
+tooltip.upgcraft:tank.glassed=Transparent
+
