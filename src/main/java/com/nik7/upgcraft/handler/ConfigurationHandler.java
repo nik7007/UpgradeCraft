@@ -28,13 +28,10 @@ public class ConfigurationHandler {
         ConfigOptions.WOODEN_FLUID_HOPPER_BURN = configuration.getBoolean("basic Fluid Hopper can burn", Configuration.CATEGORY_GENERAL, true, "Set to false to not allow Basic Fluid Hopper to burn");
         ConfigOptions.CONFIG_CAPACITY = configuration.getInt("basic tank capacity", Configuration.CATEGORY_GENERAL, 27, 24, 32, "Basic capacity Tank custom value. This will not change the capacity of the enderTanks.");
 
+        ConfigOptions.reloadOptions();
+
         if (configuration.hasChanged()) {
             configuration.save();
-            /*try {
-                SystemConfig.applyConfig();
-            } catch (NullPointerException e) {
-                LogHelper.info("First time create Config!");
-            }*/
         }
     }
 

@@ -12,6 +12,11 @@ public class ConfigOptions {
 
     public  static final int FLUID_HOPPER_CAPACITY = 5 * Fluid.BUCKET_VOLUME;
 
+    public static void reloadOptions(){
+        BASIC_CAPACITY = CONFIG_CAPACITY * Fluid.BUCKET_VOLUME;
+        DOUBLE_CAPACITY = 2 * BASIC_CAPACITY;
+    }
+
 
     //BURN
     public static boolean WOODEN_TANK_BURN;
