@@ -3,7 +3,10 @@ package com.nik7.upgcraft.tileentity;
 
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
@@ -37,6 +40,39 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
         tag = super.writeToNBT(tag);
         this.fluidTank.writeToNBT(tag);
         return tag;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+
+        NBTTagCompound nbtTag = new NBTTagCompound();
+        this.writeToNBT(nbtTag);
+        return new SPacketUpdateTileEntity(getPos(), 1, nbtTag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+        this.readFromNBT(packet.getNbtCompound());
+    }
+
+    protected void updateBlock() {
+        markDirty();
+
+        if (worldObj != null) {
+            IBlockState state = worldObj.getBlockState(getPos());
+            worldObj.notifyBlockUpdate(getPos(), state, state, 3);
+            worldObj.updateComparatorOutputLevel(getPos(), state.getBlock());
+        }
+
+    }
+
+    public void syncTileEntity() {
+        updateBlock();
     }
 
     @SideOnly(Side.CLIENT)

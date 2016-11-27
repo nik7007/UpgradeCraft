@@ -24,6 +24,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidActionResult;
 import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -54,23 +55,28 @@ public class FluidTank extends BlockUpgC implements ITileEntityProvider {
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing heldItem, float side, float hitX, float hitY) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing heldItem, float side, float hitX, float hitY) {
 
-        FluidActionResult result;
-        IFluidHandler fluidHandler = FluidUtil.getFluidHandler(world, pos, null);
+        ItemStack mainHandItem = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+        ItemStack offHandItem = player.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND);
+        if (mainHandItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null) || offHandItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY, null)) {
+            if (world != null && !world.isRemote) {
+                FluidActionResult result;
+                IFluidHandler fluidHandler = FluidUtil.getFluidHandler(world, pos, null);
 
-        result = interactWithFluidHandler(EntityEquipmentSlot.MAINHAND, fluidHandler, playerIn);
-        ItemStack equippedItemStack = playerIn.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+                result = interactWithFluidHandler(EntityEquipmentSlot.MAINHAND, mainHandItem, fluidHandler, player);
+                ItemStack equippedItemStack = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
 
-        if (equippedItemStack.getItem() instanceof ItemAir && !result.isSuccess())
-            result = interactWithFluidHandler(EntityEquipmentSlot.OFFHAND, fluidHandler, playerIn);
-
-        return result.isSuccess();
+                if (equippedItemStack.getItem() instanceof ItemAir && !result.isSuccess())
+                    interactWithFluidHandler(EntityEquipmentSlot.OFFHAND, offHandItem, fluidHandler, player);
+            }
+            return true;
+        }
+        return false;
 
     }
 
-    private FluidActionResult interactWithFluidHandler(EntityEquipmentSlot slotIn, IFluidHandler fluidHandler, EntityPlayer player) {
-        ItemStack equippedItemStack = player.getItemStackFromSlot(slotIn);
+    private FluidActionResult interactWithFluidHandler(EntityEquipmentSlot slotIn, ItemStack equippedItemStack, IFluidHandler fluidHandler, EntityPlayer player) {
         FluidActionResult result = FluidUtil.interactWithFluidHandler(equippedItemStack, fluidHandler, player);
         if (result.isSuccess())
             player.setItemStackToSlot(slotIn, result.getResult());
