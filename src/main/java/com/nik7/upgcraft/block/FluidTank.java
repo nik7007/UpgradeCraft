@@ -117,6 +117,31 @@ public class FluidTank extends BlockUpgC implements ITileEntityProvider {
         list.add(new ItemStack(this, 1, 1));
     }
 
+    public boolean hasComparatorInputOverride(IBlockState state) {
+        return true;
+    }
+
+    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
+        TileEntity te = worldIn.getTileEntity(pos);
+        if (te instanceof TileEntityFluidTank) {
+            TileEntityFluidTank fluidTank = (TileEntityFluidTank) te;
+            float percentage = fluidTank.getFillPercentage();
+
+            int result = (int) (percentage * 15f);
+
+            if (percentage == 1)
+                result = 15;
+            else if (result == 15)
+                result = 14;
+            if (result == 0 && percentage > 0)
+                result = 1;
+
+            return result;
+
+        }
+        return 0;
+    }
+
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
