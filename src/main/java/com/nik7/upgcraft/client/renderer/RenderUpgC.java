@@ -1,13 +1,15 @@
 package com.nik7.upgcraft.client.renderer;
 
 import com.nik7.upgcraft.block.BlockUpgC;
-import com.nik7.upgcraft.block.FluidTank;
+import com.nik7.upgcraft.client.renderer.tileentity.FluidTankTESR;
 import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.tileentity.TileEntityFluidTank;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistryEntry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -58,5 +60,10 @@ public class RenderUpgC {
         return new ModelResourceLocation(registryName, "inventory");
     }
 
+
+    public static void registerTileEntitySpecialRender() {
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidTank.class, new FluidTankTESR());
+    }
 
 }
