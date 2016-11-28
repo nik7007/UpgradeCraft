@@ -79,7 +79,7 @@ public class FluidTank extends BlockUpgC implements ITileEntityProvider {
         RenderInformation information = RenderInformation.getRenderInformation(isGLASSED);
 
         if (isDouble) {
-            isTop = world.getBlockState(pos.down()).getBlock() == this;
+            isTop = WorldHelper.getBlock(world,pos) == this;
             if (isTop) {
                 equal = isGLASSED == world.getBlockState(pos.down()).getValue(GLASSED);
             } else
