@@ -30,8 +30,21 @@ public class FluidTankTESR extends TileEntitySpecialRenderer<TileEntityFluidTank
 
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+                if (!te.isDouble())
+                    this.renderFluid(fluidPercentage, te.getFluid(), true, false, false);
+                else {
+                    if (te.isTop() && fluidPercentage > 0.5f) {
+                        this.renderFluid((fluidPercentage - 0.5f) * 2, te.getFluid(), true, true, true);
+                    } else if (!te.isTop()) {
+                        boolean top = true;
+                        if (fluidPercentage > 0.5f) {
+                            fluidPercentage = 0.5f;
+                            top = false;
+                        }
+                        this.renderFluid(fluidPercentage * 2, te.getFluid(), top, false, true);
+                    }
 
-                this.renderFluid(fluidPercentage, te.getFluid(), true, false, false);
+                }
 
                 GlStateManager.disableBlend();
 
