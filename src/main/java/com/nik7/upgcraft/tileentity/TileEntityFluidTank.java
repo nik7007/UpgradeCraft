@@ -9,6 +9,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -21,13 +22,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
+public class TileEntityFluidTank extends TileEntity implements IFluidHandler, ITickable {
 
     protected UpgCFluidTank fluidTank;
     private int oldLight;
     private TileEntityFluidTank adjFluidTank;
     private boolean isTop;
     private final EnumCapacity capacity = EnumCapacity.BASIC_CAPACITY;
+    private boolean isFirst = true;
 
 
     public TileEntityFluidTank() {
@@ -57,12 +59,19 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
 
         NBTTagCompound nbtTag = new NBTTagCompound();
         this.writeToNBT(nbtTag);
+        nbtTag.setBoolean("isDoubleTank", this.isDouble());
         return new SPacketUpdateTileEntity(getPos(), 1, nbtTag);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
-        this.readFromNBT(packet.getNbtCompound());
+        NBTTagCompound nbt = packet.getNbtCompound();
+        if (nbt.hasKey("isDoubleTank")) {
+            if (!nbt.getBoolean("isDoubleTank"))
+                this.separeteTank();
+        }
+
+        this.readFromNBT(nbt);
         this.updateLight();
     }
 
@@ -74,43 +83,112 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
         }
     }
 
-    protected boolean canMerge(TileEntity te) {
-        if (te == null)
-            return false;
-        else return te instanceof TileEntityFluidTank;
+   /* @Override
+    public void onLoad() {
+        this.findAdjFluidTank();
+    }*/
+
+    @Override
+    public void update() {
+        if (isFirst) {
+            isFirst = false;
+            this.findAdjFluidTank();
+        }
     }
 
-    private void findAdjFluidTank() {
+
+    protected boolean canMerge(TileEntity te) {
+        return te != null && te instanceof TileEntityFluidTank;
+    }
+
+    private boolean fluidAreCompatible(TileEntity te) {
+
+        FluidStack otherFluid = ((TileEntityFluidTank) te).getFluid();
+
+        return otherFluid == null || this.fluidTank.getFluid() == null || this.fluidTank.getFluid().isFluidEqual(otherFluid);
+    }
+
+    public void findAdjFluidTank() {
 
         if (this.adjFluidTank != null) {
 
             if (worldObj.getTileEntity(this.adjFluidTank.pos) != this.adjFluidTank) {
-                this.adjFluidTank = null;
-                //TODO: separateTank
+                this.separeteTank();
             }
 
         }
 
         if (this.adjFluidTank == null) {
             TileEntity te = worldObj.getTileEntity(pos.down());
-            if (this.canMerge(te)) {
+            if (this.canMerge(te) && fluidAreCompatible(te)) {
                 this.adjFluidTank = (TileEntityFluidTank) te;
                 this.isTop = true;
+                this.merge(this.adjFluidTank);
             } else {
                 te = worldObj.getTileEntity(pos.up());
-                if (this.canMerge(te))
+                if (this.canMerge(te) && fluidAreCompatible(te))
                     this.adjFluidTank = (TileEntityFluidTank) te;
-
             }
 
             if (this.adjFluidTank != null)
                 this.adjFluidTank.findAdjFluidTank();
+            worldObj.updateComparatorOutputLevel(getPos(), worldObj.getBlockState(getPos()).getBlock());
         }
     }
 
-    private void merge(TileEntityFluidTank fluidTank){
-        EnumCapacity enumCapacity = EnumCapacity.getDoubleCapacity(this.capacity);
+    private void merge(TileEntityFluidTank fluidTank) {
+        if (fluidTank != null) {
+            EnumCapacity doubleCapacity = EnumCapacity.getDoubleCapacity(this.capacity);
+            int newCapacity = EnumCapacity.getCapacity(doubleCapacity);
+            UpgCFluidTank otherTank = fluidTank.fluidTank;
 
+            int thisCapacity = this.fluidTank.getCapacity();
+            int otherCApacity = otherTank.getCapacity();
+
+            if (thisCapacity == newCapacity)
+                fluidTank.fluidTank = this.fluidTank;
+            else if (otherCApacity == newCapacity)
+                this.fluidTank = fluidTank.fluidTank;
+            else {
+                FluidStack fluidStack1 = this.getFluid();
+                FluidStack fluidStack2 = fluidTank.getFluid();
+                UpgCFluidTank newTank = new UpgCFluidTank(doubleCapacity, this, fluidTank);
+                FluidStack result = null;
+                if (fluidStack1 != null) {
+                    result = fluidStack1;
+                    result.amount += fluidTank.fluidTank.getFluidAmount();
+                } else if (fluidStack2 != null) {
+                    result = fluidStack2;
+                }
+
+                if (result != null)
+                    newTank.fill(result, true);
+                this.fluidTank = newTank;
+                fluidTank.fluidTank = newTank;
+
+            }
+
+            if (!worldObj.isRemote)
+                this.syncTileEntity();
+        }
+
+    }
+
+    public void separeteTank() {
+        if (this.adjFluidTank != null) {
+            TileEntityFluidTank otherFluidTank = this.adjFluidTank;
+            FluidStack fluidStack = this.getSingleTankFluid();
+            this.adjFluidTank = null;
+            this.isTop = false;
+
+            this.fluidTank = new UpgCFluidTank(capacity, this);
+            this.fluidTank.fill(fluidStack, true);
+
+            if (!worldObj.isRemote)
+                this.syncTileEntity();
+
+            otherFluidTank.separeteTank();
+        }
 
     }
 
@@ -162,7 +240,28 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
     }
 
     public FluidStack getFluid() {
-        return this.fluidTank.getFluid();
+        return this.fluidTank.getFluid() == null ? null : this.fluidTank.getFluid().copy();
+    }
+
+    public FluidStack getSingleTankFluid() {
+
+        if (this.isDouble()) {
+
+            if (this.getFluid() != null) {
+                int fluidAmount = this.fluidTank.getFluidAmount();
+                if (this.isTop()) {
+                    fluidAmount -= EnumCapacity.getCapacity(capacity);
+                    if (fluidAmount > 0)
+                        return new FluidStack(this.getFluid(), fluidAmount);
+                    else return null;
+                } else {
+                    if (fluidAmount > EnumCapacity.getCapacity(capacity))
+                        return new FluidStack(this.getFluid(), EnumCapacity.getCapacity(capacity));
+                    else return this.getFluid();
+                }
+            } else return null;
+
+        } else return this.getFluid();
     }
 
     @Override
@@ -173,6 +272,16 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
     @Override
     public int fill(FluidStack resource, boolean doFill) {
         return this.fluidTank.fill(resource, doFill);
+    }
+
+
+    public boolean canDrain(int amount) {
+
+        if (this.isTop()) {
+            FluidStack fluidStack = this.getSingleTankFluid();
+            return fluidStack != null && fluidStack.amount >= amount;
+        }
+        return true;
     }
 
     @Nullable
@@ -200,6 +309,5 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
             return (T) this.fluidTank;
         return super.getCapability(capability, facing);
     }
-
 
 }

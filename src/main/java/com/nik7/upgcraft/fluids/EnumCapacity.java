@@ -1,14 +1,44 @@
 package com.nik7.upgcraft.fluids;
 
 
+import com.nik7.upgcraft.nbt.INBTProvider;
 import com.nik7.upgcraft.reference.ConfigOptions;
+import net.minecraft.nbt.NBTTagCompound;
 
-public enum EnumCapacity {
+public enum EnumCapacity implements INBTProvider<EnumCapacity> {
 
-    BASIC_CAPACITY,
-    DOUBLE_CAPACITY,
-    FLUID_HOPPER_CAPACITY,
-    ERROR_CAPACITY;
+    BASIC_CAPACITY(0),
+    DOUBLE_CAPACITY(1),
+    FLUID_HOPPER_CAPACITY(2),
+    ERROR_CAPACITY(3);
+
+    private final int i;
+
+    EnumCapacity(int i) {
+        this.i = i;
+    }
+
+    @Override
+    public EnumCapacity readFromNBT(NBTTagCompound nbt) {
+        switch (nbt.getInteger("enum_capacity")) {
+            case 0:
+                return BASIC_CAPACITY;
+            case 1:
+                return DOUBLE_CAPACITY;
+            case 2:
+                return FLUID_HOPPER_CAPACITY;
+            default:
+                return ERROR_CAPACITY;
+        }
+
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        nbt.setInteger("enum_capacity", this.i);
+
+        return nbt;
+    }
 
     public static int getCapacity(EnumCapacity capacity) {
         switch (capacity) {

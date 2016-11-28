@@ -17,11 +17,11 @@ import javax.annotation.Nullable;
 public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<UpgCFluidTank> {
 
     private FluidStack fluidStack;
-    private final EnumCapacity capacity;
+    private EnumCapacity capacity;
     protected IFluidTankProperties[] tankProperties;
     protected boolean canFill = true;
     protected boolean canDrain = true;
-    protected TileEntityFluidTank tileEntity;
+    protected TileEntityFluidTank[] tileEntities;
 
     public UpgCFluidTank(EnumCapacity capacity) {
         this.capacity = capacity;
@@ -29,9 +29,9 @@ public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<Up
         this.tankProperties = new IFluidTankProperties[]{new FluidTankProperties(this)};
     }
 
-    public UpgCFluidTank(EnumCapacity capacity, TileEntityFluidTank tileEntity) {
+    public UpgCFluidTank(EnumCapacity capacity, TileEntityFluidTank... tileEntities) {
         this(capacity);
-        this.tileEntity = tileEntity;
+        this.tileEntities = tileEntities;
     }
 
     @Override
@@ -42,6 +42,10 @@ public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<Up
         } else {
             this.fluidStack = null;
         }
+
+        EnumCapacity capacity = this.capacity.readFromNBT(nbt);
+        if (capacity != EnumCapacity.ERROR_CAPACITY)
+            this.capacity = capacity;
         return this;
     }
 
@@ -52,6 +56,7 @@ public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<Up
         } else {
             nbt.setString("Empty", "");
         }
+        capacity.writeToNBT(nbt);
         return nbt;
     }
 
@@ -122,10 +127,12 @@ public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<Up
                 if (this.fluidStack != null)
                     this.fluidStack.amount += result;
                 else this.fluidStack = new FluidStack(resource, result);
-                if (tileEntity != null) {
-                    FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(this.fluidStack, this.tileEntity.getWorld(), tileEntity.getPos(), this, this.fluidStack.amount));
-                    if (result > 0)
-                        this.tileEntity.syncTileEntity();
+                if (this.tileEntities != null) {
+                    for (TileEntityFluidTank te : this.tileEntities) {
+                        FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(this.fluidStack, te.getWorld(), te.getPos(), this, this.fluidStack.amount));
+                        if (result > 0)
+                            te.syncTileEntity();
+                    }
                 }
             }
 
@@ -140,7 +147,7 @@ public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<Up
 
         if (resource == null)
             return null;
-        else if (!this.tankProperties[0].canDrainFluidType(resource))
+        else if (!this.tankProperties[0].canDrainFluidType(resource) && !tileEntities[0].canDrain(resource.amount))
             return null;
         else if (this.getFluid() == null)
             return null;
@@ -155,9 +162,9 @@ public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<Up
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
 
-        if (!this.tankProperties[0].canDrain())
+        if (this.getFluid() == null)
             return null;
-        else if (this.getFluid() == null)
+        else if (!this.tankProperties[0].canDrainFluidType(new FluidStack(this.getFluid(), maxDrain)) && !tileEntities[0].canDrain(maxDrain))
             return null;
         else if (maxDrain <= 0)
             return null;
@@ -176,9 +183,11 @@ public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<Up
                 if (toBeNull)
                     this.fluidStack = null;
                 else this.fluidStack.amount -= drained;
-                if (tileEntity != null) {
-                    FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(this.fluidStack, tileEntity.getWorld(), tileEntity.getPos(), this, drained));
-                    this.tileEntity.syncTileEntity();
+                if (tileEntities != null) {
+                    for (TileEntityFluidTank te : this.tileEntities) {
+                        FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(this.fluidStack, te.getWorld(), te.getPos(), this, drained));
+                        te.syncTileEntity();
+                    }
                 }
             }
 
