@@ -10,6 +10,7 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
@@ -79,7 +80,7 @@ public class FluidTank extends BlockUpgC implements ITileEntityProvider {
         RenderInformation information = RenderInformation.getRenderInformation(isGLASSED);
 
         if (isDouble) {
-            isTop = WorldHelper.getBlock(world,pos.down()) == this;
+            isTop = WorldHelper.getBlock(world, pos.down()) == this;
             if (isTop) {
                 equal = isGLASSED == world.getBlockState(pos.down()).getValue(GLASSED);
             } else
@@ -88,6 +89,19 @@ public class FluidTank extends BlockUpgC implements ITileEntityProvider {
         }
 
         return state.withProperty(RENDER_INFORMATION, information);
+    }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        TileEntityFluidTank tank = (TileEntityFluidTank) worldIn.getTileEntity(pos);
+        tank.findAdjFluidTank();
+    }
+
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileEntityFluidTank tank = (TileEntityFluidTank) worldIn.getTileEntity(pos);
+        tank.separeteTank();
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
