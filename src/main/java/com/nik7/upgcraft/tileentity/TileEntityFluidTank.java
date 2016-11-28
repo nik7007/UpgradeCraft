@@ -23,8 +23,11 @@ import javax.annotation.Nullable;
 
 public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
 
-    protected final UpgCFluidTank fluidTank;
+    protected UpgCFluidTank fluidTank;
     private int oldLight;
+    private TileEntityFluidTank adjFluidTank;
+    private boolean isTop;
+    private final EnumCapacity capacity = EnumCapacity.BASIC_CAPACITY;
 
 
     public TileEntityFluidTank() {
@@ -71,6 +74,46 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
         }
     }
 
+    protected boolean canMerge(TileEntity te) {
+        if (te == null)
+            return false;
+        else return te instanceof TileEntityFluidTank;
+    }
+
+    private void findAdjFluidTank() {
+
+        if (this.adjFluidTank != null) {
+
+            if (worldObj.getTileEntity(this.adjFluidTank.pos) != this.adjFluidTank) {
+                this.adjFluidTank = null;
+                //TODO: separateTank
+            }
+
+        }
+
+        if (this.adjFluidTank == null) {
+            TileEntity te = worldObj.getTileEntity(pos.down());
+            if (this.canMerge(te)) {
+                this.adjFluidTank = (TileEntityFluidTank) te;
+                this.isTop = true;
+            } else {
+                te = worldObj.getTileEntity(pos.up());
+                if (this.canMerge(te))
+                    this.adjFluidTank = (TileEntityFluidTank) te;
+
+            }
+
+            if (this.adjFluidTank != null)
+                this.adjFluidTank.findAdjFluidTank();
+        }
+    }
+
+    private void merge(TileEntityFluidTank fluidTank){
+        EnumCapacity enumCapacity = EnumCapacity.getDoubleCapacity(this.capacity);
+
+
+    }
+
     protected void updateBlock() {
         markDirty();
 
@@ -89,7 +132,19 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
 
     @SideOnly(Side.CLIENT)
     public boolean renderInsideFluid() {
-        return getBlockMetadata() % 2 == 1;
+        boolean render = getBlockMetadata() % 2 == 1;
+        if (this.isDouble()) {
+            render |= this.adjFluidTank.getBlockMetadata() % 2 == 1;
+        }
+        return render;
+    }
+
+    public boolean isDouble() {
+        return this.adjFluidTank != null;
+    }
+
+    public boolean isTop() {
+        return this.isTop && this.isDouble();
     }
 
     @SideOnly(Side.CLIENT)

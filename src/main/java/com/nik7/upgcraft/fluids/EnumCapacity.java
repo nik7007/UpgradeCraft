@@ -7,9 +7,10 @@ public enum EnumCapacity {
 
     BASIC_CAPACITY,
     DOUBLE_CAPACITY,
-    FLUID_HOPPER_CAPACITY;
+    FLUID_HOPPER_CAPACITY,
+    ERROR_CAPACITY;
 
-    public static int getCapacity(EnumCapacity capacity){
+    public static int getCapacity(EnumCapacity capacity) {
         switch (capacity) {
             case BASIC_CAPACITY:
                 return ConfigOptions.BASIC_CAPACITY;
@@ -20,6 +21,13 @@ public enum EnumCapacity {
             default:
                 return 0;
         }
+    }
+
+    public static EnumCapacity getDoubleCapacity(EnumCapacity capacity) {
+        if (capacity == BASIC_CAPACITY)
+            return DOUBLE_CAPACITY;
+
+        return ERROR_CAPACITY;
     }
 
 }
