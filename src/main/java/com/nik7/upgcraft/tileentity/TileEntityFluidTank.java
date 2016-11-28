@@ -65,7 +65,7 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
 
     private void updateLight() {
         int light = this.getFluidLight();
-        if (this.oldLight != light) {
+        if (worldObj != null && this.oldLight != light) {
             worldObj.checkLightFor(EnumSkyBlock.BLOCK, getPos());
             this.oldLight = light;
         }
