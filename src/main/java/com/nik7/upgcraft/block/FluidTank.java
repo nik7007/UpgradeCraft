@@ -142,6 +142,17 @@ public class FluidTank extends BlockUpgC implements ITileEntityProvider {
         return 0;
     }
 
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+        if (state.getValue(GLASSED)) {
+            TileEntity te = world.getTileEntity(pos);
+            if (te instanceof TileEntityFluidTank)
+                return ((TileEntityFluidTank) te).getFluidLight();
+        }
+        return 0;
+    }
+
     @Nullable
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {

@@ -9,6 +9,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -23,6 +24,7 @@ import javax.annotation.Nullable;
 public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
 
     protected final UpgCFluidTank fluidTank;
+    private int oldLight;
 
 
     public TileEntityFluidTank() {
@@ -58,6 +60,15 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         this.readFromNBT(packet.getNbtCompound());
+        this.updateLight();
+    }
+
+    private void updateLight() {
+        int light = this.getFluidLight();
+        if (this.oldLight != light) {
+            worldObj.checkLightFor(EnumSkyBlock.BLOCK, getPos());
+            this.oldLight = light;
+        }
     }
 
     protected void updateBlock() {
@@ -67,6 +78,7 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
             IBlockState state = worldObj.getBlockState(getPos());
             worldObj.notifyBlockUpdate(getPos(), state, state, 3);
             worldObj.updateComparatorOutputLevel(getPos(), state.getBlock());
+            this.updateLight();
         }
 
     }
@@ -83,6 +95,15 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler {
     @SideOnly(Side.CLIENT)
     public float getFillPercentage() {
         return (float) this.fluidTank.getFluidAmount() / (float) this.fluidTank.getCapacity();
+    }
+
+    public int getFluidLight() {
+
+        FluidStack fluidStack = this.fluidTank.getFluid();
+
+        if (fluidStack == null)
+            return 0;
+        return fluidStack.getFluid().getLuminosity(this.fluidTank.getFluid());
     }
 
     public FluidStack getFluid() {
