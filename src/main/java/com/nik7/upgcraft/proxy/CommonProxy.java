@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public abstract class CommonProxy implements IProxy{
+public abstract class CommonProxy implements IProxy {
 
 
     @Override
@@ -30,7 +30,7 @@ public abstract class CommonProxy implements IProxy{
 
         //recipes
         Recipes.init();
-        //tileEntity
+        //tileEntities
         GameRegistry.registerTileEntity(TileEntityFluidTank.class, Reference.RESOURCE_PREFIX + "TileEntityFluidTank");
         //interModComm
 
