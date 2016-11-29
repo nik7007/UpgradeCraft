@@ -3,6 +3,7 @@ itemGroup.UpgradeCraft=UpgradeCraft
 
 # Blocks
 tile.upgcraft:slimylog.name=Slimy Wood Planks
+tile.upgcraft:woodenfluidtank.name=Wooden Fluid Tank
 
 # Items
 
