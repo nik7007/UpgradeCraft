@@ -4,7 +4,6 @@ package com.nik7.upgcraft.tileentity;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
