@@ -19,7 +19,7 @@ public class RenderUpgC {
 
     public static void initRenderingAndTextures() {
         RenderUpgC.initModel(ModBlocks.slimyLog);
-        RenderUpgC.initFluidTankModel(ModBlocks.fluidTank);
+        RenderUpgC.initFluidTankModel(ModBlocks.woodenFluidTank);
 
     }
 
