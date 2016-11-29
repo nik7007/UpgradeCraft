@@ -29,16 +29,23 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 
-public class FluidTank extends BlockUpgC implements ITileEntityProvider {
+public abstract class FluidTank extends BlockUpgC implements ITileEntityProvider {
 
     private static final AxisAlignedBB BB = new AxisAlignedBB(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
     public static final PropertyBool GLASSED = PropertyBool.create("glassed");
     public static final PropertyEnum<RenderInformation> RENDER_INFORMATION = PropertyEnum.create("render_information", RenderInformation.class);
+    private final boolean canBeDouble;
+    private final boolean canBeGlassed;
 
-    public FluidTank() {
-        super(Material.WOOD, "fluidtank");
+    public FluidTank(String blockName) {
+        this(blockName, true, true);
+    }
+
+    public FluidTank(String blockName, boolean canBeDouble, boolean canBeGlassed) {
+        super(Material.WOOD, blockName);
+        this.canBeDouble = canBeDouble;
+        this.canBeGlassed = canBeGlassed;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GLASSED, false).withProperty(RENDER_INFORMATION, RenderInformation.SINGLE));
     }
 
@@ -61,46 +68,49 @@ public class FluidTank extends BlockUpgC implements ITileEntityProvider {
         BlockPos up = pos.up();
         BlockPos down = pos.down();
 
-        return (!(WorldHelper.getBlock(worldIn, up) == this && WorldHelper.getBlock(worldIn, up.up()) == this) && !(WorldHelper.getBlock(worldIn, down) == this && WorldHelper.getBlock(worldIn, down.down()) == this) && !(WorldHelper.getBlock(worldIn, up) == this && WorldHelper.getBlock(worldIn, down) == this)) && worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
+        return !this.canBeDouble || (!(WorldHelper.getBlock(worldIn, up) == this && WorldHelper.getBlock(worldIn, up.up()) == this) && !(WorldHelper.getBlock(worldIn, down) == this && WorldHelper.getBlock(worldIn, down.down()) == this) && !(WorldHelper.getBlock(worldIn, up) == this && WorldHelper.getBlock(worldIn, down) == this)) && worldIn.getBlockState(pos).getBlock().isReplaceable(worldIn, pos);
 
     }
 
     private boolean isDouble(IBlockAccess world, BlockPos pos) {
 
-        return world.getBlockState(pos.up()).getBlock() == this || world.getBlockState(pos.down()).getBlock() == this;
+        return this.canBeDouble && world.getBlockState(pos.up()).getBlock() == this || world.getBlockState(pos.down()).getBlock() == this;
     }
 
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        if (this.canBeGlassed) {
+            boolean isDouble = isDouble(world, pos);
+            boolean isTop;
+            boolean equal;
+            boolean isGLASSED = state.getValue(GLASSED);
+            RenderInformation information = RenderInformation.getRenderInformation(isGLASSED);
 
-        boolean isDouble = isDouble(world, pos);
-        boolean isTop;
-        boolean equal;
-        boolean isGLASSED = state.getValue(GLASSED);
-        RenderInformation information = RenderInformation.getRenderInformation(isGLASSED);
+            if (isDouble) {
+                isTop = WorldHelper.getBlock(world, pos.down()) == this;
+                if (isTop) {
+                    equal = isGLASSED == world.getBlockState(pos.down()).getValue(GLASSED);
+                } else
+                    equal = isGLASSED == world.getBlockState(pos.up()).getValue(GLASSED);
+                information = RenderInformation.getRenderInformation(true, isTop, isGLASSED, equal);
+            }
+            return state.withProperty(RENDER_INFORMATION, information);
 
-        if (isDouble) {
-            isTop = WorldHelper.getBlock(world, pos.down()) == this;
-            if (isTop) {
-                equal = isGLASSED == world.getBlockState(pos.down()).getValue(GLASSED);
-            } else
-                equal = isGLASSED == world.getBlockState(pos.up()).getValue(GLASSED);
-            information = RenderInformation.getRenderInformation(true, isTop, isGLASSED, equal);
-        }
-
-        return state.withProperty(RENDER_INFORMATION, information);
+        } else return state.withProperty(RENDER_INFORMATION, RenderInformation.SINGLE);
     }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         TileEntityFluidTank tank = (TileEntityFluidTank) worldIn.getTileEntity(pos);
-        tank.findAdjFluidTank();
+        if (this.canBeDouble)
+            tank.findAdjFluidTank();
     }
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntityFluidTank tank = (TileEntityFluidTank) worldIn.getTileEntity(pos);
-        tank.separeteTank();
+        if (this.canBeDouble)
+            tank.separeteTank();
         super.breakBlock(worldIn, pos, state);
     }
 
@@ -163,8 +173,10 @@ public class FluidTank extends BlockUpgC implements ITileEntityProvider {
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
-        list.add(new ItemStack(this, 1, 0));
-        list.add(new ItemStack(this, 1, 1));
+        if (this.canBeGlassed) {
+            list.add(new ItemStack(this, 1, 0));
+            list.add(new ItemStack(this, 1, 1));
+        } else super.getSubBlocks(itemIn, tab, list);
     }
 
     public boolean hasComparatorInputOverride(IBlockState state) {
@@ -201,12 +213,6 @@ public class FluidTank extends BlockUpgC implements ITileEntityProvider {
                 return ((TileEntityFluidTank) te).getFluidLight();
         }
         return 0;
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(World world, int meta) {
-        return new TileEntityFluidTank();
     }
 
     public enum RenderInformation implements IStringSerializable {

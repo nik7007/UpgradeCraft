@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.tileentity;
 
 
+import com.nik7.upgcraft.block.FluidTank;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
 import net.minecraft.block.state.IBlockState;
@@ -23,19 +24,26 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 
-public class TileEntityFluidTank extends TileEntity implements IFluidHandler, ITickable {
+public abstract class TileEntityFluidTank extends TileEntity implements IFluidHandler, ITickable {
 
     protected UpgCFluidTank fluidTank;
     private int oldLight;
     private TileEntityFluidTank adjFluidTank;
     private boolean isTop;
-    private final EnumCapacity capacity = EnumCapacity.BASIC_CAPACITY;
+    private final EnumCapacity capacity;
     private boolean isFirst = true;
-    private Class<? extends UpgCFluidTank> TankClass = null;
+    private final boolean canBeDouble;
+    private final Class<? extends UpgCFluidTank> TankClass;
 
 
-    public TileEntityFluidTank() {
-        //TankClass = UpgCFluidTank.class;
+    public TileEntityFluidTank(EnumCapacity capacity) {
+        this(capacity, null, true);
+    }
+
+    public TileEntityFluidTank(EnumCapacity capacity, Class<? extends UpgCFluidTank> TankClass, boolean canBeDouble) {
+        this.capacity = capacity;
+        this.TankClass = TankClass;
+        this.canBeDouble = canBeDouble;
         this.fluidTank = createTank(EnumCapacity.BASIC_CAPACITY, this);
     }
 
@@ -76,7 +84,7 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler, IT
 
         NBTTagCompound nbtTag = new NBTTagCompound();
         this.writeToNBT(nbtTag);
-        nbtTag.setBoolean("isDoubleTank", this.isDouble());
+        nbtTag.setBoolean("isDoubleTank", this.canBeDouble && this.isDouble());
         return new SPacketUpdateTileEntity(getPos(), 1, nbtTag);
     }
 
@@ -94,7 +102,7 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler, IT
 
     private void updateLight() {
         int light = this.getFluidLight();
-        if (worldObj != null && this.oldLight != light) {
+        if (worldObj != null && this.oldLight != light && this.worldObj.getBlockState(this.pos).getValue(FluidTank.GLASSED)) {
             worldObj.checkLightFor(EnumSkyBlock.BLOCK, getPos());
             this.oldLight = light;
         }
@@ -107,16 +115,13 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler, IT
 
     @Override
     public void update() {
-        if (isFirst) {
+        if (isFirst && this.canBeDouble) {
             isFirst = false;
             this.findAdjFluidTank();
         }
     }
 
-
-    protected boolean canMerge(TileEntity te) {
-        return te != null && te instanceof TileEntityFluidTank;
-    }
+    protected abstract boolean canMerge(TileEntity te);
 
     private boolean fluidAreCompatible(TileEntity te) {
 
@@ -227,7 +232,7 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler, IT
 
     @SideOnly(Side.CLIENT)
     public boolean renderInsideFluid() {
-        boolean render = getBlockMetadata() % 2 == 1;
+        boolean render = this.worldObj.getBlockState(this.pos).getValue(FluidTank.GLASSED);
         if (this.isDouble()) {
             render |= this.adjFluidTank.getBlockMetadata() % 2 == 1;
         }
