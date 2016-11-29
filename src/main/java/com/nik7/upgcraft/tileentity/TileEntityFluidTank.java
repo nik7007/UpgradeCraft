@@ -103,9 +103,13 @@ public abstract class TileEntityFluidTank extends TileEntity implements IFluidHa
 
     private void updateLight() {
         int light = this.getFluidLight();
-        if (worldObj != null && this.oldLight != light && this.worldObj.getBlockState(this.pos).getValue(FluidTank.GLASSED)) {
-            worldObj.checkLightFor(EnumSkyBlock.BLOCK, getPos());
-            this.oldLight = light;
+        if (worldObj != null) {
+            boolean glassed = this.worldObj.getBlockState(this.pos).getBlock() instanceof FluidTank ? this.worldObj.getBlockState(this.pos).getValue(FluidTank.GLASSED) : true;
+
+            if (this.oldLight != light && glassed) {
+                worldObj.checkLightFor(EnumSkyBlock.BLOCK, getPos());
+                this.oldLight = light;
+            }
         }
     }
 
