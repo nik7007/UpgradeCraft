@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.EnhancedRuntimeException;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -54,6 +55,7 @@ public abstract class TileEntityFluidTank extends TileEntity implements IFluidHa
                 result = TankClass.asSubclass(UpgCFluidTank.class).getConstructor(EnumCapacity.class, TileEntityFluidTank[].class).newInstance(capacity, tileEntities);
             } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
                 e.printStackTrace();
+                throw new RuntimeException(e);
             }
             return result;
 
