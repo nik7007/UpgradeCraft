@@ -4,6 +4,7 @@ package com.nik7.upgcraft.tileentity;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -21,6 +22,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
 
 public class TileEntityFluidTank extends TileEntity implements IFluidHandler, ITickable {
 
@@ -30,10 +32,26 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler, IT
     private boolean isTop;
     private final EnumCapacity capacity = EnumCapacity.BASIC_CAPACITY;
     private boolean isFirst = true;
+    private Class<? extends UpgCFluidTank> TankClass = null;
 
 
     public TileEntityFluidTank() {
-        this.fluidTank = new UpgCFluidTank(EnumCapacity.BASIC_CAPACITY, this);
+        //TankClass = UpgCFluidTank.class;
+        this.fluidTank = createTank(EnumCapacity.BASIC_CAPACITY, this);
+    }
+
+    private UpgCFluidTank createTank(EnumCapacity capacity, TileEntityFluidTank... tileEntities) {
+        if (TankClass != null) {
+            UpgCFluidTank result = null;
+            try {
+                result = TankClass.asSubclass(UpgCFluidTank.class).getConstructor(EnumCapacity.class, TileEntityFluidTank[].class).newInstance(capacity, tileEntities);
+            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return result;
+
+        } else
+            return new UpgCFluidTank(capacity, tileEntities);
     }
 
     @Override
@@ -152,7 +170,7 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler, IT
             else {
                 FluidStack fluidStack1 = this.getFluid();
                 FluidStack fluidStack2 = fluidTank.getFluid();
-                UpgCFluidTank newTank = new UpgCFluidTank(doubleCapacity, this, fluidTank);
+                UpgCFluidTank newTank = createTank(doubleCapacity, this, fluidTank);
                 FluidStack result = null;
                 if (fluidStack1 != null) {
                     result = fluidStack1;
@@ -181,7 +199,7 @@ public class TileEntityFluidTank extends TileEntity implements IFluidHandler, IT
             this.adjFluidTank = null;
             this.isTop = false;
 
-            this.fluidTank = new UpgCFluidTank(capacity, this);
+            this.fluidTank = createTank(capacity, this);
             this.fluidTank.fill(fluidStack, true);
 
             if (!worldObj.isRemote)
