@@ -1,9 +1,6 @@
 package com.nik7.upgcraft.init;
 
-import com.nik7.upgcraft.block.BlockUpgC;
-import com.nik7.upgcraft.block.FluidTank;
-import com.nik7.upgcraft.block.SlimyLog;
-import com.nik7.upgcraft.block.WoodenFluidTank;
+import com.nik7.upgcraft.block.*;
 import com.nik7.upgcraft.item.ItemBlockFluidTank;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
@@ -21,16 +18,19 @@ public class ModBlocks {
 
     public static BlockUpgC slimyLog;
     public static BlockUpgC woodenFluidTank;
+    public static BlockUpgC fluidFurnace;
 
     public static void init() {
         slimyLog = new SlimyLog();
         woodenFluidTank = new WoodenFluidTank();
+        fluidFurnace = new FluidFurnace();
 
         register();
     }
 
     private static void register() {
         ModBlocks.registerBlock(slimyLog);
+        ModBlocks.registerBlock(fluidFurnace);
         ModBlocks.registerBlock(woodenFluidTank, ItemBlockFluidTank.class);
     }
 
