@@ -15,7 +15,7 @@ import java.util.Random;
 
 public abstract class BlockUpgC extends Block {
 
-    public BlockUpgC(Material blockMaterial, String blockName) {
+    protected BlockUpgC(Material blockMaterial, String blockName) {
         super(blockMaterial);
         setUnlocalizedName(Reference.RESOURCE_PREFIX + blockName);
         this.setCreativeTab(CreativeTab.UPGC_TAB);
