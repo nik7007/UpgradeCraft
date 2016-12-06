@@ -8,16 +8,16 @@
     "inventory": [{}],
     "facing" : {
       "north" : {
-        "model" : "upgcraft:fluid_furnace", "y": 180
-      },
-      "south" : {
         "model" : "upgcraft:fluid_furnace"
       },
+      "south" : {
+        "model" : "upgcraft:fluid_furnace", "y": 180
+      },
       "west" : {
-        "model" : "upgcraft:fluid_furnace", "y": 90
+        "model" : "upgcraft:fluid_furnace", "y": 270
       },
       "east" : {
-        "model" : "upgcraft:fluid_furnace", "y": 270
+        "model" : "upgcraft:fluid_furnace", "y": 90
       }
     }
   }
