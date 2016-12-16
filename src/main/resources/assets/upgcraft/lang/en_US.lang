@@ -9,4 +9,6 @@ tile.upgcraft:woodenfluidtank.name=Wooden Fluid Tank
 
 #Tooltip
 tooltip.upgcraft:tank.glassed=Transparent
+tooltip.upgcraft:tank.empty=Empty
+
 
