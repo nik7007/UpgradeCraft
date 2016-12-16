@@ -1,10 +1,7 @@
 package com.nik7.upgcraft.waila;
 
-
-import com.nik7.upgcraft.block.FluidTank;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
 import com.nik7.upgcraft.reference.Reference;
-import com.nik7.upgcraft.tileentity.TileEntityFluidTank;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
@@ -18,7 +15,6 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 
 import java.util.List;
 
