@@ -9,7 +9,7 @@ public enum EnumCapacity implements INBTProvider<EnumCapacity> {
 
     BASIC_CAPACITY(0),
     DOUBLE_CAPACITY(1),
-    FLUID_HOPPER_CAPACITY(2),
+    FUNNEL_CAPACITY(2),
     ERROR_CAPACITY(3);
 
     private final int i;
@@ -26,7 +26,7 @@ public enum EnumCapacity implements INBTProvider<EnumCapacity> {
             case 1:
                 return DOUBLE_CAPACITY;
             case 2:
-                return FLUID_HOPPER_CAPACITY;
+                return FUNNEL_CAPACITY;
             default:
                 return ERROR_CAPACITY;
         }
@@ -46,8 +46,8 @@ public enum EnumCapacity implements INBTProvider<EnumCapacity> {
                 return ConfigOptions.BASIC_CAPACITY;
             case DOUBLE_CAPACITY:
                 return ConfigOptions.DOUBLE_CAPACITY;
-            case FLUID_HOPPER_CAPACITY:
-                return ConfigOptions.FLUID_HOPPER_CAPACITY;
+            case FUNNEL_CAPACITY:
+                return ConfigOptions.FUNNEL_CAPACITY;
             default:
                 return 0;
         }
