@@ -12,30 +12,54 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class TileEntityFunnel extends TileEntityFluidHandler implements ITickable {
 
-    private final BlockPos upPosition = getPos().up();
-
     public TileEntityFunnel() {
         super(EnumCapacity.FUNNEL_CAPACITY);
     }
 
 
-    private void fillFromUp(int speed) {
-        TileEntity te = worldObj.getTileEntity(upPosition);
+    private IFluidHandler getFluidHandler(BlockPos blockPos, EnumFacing facing) {
+
         IFluidHandler fluidHandler = null;
+        BlockPos otherPos = blockPos.add(facing.getDirectionVec());
+        TileEntity te = worldObj.getTileEntity(otherPos);
 
-        if (te instanceof IFluidHandler)
-            fluidHandler = (IFluidHandler) te;
-        else if (te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN))
-            fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN);
+        if (te != null) {
+            if (te instanceof IFluidHandler)
+                fluidHandler = (IFluidHandler) te;
+            else if (te.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite()))
+                fluidHandler = te.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, facing.getOpposite());
+        }
 
-        if (fluidHandler != null) {
+        return fluidHandler;
+    }
+
+    private void transferFluid(IFluidHandler toFill, IFluidHandler toDrain, int maxAmount) {
+        if (toFill != toDrain && toFill != null && toDrain != null) {
             FluidStack checkFluid;
-            if ((checkFluid = fluidHandler.drain(speed, false)) != null) {
-                int realSpeed = this.fluidTank.fill(checkFluid, false);
+            if ((checkFluid = toDrain.drain(maxAmount, false)) != null) {
+                int realSpeed = toFill.fill(checkFluid, false);
                 if (realSpeed > 0) {
-                    this.fluidTank.fill(fluidHandler.drain(realSpeed, true), true);
+                    toFill.fill(toDrain.drain(realSpeed, true), true);
                 }
             }
+        }
+    }
+
+    private void fillFromUp(int speed) {
+        IFluidHandler fluidHandler = getFluidHandler(getPos(), EnumFacing.UP);
+
+        if (fluidHandler != null) {
+            transferFluid(this.fluidTank, fluidHandler, speed);
+        }
+
+    }
+
+    private void autoDrain(int speed, EnumFacing facing) {
+
+        IFluidHandler fluidHandler = getFluidHandler(getPos(), facing);
+
+        if (fluidHandler != null) {
+            transferFluid(fluidHandler, this.fluidTank, speed);
         }
 
     }
