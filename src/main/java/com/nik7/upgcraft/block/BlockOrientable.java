@@ -15,10 +15,16 @@ import net.minecraft.world.World;
 public abstract class BlockOrientable extends BlockUpgC {
 
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
+    public final EnumFacing defaultFacing;
+
+    protected BlockOrientable(Material blockMaterial, String blockName, EnumFacing defaultFacing) {
+        super(blockMaterial, blockName);
+        this.defaultFacing = defaultFacing;
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, this.defaultFacing));
+    }
 
     protected BlockOrientable(Material blockMaterial, String blockName) {
-        super(blockMaterial, blockName);
-        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+        this(blockMaterial, blockName, EnumFacing.NORTH);
     }
 
     @Override
@@ -36,7 +42,7 @@ public abstract class BlockOrientable extends BlockUpgC {
         EnumFacing enumfacing = EnumFacing.getFront(meta);
 
         if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
-            enumfacing = EnumFacing.NORTH;
+            enumfacing = defaultFacing;
         }
 
         return this.getDefaultState().withProperty(FACING, enumfacing);
