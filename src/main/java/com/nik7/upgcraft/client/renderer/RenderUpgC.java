@@ -21,6 +21,7 @@ public class RenderUpgC {
         RenderUpgC.initModel(ModBlocks.slimyLog);
         RenderUpgC.initFluidTankModel(ModBlocks.woodenFluidTank);
         RenderUpgC.initModel(ModBlocks.fluidFurnace);
+        RenderUpgC.initModel(ModBlocks.funnel);
 
     }
 
