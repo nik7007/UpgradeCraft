@@ -4,6 +4,7 @@ import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.init.Recipes;
 import com.nik7.upgcraft.reference.Reference;
+import com.nik7.upgcraft.tileentity.TileEntityFunnel;
 import com.nik7.upgcraft.tileentity.TileEntityWoodenFluidTank;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -32,6 +33,7 @@ public abstract class CommonProxy implements IProxy {
         Recipes.init();
         //tileEntities
         GameRegistry.registerTileEntity(TileEntityWoodenFluidTank.class, Reference.RESOURCE_PREFIX + "TileEntityWoodenFluidTank");
+        GameRegistry.registerTileEntity(TileEntityFunnel.class, Reference.RESOURCE_PREFIX + "TileEntityFunnel");
         //interModComm
 
     }
