@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.tileentity;
 
 
-import com.nik7.upgcraft.block.BlockOrientable;
+import com.nik7.upgcraft.block.Funnel;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -71,7 +71,7 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
     protected IBlockState funnelAction() {
         IBlockState blockState = worldObj.getBlockState(getPos());
 
-        EnumFacing facing = blockState.getValue(BlockOrientable.FACING);
+        EnumFacing facing = blockState.getValue(Funnel.FACING);
 
         int lastFluidAmount = this.fluidTank.getFluidAmount();
         fillFromUp(SPEED);
@@ -84,7 +84,8 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
 
     @Override
     public void update() {
-        funnelAction();
+        if (!worldObj.isRemote)
+            funnelAction();
     }
 
 
