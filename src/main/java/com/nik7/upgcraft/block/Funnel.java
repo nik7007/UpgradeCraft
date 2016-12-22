@@ -32,6 +32,15 @@ public class Funnel extends BlockUpgC implements ITileEntityProvider {
         return new BlockStateContainer(this, FACING);
     }
 
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+
     @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
         EnumFacing enumfacing = facing.getOpposite();
