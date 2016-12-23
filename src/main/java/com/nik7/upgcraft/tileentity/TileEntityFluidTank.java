@@ -184,7 +184,6 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
         if (worldObj != null) {
             IBlockState state = worldObj.getBlockState(getPos());
             worldObj.notifyBlockUpdate(getPos(), state, state, 3);
-            worldObj.updateComparatorOutputLevel(getPos(), state.getBlock());
             this.updateLight();
         }
 
