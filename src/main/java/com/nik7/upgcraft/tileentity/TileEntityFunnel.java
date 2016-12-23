@@ -30,7 +30,6 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-
         NBTTagCompound nbtTag = new NBTTagCompound();
         this.writeToNBT(nbtTag);
         return new SPacketUpdateTileEntity(getPos(), 1, nbtTag);
@@ -113,10 +112,10 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
 
     @Override
     public void syncTileEntity() {
+        markDirty();
         if (worldObj != null) {
             IBlockState state = worldObj.getBlockState(getPos());
             worldObj.notifyBlockUpdate(getPos(), state, state, 3);
-            worldObj.updateComparatorOutputLevel(getPos(), state.getBlock());
         }
     }
 
