@@ -24,6 +24,11 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
     }
 
     @Override
+    public NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         this.readFromNBT(packet.getNbtCompound());
     }
