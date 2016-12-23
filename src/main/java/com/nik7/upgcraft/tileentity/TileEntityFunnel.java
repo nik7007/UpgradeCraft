@@ -84,15 +84,21 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
 
     }
 
+    protected boolean canOperate(IBlockState blockState) {
+        return worldObj != null && (worldObj.isBlockIndirectlyGettingPowered(pos) == 0);
+    }
+
     protected IBlockState funnelAction() {
         IBlockState blockState = worldObj.getBlockState(getPos());
 
-        EnumFacing facing = blockState.getValue(Funnel.FACING);
+        if (canOperate(blockState)) {
+            EnumFacing facing = blockState.getValue(Funnel.FACING);
 
-        int lastFluidAmount = this.fluidTank.getFluidAmount();
-        fillFromUp(SPEED);
-        if (lastFluidAmount > 0)
-            autoDrain(SPEED, facing);
+            int lastFluidAmount = this.fluidTank.getFluidAmount();
+            fillFromUp(SPEED);
+            if (lastFluidAmount > 0)
+                autoDrain(SPEED, facing);
+        }
 
         return blockState;
 
