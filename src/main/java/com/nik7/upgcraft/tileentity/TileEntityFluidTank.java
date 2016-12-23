@@ -212,11 +212,6 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
         return this.isTop && this.isDouble();
     }
 
-    @SideOnly(Side.CLIENT)
-    public float getFillPercentage() {
-        return (float) this.fluidTank.getFluidAmount() / (float) this.fluidTank.getCapacity();
-    }
-
     public int getFluidLight() {
 
         FluidStack fluidStack = this.fluidTank.getFluid();
