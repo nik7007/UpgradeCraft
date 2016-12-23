@@ -4,6 +4,9 @@ package com.nik7.upgcraft.tileentity;
 import com.nik7.upgcraft.block.Funnel;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -18,6 +21,19 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
 
     public TileEntityFunnel() {
         super(EnumCapacity.FUNNEL_CAPACITY);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+        this.readFromNBT(packet.getNbtCompound());
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+
+        NBTTagCompound nbtTag = new NBTTagCompound();
+        this.writeToNBT(nbtTag);
+        return new SPacketUpdateTileEntity(getPos(), 1, nbtTag);
     }
 
 
@@ -91,6 +107,11 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
 
     @Override
     public void syncTileEntity() {
+        if (worldObj != null) {
+            IBlockState state = worldObj.getBlockState(getPos());
+            worldObj.notifyBlockUpdate(getPos(), state, state, 3);
+            worldObj.updateComparatorOutputLevel(getPos(), state.getBlock());
+        }
     }
 
 }
