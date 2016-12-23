@@ -3,7 +3,6 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.tileentity.TileEntityFluidTank;
 import com.nik7.upgcraft.util.WorldHelper;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
@@ -30,11 +29,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 
-public abstract class FluidTank extends BlockUpgC implements ITileEntityProvider {
+public abstract class FluidTank extends BlockFluidContainer {
 
-    private static final AxisAlignedBB BB = new AxisAlignedBB(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
     public static final PropertyBool GLASSED = PropertyBool.create("glassed");
     public static final PropertyEnum<RenderInformation> RENDER_INFORMATION = PropertyEnum.create("render_information", RenderInformation.class);
+    private static final AxisAlignedBB BB = new AxisAlignedBB(0.0625f, 0.0f, 0.0625f, 0.9375f, 1.0f, 0.9375f);
     private final boolean canBeDouble;
     private final boolean canBeGlassed;
 
@@ -179,31 +178,6 @@ public abstract class FluidTank extends BlockUpgC implements ITileEntityProvider
         } else super.getSubBlocks(itemIn, tab, list);
     }
 
-    public boolean hasComparatorInputOverride(IBlockState state) {
-        return true;
-    }
-
-    public int getComparatorInputOverride(IBlockState blockState, World worldIn, BlockPos pos) {
-        TileEntity te = worldIn.getTileEntity(pos);
-        if (te instanceof TileEntityFluidTank) {
-            TileEntityFluidTank fluidTank = (TileEntityFluidTank) te;
-            float percentage = fluidTank.getFillPercentage();
-
-            int result = (int) (percentage * 15f);
-
-            if (percentage == 1)
-                result = 15;
-            else if (result == 15)
-                result = 14;
-            if (result == 0 && percentage > 0)
-                result = 1;
-
-            return result;
-
-        }
-        return 0;
-    }
-
     @Override
     public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
 
@@ -227,6 +201,10 @@ public abstract class FluidTank extends BlockUpgC implements ITileEntityProvider
 
 
         private final String name;
+
+        RenderInformation(String name) {
+            this.name = name;
+        }
 
         public static RenderInformation getRenderInformation(boolean isGlassed) {
             return getRenderInformation(false, false, isGlassed, false);
@@ -255,10 +233,6 @@ public abstract class FluidTank extends BlockUpgC implements ITileEntityProvider
             } else if (isGlassed)
                 return SINGLE_GLASSED;
             return SINGLE;
-        }
-
-        RenderInformation(String name) {
-            this.name = name;
         }
 
         @Override

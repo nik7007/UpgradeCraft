@@ -3,7 +3,6 @@ package com.nik7.upgcraft.block;
 
 import com.nik7.upgcraft.tileentity.TileEntityFunnel;
 import net.minecraft.block.BlockHopper;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -18,7 +17,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class Funnel extends BlockUpgC implements ITileEntityProvider {
+public class Funnel extends BlockFluidContainer {
 
     public static final PropertyDirection FACING = BlockHopper.FACING;
 
