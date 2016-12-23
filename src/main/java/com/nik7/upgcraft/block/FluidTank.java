@@ -101,7 +101,7 @@ public abstract class FluidTank extends BlockFluidContainer {
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
         TileEntityFluidTank tank = (TileEntityFluidTank) worldIn.getTileEntity(pos);
-        if (this.canBeDouble)
+        if (this.canBeDouble && tank != null)
             tank.findAdjFluidTank();
     }
 
