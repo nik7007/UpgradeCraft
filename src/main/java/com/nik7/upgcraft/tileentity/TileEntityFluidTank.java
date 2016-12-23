@@ -53,7 +53,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
         NBTTagCompound nbt = packet.getNbtCompound();
         if (nbt.hasKey("isDoubleTank")) {
             if (!nbt.getBoolean("isDoubleTank"))
-                this.separeteTank();
+                this.separateTank();
         }
 
         this.readFromNBT(nbt);
@@ -99,26 +99,28 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
         if (this.adjFluidTank != null) {
 
             if (worldObj.getTileEntity(this.adjFluidTank.pos) != this.adjFluidTank) {
-                this.separeteTank();
+                this.separateTank();
             }
 
         }
 
         if (this.adjFluidTank == null) {
             TileEntity te = worldObj.getTileEntity(pos.down());
-            if (this.canMerge(te) && fluidAreCompatible(te)) {
-                this.adjFluidTank = (TileEntityFluidTank) te;
-                this.isTop = true;
-                this.merge(this.adjFluidTank);
-            } else {
-                te = worldObj.getTileEntity(pos.up());
-                if (this.canMerge(te) && fluidAreCompatible(te))
+            if (te != null) {
+                if (this.canMerge(te) && fluidAreCompatible(te)) {
                     this.adjFluidTank = (TileEntityFluidTank) te;
-            }
+                    this.isTop = true;
+                    this.merge(this.adjFluidTank);
+                } else {
+                    te = worldObj.getTileEntity(pos.up());
+                    if (this.canMerge(te) && fluidAreCompatible(te))
+                        this.adjFluidTank = (TileEntityFluidTank) te;
+                }
 
-            if (this.adjFluidTank != null)
-                this.adjFluidTank.findAdjFluidTank();
-            worldObj.updateComparatorOutputLevel(getPos(), worldObj.getBlockState(getPos()).getBlock());
+                if (this.adjFluidTank != null)
+                    this.adjFluidTank.findAdjFluidTank();
+                worldObj.updateComparatorOutputLevel(getPos(), worldObj.getBlockState(getPos()).getBlock());
+            }
         }
     }
 
@@ -160,7 +162,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
 
     }
 
-    public void separeteTank() {
+    public void separateTank() {
         if (this.adjFluidTank != null) {
             TileEntityFluidTank otherFluidTank = this.adjFluidTank;
             FluidStack fluidStack = this.getSingleTankFluid();
@@ -173,7 +175,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
             if (!worldObj.isRemote)
                 this.syncTileEntity();
 
-            otherFluidTank.separeteTank();
+            otherFluidTank.separateTank();
         }
 
     }

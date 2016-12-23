@@ -109,7 +109,7 @@ public abstract class FluidTank extends BlockFluidContainer {
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntityFluidTank tank = (TileEntityFluidTank) worldIn.getTileEntity(pos);
         if (this.canBeDouble)
-            tank.separeteTank();
+            tank.separateTank();
         super.breakBlock(worldIn, pos, state);
     }
 
