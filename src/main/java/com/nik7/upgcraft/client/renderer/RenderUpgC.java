@@ -18,10 +18,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 public class RenderUpgC {
 
     public static void initRenderingAndTextures() {
-        RenderUpgC.initModel(ModBlocks.slimyLog);
-        RenderUpgC.initFluidTankModel(ModBlocks.woodenFluidTank);
-        RenderUpgC.initModel(ModBlocks.fluidFurnace);
-        RenderUpgC.initModel(ModBlocks.funnel);
+        RenderUpgC.initModel(ModBlocks.blockSlimyLog);
+        RenderUpgC.initFluidTankModel(ModBlocks.blockWoodenFluidTank);
+        RenderUpgC.initModel(ModBlocks.blockFluidFurnace);
+        RenderUpgC.initModel(ModBlocks.blockFunnel);
 
     }
 

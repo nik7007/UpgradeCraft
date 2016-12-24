@@ -15,7 +15,7 @@ public class CreativeTab {
         @Override
         @SideOnly(Side.CLIENT)
         public ItemStack getTabIconItem() {
-            return new ItemStack(ModBlocks.woodenFluidTank, 1, 1);
+            return new ItemStack(ModBlocks.blockWoodenFluidTank, 1, 1);
         }
 
     };

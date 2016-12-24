@@ -17,12 +17,12 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class Funnel extends BlockFluidContainer {
+public class BlockFunnel extends BlockFluidContainer {
 
     public static final PropertyDirection FACING = BlockHopper.FACING;
 
-    public Funnel() {
-        super(Material.IRON, "Funnel");
+    public BlockFunnel() {
+        super(Material.IRON, "funnel");
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN));
     }
 

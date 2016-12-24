@@ -16,24 +16,24 @@ import java.lang.reflect.InvocationTargetException;
 public class ModBlocks {
 
 
-    public static BlockUpgC slimyLog;
-    public static BlockUpgC woodenFluidTank;
-    public static BlockUpgC fluidFurnace;
-    public static BlockUpgC funnel;
+    public static BlockUpgC blockSlimyLog;
+    public static BlockUpgC blockWoodenFluidTank;
+    public static BlockUpgC blockFluidFurnace;
+    public static BlockUpgC blockFunnel;
 
     public static void init() {
-        slimyLog = new SlimyLog();
-        woodenFluidTank = new WoodenFluidTank();
-        fluidFurnace = new FluidFurnace();
-        funnel = new Funnel();
+        blockSlimyLog = new BlockSlimyLog();
+        blockWoodenFluidTank = new BlockWoodenFluidTank();
+        blockFluidFurnace = new BlockFluidFurnace();
+        blockFunnel = new BlockFunnel();
         register();
     }
 
     private static void register() {
-        ModBlocks.registerBlock(slimyLog);
-        ModBlocks.registerBlock(fluidFurnace);
-        ModBlocks.registerBlock(woodenFluidTank, ItemBlockFluidTank.class);
-        ModBlocks.registerBlock(funnel);
+        ModBlocks.registerBlock(blockSlimyLog);
+        ModBlocks.registerBlock(blockFluidFurnace);
+        ModBlocks.registerBlock(blockWoodenFluidTank, ItemBlockFluidTank.class);
+        ModBlocks.registerBlock(blockFunnel);
     }
 
     private static void registerBlock(BlockUpgC block) {

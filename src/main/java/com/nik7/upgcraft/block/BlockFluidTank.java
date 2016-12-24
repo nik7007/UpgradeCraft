@@ -29,7 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 
-public abstract class FluidTank extends BlockFluidContainer {
+public abstract class BlockFluidTank extends BlockFluidContainer {
 
     public static final PropertyBool GLASSED = PropertyBool.create("glassed");
     public static final PropertyEnum<RenderInformation> RENDER_INFORMATION = PropertyEnum.create("render_information", RenderInformation.class);
@@ -37,11 +37,11 @@ public abstract class FluidTank extends BlockFluidContainer {
     private final boolean canBeDouble;
     private final boolean canBeGlassed;
 
-    public FluidTank(String blockName) {
+    public BlockFluidTank(String blockName) {
         this(blockName, true, true);
     }
 
-    public FluidTank(String blockName, boolean canBeDouble, boolean canBeGlassed) {
+    public BlockFluidTank(String blockName, boolean canBeDouble, boolean canBeGlassed) {
         super(Material.WOOD, blockName);
         this.canBeDouble = canBeDouble;
         this.canBeGlassed = canBeGlassed;

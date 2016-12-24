@@ -1,8 +1,8 @@
 package com.nik7.upgcraft.waila;
 
 
-import com.nik7.upgcraft.block.FluidTank;
-import com.nik7.upgcraft.block.Funnel;
+import com.nik7.upgcraft.block.BlockFluidTank;
+import com.nik7.upgcraft.block.BlockFunnel;
 import com.nik7.upgcraft.reference.Reference;
 import mcp.mobius.waila.api.IWailaPlugin;
 import mcp.mobius.waila.api.IWailaRegistrar;
@@ -13,8 +13,8 @@ public class Waila implements IWailaPlugin {
 
     @Override
     public void register(IWailaRegistrar registrar) {
-        registrar.registerBodyProvider(new WailaFluidTankHandler(), FluidTank.class);
-        registrar.registerBodyProvider(new WailaFluidTankHandler(), Funnel.class);
+        registrar.registerBodyProvider(new WailaFluidTankHandler(), BlockFluidTank.class);
+        registrar.registerBodyProvider(new WailaFluidTankHandler(), BlockFunnel.class);
     }
 
 }

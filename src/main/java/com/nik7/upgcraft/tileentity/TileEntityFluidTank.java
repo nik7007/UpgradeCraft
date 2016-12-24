@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.tileentity;
 
 
-import com.nik7.upgcraft.block.FluidTank;
+import com.nik7.upgcraft.block.BlockFluidTank;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
 import net.minecraft.block.state.IBlockState;
@@ -63,7 +63,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
     private void updateLight() {
         int light = this.getFluidLight();
         if (worldObj != null) {
-            boolean glassed = this.worldObj.getBlockState(this.pos).getBlock() instanceof FluidTank ? this.worldObj.getBlockState(this.pos).getValue(FluidTank.GLASSED) : true;
+            boolean glassed = this.worldObj.getBlockState(this.pos).getBlock() instanceof BlockFluidTank ? this.worldObj.getBlockState(this.pos).getValue(BlockFluidTank.GLASSED) : true;
 
             if (this.oldLight != light && glassed) {
                 worldObj.checkLightFor(EnumSkyBlock.BLOCK, getPos());
@@ -198,7 +198,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
 
     @SideOnly(Side.CLIENT)
     public boolean renderInsideFluid() {
-        boolean render = this.worldObj.getBlockState(this.pos).getValue(FluidTank.GLASSED);
+        boolean render = this.worldObj.getBlockState(this.pos).getValue(BlockFluidTank.GLASSED);
         if (this.isDouble()) {
             render |= this.adjFluidTank.getBlockMetadata() % 2 == 1;
         }

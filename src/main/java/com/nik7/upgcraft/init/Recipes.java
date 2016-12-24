@@ -8,9 +8,9 @@ public class Recipes {
 
     public static void init() {
 
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.slimyLog), "sss", "sps", "sss", 's', "slimeball", 'p', "plankWood"));
-        GameRegistry.addRecipe(new ItemStack(ModBlocks.woodenFluidTank, 1, 0), "sss", "s s", "sss", 's', new ItemStack(ModBlocks.slimyLog));
-        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.woodenFluidTank, 1, 1), "sss", "sgs", "sss", 'g', "blockGlass", 's', new ItemStack(ModBlocks.slimyLog)));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockSlimyLog), "sss", "sps", "sss", 's', "slimeball", 'p', "plankWood"));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.blockWoodenFluidTank, 1, 0), "sss", "s s", "sss", 's', new ItemStack(ModBlocks.blockSlimyLog));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockWoodenFluidTank, 1, 1), "sss", "sgs", "sss", 'g', "blockGlass", 's', new ItemStack(ModBlocks.blockSlimyLog)));
 
     }
 

@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.tileentity;
 
 
-import com.nik7.upgcraft.block.Funnel;
+import com.nik7.upgcraft.block.BlockFunnel;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -96,7 +96,7 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
         IBlockState blockState = worldObj.getBlockState(getPos());
 
         if (canOperate(blockState)) {
-            EnumFacing facing = blockState.getValue(Funnel.FACING);
+            EnumFacing facing = blockState.getValue(BlockFunnel.FACING);
 
             int lastFluidAmount = this.fluidTank.getFluidAmount();
             fillFromUp(SPEED);

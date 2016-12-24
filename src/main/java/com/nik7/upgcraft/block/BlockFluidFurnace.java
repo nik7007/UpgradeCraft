@@ -6,8 +6,8 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class FluidFurnace extends BlockOrientable{
-    public FluidFurnace() {
+public class BlockFluidFurnace extends BlockOrientable {
+    public BlockFluidFurnace() {
         super(Material.ROCK, "fluidfurnace");
     }
 

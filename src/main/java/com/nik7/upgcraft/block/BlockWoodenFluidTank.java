@@ -20,10 +20,10 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class WoodenFluidTank extends FluidTank {
+public class BlockWoodenFluidTank extends BlockFluidTank {
 
 
-    public WoodenFluidTank() {
+    public BlockWoodenFluidTank() {
         super("woodenfluidtank");
         if (ConfigOptions.WOODEN_TANK_BURN)
             this.setTickRandomly(true);

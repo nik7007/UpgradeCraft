@@ -6,9 +6,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
-public class SlimyLog extends BlockUpgC {
+public class BlockSlimyLog extends BlockUpgC {
 
-    public SlimyLog() {
+    public BlockSlimyLog() {
         super(Material.WOOD, "slimylog");
         this.setHardness(2.0F);
         this.slipperiness = 1.05F;
