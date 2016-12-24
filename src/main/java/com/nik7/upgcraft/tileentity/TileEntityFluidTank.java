@@ -106,21 +106,19 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
 
         if (this.adjFluidTank == null) {
             TileEntity te = worldObj.getTileEntity(pos.down());
-            if (te != null) {
-                if (this.canMerge(te) && fluidAreCompatible(te)) {
+            if (this.canMerge(te) && fluidAreCompatible(te)) {
+                this.adjFluidTank = (TileEntityFluidTank) te;
+                this.isTop = true;
+                this.merge(this.adjFluidTank);
+            } else {
+                te = worldObj.getTileEntity(pos.up());
+                if (this.canMerge(te) && fluidAreCompatible(te))
                     this.adjFluidTank = (TileEntityFluidTank) te;
-                    this.isTop = true;
-                    this.merge(this.adjFluidTank);
-                } else {
-                    te = worldObj.getTileEntity(pos.up());
-                    if (this.canMerge(te) && fluidAreCompatible(te))
-                        this.adjFluidTank = (TileEntityFluidTank) te;
-                }
-
-                if (this.adjFluidTank != null)
-                    this.adjFluidTank.findAdjFluidTank();
-                worldObj.updateComparatorOutputLevel(getPos(), worldObj.getBlockState(getPos()).getBlock());
             }
+
+            if (this.adjFluidTank != null)
+                this.adjFluidTank.findAdjFluidTank();
+            worldObj.updateComparatorOutputLevel(getPos(), worldObj.getBlockState(getPos()).getBlock());
         }
     }
 
