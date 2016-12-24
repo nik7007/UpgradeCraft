@@ -108,7 +108,7 @@ public abstract class BlockFluidTank extends BlockFluidContainer {
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
         TileEntityFluidTank tank = (TileEntityFluidTank) worldIn.getTileEntity(pos);
-        if (this.canBeDouble)
+        if (this.canBeDouble && tank != null)
             tank.separateTank();
         super.breakBlock(worldIn, pos, state);
     }
