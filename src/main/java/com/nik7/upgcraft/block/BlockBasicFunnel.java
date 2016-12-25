@@ -52,18 +52,8 @@ public class BlockBasicFunnel extends BlockFunnel {
         if (extraValue == 0) {
             return super.getStateFromMeta(meta);
         } else {
-            int realMeta = meta ^ 24;
-            EnumFacing enumfacing;
-            if (extraValue == 1) {
-                enumfacing = EnumFacing.DOWN;
-
-            } else {
-                enumfacing = EnumFacing.getFront(realMeta);
-                if (enumfacing.getAxis() == EnumFacing.Axis.Y) {
-                    enumfacing = EnumFacing.NORTH;
-                }
-            }
-            return this.getDefaultState().withProperty(FACING, enumfacing);
+            int realMeta = meta ^ 8;
+            return super.getStateFromMeta(realMeta);
         }
 
     }
@@ -74,12 +64,8 @@ public class BlockBasicFunnel extends BlockFunnel {
             return super.getMetaFromState(state);
         else {
 
-            int extraValue = 24;
-            if (state.getValue(FACING) == EnumFacing.DOWN)
-                extraValue = 8;
-
             int meta = super.getMetaFromState(state);
-            meta |= extraValue;
+            meta |= 8;
 
             return meta;
 
