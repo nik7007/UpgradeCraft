@@ -21,8 +21,13 @@ public class BlockFunnel extends BlockFluidContainer {
 
     public static final PropertyDirection FACING = BlockHopper.FACING;
 
+    protected BlockFunnel(String name) {
+        super(Material.IRON, name);
+        this.setHardness(3f);
+    }
+
     public BlockFunnel() {
-        super(Material.IRON, "funnel");
+        this("funnel");
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.DOWN));
     }
 

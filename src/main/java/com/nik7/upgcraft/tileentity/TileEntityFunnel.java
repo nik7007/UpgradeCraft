@@ -3,6 +3,7 @@ package com.nik7.upgcraft.tileentity;
 
 import com.nik7.upgcraft.block.BlockFunnel;
 import com.nik7.upgcraft.fluids.EnumCapacity;
+import com.nik7.upgcraft.reference.ConfigOptions;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -17,10 +18,15 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class TileEntityFunnel extends TileEntityFluidHandler implements ITickable {
 
-    public static final int SPEED = 50;
+    private final int speed;
+
+    protected TileEntityFunnel(int speed) {
+        super(EnumCapacity.FUNNEL_CAPACITY);
+        this.speed = speed;
+    }
 
     public TileEntityFunnel() {
-        super(EnumCapacity.FUNNEL_CAPACITY);
+        this((int) (ConfigOptions.BASIC_FUNNEL_SPEED * 1.5f));
     }
 
     @Override
@@ -99,9 +105,9 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
             EnumFacing facing = blockState.getValue(BlockFunnel.FACING);
 
             int lastFluidAmount = this.fluidTank.getFluidAmount();
-            fillFromUp(SPEED);
+            fillFromUp(speed);
             if (lastFluidAmount > 0)
-                autoDrain(SPEED, facing);
+                autoDrain(speed, facing);
         }
 
         return blockState;
