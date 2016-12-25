@@ -44,7 +44,7 @@ public class BlockBasicFunnel extends BlockFunnel {
                 enumfacing = EnumFacing.DOWN;
 
             } else {
-                enumfacing = placer.getHorizontalFacing().getOpposite();
+                enumfacing = placer.getHorizontalFacing();
             }
             return this.getDefaultState().withProperty(FACING, enumfacing);
         }
