@@ -5,11 +5,17 @@ import com.nik7.upgcraft.tileentity.TileEntityBasicFunnel;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -30,13 +36,11 @@ public class BlockBasicFunnel extends BlockFunnel {
     @Override
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 
-        int extraValue = meta >> 3;
-
-        if (extraValue == 0)
+        if (meta == 0)
             return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
         else {
             EnumFacing enumfacing;
-            if (extraValue == 1) {
+            if (meta == 1) {
                 enumfacing = EnumFacing.DOWN;
 
             } else {
@@ -53,7 +57,7 @@ public class BlockBasicFunnel extends BlockFunnel {
             return super.getStateFromMeta(meta);
         } else {
             int realMeta = meta ^ 8;
-            return super.getStateFromMeta(realMeta);
+            return super.getStateFromMeta(realMeta).withProperty(BURNED, true);
         }
 
     }
@@ -70,6 +74,26 @@ public class BlockBasicFunnel extends BlockFunnel {
             return meta;
 
         }
+    }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+
+        if (state.getValue(BURNED)) {
+
+            if (state.getValue(FACING) == EnumFacing.DOWN)
+                return 1;
+            else return 2;
+        }
+        return 0;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+        list.add(new ItemStack(this, 1, 0));
+        list.add(new ItemStack(this, 1, 1));
+        list.add(new ItemStack(this, 1, 2));
+
     }
 
     @Nullable
