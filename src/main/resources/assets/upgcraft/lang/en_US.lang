@@ -4,11 +4,13 @@ itemGroup.UpgradeCraft=UpgradeCraft
 # Blocks
 tile.upgcraft:slimylog.name=Slimy Wood Planks
 tile.upgcraft:woodenfluidtank.name=Wooden Fluid Tank
+tile.upgcraft:basicfunnel.name=Basic Funnel
 
 # Items
 
 #Tooltip
 tooltip.upgcraft:tank.glassed=Transparent
 tooltip.upgcraft:tank.empty=Empty
+tooltip.upgcraft:funnel.burned=Burned
 
 
