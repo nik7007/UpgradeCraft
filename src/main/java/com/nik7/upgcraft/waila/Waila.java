@@ -14,7 +14,7 @@ public class Waila implements IWailaPlugin {
     @Override
     public void register(IWailaRegistrar registrar) {
         registrar.registerBodyProvider(new WailaFluidTankHandler(), BlockFluidTank.class);
-        registrar.registerBodyProvider(new WailaFluidTankHandler(), BlockFunnel.class);
+        registrar.registerBodyProvider(new WailaFunnelHandler(), BlockFunnel.class);
     }
 
 }
