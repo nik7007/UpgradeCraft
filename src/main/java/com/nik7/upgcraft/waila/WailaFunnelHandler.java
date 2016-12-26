@@ -21,7 +21,6 @@ public class WailaFunnelHandler extends WailaFluidTankHandler {
 
         if (accessor.getBlock() == ModBlocks.blockBasicFunnel) {
             if (accessor.getBlockState().getValue(BlockBasicFunnel.BURNED)) {
-                //currenttip.add("");
                 currenttip.add(TextFormatting.DARK_RED + I18n.translateToLocal("tooltip." + Reference.RESOURCE_PREFIX + "funnel.burned"));
             }
         }
