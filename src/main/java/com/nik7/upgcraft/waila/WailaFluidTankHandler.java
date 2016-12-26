@@ -55,7 +55,7 @@ public class WailaFluidTankHandler implements IWailaDataProvider {
                     currenttip.add(amount + "/" + capacity + " mB");
 
                 } else
-                    currenttip.add(I18n.translateToLocal(TextFormatting.DARK_GRAY + fluidName));
+                    currenttip.add(TextFormatting.DARK_GRAY + I18n.translateToLocal(fluidName));
             }
 
         }
