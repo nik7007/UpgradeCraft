@@ -22,7 +22,16 @@ public class RenderUpgC {
         RenderUpgC.initFluidTankModel(ModBlocks.blockWoodenFluidTank);
         RenderUpgC.initModel(ModBlocks.blockFluidFurnace);
         RenderUpgC.initModel(ModBlocks.blockFunnel);
-        RenderUpgC.initModel(ModBlocks.blockBasicFunnel);
+
+        //basic funnel
+        Item basicFunnelItem = Item.getItemFromBlock(ModBlocks.blockBasicFunnel);
+        ModelResourceLocation normal = createModelResourceLocation(basicFunnelItem, "normal");
+        ModelResourceLocation burned = createModelResourceLocation(basicFunnelItem, "burned");
+        ModelResourceLocation burnedSide = createModelResourceLocation(basicFunnelItem, "burned_side");
+        ModelBakery.registerItemVariants(basicFunnelItem, normal, burned, burnedSide);
+        RenderUpgC.initModel(basicFunnelItem, 0, normal);
+        RenderUpgC.initModel(basicFunnelItem, 1, burned);
+        RenderUpgC.initModel(basicFunnelItem, 2, burnedSide);
 
     }
 

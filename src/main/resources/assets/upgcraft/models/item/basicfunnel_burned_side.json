@@ -1,0 +1,6 @@
+{
+  "parent": "upgcraft:item/basicfunnel_normal",
+  "textures": {
+    "layer0": "upgcraft:items/basic_funnel_icon_burned_side"
+  }
+}
