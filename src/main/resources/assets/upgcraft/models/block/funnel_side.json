@@ -1,8 +1,7 @@
 {
     "parent": "block/orientable",
     "textures": {
-        "all": "upgcraft:blocks/funnel",
-        "particle":"upgcraft:blocks/funnel"
+      "particle": "#all"
     },
     "elements": [
         {
