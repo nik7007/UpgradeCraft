@@ -1,6 +1,7 @@
 package com.nik7.upgcraft.init;
 
 import com.nik7.upgcraft.block.*;
+import com.nik7.upgcraft.item.ItemBlockBasicFunnel;
 import com.nik7.upgcraft.item.ItemBlockFluidTank;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
@@ -36,7 +37,7 @@ public class ModBlocks {
         ModBlocks.registerBlock(blockFluidFurnace);
         ModBlocks.registerBlock(blockWoodenFluidTank, ItemBlockFluidTank.class);
         ModBlocks.registerBlock(blockFunnel);
-        ModBlocks.registerBlock(blockBasicFunnel);
+        ModBlocks.registerBlock(blockBasicFunnel, ItemBlockBasicFunnel.class);
     }
 
     private static void registerBlock(BlockUpgC block) {
