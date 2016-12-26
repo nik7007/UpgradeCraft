@@ -77,6 +77,7 @@ public class BlockWoodenFluidTank extends BlockFluidTank {
         return 10;
     }
 
+    @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
 
         if (!ConfigOptions.WOODEN_TANK_BURN)
