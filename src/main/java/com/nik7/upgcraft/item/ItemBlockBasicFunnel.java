@@ -29,7 +29,7 @@ public class ItemBlockBasicFunnel extends ItemBlock {
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
         int meta = stack.getItemDamage();
         if (meta != 0) {
-            tooltip.add(I18n.translateToLocal("tooltip." + Reference.RESOURCE_PREFIX + "burned"));
+            tooltip.add(I18n.translateToLocal("tooltip." + Reference.RESOURCE_PREFIX + "funnel.burned"));
         }
     }
 
