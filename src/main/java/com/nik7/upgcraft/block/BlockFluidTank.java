@@ -173,8 +173,8 @@ public abstract class BlockFluidTank extends BlockFluidContainer {
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
         if (this.canBeGlassed) {
-            list.add(new ItemStack(this, 1, 0));
-            list.add(new ItemStack(this, 1, 1));
+            list.add(new ItemStack(itemIn, 1, 0));
+            list.add(new ItemStack(itemIn, 1, 1));
         } else super.getSubBlocks(itemIn, tab, list);
     }
 
