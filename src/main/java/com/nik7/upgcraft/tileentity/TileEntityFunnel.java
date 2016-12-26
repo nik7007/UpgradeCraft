@@ -18,7 +18,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class TileEntityFunnel extends TileEntityFluidHandler implements ITickable {
 
-    private final int speed;
+    protected final int speed;
 
     protected TileEntityFunnel(int speed) {
         super(EnumCapacity.FUNNEL_CAPACITY);
@@ -98,7 +98,7 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
         return worldObj != null && (worldObj.isBlockIndirectlyGettingPowered(pos) == 0);
     }
 
-    protected IBlockState funnelAction() {
+    protected IBlockState funnelAction(int speed) {
         IBlockState blockState = worldObj.getBlockState(getPos());
 
         if (canOperate(blockState)) {
@@ -117,7 +117,7 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
     @Override
     public void update() {
         if (!worldObj.isRemote)
-            funnelAction();
+            funnelAction(speed);
     }
 
 
