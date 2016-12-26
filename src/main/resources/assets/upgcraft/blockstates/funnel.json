@@ -1,7 +1,10 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "upgcraft:funnel_down"
+    "model": "upgcraft:funnel_down",
+    "textures": {
+      "all": "upgcraft:blocks/funnel"
+    }
   },
   "variants": {
     "normal": [{}],
