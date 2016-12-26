@@ -7,17 +7,21 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BlockBasicFunnel extends BlockFunnel {
 
@@ -86,6 +90,28 @@ public class BlockBasicFunnel extends BlockFunnel {
             else return 2;
         }
         return 0;
+    }
+
+
+    public void burnFunnel(World world, BlockPos pos, IBlockState state, Random random) {
+
+        if (!state.getValue(BURNED)) {
+            TileEntity tileentity = world.getTileEntity(pos);
+
+            world.setBlockState(pos, state.withProperty(BURNED, true));
+
+            if (world.isRemote)
+                spawnParticles(world, pos, random, EnumParticleTypes.SMOKE_LARGE);
+            world.playSound((double) ((float) pos.getX() + 0.5F), (double) ((float) pos.getY() + 0.5F), (double) ((float) pos.getZ() + 0.5F), SoundEvents.BLOCK_FIRE_AMBIENT, SoundCategory.BLOCKS, 1.0F + random.nextFloat(), random.nextFloat() * 0.7F + 0.3F, false);
+
+
+            if (tileentity != null) {
+                tileentity.validate();
+                world.setTileEntity(pos, tileentity);
+            }
+
+        }
+
     }
 
     @SideOnly(Side.CLIENT)
