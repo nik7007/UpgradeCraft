@@ -46,7 +46,7 @@ public class BlockBasicFunnel extends BlockFunnel {
             } else {
                 enumfacing = placer.getHorizontalFacing();
             }
-            return this.getDefaultState().withProperty(FACING, enumfacing);
+            return this.getDefaultState().withProperty(FACING, enumfacing).withProperty(BURNED, true);
         }
     }
 
