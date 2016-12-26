@@ -6,7 +6,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class TileEntityWoodenFluidTank extends TileEntityFluidTank {
 
-    private final static int WOOD_BURN_TEMPERATURE = 300 + 273;
+    public final static int WOOD_BURN_TEMPERATURE = 300 + 273;
 
     public TileEntityWoodenFluidTank() {
         super(EnumCapacity.BASIC_CAPACITY);
