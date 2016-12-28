@@ -4,7 +4,6 @@ package com.nik7.upgcraft.tileentity;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,7 +15,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class TileEntityFluidHandler extends TileEntity implements IFluidHandler {
+public abstract class TileEntityFluidHandler extends TileEntitySynchronizable implements IFluidHandler {
 
     protected final EnumCapacity capacity;
     private final Class<? extends UpgCFluidTank> TankClass;
@@ -61,8 +60,6 @@ public abstract class TileEntityFluidHandler extends TileEntity implements IFlui
             return new UpgCFluidTank(capacity, tileEntities);
     }
 
-
-    public abstract void syncTileEntity();
 
     @Override
     public IFluidTankProperties[] getTankProperties() {

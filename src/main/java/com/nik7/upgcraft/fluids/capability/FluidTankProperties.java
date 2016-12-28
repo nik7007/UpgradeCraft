@@ -1,7 +1,7 @@
 package com.nik7.upgcraft.fluids.capability;
 
 
-import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
+import com.nik7.upgcraft.fluids.tank.IUpgCFluidTank;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
@@ -9,9 +9,9 @@ import javax.annotation.Nullable;
 
 public class FluidTankProperties implements IFluidTankProperties {
 
-    private final UpgCFluidTank fluidTank;
+    private final IUpgCFluidTank fluidTank;
 
-    public FluidTankProperties(UpgCFluidTank fluidTank) {
+    public FluidTankProperties(IUpgCFluidTank fluidTank) {
         this.fluidTank = fluidTank;
     }
 

@@ -2,24 +2,21 @@ package com.nik7.upgcraft.fluids.tank;
 
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.capability.FluidTankProperties;
-import com.nik7.upgcraft.nbt.INBTProvider;
-import com.nik7.upgcraft.tileentity.TileEntityFluidHandler;
+import com.nik7.upgcraft.tileentity.TileEntitySynchronizable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidTank;
-import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
 
-public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<UpgCFluidTank> {
+public class UpgCFluidTank implements IUpgCFluidTank {
 
     protected IFluidTankProperties[] tankProperties;
     protected boolean canFill = true;
     protected boolean canDrain = true;
-    protected TileEntityFluidHandler[] tileEntities;
+    protected TileEntitySynchronizable[] tileEntities;
     private FluidStack fluidStack;
     private EnumCapacity capacity;
 
@@ -29,13 +26,13 @@ public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<Up
         this.tankProperties = new IFluidTankProperties[]{new FluidTankProperties(this)};
     }
 
-    public UpgCFluidTank(EnumCapacity capacity, TileEntityFluidHandler... tileEntities) {
+    public UpgCFluidTank(EnumCapacity capacity, TileEntitySynchronizable... tileEntities) {
         this(capacity);
         this.tileEntities = tileEntities;
     }
 
     @Override
-    public UpgCFluidTank readFromNBT(NBTTagCompound nbt) {
+    public IUpgCFluidTank readFromNBT(NBTTagCompound nbt) {
         if (!nbt.hasKey("Empty")) {
             FluidStack fluid = FluidStack.loadFluidStackFromNBT(nbt);
             this.fluidStack = fluid;
@@ -128,7 +125,7 @@ public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<Up
                     this.fluidStack.amount += result;
                 else this.fluidStack = new FluidStack(resource, result);
                 if (this.tileEntities != null) {
-                    for (TileEntityFluidHandler te : this.tileEntities) {
+                    for (TileEntitySynchronizable te : this.tileEntities) {
                         FluidEvent.fireEvent(new FluidEvent.FluidFillingEvent(this.fluidStack, te.getWorld(), te.getPos(), this, this.fluidStack.amount));
                         if (result > 0)
                             te.syncTileEntity();
@@ -184,7 +181,7 @@ public class UpgCFluidTank implements IFluidTank, IFluidHandler, INBTProvider<Up
                     this.fluidStack = null;
                 else this.fluidStack.amount -= drained;
                 if (tileEntities != null) {
-                    for (TileEntityFluidHandler te : this.tileEntities) {
+                    for (TileEntitySynchronizable te : this.tileEntities) {
                         FluidEvent.fireEvent(new FluidEvent.FluidDrainingEvent(this.fluidStack, te.getWorld(), te.getPos(), this, drained));
                         te.syncTileEntity();
                     }
