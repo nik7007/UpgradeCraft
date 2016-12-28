@@ -6,37 +6,62 @@ import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTankWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class TileEntityFluidFurnace extends TileEntitySynchronizable implements ISidedInventory {
 
     private static final int[] SLOTS_TOP_SIDE = new int[]{0};
     private static final int[] SLOTS_BOTTOM = new int[]{1};
-    protected final ItemStack inventory[]; // input : 0 - output : 1
-    protected UpgCFluidTank fluidTank;
-    protected UpgCFluidTankWrapper inputTank;
-    protected UpgCFluidTankWrapper outputTank;
+    protected final NonNullList<ItemStack> inventory; // input : 0 - output : 1
+    private IItemHandler inputInventory;
+    private IItemHandler outputInventory;
+    private UpgCFluidTank fluidTank;
+    private UpgCFluidTankWrapper inputTank;
+    private UpgCFluidTankWrapper outputTank;
     private String customName;
 
     public TileEntityFluidFurnace() {
         this.fluidTank = new UpgCFluidTank(EnumCapacity.MACHINE_CAPACITY, this);
         this.inputTank = new UpgCFluidTankWrapper(this.fluidTank, false, true);
         this.outputTank = new UpgCFluidTankWrapper(this.fluidTank, true, false);
-        this.inventory = new ItemStack[2];
+        this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
+        this.inputInventory = new SidedInvWrapper(this, EnumFacing.UP);
+        this.outputInventory = new SidedInvWrapper(this, EnumFacing.DOWN);
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         this.fluidTank.readFromNBT(tag);
+        ItemStackHelper.loadAllItems(tag, this.inventory);
+
+        if (tag.hasKey("CustomName", 8)) {
+            this.customName = tag.getString("CustomName");
+        }
     }
 
     @Override
+    @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         tag = super.writeToNBT(tag);
         this.fluidTank.writeToNBT(tag);
+        ItemStackHelper.saveAllItems(tag, this.inventory);
+        if (this.hasCustomName()) {
+            tag.setString("CustomName", this.customName);
+        }
         return tag;
     }
 
@@ -46,79 +71,97 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
     }
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
+    @Nonnull
+    public int[] getSlotsForFace(@Nonnull EnumFacing side) {
         if (side != EnumFacing.DOWN)
             return SLOTS_TOP_SIDE;
         else return SLOTS_BOTTOM;
     }
 
     @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        if (index >= 1 || direction == EnumFacing.DOWN)
-            return false;
-            // TODO: check other thing!!
-        else return true;
+    public boolean canInsertItem(int index, @Nonnull ItemStack itemStackIn, @Nonnull EnumFacing direction) {
+        return !(index >= 1 || direction == EnumFacing.DOWN) && this.isItemValidForSlot(index, itemStackIn);
     }
 
     @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        return false;
+    public boolean canExtractItem(int index, @Nonnull ItemStack stack, @Nonnull EnumFacing direction) {
+        return index == 1 && direction == EnumFacing.DOWN;
     }
 
     @Override
     public int getSizeInventory() {
-        return 0;
+        return this.inventory.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        for (ItemStack itemstack : this.inventory) {
+            if (!itemstack.isEmpty()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
+    @Nonnull
     public ItemStack getStackInSlot(int index) {
-        return null;
+        return this.inventory.get(index);
     }
 
     @Override
+    @Nonnull
     public ItemStack decrStackSize(int index, int count) {
-        return null;
+        return ItemStackHelper.getAndSplit(this.inventory, index, count);
     }
 
     @Override
+    @Nonnull
     public ItemStack removeStackFromSlot(int index) {
-        return null;
+        return ItemStackHelper.getAndRemove(this.inventory, index);
     }
 
     @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
+    public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
+        this.inventory.set(index, stack);
+
+        if (stack.getCount() > this.getInventoryStackLimit()) {
+            stack.setCount(this.getInventoryStackLimit());
+        }
 
     }
 
     @Override
     public int getInventoryStackLimit() {
-        return 0;
+        return 64;
     }
 
     @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
-        return false;
+    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
+        return this.getWorld().getTileEntity(this.getPos()) == this && player.getDistanceSq((double) this.getPos().getX() + 0.5D, (double) this.getPos().getY() + 0.5D, (double) this.getPos().getZ() + 0.5D) <= 64.0D;
     }
 
 
     @Override
-    public void openInventory(EntityPlayer player) {
-
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player) {
+    public void openInventory(@Nonnull EntityPlayer player) {
 
     }
 
     @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return false;
+    public void closeInventory(@Nonnull EntityPlayer player) {
+
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int index, @Nonnull ItemStack stack) {
+
+        if (index >= 1)
+            return false;
+        else {
+            ItemStack smeltResult = FurnaceRecipes.instance().getSmeltingResult(stack);
+            return !smeltResult.isEmpty();
+
+        }
     }
 
     @Override
@@ -138,7 +181,7 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
 
     @Override
     public void clear() {
-
+        this.inventory.clear();
     }
 
     public void setCustomInventoryName(String customName) {
@@ -146,6 +189,7 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
     }
 
     @Override
+    @Nullable
     public String getName() {
         return this.hasCustomName() ? this.customName : null;
     }
@@ -153,5 +197,26 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
     @Override
     public boolean hasCustomName() {
         return this.customName != null;
+    }
+
+    @Override
+    public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
+        if (facing != null) {
+            if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+                if (facing == EnumFacing.DOWN)
+                    return (T) this.outputInventory;
+                else return (T) this.inputInventory;
+            if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+                if (facing == EnumFacing.DOWN)
+                    return (T) this.outputTank;
+                else return (T) this.inputTank;
+        }
+        return super.getCapability(capability, facing);
     }
 }
