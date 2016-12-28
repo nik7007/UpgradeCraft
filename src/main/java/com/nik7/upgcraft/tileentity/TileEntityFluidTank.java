@@ -62,13 +62,11 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
 
     private void updateLight() {
         int light = this.getFluidLight();
-        if (worldObj != null) {
-            boolean glassed = this.worldObj.getBlockState(this.pos).getBlock() instanceof BlockFluidTank ? this.worldObj.getBlockState(this.pos).getValue(BlockFluidTank.GLASSED) : true;
+        boolean glassed = this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockFluidTank ? this.getWorld().getBlockState(this.pos).getValue(BlockFluidTank.GLASSED) : true;
 
-            if (this.oldLight != light && glassed) {
-                worldObj.checkLightFor(EnumSkyBlock.BLOCK, getPos());
-                this.oldLight = light;
-            }
+        if (this.oldLight != light && glassed) {
+            getWorld().checkLightFor(EnumSkyBlock.BLOCK, getPos());
+            this.oldLight = light;
         }
     }
 
@@ -98,27 +96,27 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
 
         if (this.adjFluidTank != null) {
 
-            if (worldObj.getTileEntity(this.adjFluidTank.pos) != this.adjFluidTank) {
+            if (getWorld().getTileEntity(this.adjFluidTank.pos) != this.adjFluidTank) {
                 this.separateTank();
             }
 
         }
 
         if (this.adjFluidTank == null) {
-            TileEntity te = worldObj.getTileEntity(pos.down());
+            TileEntity te = getWorld().getTileEntity(pos.down());
             if (this.canMerge(te) && fluidAreCompatible(te)) {
                 this.adjFluidTank = (TileEntityFluidTank) te;
                 this.isTop = true;
                 this.merge(this.adjFluidTank);
             } else {
-                te = worldObj.getTileEntity(pos.up());
+                te = getWorld().getTileEntity(pos.up());
                 if (this.canMerge(te) && fluidAreCompatible(te))
                     this.adjFluidTank = (TileEntityFluidTank) te;
             }
 
             if (this.adjFluidTank != null)
                 this.adjFluidTank.findAdjFluidTank();
-            worldObj.updateComparatorOutputLevel(getPos(), worldObj.getBlockState(getPos()).getBlock());
+            getWorld().updateComparatorOutputLevel(getPos(), getWorld().getBlockState(getPos()).getBlock());
         }
     }
 
@@ -154,7 +152,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
 
             }
 
-            if (!worldObj.isRemote)
+            if (!getWorld().isRemote)
                 this.syncTileEntity();
         }
 
@@ -170,7 +168,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
             this.fluidTank = createTank(capacity, this);
             this.fluidTank.fill(fluidStack, true);
 
-            if (!worldObj.isRemote)
+            if (!getWorld().isRemote)
                 this.syncTileEntity();
 
             otherFluidTank.separateTank();
@@ -181,11 +179,9 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
     protected void updateBlock() {
         markDirty();
 
-        if (worldObj != null) {
-            IBlockState state = worldObj.getBlockState(getPos());
-            worldObj.notifyBlockUpdate(getPos(), state, state, 3);
-            this.updateLight();
-        }
+        IBlockState state = getWorld().getBlockState(getPos());
+        getWorld().notifyBlockUpdate(getPos(), state, state, 3);
+        this.updateLight();
 
     }
 
@@ -196,7 +192,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
 
     @SideOnly(Side.CLIENT)
     public boolean renderInsideFluid() {
-        boolean render = this.worldObj.getBlockState(this.pos).getValue(BlockFluidTank.GLASSED);
+        boolean render = this.getWorld().getBlockState(this.pos).getValue(BlockFluidTank.GLASSED);
         if (this.isDouble()) {
             render |= this.adjFluidTank.getBlockMetadata() % 2 == 1;
         }

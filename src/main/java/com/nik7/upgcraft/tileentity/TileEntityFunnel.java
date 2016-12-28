@@ -51,7 +51,7 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
 
         IFluidHandler fluidHandler = null;
         BlockPos otherPos = blockPos.add(facing.getDirectionVec());
-        TileEntity te = worldObj.getTileEntity(otherPos);
+        TileEntity te = getWorld().getTileEntity(otherPos);
 
         if (te != null) {
             if (te instanceof IFluidHandler)
@@ -95,11 +95,11 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
     }
 
     protected boolean canOperate(IBlockState blockState) {
-        return worldObj != null && (worldObj.isBlockIndirectlyGettingPowered(pos) == 0);
+        return getWorld().isBlockIndirectlyGettingPowered(pos) == 0;
     }
 
     protected IBlockState funnelAction(int speed) {
-        IBlockState blockState = worldObj.getBlockState(getPos());
+        IBlockState blockState = getWorld().getBlockState(getPos());
 
         if (canOperate(blockState)) {
             EnumFacing facing = blockState.getValue(BlockFunnel.FACING);
@@ -116,7 +116,7 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
 
     @Override
     public void update() {
-        if (!worldObj.isRemote)
+        if (!getWorld().isRemote)
             funnelAction(speed);
     }
 
@@ -124,10 +124,8 @@ public class TileEntityFunnel extends TileEntityFluidHandler implements ITickabl
     @Override
     public void syncTileEntity() {
         markDirty();
-        if (worldObj != null) {
-            IBlockState state = worldObj.getBlockState(getPos());
-            worldObj.notifyBlockUpdate(getPos(), state, state, 3);
-        }
+        IBlockState state = getWorld().getBlockState(getPos());
+        getWorld().notifyBlockUpdate(getPos(), state, state, 3);
     }
 
 }

@@ -38,10 +38,10 @@ public class BlockBasicFunnel extends BlockFunnel {
     }
 
     @Override
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
 
         if (meta == 0)
-            return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
+            return super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
         else {
             EnumFacing enumfacing;
             if (meta == 1) {

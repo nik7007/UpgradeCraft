@@ -38,11 +38,11 @@ public class TileEntityBasicFunnel extends TileEntityFunnel {
 
         if (!this.burned && isFluidHot()) {
             if (this.burnTicks <= 0) {
-                IBlockState state = worldObj.getBlockState(pos);
+                IBlockState state = getWorld().getBlockState(pos);
                 Block block = state.getBlock();
 
                 if (block instanceof BlockBasicFunnel)
-                    ((BlockBasicFunnel) block).burnFunnel(worldObj, pos, state, RANDOM);
+                    ((BlockBasicFunnel) block).burnFunnel(getWorld(), pos, state, RANDOM);
 
             } else this.burnTicks--;
 
@@ -52,7 +52,7 @@ public class TileEntityBasicFunnel extends TileEntityFunnel {
 
     @Override
     public void update() {
-        if (!worldObj.isRemote) {
+        if (!getWorld().isRemote) {
             if (this.burned && this.realSpeed == speed)
                 this.realSpeed += speed / 10;
 

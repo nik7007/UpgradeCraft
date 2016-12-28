@@ -71,7 +71,7 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
     }
 
     @Override
-    public boolean func_191420_l() {
+    public boolean isEmpty() {
         return false;
     }
 
@@ -101,9 +101,10 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
+    public boolean isUsableByPlayer(EntityPlayer player) {
         return false;
     }
+
 
     @Override
     public void openInventory(EntityPlayer player) {
