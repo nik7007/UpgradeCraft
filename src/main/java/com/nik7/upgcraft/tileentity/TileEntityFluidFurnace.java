@@ -5,6 +5,8 @@ import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTankWrapper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
@@ -12,6 +14,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -21,7 +24,7 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityFluidFurnace extends TileEntitySynchronizable implements ISidedInventory {
+public class TileEntityFluidFurnace extends TileEntitySynchronizable implements ISidedInventory, IInteractionObject {
 
     private static final int[] SLOTS_TOP_SIDE = new int[]{0};
     private static final int[] SLOTS_BOTTOM = new int[]{1};
@@ -199,6 +202,17 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
         return this.customName != null;
     }
 
+
+    @Override
+    public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
+        return null;
+    }
+
+    @Override
+    public String getGuiID() {
+        return null;
+    }
+
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
@@ -219,4 +233,5 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
         }
         return super.getCapability(capability, facing);
     }
+
 }
