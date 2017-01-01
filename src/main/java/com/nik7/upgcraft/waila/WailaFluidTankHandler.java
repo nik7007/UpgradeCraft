@@ -1,6 +1,6 @@
 package com.nik7.upgcraft.waila;
 
-import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
+import com.nik7.upgcraft.fluids.tank.IUpgCFluidTank;
 import com.nik7.upgcraft.reference.Reference;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -33,11 +33,11 @@ public class WailaFluidTankHandler implements IWailaDataProvider {
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         TileEntity fluidTank = accessor.getTileEntity();
-        UpgCFluidTank tank = null;
+        IUpgCFluidTank tank = null;
 
 
         if (fluidTank.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-            tank = (UpgCFluidTank) fluidTank.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+            tank = (IUpgCFluidTank) fluidTank.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
         }
 
         if (tank != null) {
