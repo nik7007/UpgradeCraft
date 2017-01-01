@@ -3,8 +3,10 @@ package com.nik7.upgcraft.tileentity;
 
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
+import com.nik7.upgcraft.fluids.tank.UpgCFluidTankWrapper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -13,22 +15,20 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.lang.reflect.InvocationTargetException;
 
 public abstract class TileEntityFluidHandler extends TileEntitySynchronizable implements IFluidHandler {
 
-    protected final EnumCapacity capacity;
-    private final Class<? extends UpgCFluidTank> TankClass;
-    protected UpgCFluidTank fluidTank;
+    protected final Class<? extends UpgCFluidTank> tankClass;
+    protected UpgCFluidTankWrapper fluidTank;
+    private int oldLight;
 
     public TileEntityFluidHandler(EnumCapacity capacity) {
         this(capacity, null);
     }
 
     public TileEntityFluidHandler(EnumCapacity capacity, Class<? extends UpgCFluidTank> tankClass) {
-        TankClass = tankClass;
-        this.capacity = capacity;
-        this.fluidTank = createTank(capacity, this);
+        this.tankClass = tankClass;
+        this.fluidTank = new UpgCFluidTankWrapper(capacity, tankClass, this);
     }
 
     @Override
@@ -42,22 +42,6 @@ public abstract class TileEntityFluidHandler extends TileEntitySynchronizable im
         tag = super.writeToNBT(tag);
         this.fluidTank.writeToNBT(tag);
         return tag;
-    }
-
-
-    protected UpgCFluidTank createTank(EnumCapacity capacity, TileEntityFluidHandler... tileEntities) {
-        if (TankClass != null) {
-            UpgCFluidTank result;
-            try {
-                result = TankClass.asSubclass(UpgCFluidTank.class).getConstructor(EnumCapacity.class, TileEntityFluidTank[].class).newInstance(capacity, tileEntities);
-            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-            return result;
-
-        } else
-            return new UpgCFluidTank(capacity, tileEntities);
     }
 
 
@@ -85,6 +69,29 @@ public abstract class TileEntityFluidHandler extends TileEntitySynchronizable im
 
     public float getFillPercentage() {
         return (float) this.fluidTank.getFluidAmount() / (float) this.fluidTank.getCapacity();
+    }
+
+    public int getFluidLight() {
+
+        FluidStack fluidStack = this.fluidTank.getFluid();
+
+        if (fluidStack == null)
+            return 0;
+        return fluidStack.getFluid().getLuminosity(this.fluidTank.getFluid());
+    }
+
+    public FluidStack getFluid() {
+        return this.fluidTank.getFluid() == null ? null : this.fluidTank.getFluid().copy();
+    }
+
+
+    protected void updateLight() {
+        int light = this.getFluidLight();
+
+        if (this.oldLight != light) {
+            getWorld().checkLightFor(EnumSkyBlock.BLOCK, getPos());
+            this.oldLight = light;
+        }
     }
 
     @Override
