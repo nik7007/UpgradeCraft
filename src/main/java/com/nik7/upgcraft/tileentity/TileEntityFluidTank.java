@@ -4,21 +4,21 @@ package com.nik7.upgcraft.tileentity;
 import com.nik7.upgcraft.block.BlockFluidTank;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
+import com.nik7.upgcraft.fluids.tank.UpgCFluidTankWrapper;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public abstract class TileEntityFluidTank extends TileEntityFluidHandler implements ITickable {
 
+    protected final EnumCapacity capacity;
     private final boolean canBeDouble;
-    private int oldLight;
     private TileEntityFluidTank adjFluidTank;
     private boolean isTop;
     private boolean isFirst = true;
@@ -31,6 +31,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
     public TileEntityFluidTank(EnumCapacity capacity, Class<? extends UpgCFluidTank> TankClass, boolean canBeDouble) {
         super(capacity, TankClass);
         this.canBeDouble = canBeDouble;
+        this.capacity = capacity;
 
     }
 
@@ -60,15 +61,6 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
         this.updateLight();
     }
 
-    private void updateLight() {
-        int light = this.getFluidLight();
-        boolean glassed = this.getWorld().getBlockState(this.pos).getBlock() instanceof BlockFluidTank ? this.getWorld().getBlockState(this.pos).getValue(BlockFluidTank.GLASSED) : true;
-
-        if (this.oldLight != light && glassed) {
-            getWorld().checkLightFor(EnumSkyBlock.BLOCK, getPos());
-            this.oldLight = light;
-        }
-    }
 
    /* @Override
     public void onLoad() {
@@ -124,7 +116,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
         if (fluidTank != null) {
             EnumCapacity doubleCapacity = EnumCapacity.getDoubleCapacity(this.capacity);
             int newCapacity = EnumCapacity.getCapacity(doubleCapacity);
-            UpgCFluidTank otherTank = fluidTank.fluidTank;
+            UpgCFluidTankWrapper otherTank = fluidTank.fluidTank;
 
             int thisCapacity = this.fluidTank.getCapacity();
             int otherCApacity = otherTank.getCapacity();
@@ -136,7 +128,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
             else {
                 FluidStack fluidStack1 = this.getFluid();
                 FluidStack fluidStack2 = fluidTank.getFluid();
-                UpgCFluidTank newTank = createTank(doubleCapacity, this, fluidTank);
+                UpgCFluidTankWrapper newTank = new UpgCFluidTankWrapper(doubleCapacity, super.tankClass, this, fluidTank);
                 FluidStack result = null;
                 if (fluidStack1 != null) {
                     result = fluidStack1;
@@ -165,7 +157,7 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
             this.adjFluidTank = null;
             this.isTop = false;
 
-            this.fluidTank = createTank(capacity, this);
+            this.fluidTank = new UpgCFluidTankWrapper(capacity, super.tankClass, this);
             this.fluidTank.fill(fluidStack, true);
 
             if (!getWorld().isRemote)
@@ -190,6 +182,15 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
         updateBlock();
     }
 
+    @Override
+    protected void updateLight() {
+        IBlockState state = this.getWorld().getBlockState(this.pos);
+        boolean glassed = state.getBlock() instanceof BlockFluidTank ? state.getValue(BlockFluidTank.GLASSED) : true;
+        if (glassed)
+            super.updateLight();
+
+    }
+
     @SideOnly(Side.CLIENT)
     public boolean renderInsideFluid() {
         boolean render = this.getWorld().getBlockState(this.pos).getValue(BlockFluidTank.GLASSED);
@@ -207,18 +208,6 @@ public abstract class TileEntityFluidTank extends TileEntityFluidHandler impleme
         return this.isTop && this.isDouble();
     }
 
-    public int getFluidLight() {
-
-        FluidStack fluidStack = this.fluidTank.getFluid();
-
-        if (fluidStack == null)
-            return 0;
-        return fluidStack.getFluid().getLuminosity(this.fluidTank.getFluid());
-    }
-
-    public FluidStack getFluid() {
-        return this.fluidTank.getFluid() == null ? null : this.fluidTank.getFluid().copy();
-    }
 
     public FluidStack getSingleTankFluid() {
 
