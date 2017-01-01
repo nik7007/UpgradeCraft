@@ -1,17 +1,22 @@
 package com.nik7.upgcraft.fluids.tank;
 
 
+import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.capability.FluidTankProperties;
+import com.nik7.upgcraft.tileentity.TileEntityFluidHandler;
+import com.nik7.upgcraft.tileentity.TileEntityFluidTank;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.InvocationTargetException;
 
 public class UpgCFluidTankWrapper implements IUpgCFluidTank {
 
     private final IFluidTankProperties[] tankProperties;
+    private final Class<? extends UpgCFluidTank> TankClass;
     private UpgCFluidTank internalTank;
     private boolean canDrain;
     private boolean canFill;
@@ -19,8 +24,29 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
 
     public UpgCFluidTankWrapper(UpgCFluidTank internalTank, boolean canDrain, boolean canFill) {
         this.internalTank = internalTank;
+        this.TankClass = internalTank.getClass();
         this.canDrain = canDrain;
         this.canFill = canFill;
+        this.tankProperties = new IFluidTankProperties[]{new FluidTankProperties(this)};
+    }
+
+    public UpgCFluidTankWrapper(EnumCapacity capacity, TileEntityFluidHandler... tileEntities) {
+        this(capacity, null, true, true, tileEntities);
+    }
+
+    public UpgCFluidTankWrapper(EnumCapacity capacity, boolean canDrain, boolean canFill, TileEntityFluidHandler... tileEntities) {
+        this(capacity, null, canDrain, canFill, tileEntities);
+    }
+
+    public UpgCFluidTankWrapper(EnumCapacity capacity, Class<? extends UpgCFluidTank> tankClass, TileEntityFluidHandler... tileEntities) {
+        this(capacity, tankClass, true, true, tileEntities);
+    }
+
+    public UpgCFluidTankWrapper(EnumCapacity capacity, Class<? extends UpgCFluidTank> tankClass, boolean canDrain, boolean canFill, TileEntityFluidHandler... tileEntities) {
+        this.TankClass = tankClass;
+        this.internalTank = createTank(capacity, tileEntities);
+        this.canFill = canFill;
+        this.canDrain = canDrain;
         this.tankProperties = new IFluidTankProperties[]{new FluidTankProperties(this)};
     }
 
@@ -34,6 +60,21 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         this.internalTank.writeToNBT(nbt);
         return nbt;
+    }
+
+    protected UpgCFluidTank createTank(EnumCapacity capacity, TileEntityFluidHandler... tileEntities) {
+        if (TankClass != null) {
+            UpgCFluidTank result;
+            try {
+                result = TankClass.asSubclass(UpgCFluidTank.class).getConstructor(EnumCapacity.class, TileEntityFluidTank[].class).newInstance(capacity, tileEntities);
+            } catch (InstantiationException | NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+            return result;
+
+        } else
+            return new UpgCFluidTank(capacity, tileEntities);
     }
 
     @Override
@@ -96,5 +137,9 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
     @Override
     public boolean canDrain() {
         return this.canDrain;
+    }
+
+    public UpgCFluidTank getInternalTank() {
+        return this.internalTank;
     }
 }
