@@ -2,7 +2,6 @@ package com.nik7.upgcraft.tileentity;
 
 
 import com.nik7.upgcraft.fluids.EnumCapacity;
-import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTankWrapper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -12,6 +11,8 @@ import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.IInteractionObject;
@@ -24,22 +25,24 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityFluidFurnace extends TileEntitySynchronizable implements ISidedInventory, IInteractionObject {
+public class TileEntityFluidFurnace extends TileEntityFluidHandler implements ISidedInventory, IInteractionObject {
 
     private static final int[] SLOTS_TOP_SIDE = new int[]{0};
     private static final int[] SLOTS_BOTTOM = new int[]{1};
+
     protected final NonNullList<ItemStack> inventory; // input : 0 - output : 1
     private IItemHandler inputInventory;
     private IItemHandler outputInventory;
-    private UpgCFluidTank fluidTank;
+
     private UpgCFluidTankWrapper inputTank;
     private UpgCFluidTankWrapper outputTank;
+
     private String customName;
 
     public TileEntityFluidFurnace() {
-        this.fluidTank = new UpgCFluidTank(EnumCapacity.MACHINE_CAPACITY, this);
-        this.inputTank = new UpgCFluidTankWrapper(this.fluidTank, false, true);
-        this.outputTank = new UpgCFluidTankWrapper(this.fluidTank, true, false);
+        super(EnumCapacity.MACHINE_CAPACITY);
+        this.inputTank = new UpgCFluidTankWrapper(this.fluidTank.getInternalTank(), false, true);
+        this.outputTank = new UpgCFluidTankWrapper(this.fluidTank.getInternalTank(), true, false);
         this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
         this.inputInventory = new SidedInvWrapper(this, EnumFacing.UP);
         this.outputInventory = new SidedInvWrapper(this, EnumFacing.DOWN);
@@ -48,7 +51,6 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        this.fluidTank.readFromNBT(tag);
         ItemStackHelper.loadAllItems(tag, this.inventory);
 
         if (tag.hasKey("CustomName", 8)) {
@@ -60,12 +62,34 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
     @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         tag = super.writeToNBT(tag);
-        this.fluidTank.writeToNBT(tag);
         ItemStackHelper.saveAllItems(tag, this.inventory);
         if (this.hasCustomName()) {
             tag.setString("CustomName", this.customName);
         }
         return tag;
+    }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound tag = new NBTTagCompound();
+        super.writeToNBT(tag);
+        return tag;
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+
+        NBTTagCompound tag = new NBTTagCompound();
+        super.writeToNBT(tag);
+        return new SPacketUpdateTileEntity(getPos(), 1, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+        NBTTagCompound tag = packet.getNbtCompound();
+
+        super.readFromNBT(tag);
+        this.updateLight();
     }
 
     @Override
@@ -215,22 +239,26 @@ public class TileEntityFluidFurnace extends TileEntitySynchronizable implements 
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
-        return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getCapability(@Nonnull Capability<T> capability, EnumFacing facing) {
-        if (facing != null) {
-            if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+            if (facing != null) {
                 if (facing == EnumFacing.DOWN)
                     return (T) this.outputInventory;
                 else return (T) this.inputInventory;
-            if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            } else return null;
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
+            if (facing != null) {
                 if (facing == EnumFacing.DOWN)
                     return (T) this.outputTank;
                 else return (T) this.inputTank;
-        }
+            } else return null;
+
         return super.getCapability(capability, facing);
     }
 
