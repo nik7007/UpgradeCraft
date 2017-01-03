@@ -46,6 +46,7 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
     protected final NonNullList<ItemStack> inventory; // input : 0 - output : 1
     private IItemHandler inputInventory;
     private IItemHandler outputInventory;
+
     private Fluid currentFluid = null;
     private boolean isCurrentFluidValid = false;
     private int fuelMaxLife = -1;
@@ -53,6 +54,8 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
 
     private int progress = 0;
     private int fuelLife = 0;
+
+    private boolean isWorking = false;
 
     private UpgCFluidTankWrapper inputTank;
     private UpgCFluidTankWrapper outputTank;
@@ -95,6 +98,9 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
         this.progress = tag.getInteger("progress");
         this.fuelLife = tag.getInteger("fuelLife");
 
+        if (tag.hasKey("isWorking"))
+            this.isWorking = tag.getBoolean("isWorking");
+
         if (tag.hasKey("CustomName", 8)) {
             this.customName = tag.getString("CustomName");
         }
@@ -119,6 +125,7 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
     public NBTTagCompound getUpdateTag() {
         NBTTagCompound tag = new NBTTagCompound();
         super.writeToNBT(tag);
+        tag.setBoolean("isWorking", this.isWorking);
         return tag;
     }
 
@@ -127,6 +134,7 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
 
         NBTTagCompound tag = new NBTTagCompound();
         super.writeToNBT(tag);
+        tag.setBoolean("isWorking", this.isWorking);
         return new SPacketUpdateTileEntity(getPos(), 1, tag);
     }
 
@@ -135,6 +143,7 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
         NBTTagCompound tag = packet.getNbtCompound();
 
         super.readFromNBT(tag);
+        this.isWorking = tag.getBoolean("isWorking");
         this.updateLight();
     }
 
@@ -325,10 +334,25 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
                 checkFluidSpeck();
                 operate();
 
-            } else if (this.progress != 0)
-                this.progress--;
+                if (!this.isWorking) {
+                    this.isWorking = true;
+                    syncTileEntity();
+                }
+
+            } else {
+                if (this.progress != 0)
+                    this.progress--;
+                if (this.isWorking) {
+                    this.isWorking = false;
+                    syncTileEntity();
+                }
+            }
 
         }
+    }
+
+    public boolean isWorking() {
+        return this.isWorking;
     }
 
     @Override
