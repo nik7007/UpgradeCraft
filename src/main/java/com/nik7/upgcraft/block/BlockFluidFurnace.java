@@ -5,12 +5,15 @@ import com.nik7.upgcraft.tileentity.TileEntityFluidFurnace;
 import com.nik7.upgcraft.tileentity.TileEntityFluidHandler;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -22,8 +25,44 @@ import javax.annotation.Nullable;
 import java.util.Random;
 
 public class BlockFluidFurnace extends BlockOrientable implements ITileEntityProvider {
+
+    public static final PropertyBool IS_WORKING = PropertyBool.create("is_working");
+
     public BlockFluidFurnace() {
         super(Material.ROCK, "fluidfurnace");
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(IS_WORKING, false));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, IS_WORKING);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+        TileEntity te = world.getTileEntity(pos);
+        boolean isWorking = false;
+
+        if (te instanceof TileEntityFluidFurnace)
+            isWorking = ((TileEntityFluidFurnace) te).isWorking();
+
+        return state.withProperty(IS_WORKING, isWorking);
+    }
+
+    public void changeWorkingStatus(World world, BlockPos pos, IBlockState state, boolean workingStatus) {
+
+        if (state.getValue(IS_WORKING) != workingStatus) {
+            TileEntity te = world.getTileEntity(pos);
+            world.setBlockState(pos, state.withProperty(IS_WORKING, workingStatus));
+
+            if (te != null) {
+                te.validate();
+                world.setTileEntity(pos, te);
+            }
+
+        }
+
     }
 
     @SideOnly(Side.CLIENT)

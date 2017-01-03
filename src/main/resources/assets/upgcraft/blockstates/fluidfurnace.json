@@ -1,11 +1,26 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "upgcraft:fluid_furnace"
+    "model": "upgcraft:fluid_furnace",
+    "textures": {
+      "in": "upgcraft:blocks/fluid_furnace_off"
+    }
   },
   "variants": {
     "normal": [{}],
     "inventory": [{}],
+    "is_working": {
+      "true": {
+        "textures": {
+          "in": "upgcraft:blocks/fluid_furnace_on"
+        }
+      },
+      "false": {
+        "textures": {
+          "in": "upgcraft:blocks/fluid_furnace_off"
+        }
+      }
+    },
     "facing" : {
       "north" : {
         "model" : "upgcraft:fluid_furnace"

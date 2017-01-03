@@ -2,8 +2,7 @@
     "parent": "block/orientable",
     "textures": {
         "all": "upgcraft:blocks/fluid_furnace",
-        "in": "upgcraft:blocks/fluid_furnace_off",
-        "particle":"upgcraft:blocks/fluid_furnace"
+      "particle": "upgcraft:blocks/fluid_furnace"
     },
     "elements": [
         {

@@ -1,8 +1,10 @@
 package com.nik7.upgcraft.tileentity;
 
 
+import com.nik7.upgcraft.block.BlockFluidFurnace;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTankWrapper;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -336,6 +338,7 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
 
                 if (!this.isWorking) {
                     this.isWorking = true;
+                    changeState(this.isWorking());
                     syncTileEntity();
                 }
 
@@ -344,10 +347,20 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
                     this.progress--;
                 if (this.isWorking) {
                     this.isWorking = false;
+                    changeState(this.isWorking());
                     syncTileEntity();
                 }
             }
 
+        }
+    }
+
+
+    private void changeState(boolean isWorking) {
+        IBlockState state = getWorld().getBlockState(getPos());
+        Block block = state.getBlock();
+        if (block instanceof BlockFluidFurnace) {
+            ((BlockFluidFurnace) block).changeWorkingStatus(getWorld(), getPos(), state, isWorking);
         }
     }
 
