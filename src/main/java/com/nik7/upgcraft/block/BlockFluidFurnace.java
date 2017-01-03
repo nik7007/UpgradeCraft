@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -17,6 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BlockFluidFurnace extends BlockOrientable implements ITileEntityProvider {
     public BlockFluidFurnace() {
@@ -39,6 +41,20 @@ public class BlockFluidFurnace extends BlockOrientable implements ITileEntityPro
         }
 
         super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState blockState, World world, BlockPos pos, Random rand) {
+
+        TileEntity te = world.getTileEntity(pos);
+
+        if (te instanceof TileEntityFluidFurnace) {
+            if (((TileEntityFluidFurnace) te).isWorking()) {
+                spawnParticles(world, pos, rand, EnumParticleTypes.SMOKE_NORMAL, EnumParticleTypes.FLAME);
+            }
+        }
 
     }
 
