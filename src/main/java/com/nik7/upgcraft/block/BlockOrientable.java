@@ -7,10 +7,15 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 public abstract class BlockOrientable extends BlockUpgC {
 
@@ -19,6 +24,39 @@ public abstract class BlockOrientable extends BlockUpgC {
     protected BlockOrientable(Material blockMaterial, String blockName) {
         super(blockMaterial, blockName);
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+    }
+
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    protected void spawnParticles(World worldIn, BlockPos pos, Random rand, EnumParticleTypes... particles) {
+        EnumFacing enumfacing = worldIn.getBlockState(pos).getValue(FACING);
+
+        double d0 = (double) pos.getX() + 0.5D;
+        double d1 = (double) pos.getY() + rand.nextDouble() * 6.0D / 16.0D;
+        double d2 = (double) pos.getZ() + 0.5D;
+        double d3 = 0.52D;
+        double d4 = rand.nextDouble() * 0.6D - 0.3D;
+
+        for (EnumParticleTypes p : particles)
+            switch (enumfacing) {
+                case WEST:
+                    worldIn.spawnParticle(p, d0 - d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(p, d0 - d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                    break;
+                case EAST:
+                    worldIn.spawnParticle(p, d0 + d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(p, d0 + d3, d1, d2 + d4, 0.0D, 0.0D, 0.0D);
+                    break;
+                case NORTH:
+                    worldIn.spawnParticle(p, d0 + d4, d1, d2 - d3, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(p, d0 + d4, d1, d2 - d3, 0.0D, 0.0D, 0.0D);
+                    break;
+                case SOUTH:
+                    worldIn.spawnParticle(p, d0 + d4, d1, d2 + d3, 0.0D, 0.0D, 0.0D);
+                    worldIn.spawnParticle(p, d0 + d4, d1, d2 + d3, 0.0D, 0.0D, 0.0D);
+            }
+
     }
 
     @Override
