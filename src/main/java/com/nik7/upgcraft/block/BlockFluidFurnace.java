@@ -7,6 +7,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -55,7 +56,18 @@ public class BlockFluidFurnace extends BlockOrientable implements ITileEntityPro
                 spawnParticles(world, pos, rand, EnumParticleTypes.SMOKE_NORMAL, EnumParticleTypes.FLAME);
             }
         }
+    }
 
+    @Override
+    public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
+        TileEntity tileentity = worldIn.getTileEntity(pos);
+
+        if (tileentity instanceof TileEntityFluidFurnace) {
+            InventoryHelper.dropInventoryItems(worldIn, pos, (TileEntityFluidFurnace) tileentity);
+            worldIn.updateComparatorOutputLevel(pos, this);
+        }
+
+        super.breakBlock(worldIn, pos, state);
     }
 
     @Override
