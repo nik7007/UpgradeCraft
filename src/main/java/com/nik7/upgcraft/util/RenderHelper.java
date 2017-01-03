@@ -72,6 +72,10 @@ public class RenderHelper {
         renderFluid(fluidLevel, size, size, maxHeight, minHeight, fluid, renderTop, isTop, renderDown, isDouble);
     }
 
+    public static void renderFluid(float fluidLevel, float size, float maxHeight, float minHeight, FluidStack fluid) {
+        renderFluid(fluidLevel, size, maxHeight, minHeight, fluid, true, false, false, false);
+    }
+
     private static void setGLColorFromInt(int color) {
         float red = (color >> 16 & 0xFF) / 255.0F;
         float green = (color >> 8 & 0xFF) / 255.0F;
