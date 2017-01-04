@@ -3,7 +3,7 @@ package com.nik7.upgcraft.reference;
 
 import net.minecraftforge.fluids.Fluid;
 
-public class ConfigOptions {
+public final class ConfigOptions {
 
     public static final int FUNNEL_CAPACITY = 5 * Fluid.BUCKET_VOLUME;
     public static final int BASIC_FUNNEL_SPEED = 50;
