@@ -4,6 +4,8 @@ package com.nik7.upgcraft.tileentity;
 import com.nik7.upgcraft.block.BlockFluidFurnace;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTankWrapper;
+import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.inventory.ContainerFluidFurnace;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,6 +23,9 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
@@ -29,6 +34,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
@@ -38,8 +45,8 @@ import javax.annotation.Nullable;
 
 public class TileEntityFluidFurnace extends TileEntityFluidHandler implements ITickable, ISidedInventory, IInteractionObject {
 
-    private static final int INPUT = 0;
-    private static final int OUTPUT = 1;
+    public static final int INPUT = 0;
+    public static final int OUTPUT = 1;
 
     private static final int[] SLOTS_TOP_SIDE = new int[]{INPUT};
     private static final int[] SLOTS_BOTTOM = new int[]{OUTPUT};
@@ -370,17 +377,42 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
 
     @Override
     public int getField(int id) {
+
+        switch (id) {
+            case 0:
+                return this.fuelMaxLife;
+            case 1:
+                return this.tickToSmelt;
+            case 2:
+                return this.progress;
+            case 3:
+                return this.fuelLife;
+        }
+
         return 0;
     }
 
     @Override
     public void setField(int id, int value) {
-
+        switch (id) {
+            case 0:
+                this.fuelMaxLife = value;
+                break;
+            case 1:
+                this.tickToSmelt = value;
+                break;
+            case 2:
+                this.progress = value;
+                break;
+            case 3:
+                this.fuelLife = value;
+                break;
+        }
     }
 
     @Override
     public int getFieldCount() {
-        return 0;
+        return 4;
     }
 
     @Override
@@ -403,20 +435,35 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
         return this.customName != null;
     }
 
+    public ITextComponent getDisplayName() {
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(ModBlocks.blockFluidFurnace.getUnlocalizedName());
+    }
+
 
     @Override
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-        return null;
+        return new ContainerFluidFurnace(playerInventory, this);
     }
 
     @Override
     public String getGuiID() {
-        return null;
+        return ModBlocks.blockFluidFurnace.getUnlocalizedName();
     }
 
     @Override
     public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
         return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getBurnTimeRemainingScaled(int scale) {
+        return (int) ((this.fuelLife * (float) scale) / this.fuelMaxLife);
+
+    }
+
+    @SideOnly(Side.CLIENT)
+    public int getCookProgressScaled(int scale) {
+        return (int) ((this.progress * (float) scale) / this.tickToSmelt);
     }
 
     @SuppressWarnings("unchecked")
