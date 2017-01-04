@@ -9,6 +9,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import static com.nik7.upgcraft.reference.Render.TankInternalDimension.*;
+
 @SideOnly(Side.CLIENT)
 public class FluidMachineTESR extends TileEntitySpecialRenderer<TileEntityFluidFurnace> {
 
@@ -28,7 +30,7 @@ public class FluidMachineTESR extends TileEntitySpecialRenderer<TileEntityFluidF
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
-                RenderHelper.renderFluid(fluidPercentage, 0.62f, 0.35f, 0.05f, fluidStack);
+                RenderHelper.renderFluid(fluidPercentage, FM_SIZE, FM_Y_MAX, FM_Y_MIN, fluidStack);
 
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();

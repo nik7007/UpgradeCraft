@@ -59,9 +59,9 @@ public class FluidTankTESR extends TileEntitySpecialRenderer<TileEntityFluidTank
 
 
     private void renderFluid(float fluidLevel, FluidStack fluid, boolean renderTop, boolean isTop, boolean isDouble) {
-        float minHeight = Render.TankInternalDimension.yMin;
-        float maxHeight = Render.TankInternalDimension.yMax;
-        float size = Render.TankInternalDimension.xMaz;
+        float minHeight = Render.TankInternalDimension.TANK_Y_MIN;
+        float maxHeight = Render.TankInternalDimension.TANK_Y_MAX;
+        float size = Render.TankInternalDimension.TANK_SIZE;
         RenderHelper.renderFluid(fluidLevel, size, maxHeight, minHeight, fluid, renderTop, isTop, false, isDouble);
 
     }
