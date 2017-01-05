@@ -436,7 +436,7 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
     }
 
     public ITextComponent getDisplayName() {
-        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(ModBlocks.blockFluidFurnace.getUnlocalizedName());
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(ModBlocks.blockFluidFurnace.getUnlocalizedName() + ".name");
     }
 
 
