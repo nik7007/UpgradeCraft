@@ -2,6 +2,7 @@ package com.nik7.upgcraft.client.gui.inventory;
 
 
 import com.nik7.upgcraft.inventory.ContainerFluidFurnace;
+import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.reference.Texture;
 import com.nik7.upgcraft.tileentity.TileEntityFluidFurnace;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GuiFluidFurnace extends GuiContainer {
@@ -38,6 +40,7 @@ public class GuiFluidFurnace extends GuiContainer {
         }
         this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 
+        drawTankContent(this.fluidFurnace.getFluid(), this.fluidFurnace.getCapacity(), mouseX, mouseY);
     }
 
     @Override
@@ -54,21 +57,36 @@ public class GuiFluidFurnace extends GuiContainer {
         inc = this.fluidFurnace.getCookProgressScaled(24);
         this.drawTexturedModalRect(xOffset + 79, yOffset + 34, 176, 14, inc + 1, 16);
 
-        FluidStack fluidStack = this.fluidFurnace.getFluid();
+    }
+
+
+    protected void drawTankContent(FluidStack fluidStack, int capacity, int mouseX, int mouseY) {
+        int xOffset = (this.width - this.xSize) / 2;
+        int yOffset = (this.height - this.ySize) / 2;
+
+        String fluidName = net.minecraft.util.text.translation.I18n.translateToLocal("tooltip." + Reference.MOD_ID + ":tank.empty");
+        List<String> toolTip = new ArrayList<>();
 
         if (fluidStack != null) {
-            renderFluid(fluidStack.getFluid(), xOffset + 15, yOffset + 58, (int) (this.fluidFurnace.getFillPercentage() * 32));
-        }
+            renderFluid(fluidStack.getFluid(), 15, 58, (int) (this.fluidFurnace.getFillPercentage() * 32));
+            fluidName = fluidStack.getLocalizedName();
+            String amount = fluidStack.amount + "/" + capacity + "mB";
+
+            toolTip.add(fluidName);
+            toolTip.add(amount);
+        } else toolTip.add(fluidName);
+
+        drawToolTip(toolTip, xOffset + 15, yOffset + 58, 16, 32, mouseX, mouseY);
 
     }
 
 
     protected void drawToolTip(List<String> text, int x, int y, int mazX, int maxY, int mouseX, int mouseY) {
+
         int posX = mouseX - this.guiLeft;
         int posY = mouseY - this.guiTop;
 
-
-        if ((posX > x && posX < (mazX + x)) && (posY < y && posY > (y - maxY - 2))) {
+        if ((mouseX > x && mouseX < (mazX + x)) && (mouseY < y && mouseY > (y - maxY - 2))) {
 
             drawHoveringText(text, posX, posY, mc.fontRendererObj);
 
