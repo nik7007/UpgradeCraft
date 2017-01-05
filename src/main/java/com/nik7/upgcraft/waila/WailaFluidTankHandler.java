@@ -29,7 +29,7 @@ public class WailaFluidTankHandler implements IWailaDataProvider {
         return null;
     }
 
-    @Override
+    @Overrid
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         TileEntity fluidTank = accessor.getTileEntity();
@@ -39,7 +39,12 @@ public class WailaFluidTankHandler implements IWailaDataProvider {
         if (fluidTank.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
             tank = (IUpgCFluidTank) fluidTank.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
         }
+        printTankInformation(tank, currenttip);
 
+        return currenttip;
+    }
+
+    protected void printTankInformation(IUpgCFluidTank tank, List<String> currenttip) {
         if (tank != null) {
             int capacity = tank.getCapacity();
             if (capacity > 0) {
@@ -60,7 +65,6 @@ public class WailaFluidTankHandler implements IWailaDataProvider {
 
         }
 
-        return currenttip;
     }
 
     @Override
