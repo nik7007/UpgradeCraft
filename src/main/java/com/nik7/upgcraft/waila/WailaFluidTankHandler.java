@@ -29,7 +29,7 @@ public class WailaFluidTankHandler implements IWailaDataProvider {
         return null;
     }
 
-    @Overrid
+    @Override
     public List<String> getWailaBody(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor accessor, IWailaConfigHandler config) {
 
         TileEntity fluidTank = accessor.getTileEntity();
