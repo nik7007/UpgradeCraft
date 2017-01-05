@@ -13,6 +13,7 @@ public class Recipes {
         GameRegistry.addRecipe(new ItemStack(ModBlocks.blockWoodenFluidTank, 1, 0), "sss", "s s", "sss", 's', new ItemStack(ModBlocks.blockSlimyLog));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockWoodenFluidTank, 1, 1), "sss", "sgs", "sss", 'g', "blockGlass", 's', new ItemStack(ModBlocks.blockSlimyLog)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockBasicFunnel), "ibi", "iti", " i ", 'i', "ingotIron", 'b', new ItemStack(Blocks.IRON_BARS), 't', new ItemStack(ModBlocks.blockWoodenFluidTank)));
+        GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockFluidFurnace), "ifi", "iti", "iii", 'i', "ingotIron", 't', new ItemStack(ModBlocks.blockWoodenFluidTank, 1, 1), 'f', new ItemStack(Blocks.FURNACE)));
     }
 
 }
