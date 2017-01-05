@@ -5,6 +5,7 @@ itemGroup.UpgradeCraft=UpgradeCraft
 tile.upgcraft:slimylog.name=Slimy Wood Planks
 tile.upgcraft:woodenfluidtank.name=Wooden Fluid Tank
 tile.upgcraft:basicfunnel.name=Basic Funnel
+tile.upgcraft:fluidfurnace.name=Fluid Furnace
 
 # Items
 
