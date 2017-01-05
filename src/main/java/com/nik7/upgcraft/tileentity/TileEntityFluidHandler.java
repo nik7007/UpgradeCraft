@@ -84,6 +84,10 @@ public abstract class TileEntityFluidHandler extends TileEntitySynchronizable im
         return this.fluidTank.getFluid() == null ? null : this.fluidTank.getFluid().copy();
     }
 
+    public int getCapacity() {
+        return this.fluidTank.getCapacity();
+    }
+
 
     protected void updateLight() {
         int light = this.getFluidLight();
