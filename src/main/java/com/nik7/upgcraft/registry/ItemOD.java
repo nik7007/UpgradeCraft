@@ -46,7 +46,7 @@ public class ItemOD {
     }
 
     public ItemStack getItemStack() {
-        return this.itemStack;
+        return this.itemStack.copy();
     }
 
     public String getOreDictionaryName() {
