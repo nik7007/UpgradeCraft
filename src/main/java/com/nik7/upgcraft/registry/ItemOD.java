@@ -10,7 +10,7 @@ public class ItemOD {
 
     private final ItemStack itemStack;
     private final String nameOD;
-    private final int hashCode;
+    private int hashCode = 0;
 
 
     public ItemOD(ItemStack itemStack) {
@@ -18,7 +18,6 @@ public class ItemOD {
         this.nameOD = itemStackToNameOD(itemStack);
         this.itemStack = getItemStack(this.nameOD, itemStack);
 
-        this.hashCode = createHashCode(this.nameOD, this.itemStack);
     }
 
     private static int createHashCode(String nameOD, ItemStack itemStack) {
@@ -67,6 +66,10 @@ public class ItemOD {
 
     @Override
     public int hashCode() {
+
+        if (this.hashCode == 0)
+            this.hashCode = createHashCode(this.nameOD, this.itemStack);
+
         return this.hashCode;
     }
 
