@@ -37,16 +37,29 @@ public class FluidInfuserRegister {
             ItemOD toInfuseKey = INSTANCE.createKey(recipe.getToInfuse());
             FluidStack fluidStackKey = INSTANCE.createKey(recipe.getFluidStack());
 
+            saveWithKeys(INSTANCE.toMeltToRecipe, toMeltKey, toInfuseKey, fluidStackKey, recipe);
+            saveWithKeys(INSTANCE.toInfuseToRecipe, toInfuseKey, toMeltKey, fluidStackKey, recipe);
+
 
         }
     }
 
+    private static void saveWithKeys(Map<ItemOD, Map<ItemOD, Map<FluidStack, FluidInfuserRecipe>>> map, ItemOD key1, ItemOD key2, FluidStack key3, FluidInfuserRecipe recipe) {
+
+        Map<ItemOD, Map<FluidStack, FluidInfuserRecipe>> itemTempMap = map.computeIfAbsent(key1, k -> new HashMap<>());
+        Map<FluidStack, FluidInfuserRecipe> fluidTempMap = itemTempMap.computeIfAbsent(key2, k -> new HashMap<>());
+        fluidTempMap.put(key3, recipe);
+
+    }
+
     private ItemOD createKey(ItemStack original) {
+        original = original.copy();
         original.setCount(1);
         return new ItemOD(original);
     }
 
     private FluidStack createKey(FluidStack fluidStack) {
+        fluidStack = fluidStack.copy();
         fluidStack.amount = 1;
 
         return fluidStack;
