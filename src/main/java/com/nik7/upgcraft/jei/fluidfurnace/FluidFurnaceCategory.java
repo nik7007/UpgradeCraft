@@ -14,6 +14,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FluidFurnaceCategory extends RecipeCategory<FluidFurnaceJEI> {
 
@@ -59,5 +61,10 @@ public class FluidFurnaceCategory extends RecipeCategory<FluidFurnaceJEI> {
 
         recipeLayout.getItemStacks().set(ingredients);
 
+    }
+
+    @Override
+    public List<String> getTooltipStrings(int mouseX, int mouseY) {
+        return new ArrayList<>();
     }
 }
