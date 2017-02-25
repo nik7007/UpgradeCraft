@@ -24,7 +24,14 @@ public class FluidInfuserRegister {
     }
 
     public static Collection<FluidInfuserRecipe> getRecipes() {
-        return INSTANCE.recipes;
+
+        Set<FluidInfuserRecipe> recipesCopy = new HashSet<>();
+
+        for (FluidInfuserRecipe recipe : INSTANCE.recipes) {
+            recipesCopy.add(recipe);
+        }
+
+        return recipesCopy;
     }
 
     public static void addRecipe(FluidStack fluidStack, ItemStack result, ItemStack toMelt, int ticksToMelt, ItemStack toInfuse, int ticksToInfuse) {
