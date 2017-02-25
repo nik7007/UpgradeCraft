@@ -32,7 +32,7 @@ public class FluidInfuserRegister {
         if (checkConstrains(fluidStack, result, toMelt, ticksToMelt, toInfuse, ticksToInfuse)) {
             registerFluidInfuserRecipe(new FluidInfuserRecipe(fluidStack, ticksToMelt, toMelt, ticksToInfuse, toInfuse, result));
         } else {
-            throw new RuntimeException("Illegal Fluid Infuser Recipe! result: " + result.toString());
+            throw new RuntimeException("Illegal Fluid Infuser Recipe! result: " + result);
         }
     }
 
