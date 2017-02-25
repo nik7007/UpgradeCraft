@@ -31,27 +31,16 @@ public class FluidInfuserRegister {
             ItemOD toInfuseKey = createKey(recipe.getToInfuse());
             FluidStack fluidStackKey = createKey(recipe.getFluidStack());
 
-            boolean checkMelt = saveOnMapItem(INSTANCE.toMeltToRecipe, toMeltKey, recipe);
-            boolean checkInfuse = saveOnMapItem(INSTANCE.toInfuseToRecipe, toInfuseKey, recipe);
-            boolean checkFluid = saveOnMapFluid(INSTANCE.fluidToRecipe, fluidStackKey, recipe);
+            boolean checkMelt = saveOnMap(INSTANCE.toMeltToRecipe, toMeltKey, recipe);
+            boolean checkInfuse = saveOnMap(INSTANCE.toInfuseToRecipe, toInfuseKey, recipe);
+            boolean checkFluid = saveOnMap(INSTANCE.fluidToRecipe, fluidStackKey, recipe);
 
-            if (!(checkFluid || checkInfuse || checkMelt)) {
+            if (!checkFluid && !checkInfuse && !checkMelt) {
                 throw new RuntimeException("Illegal Fluid Infuser Recipe: " + recipe);
             }
         } else {
             throw new RuntimeException("Illegal Fluid Infuser Recipe: " + recipe);
         }
-    }
-
-    private static boolean saveOnMapItem(Map<ItemOD, List<FluidInfuserRecipe>> map, ItemOD key, FluidInfuserRecipe recipe) {
-
-        return saveOnMap(map, key, recipe);
-    }
-
-    private static boolean saveOnMapFluid(Map<FluidStack, List<FluidInfuserRecipe>> map, FluidStack key, FluidInfuserRecipe recipe) {
-
-        return saveOnMap(map, key, recipe);
-
     }
 
     private static <k> boolean saveOnMap(Map<k, List<FluidInfuserRecipe>> map, k key, FluidInfuserRecipe recipe) {
