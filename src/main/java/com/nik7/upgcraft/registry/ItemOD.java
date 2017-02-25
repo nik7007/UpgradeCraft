@@ -73,4 +73,9 @@ public class ItemOD {
         return this.hashCode;
     }
 
+    @Override
+    public String toString() {
+        return this.itemStack.toString();
+    }
+
 }

@@ -65,4 +65,17 @@ public class FluidInfuserRecipe {
 
         return false;
     }
+
+    @Override
+    public String toString() {
+
+        String result;
+
+        result = "Melt: " + toMelt + " ticks " + tickToMelt;
+        result += " -- Infuse: " + toInfuse + " ticks " + tickToInfuse;
+        result += " -- Fluid: " + fluidStack.getLocalizedName() + " amount: " + fluidStack.amount;
+
+        return result;
+
+    }
 }
