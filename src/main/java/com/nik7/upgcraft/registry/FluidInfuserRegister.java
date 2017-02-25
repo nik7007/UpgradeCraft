@@ -23,6 +23,29 @@ public class FluidInfuserRegister {
 
     }
 
+    public static Collection<FluidInfuserRecipe> getRecipes() {
+        return INSTANCE.recipes;
+    }
+
+    public static void addRecipe(FluidStack fluidStack, ItemStack result, ItemStack toMelt, int ticksToMelt, ItemStack toInfuse, int ticksToInfuse) {
+
+        if (checkConstrains(fluidStack, result, toMelt, ticksToMelt, toInfuse, ticksToInfuse)) {
+            registerFluidInfuserRecipe(new FluidInfuserRecipe(fluidStack, ticksToMelt, toMelt, ticksToInfuse, toInfuse, result));
+        } else {
+            throw new RuntimeException("Illegal Fluid Infuser Recipe! result: " + result.toString());
+        }
+    }
+
+    private static boolean checkConstrains(FluidStack fluidStack, ItemStack result, ItemStack toMelt, int ticksToMelt, ItemStack toInfuse, int ticksToInfuse) {
+        if (fluidStack != null && result != null && toMelt != null && toInfuse != null && ticksToMelt > 0 && ticksToInfuse > 0) {
+            if (fluidStack.getFluid() != null && fluidStack.amount > 0) {
+                if (!result.isEmpty() && !toMelt.isEmpty() && !toInfuse.isEmpty())
+                    return true;
+            }
+        }
+        return false;
+    }
+
     private static void registerFluidInfuserRecipe(FluidInfuserRecipe recipe) {
         if (!INSTANCE.recipes.contains(recipe)) {
             INSTANCE.recipes.add(recipe);
