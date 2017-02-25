@@ -45,16 +45,16 @@ public class FluidInfuserRegister {
 
     private static boolean saveOnMapItem(Map<ItemOD, List<FluidInfuserRecipe>> map, ItemOD key, FluidInfuserRecipe recipe) {
 
-        return saveOnMap((Map) map, key, recipe);
+        return saveOnMap(map, key, recipe);
     }
 
     private static boolean saveOnMapFluid(Map<FluidStack, List<FluidInfuserRecipe>> map, FluidStack key, FluidInfuserRecipe recipe) {
 
-        return saveOnMap((Map) map, key, recipe);
+        return saveOnMap(map, key, recipe);
 
     }
 
-    private static boolean saveOnMap(Map<Object, List<FluidInfuserRecipe>> map, Object key, FluidInfuserRecipe recipe) {
+    private static <k> boolean saveOnMap(Map<k, List<FluidInfuserRecipe>> map, k key, FluidInfuserRecipe recipe) {
 
         if (!map.containsKey(key)) {
             List<FluidInfuserRecipe> recipeList = new LinkedList<>();
