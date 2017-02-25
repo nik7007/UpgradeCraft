@@ -5,10 +5,8 @@ import com.nik7.upgcraft.registry.recipes.FluidInfuserRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 
 public class FluidInfuserRegister {
 
@@ -16,14 +14,10 @@ public class FluidInfuserRegister {
 
     private final Set<FluidInfuserRecipe> recipes = new HashSet<>();
 
-    private final Map<ItemOD, Map<ItemOD, Map<FluidStack, FluidInfuserRecipe>>> toMeltToRecipe = new HashMap<>();
-    private final Map<ItemOD, Map<ItemOD, Map<FluidStack, FluidInfuserRecipe>>> toInfuseToRecipe = new HashMap<>();
+    private final Map<ItemOD, List<FluidInfuserRecipe>> toMeltToRecipe = new HashMap<>();
+    private final Map<ItemOD, List<FluidInfuserRecipe>> toInfuseToRecipe = new HashMap<>();
 
-    private final Map<FluidStack, Set<ItemOD>> fluidToMelt = new HashMap<>();
-    private final Map<FluidStack, Set<ItemOD>> fluidToInfuse = new HashMap<>();
-
-    private final Map<ItemOD, Set<FluidStack>> toMeltFluid = new HashMap<>();
-    private final Map<ItemOD, Set<FluidStack>> toInfuseFluid = new HashMap<>();
+    private final Map<FluidStack, List<FluidInfuserRecipe>> fluidToRecipe = new HashMap<>();
 
     private FluidInfuserRegister() {
 
@@ -33,32 +27,56 @@ public class FluidInfuserRegister {
         if (!INSTANCE.recipes.contains(recipe)) {
             INSTANCE.recipes.add(recipe);
 
-            ItemOD toMeltKey = INSTANCE.createKey(recipe.getToMelt());
-            ItemOD toInfuseKey = INSTANCE.createKey(recipe.getToInfuse());
-            FluidStack fluidStackKey = INSTANCE.createKey(recipe.getFluidStack());
+            ItemOD toMeltKey = createKey(recipe.getToMelt());
+            ItemOD toInfuseKey = createKey(recipe.getToInfuse());
+            FluidStack fluidStackKey = createKey(recipe.getFluidStack());
 
-            saveWithKeys(INSTANCE.toMeltToRecipe, toMeltKey, toInfuseKey, fluidStackKey, recipe);
-            saveWithKeys(INSTANCE.toInfuseToRecipe, toInfuseKey, toMeltKey, fluidStackKey, recipe);
+            boolean checkMelt = saveOnMapItem(INSTANCE.toMeltToRecipe, toMeltKey, recipe);
+            boolean checkInfuse = saveOnMapItem(INSTANCE.toInfuseToRecipe, toInfuseKey, recipe);
+            boolean checkFluid = saveOnMapFluid(INSTANCE.fluidToRecipe, fluidStackKey, recipe);
 
-
+            if (!(checkFluid || checkInfuse || checkMelt)) {
+                throw new RuntimeException("Illegal Fluid Infuser Recipe: " + recipe);
+            }
+        } else {
+            throw new RuntimeException("Illegal Fluid Infuser Recipe: " + recipe);
         }
     }
 
-    private static void saveWithKeys(Map<ItemOD, Map<ItemOD, Map<FluidStack, FluidInfuserRecipe>>> map, ItemOD key1, ItemOD key2, FluidStack key3, FluidInfuserRecipe recipe) {
+    private static boolean saveOnMapItem(Map<ItemOD, List<FluidInfuserRecipe>> map, ItemOD key, FluidInfuserRecipe recipe) {
 
-        Map<ItemOD, Map<FluidStack, FluidInfuserRecipe>> itemTempMap = map.computeIfAbsent(key1, k -> new HashMap<>());
-        Map<FluidStack, FluidInfuserRecipe> fluidTempMap = itemTempMap.computeIfAbsent(key2, k -> new HashMap<>());
-        fluidTempMap.put(key3, recipe);
+        return saveOnMap((Map) map, key, recipe);
+    }
+
+    private static boolean saveOnMapFluid(Map<FluidStack, List<FluidInfuserRecipe>> map, FluidStack key, FluidInfuserRecipe recipe) {
+
+        return saveOnMap((Map) map, key, recipe);
 
     }
 
-    private ItemOD createKey(ItemStack original) {
+    private static boolean saveOnMap(Map<Object, List<FluidInfuserRecipe>> map, Object key, FluidInfuserRecipe recipe) {
+
+        if (!map.containsKey(key)) {
+            List<FluidInfuserRecipe> recipeList = new LinkedList<>();
+            recipeList.add(recipe);
+            map.put(key, recipeList);
+            return true;
+
+        } else if (!map.get(key).contains(recipe)) {
+            map.get(key).add(recipe);
+            return true;
+        } else
+            return false;
+    }
+
+
+    private static ItemOD createKey(ItemStack original) {
         original = original.copy();
         original.setCount(1);
         return new ItemOD(original);
     }
 
-    private FluidStack createKey(FluidStack fluidStack) {
+    private static FluidStack createKey(FluidStack fluidStack) {
         fluidStack = fluidStack.copy();
         fluidStack.amount = 1;
 
