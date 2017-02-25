@@ -2,13 +2,14 @@ package com.nik7.upgcraft.registry;
 
 
 import com.nik7.upgcraft.registry.recipes.FluidInfuserRecipe;
+import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 import java.util.*;
 
 
-public class FluidInfuserRegister {
+public final class FluidInfuserRegister {
 
     private final static FluidInfuserRegister INSTANCE = new FluidInfuserRegister();
 
@@ -32,6 +33,76 @@ public class FluidInfuserRegister {
         }
 
         return recipesCopy;
+    }
+
+    public static FluidInfuserRecipe getRecipe(FluidStack fluidStack, ItemStack toMelt, ItemStack toInfuse) {
+
+        List<FluidInfuserRecipe> toMeltList;
+        List<FluidInfuserRecipe> toInfuseList;
+        List<FluidInfuserRecipe> fluidList;
+
+        if (fluidStack != null && fluidStack.getFluid() != null && toMelt != null && !toMelt.isEmpty() && toInfuse != null && !toInfuse.isEmpty()) {
+            return null;
+        }
+
+        fluidList = INSTANCE.fluidToRecipe.get(createKey(fluidStack));
+        toMeltList = INSTANCE.toMeltToRecipe.get(createKey(toMelt));
+        toInfuseList = INSTANCE.toInfuseToRecipe.get(createKey(toInfuse));
+
+        List<FluidInfuserRecipe> result = getCommonRecipes(getCommonRecipes(fluidList, toInfuseList), toMeltList);
+
+        if (!result.isEmpty()) {
+            if (result.size() != 1) {
+                LogHelper.error("[FluidInfuserRegister] More than one result!! -> FluidStack: " + fluidStack + " melt: " + toMelt + " infuse: " + toInfuse);
+            }
+            return result.get(0);
+        }
+
+        return null;
+    }
+
+    public static boolean isInputCorrect(FluidStack fluidStack, ItemStack toMelt, ItemStack toInfuse) {
+
+
+        List<FluidInfuserRecipe> toMeltList = null;
+        List<FluidInfuserRecipe> toInfuseList = null;
+        List<FluidInfuserRecipe> fluidList = null;
+
+
+        if (fluidStack != null && fluidStack.getFluid() != null) {
+            fluidList = INSTANCE.fluidToRecipe.get(createKey(fluidStack));
+        }
+        if (toMelt != null && !toMelt.isEmpty()) {
+            toMeltList = INSTANCE.toMeltToRecipe.get(createKey(toMelt));
+        }
+        if (toInfuse != null && !toInfuse.isEmpty()) {
+            toInfuseList = INSTANCE.toInfuseToRecipe.get(createKey(toInfuse));
+        }
+
+        List toCheck = getCommonRecipes(getCommonRecipes(fluidList, toInfuseList), toMeltList);
+
+
+        return !toCheck.isEmpty();
+    }
+
+    private static List<FluidInfuserRecipe> getCommonRecipes(List<FluidInfuserRecipe> list1, List<FluidInfuserRecipe> list2) {
+        List<FluidInfuserRecipe> result = new LinkedList<>();
+
+        if (list1 == null || list1.isEmpty())
+            return list2;
+
+        if (list2 == null || list2.isEmpty())
+            return list1;
+
+        for (FluidInfuserRecipe r1 : list1) {
+            for (FluidInfuserRecipe r2 : list2) {
+                if (r1.equals(r2)) {
+                    result.add(r1);
+                }
+            }
+        }
+
+        return result;
     }
 
     public static void addRecipe(FluidStack fluidStack, ItemStack result, ItemStack toMelt, int ticksToMelt, ItemStack toInfuse, int ticksToInfuse) {
