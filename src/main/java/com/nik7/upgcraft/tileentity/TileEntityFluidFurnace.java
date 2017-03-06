@@ -43,7 +43,7 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileEntityFluidFurnace extends TileEntityFluidHandler implements ITickable, ISidedInventory, IInteractionObject {
+public class TileEntityFluidFurnace extends TileEntityInventoryAndFluidHandler implements ITickable, IInteractionObject {
 
     public static final int INPUT = 0;
     public static final int OUTPUT = 1;
@@ -52,7 +52,6 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
     private static final int[] SLOTS_BOTTOM = new int[]{OUTPUT};
     private static final int LAVA_BURNING_TIME = getFluidBurningTime(new FluidStack(FluidRegistry.LAVA, 1));
     private static final int LAVA_TEMPERATURE = FluidRegistry.LAVA.getTemperature();
-    protected final NonNullList<ItemStack> inventory; // input : 0 - output : 1
     private IItemHandler inputInventory;
     private IItemHandler outputInventory;
 
@@ -69,13 +68,11 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
     private UpgCFluidTankWrapper inputTank;
     private UpgCFluidTankWrapper outputTank;
 
-    private String customName;
-
     public TileEntityFluidFurnace() {
-        super(EnumCapacity.MACHINE_CAPACITY);
+        super(EnumCapacity.MACHINE_CAPACITY, 2);
         this.inputTank = new UpgCFluidTankWrapper(this.fluidTank.getInternalTank(), false, true);
         this.outputTank = new UpgCFluidTankWrapper(this.fluidTank.getInternalTank(), true, false);
-        this.inventory = NonNullList.withSize(2, ItemStack.EMPTY);
+
         this.inputInventory = new SidedInvWrapper(this, EnumFacing.UP);
         this.outputInventory = new SidedInvWrapper(this, EnumFacing.DOWN);
     }
@@ -102,31 +99,22 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        ItemStackHelper.loadAllItems(tag, this.inventory);
-
         this.progress = tag.getInteger("progress");
         this.fuelLife = tag.getInteger("fuelLife");
 
         if (tag.hasKey("isWorking"))
             this.isWorking = tag.getBoolean("isWorking");
 
-        if (tag.hasKey("CustomName", 8)) {
-            this.customName = tag.getString("CustomName");
-        }
     }
 
     @Override
     @Nonnull
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        ItemStackHelper.saveAllItems(tag, this.inventory);
 
         tag.setInteger("progress", this.progress);
         tag.setInteger("fuelLife", this.fuelLife);
 
-        if (this.hasCustomName()) {
-            tag.setString("CustomName", this.customName);
-        }
         return tag;
     }
 
@@ -181,58 +169,12 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
         return index == 1 && direction == EnumFacing.DOWN;
     }
 
-    @Override
-    public int getSizeInventory() {
-        return this.inventory.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (ItemStack itemstack : this.inventory) {
-            if (!itemstack.isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    @Nonnull
-    public ItemStack getStackInSlot(int index) {
-        return this.inventory.get(index);
-    }
-
-    @Override
-    @Nonnull
-    public ItemStack decrStackSize(int index, int count) {
-        return ItemStackHelper.getAndSplit(this.inventory, index, count);
-    }
-
-    @Override
-    @Nonnull
-    public ItemStack removeStackFromSlot(int index) {
-        return ItemStackHelper.getAndRemove(this.inventory, index);
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
-        this.inventory.set(index, stack);
-
-        if (stack.getCount() > this.getInventoryStackLimit()) {
-            stack.setCount(this.getInventoryStackLimit());
-        }
-
-    }
 
     @Override
     public int getInventoryStackLimit() {
         return 64;
     }
 
-    @Override
-    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
-        return this.getWorld().getTileEntity(this.getPos()) == this && player.getDistanceSq((double) this.getPos().getX() + 0.5D, (double) this.getPos().getY() + 0.5D, (double) this.getPos().getZ() + 0.5D) <= 64.0D;
-    }
 
     @Override
     public void openInventory(@Nonnull EntityPlayer player) {
@@ -413,30 +355,6 @@ public class TileEntityFluidFurnace extends TileEntityFluidHandler implements IT
     @Override
     public int getFieldCount() {
         return 4;
-    }
-
-    @Override
-    public void clear() {
-        this.inventory.clear();
-    }
-
-    public void setCustomInventoryName(String customName) {
-        this.customName = customName;
-    }
-
-    @Override
-    @Nullable
-    public String getName() {
-        return this.hasCustomName() ? this.customName : null;
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return this.customName != null;
-    }
-
-    public ITextComponent getDisplayName() {
-        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(ModBlocks.blockFluidFurnace.getUnlocalizedName() + ".name");
     }
 
 
