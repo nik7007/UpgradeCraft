@@ -15,6 +15,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
@@ -216,12 +217,12 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
     }
 
     @Override
-    public boolean canFill() {
-        return FluidInfuserRegister.isInputCorrect(this.getFluid(), this.getStackInSlot(MELT), this.getStackInSlot(INFUSE));
+    public boolean canFill(FluidStack fluidStack) {
+        return FluidInfuserRegister.isInputCorrect(fluidStack, this.getStackInSlot(MELT), this.getStackInSlot(INFUSE));
     }
 
     @Override
-    public boolean canDrain() {
+    public boolean canDrain(FluidStack fluidStack) {
         return true;
     }
 
