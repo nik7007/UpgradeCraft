@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 
-public class UpgCFluidTankWrapper implements IUpgCFluidTank {
+public class UpgCFluidTankWrapper implements IUpgCFluidTank, IFluidIO {
 
     private final IFluidTankProperties[] tankProperties;
     private final Class<? extends UpgCFluidTank> TankClass;
@@ -93,7 +93,7 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
     @Override
     public int fill(FluidStack resource, boolean doFill) {
 
-        if (this.canFill())
+        if (this.canFill(resource))
             return this.internalTank.fill(resource, doFill);
         else return 0;
     }
@@ -102,7 +102,7 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-        if (this.canDrain())
+        if (this.canDrain(resource))
             return this.internalTank.drain(resource, doDrain);
         else return null;
     }
@@ -138,19 +138,29 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
 
     @Override
     public boolean canFill() {
-        if (this.tileIFluidTank != null)
-            return this.tileIFluidTank.canFill();
         return this.canFill;
     }
 
     @Override
     public boolean canDrain() {
-        if (this.tileIFluidTank != null)
-            return this.tileIFluidTank.canDrain();
         return this.canDrain;
     }
 
     public UpgCFluidTank getInternalTank() {
         return this.internalTank;
+    }
+
+    @Override
+    public boolean canFill(FluidStack fluidStack) {
+        if (this.tileIFluidTank != null)
+            return this.tileIFluidTank.canFill(fluidStack);
+        return this.canFill();
+    }
+
+    @Override
+    public boolean canDrain(FluidStack fluidStack) {
+        if (this.tileIFluidTank != null)
+            return this.tileIFluidTank.canDrain(fluidStack);
+        return this.canDrain();
     }
 }
