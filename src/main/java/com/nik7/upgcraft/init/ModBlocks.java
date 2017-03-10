@@ -22,6 +22,7 @@ public class ModBlocks {
     public static BlockUpgC blockFluidFurnace;
     public static BlockUpgC blockFunnel;
     public static BlockUpgC blockBasicFunnel;
+    public static BlockUpgC blockFluidInfuser;
 
     public static void init() {
         blockSlimyLog = new BlockSlimyLog();
@@ -29,6 +30,7 @@ public class ModBlocks {
         blockFluidFurnace = new BlockFluidFurnace();
         blockFunnel = new BlockFunnel();
         blockBasicFunnel = new BlockBasicFunnel();
+        blockFluidInfuser = new BlockFluidInfuser();
         register();
     }
 
@@ -38,6 +40,7 @@ public class ModBlocks {
         ModBlocks.registerBlock(blockWoodenFluidTank, ItemBlockFluidTank.class);
         ModBlocks.registerBlock(blockFunnel);
         ModBlocks.registerBlock(blockBasicFunnel, ItemBlockBasicFunnel.class);
+        ModBlocks.registerBlock(blockFluidInfuser);
     }
 
     private static void registerBlock(BlockUpgC block) {
