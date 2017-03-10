@@ -6,6 +6,9 @@ import com.nik7.upgcraft.nbt.INBTProvider;
 import net.minecraftforge.fluids.IFluidTank;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 
-public interface IUpgCFluidTank extends IFluidIO, IFluidTank, IFluidHandler, INBTProvider<IUpgCFluidTank> {
+public interface IUpgCFluidTank extends IFluidTank, IFluidHandler, INBTProvider<IUpgCFluidTank> {
 
+    boolean canFill();
+
+    boolean canDrain();
 }
