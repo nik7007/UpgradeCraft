@@ -6,10 +6,7 @@ import com.nik7.upgcraft.handler.GuiHandler;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.init.Recipes;
 import com.nik7.upgcraft.reference.Reference;
-import com.nik7.upgcraft.tileentity.TileEntityBasicFunnel;
-import com.nik7.upgcraft.tileentity.TileEntityFluidFurnace;
-import com.nik7.upgcraft.tileentity.TileEntityFunnel;
-import com.nik7.upgcraft.tileentity.TileEntityWoodenFluidTank;
+import com.nik7.upgcraft.tileentity.*;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -41,6 +38,7 @@ public abstract class CommonProxy implements IProxy {
         GameRegistry.registerTileEntity(TileEntityFunnel.class, Reference.RESOURCE_PREFIX + "TileEntityFunnel");
         GameRegistry.registerTileEntity(TileEntityBasicFunnel.class, Reference.RESOURCE_PREFIX + "TileEntityBasicFunnel");
         GameRegistry.registerTileEntity(TileEntityFluidFurnace.class, Reference.RESOURCE_PREFIX + "TileEntityFluidFurnace");
+        GameRegistry.registerTileEntity(TileEntityFluidInfuser.class, Reference.RESOURCE_PREFIX + "TileEntityFluidInfuser");
         //Network
         NetworkRegistry.INSTANCE.registerGuiHandler(UpgradeCraft.instance, new GuiHandler());
         //interModComm
