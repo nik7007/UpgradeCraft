@@ -42,22 +42,20 @@ public final class FluidInfuserRegister {
         List<FluidInfuserRecipe> fluidList;
 
         if (fluidStack != null && fluidStack.getFluid() != null && toMelt != null && !toMelt.isEmpty() && toInfuse != null && !toInfuse.isEmpty()) {
-            return null;
-        }
 
-        fluidList = INSTANCE.fluidToRecipe.get(createKey(fluidStack));
-        toMeltList = INSTANCE.toMeltToRecipe.get(createKey(toMelt));
-        toInfuseList = INSTANCE.toInfuseToRecipe.get(createKey(toInfuse));
+            fluidList = INSTANCE.fluidToRecipe.get(createKey(fluidStack));
+            toMeltList = INSTANCE.toMeltToRecipe.get(createKey(toMelt));
+            toInfuseList = INSTANCE.toInfuseToRecipe.get(createKey(toInfuse));
 
-        List<FluidInfuserRecipe> result = getCommonRecipes(getCommonRecipes(fluidList, toInfuseList), toMeltList);
+            List<FluidInfuserRecipe> result = getCommonRecipes(getCommonRecipes(fluidList, toInfuseList), toMeltList);
 
-        if (!result.isEmpty()) {
-            if (result.size() != 1) {
-                LogHelper.error("[FluidInfuserRegister] More than one result!! -> FluidStack: " + fluidStack + " melt: " + toMelt + " infuse: " + toInfuse);
+            if (!result.isEmpty()) {
+                if (result.size() != 1) {
+                    LogHelper.error("[FluidInfuserRegister] More than one result!! -> FluidStack: " + fluidStack + " melt: " + toMelt + " infuse: " + toInfuse);
+                }
+                return result.get(0);
             }
-            return result.get(0);
         }
-
         return null;
     }
 
@@ -89,10 +87,10 @@ public final class FluidInfuserRegister {
         List<FluidInfuserRecipe> result = new LinkedList<>();
 
         if (list1 == null || list1.isEmpty())
-            return list2;
+            return list2 != null ? list2 : result;
 
         if (list2 == null || list2.isEmpty())
-            return list1;
+            return list1 != null ? list1 : result;
 
         for (FluidInfuserRecipe r1 : list1) {
             for (FluidInfuserRecipe r2 : list2) {
