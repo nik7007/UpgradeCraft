@@ -2,6 +2,7 @@ package com.nik7.upgcraft.fluids.tank;
 
 
 import com.nik7.upgcraft.fluids.EnumCapacity;
+import com.nik7.upgcraft.fluids.IFluidIO;
 import com.nik7.upgcraft.fluids.capability.FluidTankProperties;
 import com.nik7.upgcraft.tileentity.TileEntityFluidHandler;
 import com.nik7.upgcraft.tileentity.TileEntityFluidTank;
@@ -20,6 +21,7 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
     private UpgCFluidTank internalTank;
     private boolean canDrain;
     private boolean canFill;
+    private IFluidIO tileIFluidTank = null;
 
 
     public UpgCFluidTankWrapper(UpgCFluidTank internalTank, boolean canDrain, boolean canFill) {
@@ -48,6 +50,11 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
         this.canFill = canFill;
         this.canDrain = canDrain;
         this.tankProperties = new IFluidTankProperties[]{new FluidTankProperties(this)};
+
+        if (tileEntities != null && tileEntities.length == 1) {
+            if (tileEntities[0] instanceof IFluidIO)
+                this.tileIFluidTank = (IFluidIO) tileEntities[0];
+        }
     }
 
     @Override
@@ -86,7 +93,7 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
     @Override
     public int fill(FluidStack resource, boolean doFill) {
 
-        if (this.canFill)
+        if (this.canFill())
             return this.internalTank.fill(resource, doFill);
         else return 0;
     }
@@ -95,7 +102,7 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-        if (this.canDrain)
+        if (this.canDrain())
             return this.internalTank.drain(resource, doDrain);
         else return null;
     }
@@ -103,7 +110,7 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
     @Nullable
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
-        if (this.canDrain)
+        if (this.canDrain())
             return this.internalTank.drain(maxDrain, doDrain);
         else return null;
     }
@@ -131,11 +138,15 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank {
 
     @Override
     public boolean canFill() {
+        if (this.tileIFluidTank != null)
+            return this.tileIFluidTank.canFill();
         return this.canFill;
     }
 
     @Override
     public boolean canDrain() {
+        if (this.tileIFluidTank != null)
+            return this.tileIFluidTank.canDrain();
         return this.canDrain;
     }
 
