@@ -13,6 +13,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.world.IInteractionObject;
@@ -86,6 +88,33 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
 
     @Override
+    public NBTTagCompound getUpdateTag() {
+        NBTTagCompound tag = new NBTTagCompound();
+        this.fluidTank.writeToNBT(tag);
+        tag.setBoolean("isWorking", this.isWorking);
+        return tag;
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+
+        NBTTagCompound tag = new NBTTagCompound();
+        this.fluidTank.writeToNBT(tag);
+        tag.setBoolean("isWorking", this.isWorking);
+        return new SPacketUpdateTileEntity(getPos(), 1, tag);
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
+        NBTTagCompound tag = packet.getNbtCompound();
+
+        this.fluidTank.readFromNBT(tag);
+        this.isWorking = tag.getBoolean("isWorking");
+        this.updateLight();
+    }
+
+
+    @Override
     public void syncTileEntity() {
         markDirty();
         IBlockState state = getWorld().getBlockState(getPos());
@@ -108,6 +137,8 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
                         this.drain(nFluid, true);
                         this.decrStackSize(MELT, nMelt);
                         this.decrStackSize(INFUSE, nInfuse);
+
+                        syncTileEntity();
 
                         this.tickMelting = recipe.getTickToMelt();
                         this.tickInfusing = recipe.getTickToInfuse();
