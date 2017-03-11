@@ -50,8 +50,15 @@ public abstract class TileEntityInventoryAndFluidHandler extends TileEntityFluid
         if (this.hasCustomName()) {
             tag.setString("CustomName", this.customName);
         }
-
         return tag;
+    }
+
+    protected void fluidHandlerReadFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+    }
+
+    protected NBTTagCompound fluidHandlerWriteToNBT(NBTTagCompound tag) {
+        return super.writeToNBT(tag);
     }
 
 

@@ -61,6 +61,7 @@ public class TileEntityFluidFurnace extends TileEntityInventoryAndFluidHandler i
 
     private UpgCFluidTankWrapper inputTank;
     private UpgCFluidTankWrapper outputTank;
+    private boolean isOpen;
 
     public TileEntityFluidFurnace() {
         super(EnumCapacity.MACHINE_CAPACITY, 2);
@@ -115,7 +116,7 @@ public class TileEntityFluidFurnace extends TileEntityInventoryAndFluidHandler i
     @Override
     public NBTTagCompound getUpdateTag() {
         NBTTagCompound tag = new NBTTagCompound();
-        this.fluidTank.writeToNBT(tag);
+        fluidHandlerWriteToNBT(tag);
         tag.setBoolean("isWorking", this.isWorking);
         return tag;
     }
@@ -124,7 +125,7 @@ public class TileEntityFluidFurnace extends TileEntityInventoryAndFluidHandler i
     public SPacketUpdateTileEntity getUpdatePacket() {
 
         NBTTagCompound tag = new NBTTagCompound();
-        this.fluidTank.writeToNBT(tag);
+        fluidHandlerWriteToNBT(tag);
         tag.setBoolean("isWorking", this.isWorking);
         return new SPacketUpdateTileEntity(getPos(), 1, tag);
     }
@@ -133,7 +134,7 @@ public class TileEntityFluidFurnace extends TileEntityInventoryAndFluidHandler i
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         NBTTagCompound tag = packet.getNbtCompound();
 
-        this.fluidTank.readFromNBT(tag);
+        fluidHandlerReadFromNBT(tag);
         this.isWorking = tag.getBoolean("isWorking");
         this.updateLight();
     }
@@ -173,11 +174,12 @@ public class TileEntityFluidFurnace extends TileEntityInventoryAndFluidHandler i
     @Override
     public void openInventory(@Nonnull EntityPlayer player) {
 
+        this.isOpen = true;
     }
 
     @Override
     public void closeInventory(@Nonnull EntityPlayer player) {
-
+        this.isOpen = false;
     }
 
     @Override
@@ -291,7 +293,8 @@ public class TileEntityFluidFurnace extends TileEntityInventoryAndFluidHandler i
                 if (this.isWorking) {
                     this.isWorking = false;
                     changeState(this.isWorking());
-                    syncTileEntity();
+                    if (this.isOpen)
+                        syncTileEntity();
                 }
             }
 
