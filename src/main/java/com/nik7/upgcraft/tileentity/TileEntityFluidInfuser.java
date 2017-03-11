@@ -152,8 +152,8 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
                         syncTileEntity();
 
-                        this.tickMelting = recipe.getTickToMelt();
-                        this.tickInfusing = recipe.getTickToInfuse();
+                        this.totalTickMelting = this.tickMelting = recipe.getTickToMelt();
+                        this.totalTickInfusing = this.tickInfusing = recipe.getTickToInfuse();
                         this.resultWorking = recipe.getResult();
 
                         this.isWorking = true;
