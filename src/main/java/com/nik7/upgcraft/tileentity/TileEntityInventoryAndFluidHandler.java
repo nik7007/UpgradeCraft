@@ -122,6 +122,6 @@ public abstract class TileEntityInventoryAndFluidHandler extends TileEntityFluid
 
     @Override
     public ITextComponent getDisplayName() {
-        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(ModBlocks.blockFluidFurnace.getUnlocalizedName() + ".name");
+        return this.hasCustomName() ? new TextComponentString(this.getName()) : new TextComponentTranslation(ModBlocks.blockFluidInfuser.getUnlocalizedName() + ".name");
     }
 }
