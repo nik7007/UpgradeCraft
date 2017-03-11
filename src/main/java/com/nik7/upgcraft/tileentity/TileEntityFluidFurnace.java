@@ -12,8 +12,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,10 +20,6 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IInteractionObject;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
@@ -121,7 +115,7 @@ public class TileEntityFluidFurnace extends TileEntityInventoryAndFluidHandler i
     @Override
     public NBTTagCompound getUpdateTag() {
         NBTTagCompound tag = new NBTTagCompound();
-        super.writeToNBT(tag);
+        this.fluidTank.writeToNBT(tag);
         tag.setBoolean("isWorking", this.isWorking);
         return tag;
     }
@@ -130,7 +124,7 @@ public class TileEntityFluidFurnace extends TileEntityInventoryAndFluidHandler i
     public SPacketUpdateTileEntity getUpdatePacket() {
 
         NBTTagCompound tag = new NBTTagCompound();
-        super.writeToNBT(tag);
+        this.fluidTank.writeToNBT(tag);
         tag.setBoolean("isWorking", this.isWorking);
         return new SPacketUpdateTileEntity(getPos(), 1, tag);
     }
@@ -139,7 +133,7 @@ public class TileEntityFluidFurnace extends TileEntityInventoryAndFluidHandler i
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         NBTTagCompound tag = packet.getNbtCompound();
 
-        super.readFromNBT(tag);
+        this.fluidTank.readFromNBT(tag);
         this.isWorking = tag.getBoolean("isWorking");
         this.updateLight();
     }
