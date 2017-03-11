@@ -26,5 +26,11 @@ public class GuiFluidInfuser extends GuiWithFluid {
         int yOffset = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(xOffset, yOffset, 0, 0, this.xSize, this.ySize);
 
+        int inc = fluidInfuser.getMeltTickScaled(13);
+        this.drawTexturedModalRect(xOffset + 52, yOffset + 53 - inc, 176, 13 - inc, 15, inc);
+
+        inc = fluidInfuser.gerInfusingScaled(24);
+        this.drawTexturedModalRect(xOffset + 105, yOffset + 37, 176, 14, inc + 1, 16);
+
     }
 }
