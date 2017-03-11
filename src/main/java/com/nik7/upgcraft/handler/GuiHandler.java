@@ -3,8 +3,10 @@ package com.nik7.upgcraft.handler;
 
 import com.nik7.upgcraft.client.gui.inventory.GuiFluidFurnace;
 import com.nik7.upgcraft.inventory.ContainerFluidFurnace;
+import com.nik7.upgcraft.inventory.ContainerFluidInfuser;
 import com.nik7.upgcraft.reference.GUIs;
 import com.nik7.upgcraft.tileentity.TileEntityFluidFurnace;
+import com.nik7.upgcraft.tileentity.TileEntityFluidInfuser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -22,6 +24,8 @@ public class GuiHandler implements IGuiHandler {
         switch (GUIs.values()[ID]) {
             case FLUID_FURNACE:
                 return new ContainerFluidFurnace(player.inventory, (TileEntityFluidFurnace) world.getTileEntity(blockPos));
+            case FLUID_INFUSER:
+                return new ContainerFluidInfuser(player.inventory, (TileEntityFluidInfuser) world.getTileEntity(blockPos));
 
         }
 

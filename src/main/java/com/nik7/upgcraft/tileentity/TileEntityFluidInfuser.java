@@ -3,6 +3,7 @@ package com.nik7.upgcraft.tileentity;
 
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.IFluidIO;
+import com.nik7.upgcraft.inventory.ContainerFluidInfuser;
 import com.nik7.upgcraft.registry.FluidInfuserRegister;
 import com.nik7.upgcraft.registry.recipes.FluidInfuserRecipe;
 import net.minecraft.block.state.IBlockState;
@@ -208,7 +209,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
     @Override
     public Container createContainer(InventoryPlayer playerInventory, EntityPlayer playerIn) {
-        return null;
+        return new ContainerFluidInfuser(playerInventory, this);
     }
 
     @Override
