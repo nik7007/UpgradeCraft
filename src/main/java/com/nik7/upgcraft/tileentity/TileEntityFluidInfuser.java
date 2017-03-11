@@ -120,7 +120,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity packet) {
         NBTTagCompound tag = packet.getNbtCompound();
 
-        fluidHandlerWriteToNBT(tag);
+        fluidHandlerReadFromNBT(tag);
         this.isWorking = tag.getBoolean("isWorking");
         this.updateLight();
     }
