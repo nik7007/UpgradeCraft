@@ -69,12 +69,18 @@ public final class FluidInfuserRegister {
 
         if (fluidStack != null && fluidStack.getFluid() != null) {
             fluidList = INSTANCE.fluidToRecipe.get(createKey(fluidStack));
+            if (fluidList == null)
+                return false;
         }
         if (toMelt != null && !toMelt.isEmpty()) {
             toMeltList = INSTANCE.toMeltToRecipe.get(createKey(toMelt));
+            if (toMeltList == null)
+                return false;
         }
         if (toInfuse != null && !toInfuse.isEmpty()) {
             toInfuseList = INSTANCE.toInfuseToRecipe.get(createKey(toInfuse));
+            if (toInfuseList == null)
+                return false;
         }
 
         List toCheck = getCommonRecipes(getCommonRecipes(fluidList, toInfuseList), toMeltList);
