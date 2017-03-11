@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class ContainerUpgC extends Container {
 
-    protected IInventory inventory;
+    protected final IInventory inventory;
     protected int[] lastInformation;
 
     public ContainerUpgC(IInventory inventory) {
