@@ -3,6 +3,7 @@ package com.nik7.upgcraft.tileentity;
 
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.IFluidIO;
+import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.inventory.ContainerFluidInfuser;
 import com.nik7.upgcraft.registry.FluidInfuserRegister;
 import com.nik7.upgcraft.registry.recipes.FluidInfuserRecipe;
@@ -214,7 +215,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
     @Override
     public String getGuiID() {
-        return null;
+        return ModBlocks.blockFluidFurnace.getUnlocalizedName();
     }
 
     @Override
