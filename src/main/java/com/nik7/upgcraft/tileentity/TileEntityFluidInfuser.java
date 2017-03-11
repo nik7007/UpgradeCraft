@@ -161,7 +161,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
                     }
 
                 }
-            }
+            } else this.isWorking = false;
         }
 
         return this.isWorking;
@@ -191,7 +191,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
                 if (this.isOpen)
                     syncTileEntity();
-            }
+            } else this.isWorking = false;
 
     }
 
@@ -289,14 +289,14 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
     @SideOnly(Side.CLIENT)
     public int getMeltTickScaled(int scale) {
         if (this.isWorking())
-            return (int) (1f - ((float) this.tickMelting / (float) this.totalTickMelting)) * scale;
+            return (int) ((1f - ((float) this.tickMelting / (float) this.totalTickMelting)) * scale);
         else return 0;
     }
 
     @SideOnly(Side.CLIENT)
     public int gerInfusingScaled(int scale) {
         if (this.isWorking())
-            return (int) (1f - ((float) this.tickInfusing / (float) this.totalTickInfusing)) * scale;
+            return (int) ((1f - ((float) this.tickInfusing / (float) this.totalTickInfusing)) * scale);
         else return 0;
     }
 
