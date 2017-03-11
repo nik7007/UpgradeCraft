@@ -23,6 +23,7 @@ public class RenderUpgC {
         RenderUpgC.initModel(ModBlocks.blockSlimyLog);
         RenderUpgC.initFluidTankModel(ModBlocks.blockWoodenFluidTank);
         RenderUpgC.initModel(ModBlocks.blockFluidFurnace);
+        RenderUpgC.initModel(ModBlocks.blockFluidInfuser);
         RenderUpgC.initModel(ModBlocks.blockFunnel);
 
         //basic funnel
