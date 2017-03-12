@@ -1,6 +1,6 @@
 package com.nik7.upgcraft.client.renderer.tileentity;
 
-import com.nik7.upgcraft.tileentity.TileEntityFluidFurnace;
+import com.nik7.upgcraft.tileentity.TileEntityFluidHandler;
 import com.nik7.upgcraft.util.RenderHelper;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -12,10 +12,10 @@ import org.lwjgl.opengl.GL11;
 import static com.nik7.upgcraft.reference.Render.TankInternalDimension.*;
 
 @SideOnly(Side.CLIENT)
-public class FluidMachineTESR extends TileEntitySpecialRenderer<TileEntityFluidFurnace> {
+public class FluidMachineTESR extends TileEntitySpecialRenderer<TileEntityFluidHandler> {
 
     @Override
-    public void renderTileEntityAt(TileEntityFluidFurnace te, double x, double y, double z, float partialTicks, int destroyStage) {
+    public void renderTileEntityAt(TileEntityFluidHandler te, double x, double y, double z, float partialTicks, int destroyStage) {
         float fluidPercentage = te.getFillPercentage();
 
         if (fluidPercentage > 0) {
