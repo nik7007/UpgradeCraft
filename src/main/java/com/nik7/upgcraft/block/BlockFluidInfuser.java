@@ -17,13 +17,16 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BlockFluidInfuser extends BlockOrientable implements ITileEntityProvider {
 
@@ -72,6 +75,27 @@ public class BlockFluidInfuser extends BlockOrientable implements ITileEntityPro
         }
 
         super.breakBlock(worldIn, pos, state);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void randomDisplayTick(IBlockState blockState, World world, BlockPos pos, Random rand) {
+
+        TileEntity te = world.getTileEntity(pos);
+
+        if (te instanceof TileEntityFluidInfuser) {
+            if (((TileEntityFluidInfuser) te).isWorking()) {
+                final FluidStack fluid = ((TileEntityFluidInfuser) te).getFluid();
+                if (fluid != null) {
+                    EnumParticleTypes[] particles;
+
+                    if (fluid.getFluid().getTemperature(fluid) >= 300)
+                        particles = new EnumParticleTypes[]{EnumParticleTypes.SMOKE_NORMAL, EnumParticleTypes.FLAME};
+                    else particles = new EnumParticleTypes[]{EnumParticleTypes.SMOKE_NORMAL};
+                    spawnParticles(world, pos, rand, particles);
+                }
+            }
+        }
     }
 
     @Override
