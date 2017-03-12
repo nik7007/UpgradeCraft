@@ -2,7 +2,8 @@
     "parent": "block/orientable",
     "textures": {
         "all": "upgcraft:blocks/fluid_infuser",
-        "particle": "upgcraft:blocks/fluid_infuser"
+        "particle": "upgcraft:blocks/fluid_furnace",
+        "in": "upgcraft:blocks/fluid_infuser_off"
     },
     "elements": [
         {
@@ -135,11 +136,77 @@
             }
         },
         {
-            "name": "F",
-            "from": [ 0.0, 7.0, 0.0 ], 
-            "to": [ 16.0, 16.0, 0.0 ], 
+            "name": "FT",
+            "from": [ 0.0, 12.0, 0.0 ], 
+            "to": [ 16.0, 16.0, 1.0 ], 
             "faces": {
-                "north": { "texture": "#all", "uv": [ 0.0, 0.0, 8.0, 4.0 ] }
+                "north": { "texture": "#all", "uv": [ 0.0, 0.0, 8.0, 2.0 ] },
+                "down": { "texture": "#all", "uv": [ 0.0, 2.5, 6.5, 3.0 ] }
+            }
+        },
+        {
+            "name": "FR",
+            "from": [ 13.0, 7.0, 0.0 ], 
+            "to": [ 16.0, 12.0, 1.0 ], 
+            "faces": {
+                "north": { "texture": "#all", "uv": [ 0.0, 2.0, 1.5, 4.5 ] },
+                "west": { "texture": "#all", "uv": [ 2.0, 2.0, 3.0, 3.0 ] }
+            }
+        },
+        {
+            "name": "FL",
+            "from": [ 0.0, 7.0, 0.0 ], 
+            "to": [ 3.0, 12.0, 1.0 ], 
+            "faces": {
+                "north": { "texture": "#all", "uv": [ 6.5, 1.0, 8.0, 4.0 ] },
+                "east": { "texture": "#all", "uv": [ 2.0, 2.0, 2.5, 3.0 ] }
+            }
+        },
+        {
+            "name": "FB",
+            "from": [ 3.0, 7.0, 0.0 ], 
+            "to": [ 13.0, 9.0, 1.0 ], 
+            "faces": {
+                "north": { "texture": "#all", "uv": [ 1.0, 3.5, 6.5, 4.5 ] },
+                "up": { "texture": "#all", "uv": [ 1.0, 3.5, 7.0, 3.0 ] }
+            }
+        },
+        {
+            "name": "FM",
+            "from": [ 8.0, 9.0, 0.0 ], 
+            "to": [ 10.0, 12.0, 1.0 ], 
+            "faces": {
+                "north": { "texture": "#all", "uv": [ 3.0, 2.0, 4.0, 3.5 ] },
+                "east": { "texture": "#all", "uv": [ 2.0, 2.0, 3.0, 3.0 ] },
+                "west": { "texture": "#all", "uv": [ 2.0, 2.0, 3.0, 3.0 ] }
+            }
+        },
+        {
+            "name": "FTR",
+            "from": [ 7.0, 11.0, 0.0 ], 
+            "to": [ 8.0, 12.0, 1.0 ], 
+            "faces": {
+                "north": { "texture": "#all", "uv": [ 4.0, 2.0, 4.5, 2.5 ] },
+                "west": { "texture": "#all", "uv": [ 5.0, 2.5, 6.0, 3.0 ] },
+                "down": { "texture": "#all", "uv": [ 5.0, 2.5, 6.0, 3.0 ] }
+            }
+        },
+        {
+            "name": "FTL",
+            "from": [ 3.0, 11.0, 0.0 ], 
+            "to": [ 4.0, 12.0, 1.0 ], 
+            "faces": {
+                "north": { "texture": "#all", "uv": [ 6.0, 2.0, 6.5, 2.5 ] },
+                "east": { "texture": "#all", "uv": [ 5.0, 2.5, 6.0, 3.0 ] },
+                "down": { "texture": "#all", "uv": [ 5.0, 2.5, 6.0, 3.0 ] }
+            }
+        },
+        {
+            "name": "FB",
+            "from": [ 0.0, 7.0, 0.9 ],
+            "to": [ 16.0, 16.0, 0.9 ],
+            "faces": {
+                "north": { "texture": "#in", "uv": [ 0.0, 0.0, 16.0, 9.0 ] }
             }
         }
     ]
