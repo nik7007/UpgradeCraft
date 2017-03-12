@@ -1,10 +1,14 @@
 package com.nik7.upgcraft.inventory;
 
 
+import com.nik7.upgcraft.registry.ICraftingExperience;
+import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.MathHelper;
 
@@ -51,8 +55,25 @@ public class SlotOutput extends Slot {
 
         if (!this.player.world.isRemote) {
             int count = this.removeCount;
-            // TODO: add probability for items/blocks
-            float expProbability = 1;
+
+            float expProbability = 0;
+
+            if (!stack.isEmpty()) {
+                Item item = stack.getItem();
+                ICraftingExperience craftingExperience = null;
+
+                if (item instanceof ICraftingExperience) {
+                    craftingExperience = (ICraftingExperience) item;
+                } else if (item instanceof ItemBlock) {
+                    Block block = ((ItemBlock) item).getBlock();
+                    if (block instanceof ICraftingExperience)
+                        craftingExperience = (ICraftingExperience) block;
+                }
+
+                if (craftingExperience != null)
+                    expProbability = craftingExperience.getCraftingExperience(stack);
+            }
+
 
             if (expProbability == 0.0F) {
                 count = 0;

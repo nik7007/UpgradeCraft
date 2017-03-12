@@ -6,7 +6,6 @@ import com.nik7.upgcraft.tileentity.TileEntityFluidInfuser;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -25,7 +24,7 @@ public class ContainerFluidInfuser extends ContainerUpgC {
         this.addSlotToContainer(new Slot(inventory, MELT, 52, 20));
         this.addSlotToContainer(new Slot(inventory, INFUSE, 82, 20));
 
-        this.addSlotToContainer(new SlotFurnaceOutput(playerInventory.player, inventory, OUTPUT, 142, 38));
+        this.addSlotToContainer(new SlotOutput(playerInventory.player, inventory, OUTPUT, 142, 38));
 
         addPlayerSlots(playerInventory, 8, 84);
 
