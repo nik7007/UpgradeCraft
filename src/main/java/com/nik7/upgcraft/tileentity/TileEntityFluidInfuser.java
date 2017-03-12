@@ -134,6 +134,9 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
     }
 
     private boolean checkAndInitWorking() {
+
+        final boolean oldWorking = this.isWorking;
+
         if (!this.isWorking) {
             FluidInfuserRecipe recipe = FluidInfuserRegister.getRecipe(this.getFluid(), this.getStackInSlot(MELT), this.getStackInSlot(INFUSE));
 
@@ -150,8 +153,6 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
                         this.decrStackSize(MELT, nMelt);
                         this.decrStackSize(INFUSE, nInfuse);
 
-                        syncTileEntity();
-
                         this.totalTickMelting = this.tickMelting = recipe.getTickToMelt();
                         this.totalTickInfusing = this.tickInfusing = recipe.getTickToInfuse();
                         this.resultWorking = recipe.getResult();
@@ -161,8 +162,11 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
                     }
 
                 }
-            } else this.isWorking = false;
+            }
         }
+
+        if (oldWorking != this.isWorking)
+            syncTileEntity();
 
         return this.isWorking;
     }
@@ -170,7 +174,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
     @Override
     public void update() {
-        if (!this.getWorld().isRemote)
+        if (!this.getWorld().isRemote) {
             if (this.checkAndInitWorking()) {
                 if (this.tickMelting <= 0) {
                     if (this.tickInfusing <= 0) {
@@ -183,6 +187,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
                         this.resultWorking = ItemStack.EMPTY;
                         this.isWorking = false;
+                        syncTileEntity();
                         this.tickMelting = 0;
                         this.tickInfusing = 0;
 
@@ -191,7 +196,8 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
                 if (this.isOpen)
                     syncTileEntity();
-            } else this.isWorking = false;
+            }
+        }
 
     }
 
