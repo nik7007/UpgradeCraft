@@ -30,6 +30,7 @@ public class BlockFluidInfuser extends BlockOrientable implements ITileEntityPro
 
     public BlockFluidInfuser() {
         super(Material.IRON, "fluidinfuser");
+        this.setHardness(3f);
     }
 
     @SideOnly(Side.CLIENT)

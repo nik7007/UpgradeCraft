@@ -36,6 +36,7 @@ public class BlockFluidFurnace extends BlockOrientable implements ITileEntityPro
     public BlockFluidFurnace() {
         super(Material.ROCK, "fluidfurnace");
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(IS_WORKING, false));
+        this.setHardness(2.5f);
     }
 
     @Override
