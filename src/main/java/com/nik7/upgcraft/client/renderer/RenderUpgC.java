@@ -5,6 +5,7 @@ import com.nik7.upgcraft.client.renderer.tileentity.FluidMachineTESR;
 import com.nik7.upgcraft.client.renderer.tileentity.FluidTankTESR;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.tileentity.TileEntityFluidFurnace;
+import com.nik7.upgcraft.tileentity.TileEntityFluidInfuser;
 import com.nik7.upgcraft.tileentity.TileEntityFluidTank;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelBakery;
@@ -80,6 +81,7 @@ public class RenderUpgC {
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidTank.class, new FluidTankTESR());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidFurnace.class, new FluidMachineTESR());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidInfuser.class, new FluidMachineTESR());
     }
 
 }
