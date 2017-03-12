@@ -96,7 +96,7 @@ public final class FluidInfuserRegister {
             return list2 != null ? list2 : result;
 
         if (list2 == null || list2.isEmpty())
-            return list1 != null ? list1 : result;
+            return list1;
 
         for (FluidInfuserRecipe r1 : list1) {
             for (FluidInfuserRecipe r2 : list2) {
