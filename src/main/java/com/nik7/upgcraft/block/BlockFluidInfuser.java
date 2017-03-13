@@ -7,6 +7,8 @@ import com.nik7.upgcraft.tileentity.TileEntityFluidHandler;
 import com.nik7.upgcraft.tileentity.TileEntityFluidInfuser;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,10 +16,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -30,10 +29,89 @@ import java.util.Random;
 
 public class BlockFluidInfuser extends BlockOrientable implements ITileEntityProvider {
 
+    public static final PropertyEnum<Status> STATUS = PropertyEnum.create("status", Status.class);
+
 
     public BlockFluidInfuser() {
         super(Material.IRON, "fluidinfuser");
+        this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH).withProperty(STATUS, Status.OFF));
         this.setHardness(3f);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING, STATUS);
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+        TileEntity te = world.getTileEntity(pos);
+
+        if (te instanceof TileEntityFluidInfuser) {
+            if (((TileEntityFluidInfuser) te).isWorking()) {
+                FluidStack fluid = ((TileEntityFluidInfuser) te).getFluid();
+                if (fluid != null) {
+                    Status status;
+                    if (fluid.getFluid().getTemperature(fluid) >= 300) {
+                        status = Status.WORKING_HOT;
+                    } else status = Status.WORKING_COOL;
+                    return state.withProperty(STATUS, status);
+                }
+            } else state.withProperty(STATUS, Status.OFF);
+
+        }
+        return state;
+    }
+
+    public void changeWorkingStatus(World world, BlockPos pos, IBlockState state, boolean working, boolean isHot) {
+
+        Status status = state.getValue(STATUS);
+
+        if (status == Status.OFF && working) {
+            if (isHot) {
+                status = Status.WORKING_HOT;
+            } else {
+                status = Status.WORKING_COOL;
+            }
+            TileEntity te = world.getTileEntity(pos);
+            world.setBlockState(pos, state.withProperty(STATUS, status));
+
+            if (te != null) {
+                te.validate();
+                world.setTileEntity(pos, te);
+            }
+        } else if (status != Status.OFF && !working) {
+
+            TileEntity te = world.getTileEntity(pos);
+            world.setBlockState(pos, state.withProperty(STATUS, Status.OFF));
+
+            if (te != null) {
+                te.validate();
+                world.setTileEntity(pos, te);
+            }
+
+        } else if (working && isHot && status != Status.WORKING_HOT) {
+
+
+            TileEntity te = world.getTileEntity(pos);
+            world.setBlockState(pos, state.withProperty(STATUS, Status.WORKING_HOT));
+
+            if (te != null) {
+                te.validate();
+                world.setTileEntity(pos, te);
+            }
+        } else if (working && !isHot && status != Status.WORKING_COOL) {
+
+            TileEntity te = world.getTileEntity(pos);
+            world.setBlockState(pos, state.withProperty(STATUS, Status.WORKING_COOL));
+
+            if (te != null) {
+                te.validate();
+                world.setTileEntity(pos, te);
+            }
+        }
+
     }
 
     @SideOnly(Side.CLIENT)
@@ -123,4 +201,25 @@ public class BlockFluidInfuser extends BlockOrientable implements ITileEntityPro
     public TileEntity createNewTileEntity(World worldIn, int meta) {
         return new TileEntityFluidInfuser();
     }
+
+
+    public enum Status implements IStringSerializable {
+        OFF("off"),
+        WORKING_HOT("working_hot"),
+        WORKING_COOL("working_cool");
+
+        private String name;
+
+
+        Status(String name) {
+            this.name = name;
+        }
+
+
+        @Override
+        public String getName() {
+            return this.name;
+        }
+    }
+
 }

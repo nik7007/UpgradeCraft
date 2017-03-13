@@ -1,11 +1,31 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "upgcraft:fluid_infuser"
+    "model": "upgcraft:fluid_infuser",
+    "textures": {
+      "in": "upgcraft:blocks/fluid_infuser_off"
+    }
   },
   "variants": {
     "normal": [{}],
     "inventory": [{}],
+    "status": {
+      "off": {
+        "textures": {
+          "in": "upgcraft:blocks/fluid_infuser_off"
+        }
+      },
+      "working_cool": {
+        "textures": {
+          "in": "upgcraft:blocks/fluid_infuser_cool"
+        }
+      },
+      "working_hot": {
+        "textures": {
+          "in": "upgcraft:blocks/fluid_infuser_hot"
+        }
+      }
+    },
     "facing" : {
       "north" : {
         "model" : "upgcraft:fluid_infuser"
