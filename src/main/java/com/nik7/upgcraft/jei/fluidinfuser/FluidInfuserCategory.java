@@ -4,6 +4,7 @@ package com.nik7.upgcraft.jei.fluidinfuser;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.jei.RecipeCategory;
 import com.nik7.upgcraft.jei.UpgCPlugin;
+import com.nik7.upgcraft.reference.ConfigOptions;
 import com.nik7.upgcraft.reference.Texture;
 import mezz.jei.api.gui.IDrawable;
 import mezz.jei.api.gui.IRecipeLayout;
@@ -41,7 +42,7 @@ public class FluidInfuserCategory extends RecipeCategory<FluidInfuserJEI> {
 
         recipeLayout.getItemStacks().init(2, false, 138, 20);
 
-        recipeLayout.getFluidStacks().init(3, true, 12, 26);
+        recipeLayout.getFluidStacks().init(3, true, 12, 10, 16, 32, ConfigOptions.MACHINE_CAPACITY, true, null);
 
         recipeLayout.getItemStacks().set(ingredients);
         recipeLayout.getFluidStacks().set(ingredients);
