@@ -16,16 +16,12 @@ import java.util.List;
 
 public class FluidInfuserJEI extends BlankRecipeWrapper {
 
-    protected final List<ItemStack> melt;
-    protected final List<ItemStack> infuse;
     private final List<List<ItemStack>> inputs;
     private final ItemStack output;
     private final FluidStack fluid;
     private final String experienceString;
 
     public FluidInfuserJEI(List<ItemStack> melt, List<ItemStack> infuse, ItemStack output, FluidStack fluid, float experience) {
-        this.melt = melt;
-        this.infuse = infuse;
         this.output = output;
         this.fluid = fluid;
 
