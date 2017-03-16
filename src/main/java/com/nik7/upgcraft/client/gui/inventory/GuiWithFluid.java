@@ -69,7 +69,7 @@ public class GuiWithFluid extends GuiContainer {
 
             String modMane = getModName(fluidStack.getFluid());
             if (modMane != null) {
-                toolTip.add(TextFormatting.BLUE + modMane);
+                toolTip.add(TextFormatting.BLUE + TextFormatting.ITALIC.toString() + modMane);
             }
 
 
