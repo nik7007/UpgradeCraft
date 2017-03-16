@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiWithFluid extends GuiContainer {
+public abstract class GuiWithFluid extends GuiContainer {
 
     protected final TileEntityInventoryAndFluidHandler inventoryAndFluidHandler;
 
@@ -37,12 +37,6 @@ public class GuiWithFluid extends GuiContainer {
         this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 
         drawTankContent(this.inventoryAndFluidHandler.getFluid(), this.inventoryAndFluidHandler.getCapacity(), mouseX, mouseY);
-    }
-
-
-    @Override
-    protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
-
     }
 
 
