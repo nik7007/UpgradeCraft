@@ -1,12 +1,14 @@
 package com.nik7.upgcraft.tileentity;
 
 
+import com.nik7.upgcraft.block.BlockFluidInfuser;
 import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.IFluidIO;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.inventory.ContainerFluidInfuser;
 import com.nik7.upgcraft.registry.FluidInfuserRegister;
 import com.nik7.upgcraft.registry.recipes.FluidInfuserRecipe;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -149,7 +151,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
                     int nFluid = recipe.getFluidStack().amount;
                     if (this.getStackInSlot(MELT).getCount() >= nMelt && this.getStackInSlot(INFUSE).getCount() >= nInfuse && this.getFluid().amount >= nFluid) {
 
-                        this.drain(nFluid, true);
+                        FluidStack drained = this.drain(nFluid, true);
                         this.decrStackSize(MELT, nMelt);
                         this.decrStackSize(INFUSE, nInfuse);
 
@@ -158,6 +160,11 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
                         this.resultWorking = recipe.getResult();
 
                         this.isWorking = true;
+
+                        final boolean isHot = drained.getFluid().getTemperature(drained) >= 300;
+
+
+                        changeStaus(true, isHot);
 
                     }
 
@@ -188,6 +195,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
                         this.resultWorking = ItemStack.EMPTY;
                         this.isWorking = false;
                         syncTileEntity();
+                        changeStaus(false, false);
                         this.tickMelting = 0;
                         this.tickInfusing = 0;
 
@@ -197,6 +205,17 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
                 if (this.isOpen)
                     syncTileEntity();
             }
+        }
+
+    }
+
+    private void changeStaus(boolean isWorking, boolean isHot) {
+
+        IBlockState state = getWorld().getBlockState(getPos());
+        Block block = state.getBlock();
+
+        if (block instanceof BlockFluidInfuser) {
+            ((BlockFluidInfuser) block).changeWorkingStatus(this.getWorld(), this.getPos(), state, isWorking, isHot);
         }
 
     }

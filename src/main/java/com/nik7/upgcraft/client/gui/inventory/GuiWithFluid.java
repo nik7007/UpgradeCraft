@@ -8,13 +8,19 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public abstract class GuiWithFluid extends GuiContainer {
 
@@ -53,11 +59,31 @@ public abstract class GuiWithFluid extends GuiContainer {
             String amount = fluidStack.amount + "/" + capacity + "mB";
 
             toolTip.add(fluidName);
-            toolTip.add(amount);
+            toolTip.add(TextFormatting.GRAY + amount);
+
+            String modMane = getModName(fluidStack.getFluid());
+            if (modMane != null) {
+                toolTip.add(TextFormatting.BLUE + TextFormatting.ITALIC.toString() + modMane);
+            }
+
+
         } else toolTip.add(fluidName);
 
         drawToolTip(toolTip, xOffset + 15, yOffset + 58, 16, 32, mouseX, mouseY);
 
+    }
+
+    private String getModName(Fluid fluid) {
+
+        if (fluid != null) {
+            String defaultFluidName = FluidRegistry.getDefaultFluidName(fluid);
+            if (defaultFluidName != null) {
+                ResourceLocation fluidResourceName = new ResourceLocation(defaultFluidName);
+                Map<String, ModContainer> modMap = Loader.instance().getIndexedModList();
+                return modMap.get(fluidResourceName.getResourceDomain()).getName();
+            }
+        }
+        return null;
     }
 
 
