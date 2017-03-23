@@ -1,0 +1,9 @@
+
+{
+  "parent": "block/outer_stairs",
+  "textures": {
+    "bottom": "upgcraft:blocks/clay_brick_cooked",
+    "top": "upgcraft:blocks/clay_brick_cooked",
+    "side": "upgcraft:blocks/clay_brick_cooked"
+  }
+}

@@ -1,0 +1,7 @@
+
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "upgcraft:blocks/clay_squared_brick_cooked"
+  }
+}

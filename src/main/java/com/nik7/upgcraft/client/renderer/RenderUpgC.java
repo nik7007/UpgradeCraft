@@ -37,6 +37,20 @@ public class RenderUpgC {
         RenderUpgC.initModel(basicFunnelItem, 1, burned);
         RenderUpgC.initModel(basicFunnelItem, 2, burnedSide);
 
+        Item clayBrick = Item.getItemFromBlock(ModBlocks.blockClayBrick);
+        ModelResourceLocation clayBrickRL = createModelResourceLocation(ModBlocks.blockClayBrick);
+        ModelResourceLocation clayBrickCookedRL = createModelResourceLocation(ModBlocks.blockClayBrick, "cooked");
+        ModelResourceLocation claySquaredBrickRL = createModelResourceLocation(ModBlocks.blockClayBrick, "squared");
+        ModelResourceLocation claySquaredBrickCookedRL = createModelResourceLocation(ModBlocks.blockClayBrick, "cookedsquared");
+        ModelBakery.registerItemVariants(clayBrick, clayBrickRL, clayBrickCookedRL, claySquaredBrickRL, claySquaredBrickCookedRL);
+        RenderUpgC.initModel(clayBrick, 0, clayBrickRL);
+        RenderUpgC.initModel(clayBrick, 1, clayBrickCookedRL);
+        RenderUpgC.initModel(clayBrick, 2, claySquaredBrickRL);
+        RenderUpgC.initModel(clayBrick, 3, claySquaredBrickCookedRL);
+
+        RenderUpgC.initModel(Item.getItemFromBlock(ModBlocks.blockStairsClayBrick), 0, createModelResourceLocation(ModBlocks.blockStairsClayBrick));
+        RenderUpgC.initModel(Item.getItemFromBlock(ModBlocks.blockStairsCookedClayBrick), 0, createModelResourceLocation(ModBlocks.blockStairsCookedClayBrick));
+
     }
 
     private static void initFluidTankModel(BlockUpgC fluidTank) {

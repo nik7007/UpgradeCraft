@@ -2,6 +2,7 @@ package com.nik7.upgcraft.init;
 
 import com.nik7.upgcraft.block.*;
 import com.nik7.upgcraft.item.ItemBlockBasicFunnel;
+import com.nik7.upgcraft.item.ItemBlockClayBrick;
 import com.nik7.upgcraft.item.ItemBlockFluidTank;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
@@ -23,6 +24,10 @@ public class ModBlocks {
     public static BlockUpgC blockFunnel;
     public static BlockUpgC blockBasicFunnel;
     public static BlockUpgC blockFluidInfuser;
+    public static BlockUpgC blockClayBrick;
+    public static BlockUpgCStairs blockStairsClayBrick;
+    public static BlockUpgCStairs blockStairsCookedClayBrick;
+
 
     public static void init() {
         blockSlimyLog = new BlockSlimyLog();
@@ -31,6 +36,10 @@ public class ModBlocks {
         blockFunnel = new BlockFunnel();
         blockBasicFunnel = new BlockBasicFunnel();
         blockFluidInfuser = new BlockFluidInfuser();
+        blockClayBrick = new BlockClayBrick();
+        blockStairsClayBrick = new BlockUpgCStairs(blockClayBrick.getDefaultState());
+        blockStairsCookedClayBrick = new BlockUpgCStairs(blockClayBrick.getDefaultState(), "stairscooked");
+
         register();
     }
 
@@ -41,13 +50,16 @@ public class ModBlocks {
         ModBlocks.registerBlock(blockFunnel);
         ModBlocks.registerBlock(blockBasicFunnel, ItemBlockBasicFunnel.class);
         ModBlocks.registerBlock(blockFluidInfuser);
+        ModBlocks.registerBlock(blockClayBrick, ItemBlockClayBrick.class);
+        ModBlocks.registerBlock(blockStairsClayBrick);
+        ModBlocks.registerBlock(blockStairsCookedClayBrick);
     }
 
-    private static void registerBlock(BlockUpgC block) {
+    private static void registerBlock(Block block) {
         ModBlocks.registerBlock(block, ItemBlock.class);
     }
 
-    private static void registerBlock(BlockUpgC block, Class<? extends ItemBlock> itemBlock) {
+    private static void registerBlock(Block block, Class<? extends ItemBlock> itemBlock) {
 
         registerBlock(block, itemBlock, block.getRegistryName());
 

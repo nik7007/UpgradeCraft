@@ -1,0 +1,9 @@
+
+{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "bottom": "upgcraft:blocks/clay_brick",
+    "top": "upgcraft:blocks/clay_brick",
+    "side": "upgcraft:blocks/clay_brick"
+  }
+}
