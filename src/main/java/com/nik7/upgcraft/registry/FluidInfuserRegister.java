@@ -47,6 +47,13 @@ public final class FluidInfuserRegister {
             toMeltList = INSTANCE.toMeltToRecipe.get(createKey(toMelt));
             toInfuseList = INSTANCE.toInfuseToRecipe.get(createKey(toInfuse));
 
+            if (fluidList.size() == 0)
+                fluidList = null;
+            if (toMeltList.size() == 0)
+                toMeltList = null;
+            if (toInfuseList.size() == 0)
+                toInfuseList = null;
+
             List<FluidInfuserRecipe> result = getCommonRecipes(getCommonRecipes(fluidList, toInfuseList), toMeltList);
 
             if (!result.isEmpty()) {
@@ -92,10 +99,10 @@ public final class FluidInfuserRegister {
     private static List<FluidInfuserRecipe> getCommonRecipes(List<FluidInfuserRecipe> list1, List<FluidInfuserRecipe> list2) {
         List<FluidInfuserRecipe> result = new LinkedList<>();
 
-        if (list1 == null || list1.isEmpty())
+        if (list1 == null)
             return list2 != null ? list2 : result;
 
-        if (list2 == null || list2.isEmpty())
+        if (list2 == null)
             return list1;
 
         for (FluidInfuserRecipe r1 : list1) {

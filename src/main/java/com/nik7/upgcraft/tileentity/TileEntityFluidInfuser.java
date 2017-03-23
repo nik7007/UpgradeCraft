@@ -144,7 +144,9 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
             if (recipe != null) {
 
-                if (this.getStackInSlot(OUTPUT).isEmpty() || this.getStackInSlot(OUTPUT).getCount() + recipe.getResult().getCount() <= this.getInventoryStackLimit()) {
+                ItemStack result = recipe.getResult();
+
+                if (this.getStackInSlot(OUTPUT).isEmpty() || (this.getStackInSlot(OUTPUT).getCount() + recipe.getResult().getCount() <= this.getInventoryStackLimit() && this.getStackInSlot(OUTPUT).equals(result))) {
 
                     int nMelt = recipe.getToMelt().getCount();
                     int nInfuse = recipe.getToInfuse().getCount();
@@ -157,14 +159,14 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
                         this.totalTickMelting = this.tickMelting = recipe.getTickToMelt();
                         this.totalTickInfusing = this.tickInfusing = recipe.getTickToInfuse();
-                        this.resultWorking = recipe.getResult();
+                        this.resultWorking = result;
 
                         this.isWorking = true;
 
                         final boolean isHot = drained.getFluid().getTemperature(drained) >= 300;
 
 
-                        changeStaus(true, isHot);
+                        changeStatus(true, isHot);
 
                     }
 
@@ -195,7 +197,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
                         this.resultWorking = ItemStack.EMPTY;
                         this.isWorking = false;
                         syncTileEntity();
-                        changeStaus(false, false);
+                        changeStatus(false, false);
                         this.tickMelting = 0;
                         this.tickInfusing = 0;
 
@@ -209,7 +211,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
     }
 
-    private void changeStaus(boolean isWorking, boolean isHot) {
+    private void changeStatus(boolean isWorking, boolean isHot) {
 
         IBlockState state = getWorld().getBlockState(getPos());
         Block block = state.getBlock();
