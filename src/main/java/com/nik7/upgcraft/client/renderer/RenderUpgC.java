@@ -4,6 +4,7 @@ import com.nik7.upgcraft.block.BlockUpgC;
 import com.nik7.upgcraft.client.renderer.tileentity.FluidMachineTESR;
 import com.nik7.upgcraft.client.renderer.tileentity.FluidTankTESR;
 import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.tileentity.TileEntityFluidFurnace;
 import com.nik7.upgcraft.tileentity.TileEntityFluidInfuser;
 import com.nik7.upgcraft.tileentity.TileEntityFluidTank;
@@ -50,6 +51,8 @@ public class RenderUpgC {
 
         RenderUpgC.initModel(Item.getItemFromBlock(ModBlocks.blockStairsClayBrick), 0, createModelResourceLocation(ModBlocks.blockStairsClayBrick));
         RenderUpgC.initModel(Item.getItemFromBlock(ModBlocks.blockStairsCookedClayBrick), 0, createModelResourceLocation(ModBlocks.blockStairsCookedClayBrick));
+
+        RenderUpgC.initModel(ModItems.clayIngot);
 
     }
 

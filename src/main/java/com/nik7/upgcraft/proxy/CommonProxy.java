@@ -4,6 +4,7 @@ import com.nik7.upgcraft.UpgradeCraft;
 import com.nik7.upgcraft.handler.ConfigurationHandler;
 import com.nik7.upgcraft.handler.GuiHandler;
 import com.nik7.upgcraft.init.ModBlocks;
+import com.nik7.upgcraft.init.ModItems;
 import com.nik7.upgcraft.init.Recipes;
 import com.nik7.upgcraft.reference.Reference;
 import com.nik7.upgcraft.tileentity.*;
@@ -24,6 +25,7 @@ public abstract class CommonProxy implements IProxy {
         //init blocks
         ModBlocks.init();
         //init Items
+        ModItems.init();
         //register
 
     }

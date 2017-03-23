@@ -23,7 +23,8 @@ public class Recipes {
         //Fluid Infuser recipes
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 200), new ItemStack(ModBlocks.blockSlimyLog), new ItemStack(Items.SLIME_BALL, 2), 10, new ItemStack(Blocks.PLANKS), 200);
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 4 * 200), new ItemStack(ModBlocks.blockSlimyLog, 4), new ItemStack(Blocks.SLIME_BLOCK, 1), 4 * 10, new ItemStack(Blocks.PLANKS, 4), 200);
-
+        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 250), new ItemStack(ModItems.clayIngot), new ItemStack(Items.CLAY_BALL), 50, new ItemStack(Items.BRICK), 400);
+        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 4 * 250), new ItemStack(ModItems.clayIngot, 4), new ItemStack(Blocks.CLAY), 4 * 50, new ItemStack(Items.BRICK, 4), 400);
     }
 
 }
