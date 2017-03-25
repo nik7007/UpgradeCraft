@@ -5,8 +5,11 @@ import net.minecraftforge.fluids.Fluid;
 
 public final class ConfigOptions {
 
+
     public static final int FUNNEL_CAPACITY = 5 * Fluid.BUCKET_VOLUME;
     public static final int BASIC_FUNNEL_SPEED = 50;
+    //TEMP
+    public final static int WOOD_BURN_TEMPERATURE = 300 + 273;
     //CAPACITY
     public static int CONFIG_CAPACITY;
     public static int BASIC_CAPACITY = CONFIG_CAPACITY * Fluid.BUCKET_VOLUME;
@@ -15,6 +18,9 @@ public final class ConfigOptions {
     //BURN
     public static boolean WOODEN_TANK_BURN;
     public static boolean WOODEN_FLUID_HOPPER_BURN;
+
+    private ConfigOptions() {
+    }
 
     public static void reloadOptions() {
         BASIC_CAPACITY = CONFIG_CAPACITY * Fluid.BUCKET_VOLUME;

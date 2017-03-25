@@ -31,7 +31,7 @@ public class TileEntityBasicFunnel extends TileEntityFunnel {
 
     private boolean isFluidHot() {
         FluidStack fluidStack = fluidTank.getFluid();
-        return fluidStack != null && fluidStack.getFluid().getTemperature(fluidStack) > TileEntityWoodenFluidTank.WOOD_BURN_TEMPERATURE;
+        return fluidStack != null && fluidStack.getFluid().getTemperature(fluidStack) > ConfigOptions.WOOD_BURN_TEMPERATURE;
     }
 
     private void burnAction() {
