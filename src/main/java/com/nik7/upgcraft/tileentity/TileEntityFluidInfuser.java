@@ -6,6 +6,7 @@ import com.nik7.upgcraft.fluids.EnumCapacity;
 import com.nik7.upgcraft.fluids.IFluidIO;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.inventory.ContainerFluidInfuser;
+import com.nik7.upgcraft.reference.ConfigOptions;
 import com.nik7.upgcraft.registry.FluidInfuserRegister;
 import com.nik7.upgcraft.registry.recipes.FluidInfuserRecipe;
 import net.minecraft.block.Block;
@@ -146,7 +147,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
                 ItemStack result = recipe.getResult();
 
-                if (this.getStackInSlot(OUTPUT).isEmpty() || (this.getStackInSlot(OUTPUT).getCount() + recipe.getResult().getCount() <= this.getInventoryStackLimit() && this.getStackInSlot(OUTPUT).equals(result))) {
+                if (this.getStackInSlot(OUTPUT).isEmpty() || (this.getStackInSlot(OUTPUT).getCount() + recipe.getResult().getCount() <= this.getInventoryStackLimit() && this.getStackInSlot(OUTPUT).isItemEqual(result))) {
 
                     int nMelt = recipe.getToMelt().getCount();
                     int nInfuse = recipe.getToInfuse().getCount();
@@ -163,7 +164,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
 
                         this.isWorking = true;
 
-                        final boolean isHot = drained.getFluid().getTemperature(drained) >= 300;
+                        final boolean isHot = drained.getFluid().getTemperature(drained) >= ConfigOptions.WOOD_BURN_TEMPERATURE;
 
 
                         changeStatus(true, isHot);
@@ -219,6 +220,7 @@ public class TileEntityFluidInfuser extends TileEntityInventoryAndFluidHandler i
         if (block instanceof BlockFluidInfuser) {
             ((BlockFluidInfuser) block).changeWorkingStatus(this.getWorld(), this.getPos(), state, isWorking, isHot);
         }
+        syncTileEntity();
 
     }
 

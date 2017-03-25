@@ -2,6 +2,7 @@ package com.nik7.upgcraft.block;
 
 
 import com.nik7.upgcraft.UpgradeCraft;
+import com.nik7.upgcraft.reference.ConfigOptions;
 import com.nik7.upgcraft.reference.GUIs;
 import com.nik7.upgcraft.tileentity.TileEntityFluidHandler;
 import com.nik7.upgcraft.tileentity.TileEntityFluidInfuser;
@@ -53,7 +54,7 @@ public class BlockFluidInfuser extends BlockOrientable implements ITileEntityPro
                 FluidStack fluid = ((TileEntityFluidInfuser) te).getFluid();
                 if (fluid != null) {
                     Status status;
-                    if (fluid.getFluid().getTemperature(fluid) >= 300) {
+                    if (fluid.getFluid().getTemperature(fluid) >= ConfigOptions.WOOD_BURN_TEMPERATURE) {
                         status = Status.WORKING_HOT;
                     } else status = Status.WORKING_COOL;
                     return state.withProperty(STATUS, status);
@@ -167,7 +168,7 @@ public class BlockFluidInfuser extends BlockOrientable implements ITileEntityPro
                 if (fluid != null) {
                     EnumParticleTypes[] particles;
 
-                    if (fluid.getFluid().getTemperature(fluid) >= 300)
+                    if (fluid.getFluid().getTemperature(fluid) >= ConfigOptions.WOOD_BURN_TEMPERATURE)
                         particles = new EnumParticleTypes[]{EnumParticleTypes.SMOKE_NORMAL, EnumParticleTypes.FLAME};
                     else particles = new EnumParticleTypes[]{EnumParticleTypes.SMOKE_NORMAL};
                     spawnParticles(world, pos, rand, particles);
