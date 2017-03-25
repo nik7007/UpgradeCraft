@@ -7,18 +7,18 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ModItems {
 
+    public static ItemUpgC itemClayIngot;
+
     private ModItems() {
     }
 
-    public static ItemUpgC clayIngot;
-
     public static void init() {
-        clayIngot = new ItemClayIngot();
+        itemClayIngot = new ItemClayIngot();
         register();
     }
 
     private static void register() {
-        register(clayIngot);
+        register(itemClayIngot);
     }
 
     private static void register(ItemUpgC item) {

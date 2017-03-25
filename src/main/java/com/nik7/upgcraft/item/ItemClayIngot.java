@@ -8,7 +8,7 @@ public class ItemClayIngot extends ItemUpgC implements ICraftingExperience {
 
 
     public ItemClayIngot() {
-        super("ClayIngot");
+        super("clayingot");
     }
 
     @Override
