@@ -19,12 +19,16 @@ public class Recipes {
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockBasicFunnel), "ibi", "iti", " i ", 'i', "ingotIron", 'b', new ItemStack(Blocks.IRON_BARS), 't', new ItemStack(ModBlocks.blockWoodenFluidTank)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockFluidFurnace), "ifi", "iti", "iii", 'i', "ingotIron", 't', new ItemStack(ModBlocks.blockWoodenFluidTank, 1, 1), 'f', new ItemStack(Blocks.FURNACE)));
         GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(ModBlocks.blockFluidInfuser), "iii", "i i", "ifi", 'i', "ingotIron", 'f', new ItemStack(ModBlocks.blockFluidFurnace)));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.blockClayBrick, 1, 0), "ii", "ii", 'i', new ItemStack(ModItems.itemClayIngot));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.blockClayBrick, 4, 2), "bb", "bb", 'b', new ItemStack(ModBlocks.blockClayBrick, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.blockStairsClayBrick, 4, 0), "b  ", "bb ", "bbb", 'b', new ItemStack(ModItems.itemClayIngot, 1, 0));
+        GameRegistry.addRecipe(new ItemStack(ModBlocks.blockStairsCookedClayBrick, 4, 0), "b  ", "bb ", "bbb", 'b', new ItemStack(ModBlocks.blockClayBrick, 1, 1));
 
         //Fluid Infuser recipes
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 200), new ItemStack(ModBlocks.blockSlimyLog), new ItemStack(Items.SLIME_BALL, 2), 10, new ItemStack(Blocks.PLANKS), 200);
         FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("lava"), 4 * 200), new ItemStack(ModBlocks.blockSlimyLog, 4), new ItemStack(Blocks.SLIME_BLOCK, 1), 4 * 10, new ItemStack(Blocks.PLANKS, 4), 200);
-        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 250), new ItemStack(ModItems.clayIngot), new ItemStack(Items.CLAY_BALL), 50, new ItemStack(Items.BRICK), 400);
-        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 4 * 250), new ItemStack(ModItems.clayIngot, 4), new ItemStack(Blocks.CLAY), 4 * 50, new ItemStack(Items.BRICK, 4), 400);
+        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 250), new ItemStack(ModItems.itemClayIngot), new ItemStack(Items.CLAY_BALL), 50, new ItemStack(Items.BRICK), 400);
+        FluidInfuserRegister.addRecipe(new FluidStack(FluidRegistry.getFluid("water"), 4 * 250), new ItemStack(ModItems.itemClayIngot, 4), new ItemStack(Blocks.CLAY), 4 * 50, new ItemStack(Items.BRICK, 4), 400);
     }
 
 }
