@@ -7,8 +7,15 @@ tile.upgcraft:woodenfluidtank.name=Wooden Fluid Tank
 tile.upgcraft:basicfunnel.name=Basic Funnel
 tile.upgcraft:fluidfurnace.name=Fluid Furnace
 tile.upgcraft:fluidinfuser.name=Fluid Infuser
+tile.upgcraft:claybrick.name=Clay Brick
+tile.upgcraft:claybrick.cooked.name=Cooked Clay Brick
+tile.upgcraft:claybrick.squared.name=Clay Squared Brick
+tile.upgcraft:claybrick.Cooked.squared.name=Cooked Clay Squared Brick
+tile.upgcraft:stairsclaybrick.name=Clay Brick Stairs
+tile.upgcraft:stairscookedclaybrick.name=Cooked Clay Brick Stairs
 
 # Items
+item.upgcraft:clayingot.name=Clay Ingot
 
 #Tooltip
 tooltip.upgcraft:tank.glassed=Transparent
