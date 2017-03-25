@@ -37,12 +37,12 @@ public abstract class BlockFluidTank extends BlockFluidContainer {
     private final boolean canBeDouble;
     private final boolean canBeGlassed;
 
-    public BlockFluidTank(String blockName) {
-        this(blockName, true, true);
+    public BlockFluidTank(String blockName, Material material) {
+        this(blockName, material, true, true);
     }
 
-    public BlockFluidTank(String blockName, boolean canBeDouble, boolean canBeGlassed) {
-        super(Material.WOOD, blockName);
+    public BlockFluidTank(String blockName, Material material, boolean canBeDouble, boolean canBeGlassed) {
+        super(material, blockName);
         this.canBeDouble = canBeDouble;
         this.canBeGlassed = canBeGlassed;
         this.setDefaultState(this.blockState.getBaseState().withProperty(GLASSED, false).withProperty(RENDER_INFORMATION, RenderInformation.SINGLE));

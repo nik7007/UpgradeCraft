@@ -4,6 +4,7 @@ package com.nik7.upgcraft.block;
 import com.nik7.upgcraft.reference.ConfigOptions;
 import com.nik7.upgcraft.tileentity.TileEntityWoodenFluidTank;
 import com.nik7.upgcraft.util.WorldHelper;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
@@ -24,7 +25,7 @@ public class BlockWoodenFluidTank extends BlockFluidTank {
 
 
     public BlockWoodenFluidTank() {
-        super("woodenfluidtank");
+        super("woodenfluidtank", Material.WOOD);
         if (ConfigOptions.WOODEN_TANK_BURN)
             this.setTickRandomly(true);
         this.setHardness(2.5f);
