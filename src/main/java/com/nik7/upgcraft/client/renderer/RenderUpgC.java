@@ -52,7 +52,7 @@ public class RenderUpgC {
         RenderUpgC.initModel(Item.getItemFromBlock(ModBlocks.blockStairsClayBrick), 0, createModelResourceLocation(ModBlocks.blockStairsClayBrick));
         RenderUpgC.initModel(Item.getItemFromBlock(ModBlocks.blockStairsCookedClayBrick), 0, createModelResourceLocation(ModBlocks.blockStairsCookedClayBrick));
 
-        RenderUpgC.initModel(ModItems.clayIngot);
+        RenderUpgC.initModel(ModItems.itemClayIngot);
 
     }
 
