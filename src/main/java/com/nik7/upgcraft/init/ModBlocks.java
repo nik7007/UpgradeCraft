@@ -27,6 +27,8 @@ public class ModBlocks {
     public static BlockUpgC blockClayBrick;
     public static BlockUpgCStairs blockStairsClayBrick;
     public static BlockUpgCStairs blockStairsCookedClayBrick;
+    public static BlockUpgC blockClayFluidTank;
+    public static BlockUpgC blockHardenedClayFluidTank;
 
 
     public static void init() {
@@ -39,6 +41,8 @@ public class ModBlocks {
         blockClayBrick = new BlockClayBrick();
         blockStairsClayBrick = new BlockUpgCStairs(blockClayBrick.getDefaultState());
         blockStairsCookedClayBrick = new BlockUpgCStairs(blockClayBrick.getDefaultState(), "stairscooked");
+        blockClayFluidTank = new BlockClayFluidTank();
+        blockHardenedClayFluidTank = new BlockHardenedClayFluidTank();
 
         register();
     }
@@ -53,6 +57,8 @@ public class ModBlocks {
         ModBlocks.registerBlock(blockClayBrick, ItemBlockClayBrick.class);
         ModBlocks.registerBlock(blockStairsClayBrick);
         ModBlocks.registerBlock(blockStairsCookedClayBrick);
+        ModBlocks.registerBlock(blockClayFluidTank, ItemBlockFluidTank.class);
+        ModBlocks.registerBlock(blockHardenedClayFluidTank, ItemBlockFluidTank.class);
     }
 
     private static void registerBlock(Block block) {

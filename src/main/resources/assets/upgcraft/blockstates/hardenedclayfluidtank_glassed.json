@@ -1,0 +1,13 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "upgcraft:fluid_tank",
+    "textures":{
+      "all":"upgcraft:blocks/hardened_clay_fluid_tank_glassed"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}]
+  }
+}

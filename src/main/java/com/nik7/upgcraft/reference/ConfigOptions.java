@@ -10,6 +10,7 @@ public final class ConfigOptions {
     public static final int BASIC_FUNNEL_SPEED = 50;
     //TEMP
     public final static int WOOD_BURN_TEMPERATURE = 300 + 273;
+    public final static int CLAY_COOK = 1000 + 273;
     //CAPACITY
     public static int CONFIG_CAPACITY;
     public static int BASIC_CAPACITY = CONFIG_CAPACITY * Fluid.BUCKET_VOLUME;

@@ -65,6 +65,11 @@ public class UpgCFluidTank implements IUpgCFluidTank {
     }
 
     @Override
+    public void setFluid(FluidStack fluid) {
+        this.fluidStack = fluid;
+    }
+
+    @Override
     public int getFluidAmount() {
         return this.getFluid() == null ? 0 : this.getFluid().amount;
     }

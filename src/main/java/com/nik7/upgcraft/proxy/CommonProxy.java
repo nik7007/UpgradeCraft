@@ -41,6 +41,8 @@ public abstract class CommonProxy implements IProxy {
         GameRegistry.registerTileEntity(TileEntityBasicFunnel.class, Reference.RESOURCE_PREFIX + "TileEntityBasicFunnel");
         GameRegistry.registerTileEntity(TileEntityFluidFurnace.class, Reference.RESOURCE_PREFIX + "TileEntityFluidFurnace");
         GameRegistry.registerTileEntity(TileEntityFluidInfuser.class, Reference.RESOURCE_PREFIX + "TileEntityFluidInfuser");
+        GameRegistry.registerTileEntity(TileEntityClayFluidTank.class, Reference.RESOURCE_PREFIX + "TileEntityClayFluidTank");
+        GameRegistry.registerTileEntity(TileEntityHardenedClayFluidTank.class, Reference.RESOURCE_PREFIX + "TileEntityHardenedClayFluidTank");
         //Network
         NetworkRegistry.INSTANCE.registerGuiHandler(UpgradeCraft.instance, new GuiHandler());
         //interModComm

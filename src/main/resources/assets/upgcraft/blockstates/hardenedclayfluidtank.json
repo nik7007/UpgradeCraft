@@ -1,0 +1,65 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "upgcraft:fluid_tank",
+    "textures":{
+      "all":"upgcraft:blocks/hardened_clay_fluid_tank"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "inventory": [{}],
+    "glassed" : {
+      "true" : {},
+      "false" : {}
+    },
+    "render_information" : {
+      "single" : {
+        "textures": {
+          "all":"upgcraft:blocks/hardened_clay_fluid_tank"
+        }
+      },
+      "single_glassed" : {
+        "textures": {
+          "all":"upgcraft:blocks/hardened_clay_fluid_tank_glassed"
+        }
+      },
+      "double_up": {
+        "model": "upgcraft:double_fluid_tank_up",
+        "textures":{
+          "all":"upgcraft:blocks/double_hardened_clay_fluid_tank"
+        }
+      },
+      "double_down" : {
+        "model": "upgcraft:double_fluid_tank_down",
+        "textures":{
+          "all":"upgcraft:blocks/double_hardened_clay_fluid_tank"
+        }
+      },
+      "double_glassed_up" : {
+        "model": "upgcraft:double_fluid_tank_up",
+        "textures":{
+          "all":"upgcraft:blocks/double_hardened_clay_fluid_tank_glassed_up"
+        }
+      },
+      "double_glassed_down" : {
+        "model": "upgcraft:double_fluid_tank_down",
+        "textures":{
+          "all":"upgcraft:blocks/double_hardened_clay_fluid_tank_glassed_down"
+        }
+      },
+      "double_glassed_up_p" : {
+        "model": "upgcraft:double_fluid_tank_up",
+        "textures":{
+          "all":"upgcraft:blocks/double_hardened_clay_fluid_tank_glassed_partial"
+        }
+      },
+      "double_glassed_down_p" : {
+        "model": "upgcraft:double_fluid_tank_down",
+        "textures":{
+          "all":"upgcraft:blocks/double_hardened_clay_fluid_tank_glassed_partial"
+        }
+      }
+    }
+  }
+}

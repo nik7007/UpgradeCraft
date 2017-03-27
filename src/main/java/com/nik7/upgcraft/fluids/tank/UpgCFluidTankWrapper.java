@@ -122,6 +122,11 @@ public class UpgCFluidTankWrapper implements IUpgCFluidTank, IFluidIO {
     }
 
     @Override
+    public void setFluid(FluidStack fluid) {
+        this.internalTank.setFluid(fluid);
+    }
+
+    @Override
     public int getFluidAmount() {
         return this.internalTank.getFluidAmount();
     }

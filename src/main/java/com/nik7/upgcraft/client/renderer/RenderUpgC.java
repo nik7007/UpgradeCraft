@@ -5,9 +5,7 @@ import com.nik7.upgcraft.client.renderer.tileentity.FluidMachineTESR;
 import com.nik7.upgcraft.client.renderer.tileentity.FluidTankTESR;
 import com.nik7.upgcraft.init.ModBlocks;
 import com.nik7.upgcraft.init.ModItems;
-import com.nik7.upgcraft.tileentity.TileEntityFluidFurnace;
-import com.nik7.upgcraft.tileentity.TileEntityFluidInfuser;
-import com.nik7.upgcraft.tileentity.TileEntityFluidTank;
+import com.nik7.upgcraft.tileentity.*;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelBakery;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -24,6 +22,8 @@ public class RenderUpgC {
     public static void initRenderingAndTextures() {
         RenderUpgC.initModel(ModBlocks.blockSlimyLog);
         RenderUpgC.initFluidTankModel(ModBlocks.blockWoodenFluidTank);
+        RenderUpgC.initFluidTankModel(ModBlocks.blockClayFluidTank);
+        RenderUpgC.initFluidTankModel(ModBlocks.blockHardenedClayFluidTank);
         RenderUpgC.initModel(ModBlocks.blockFluidFurnace);
         RenderUpgC.initModel(ModBlocks.blockFluidInfuser);
         RenderUpgC.initModel(ModBlocks.blockFunnel);
@@ -53,6 +53,7 @@ public class RenderUpgC {
         RenderUpgC.initModel(Item.getItemFromBlock(ModBlocks.blockStairsCookedClayBrick), 0, createModelResourceLocation(ModBlocks.blockStairsCookedClayBrick));
 
         RenderUpgC.initModel(ModItems.itemClayIngot);
+
 
     }
 
@@ -99,6 +100,8 @@ public class RenderUpgC {
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidTank.class, new FluidTankTESR());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidFurnace.class, new FluidMachineTESR());
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFluidInfuser.class, new FluidMachineTESR());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityClayFluidTank.class, new FluidTankTESR());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityHardenedClayFluidTank.class, new FluidTankTESR());
     }
 
 }
