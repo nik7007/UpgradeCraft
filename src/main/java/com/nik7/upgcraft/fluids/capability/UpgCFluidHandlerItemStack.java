@@ -6,6 +6,7 @@ import com.nik7.upgcraft.fluids.tank.IUpgCFluidTank;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTank;
 import com.nik7.upgcraft.fluids.tank.UpgCFluidTankWrapper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -21,23 +22,47 @@ public class UpgCFluidHandlerItemStack implements IFluidHandlerItem, ICapability
 
     public static final String FLUID_NBT_KEY = "Fluid";
 
-    private EnumCapacity capacity;
-    private IUpgCFluidTank fluidTank;
-    private ItemStack container;
+    private final IUpgCFluidTank fluidTank;
+    private final ItemStack container;
 
     public UpgCFluidHandlerItemStack(EnumCapacity capacity, ItemStack container) {
         this(capacity, container, null);
     }
 
     public UpgCFluidHandlerItemStack(EnumCapacity capacity, ItemStack container, Class<? extends UpgCFluidTank> tankClass) {
-        this.capacity = capacity;
         this.container = container;
         this.fluidTank = new UpgCFluidTankWrapper(capacity, tankClass, null);
-        if (container.hasTagCompound() && container.getTagCompound().hasKey(FLUID_NBT_KEY)) {
+        this.updateTank();
+    }
+
+    private void updateTank() {
+        if (this.container.hasTagCompound() && this.container.getTagCompound().hasKey(FLUID_NBT_KEY)) {
             this.fluidTank.readFromNBT(container.getTagCompound().getCompoundTag(FLUID_NBT_KEY));
         }
     }
 
+    private void updateContainer() {
+        if (this.getFluid() == null) {
+            if (this.container.hasTagCompound()) {
+                this.container.getTagCompound().removeTag(FLUID_NBT_KEY);
+            }
+        } else {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setTag(FLUID_NBT_KEY, this.fluidTank.writeToNBT(new NBTTagCompound()));
+            this.container.setTagCompound(tag);
+        }
+
+    }
+
+
+    public FluidStack getFluid() {
+        return this.fluidTank.getFluid();
+    }
+
+    public void setFluid(FluidStack fluid) {
+        this.fluidTank.setFluid(fluid);
+        this.updateContainer();
+    }
 
     @Nonnull
     @Override
@@ -52,22 +77,44 @@ public class UpgCFluidHandlerItemStack implements IFluidHandlerItem, ICapability
 
     @Override
     public int fill(FluidStack resource, boolean doFill) {
-        if (container.getCount() != 1)
+        if (this.container.getCount() != 1)
             return 0;
 
+        int result = this.fluidTank.fill(resource, doFill);
 
-        return 0;
+        if (doFill && result > 0)
+            this.updateContainer();
+
+        return result;
     }
 
     @Nullable
     @Override
     public FluidStack drain(FluidStack resource, boolean doDrain) {
-        return null;
+        if (this.container.getCount() != 1)
+            return null;
+
+        FluidStack result = this.fluidTank.drain(resource, doDrain);
+
+        if (doDrain && result != null) {
+            this.updateContainer();
+        }
+
+        return result;
     }
 
     @Nullable
     @Override
     public FluidStack drain(int maxDrain, boolean doDrain) {
+        if (this.container.getCount() != 1)
+            return null;
+
+        FluidStack result = this.fluidTank.drain(maxDrain, doDrain);
+
+        if (doDrain && result != null) {
+            this.updateContainer();
+        }
+
         return null;
     }
 

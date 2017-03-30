@@ -4,6 +4,7 @@ import com.nik7.upgcraft.block.*;
 import com.nik7.upgcraft.item.ItemBlockBasicFunnel;
 import com.nik7.upgcraft.item.ItemBlockClayBrick;
 import com.nik7.upgcraft.item.ItemBlockFluidTank;
+import com.nik7.upgcraft.item.ItemBlockHardenedClayFluidTank;
 import com.nik7.upgcraft.util.LogHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
@@ -58,7 +59,7 @@ public class ModBlocks {
         ModBlocks.registerBlock(blockStairsClayBrick);
         ModBlocks.registerBlock(blockStairsCookedClayBrick);
         ModBlocks.registerBlock(blockClayFluidTank, ItemBlockFluidTank.class);
-        ModBlocks.registerBlock(blockHardenedClayFluidTank, ItemBlockFluidTank.class);
+        ModBlocks.registerBlock(blockHardenedClayFluidTank, ItemBlockHardenedClayFluidTank.class);
     }
 
     private static void registerBlock(Block block) {
