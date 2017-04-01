@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAir;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
@@ -113,6 +114,17 @@ public abstract class BlockFluidTank extends BlockFluidContainer {
         super.breakBlock(worldIn, pos, state);
     }
 
+    private boolean isItemCorrect(ItemStack itemStack) {
+        Item item;
+        if (!itemStack.isEmpty() && !((item = itemStack.getItem()) instanceof ItemAir)) {
+            if (item instanceof ItemBlock) {
+                if (((ItemBlock) item).getBlock() instanceof BlockFluidTank)
+                    return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing heldItem, float side, float hitX, float hitY) {
 
@@ -123,11 +135,18 @@ public abstract class BlockFluidTank extends BlockFluidContainer {
                 FluidActionResult result;
                 IFluidHandler fluidHandler = FluidUtil.getFluidHandler(world, pos, null);
 
-                result = interactWithFluidHandler(EntityEquipmentSlot.MAINHAND, mainHandItem, fluidHandler, player);
                 ItemStack equippedItemStack = player.getItemStackFromSlot(EntityEquipmentSlot.MAINHAND);
+                if (!isItemCorrect(equippedItemStack))
+                    return false;
+                result = interactWithFluidHandler(EntityEquipmentSlot.MAINHAND, mainHandItem, fluidHandler, player);
 
-                if (equippedItemStack.getItem() instanceof ItemAir && !result.isSuccess())
+                if (equippedItemStack.getItem() instanceof ItemAir && !result.isSuccess()) {
+
+                    equippedItemStack = player.getItemStackFromSlot(EntityEquipmentSlot.OFFHAND);
+                    if (!isItemCorrect(equippedItemStack))
+                        return false;
                     interactWithFluidHandler(EntityEquipmentSlot.OFFHAND, offHandItem, fluidHandler, player);
+                }
             }
             return true;
         }
