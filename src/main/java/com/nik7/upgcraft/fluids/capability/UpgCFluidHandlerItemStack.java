@@ -47,9 +47,14 @@ public class UpgCFluidHandlerItemStack implements IFluidHandlerItem, ICapability
                 this.container.getTagCompound().removeTag(FLUID_NBT_KEY);
             }
         } else {
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setTag(FLUID_NBT_KEY, this.fluidTank.writeToNBT(new NBTTagCompound()));
-            this.container.setTagCompound(tag);
+            NBTTagCompound fluidTag = this.fluidTank.writeToNBT(new NBTTagCompound());
+            if (this.container.hasTagCompound()) {
+                this.container.getTagCompound().setTag(FLUID_NBT_KEY, fluidTag);
+            } else {
+                NBTTagCompound tag = new NBTTagCompound();
+                tag.setTag(FLUID_NBT_KEY, fluidTag);
+                this.container.setTagCompound(tag);
+            }
         }
 
     }
@@ -72,6 +77,7 @@ public class UpgCFluidHandlerItemStack implements IFluidHandlerItem, ICapability
 
     @Override
     public IFluidTankProperties[] getTankProperties() {
+        this.updateTank();
         return this.fluidTank.getTankProperties();
     }
 

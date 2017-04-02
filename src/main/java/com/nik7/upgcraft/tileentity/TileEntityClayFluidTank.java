@@ -17,26 +17,36 @@ import java.util.Random;
 
 public class TileEntityClayFluidTank extends TileEntityFluidTank {
 
+    private final static Random RANDOM = new Random();
+
     private static final int AMOUNT_LOST = 5;
-    private final int doWaterStuff = (new Random()).nextInt(6);
+    private final int doWaterStuff = RANDOM.nextInt(6);
+    private final int checkCooking = RANDOM.nextInt(6);
     private int tickToCook = 200;
     private int tick = 0;
     private boolean lastWaterResult = false;
 
+    private boolean isCooking = false;
+    private int oldTickToCook;
+
     public TileEntityClayFluidTank() {
         super(EnumCapacity.BASIC_CAPACITY);
+        this.oldTickToCook = this.tickToCook;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         this.tickToCook = tag.getInteger("tickToCook");
+        this.isCooking = tag.getBoolean("isCooking");
+        this.oldTickToCook = this.tickToCook;
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("tickToCook", this.tickToCook);
+        tag.setBoolean("isCooking", this.isCooking);
         return tag;
     }
 
@@ -145,9 +155,25 @@ public class TileEntityClayFluidTank extends TileEntityFluidTank {
                     }
                 }
 
+            if (this.tick == this.checkCooking)
+                if (oldTickToCook > this.tickToCook) {
+                    if (!this.isCooking) {
+                        this.isCooking = true;
+                        this.syncTileEntity();
+                    }
+                    this.oldTickToCook = this.tickToCook;
+                } else if (oldTickToCook == this.tickToCook && this.isCooking) {
+                    this.isCooking = false;
+                    this.syncTileEntity();
+                }
+
             this.tick++;
         }
 
+    }
+
+    public boolean isCooking() {
+        return this.isCooking;
     }
 
     @Override
